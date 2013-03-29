@@ -1,0 +1,3 @@
+Previously the convection block connecting the base to the water was referencing the flu to water onvection coefficient
+	Changed the connection to reference h_cw_b
+	Q_base->water is sensitive to h_cw_b implying that the connection is now correct

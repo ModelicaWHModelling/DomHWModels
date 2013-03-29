@@ -1,0 +1,10 @@
+Changes
+	Changed buoHeaTra calculations to also share ambient losses through the top of the tank
+		Causes top segment to stay much closer to the rest of the segments in temperature
+		Still some error; in some cases top seg loses temp faster than others. Not understood when/why
+Still to work on
+	Simulation can get very slow in some situations
+		Most notably when draw occuring at same time as burn
+		Understand why, improve
+	Investigate when/why top segment cools off faster than other segments
+		Improve

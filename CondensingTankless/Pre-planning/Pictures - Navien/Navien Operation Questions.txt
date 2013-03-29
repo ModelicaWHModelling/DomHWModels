@@ -1,0 +1,9 @@
+Bypass line
+	After entering the unit the mains water will either flow to the condensing heat exchanger or through the circulation pump to the outlet
+		How is this controlled? When/Why does it flow to the outlet? How can this be measured?
+Hot gas path
+	The burner is at the top of the heat exchangers and, presumably*, flows down from top to bottom
+		*Makes sense this way. Counterflow arrangement. Coldest gas at the bottom, with the condensing heat exchanger
+	Is downward flow correct? Follow flow path
+	How does it get out the bottom of the condensing HX and back out the top of the heater (Flue is at top)?
+	Where does condensate go?

@@ -1,0 +1,51 @@
+Notes
+	Creating model based on a combination of tankless and storage tank
+		Need to modify tankless controller
+			Current model of NEXT uses a non-modulating tankless
+			Binary on/off control as determined by the pump flow
+		Creating a more simplified storage tank model
+			No connection to burner. Instead, use Q_in from tankless
+				Q_in from tankless = Q_Flue in tankless model (heat going out the flue)
+			Simplify flue heat transfer
+				Per Bill Hoover baffles designed for constant flue heat transfer
+				Assume Bill is correct - assign flue heat transfer equal in all nodes
+			Need two m_flow_in terms
+				One represents draw flow rate
+				One represents water returning from tankless unit
+				Set up so user can specify node water flows into
+					Current belief is that it's well mixed. Simply assign heat evenly to all segments for now (both draw and circulation)
+						Need to assign evenly to all nodes? Why not just use a single node?
+							Would require a fair amount of reprogramming. Easier to use a few nodes and simply have all heat transfer be equal
+					
+					Ignore until experiment data is available -	 More likely to be set up as a series of mixing coefficients similar to draw into the storage tank
+										  	 Will not be adjustable in binary export! (Connections are hard-coded after translation)
+					Can describe t-stat with an if statement instead of a new model (Allow user to vary parameter even in binary export)
+						parameter Real t_stat_height
+						if tan.vol[t_stat_height].T > T_Setpoint then (indicating that the water near the t_stat is above the setpoint)
+							t_stat_signal = 0 (T_stat is off)
+						else (indicating that the water at the height of the thermostat is less than t_Setpoint)
+							t_stat_signal = 1 (T_stat is on)
+						end if
+			Need two m_flow_out terms
+				One out the top segment to the draw
+				One out the user specified node (near bottom) to the tankless unit
+			Need way to control the flow
+				How is it controlled in the unit itself?
+					Pump responds to t-stat? Currently believe this is the case
+
+					Ignore until experiment data is available - 	Does it auto-trip when draw starts?
+					First thought on implementation (re-examine after looking at data)
+						Circulation flow will likely be a constant flow rate
+						Probably uses a binary on/off control when t-stat tripped
+						Have user specify circulation flow rate
+						Circulation flow will occur when t_stat signal = 1
+		Define total efficiency and tankless efficiency as parameters
+			Tankless steady state efficiency = defined as parameter
+			Tank efficiency = System efficiency - tankless efficiency
+			System efficiency could also be treated as an input; calculate based on performance map for condensing units
+				Make system efficiency a function of water temperature in the tank. Colder water will likely see more effective heat transfer from flue gas
+
+Issues remaining to resolve
+	Storage tank model wants temperatures in K, tankless in C. How to modify to make them compatible?
+
+

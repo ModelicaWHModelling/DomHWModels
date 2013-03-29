@@ -1,0 +1,7 @@
+fileName = "WaterHeater.mat";
+CSVfile = "StorageTank4.csv";
+n = readTrajectorySize(fileName);
+names={"Time[1].y","tan.vol[1].T","tan.vol[2].T","tan.vol[3].T","tan.vol[4].T","tan.vol[5].T","tan.vol[6].T","tan.vol[7].T","tan.vol[8].T","tan.vol[9].T","tan.vol[10].T","tan.vol[11].T","tan.vol[12].T","tan.vol[13].T","tan.vol[14].T","tan.vol[15].T","tan.vol[16].T","tan.vol[17].T","tan.vol[18].T","tan.vol[19].T","tan.vol[20].T", "onOffController.y"};
+traj=readTrajectory(fileName,names,n);
+traj_transposed = transpose(traj);
+DataFiles.writeCSVmatrix(CSVfile, names, traj_transposed);

@@ -1,0 +1,711 @@
+#1
+char Aclass(3,24)
+Adymosim
+1.4
+Modelica experiment file
+
+
+#    Experiment parameters
+double experiment(7,1)
+       0                   # StartTime    Time at which integration starts
+                           #              (and linearization and trimming time)
+     600                   # StopTime     Time at which integration stops
+       0                   # Increment    Communication step size, if > 0
+     500                   # nInterval    Number of communication intervals, if > 0
+  1.000000000000000E-009   # Tolerance    Relative precision of signals for
+                           #              simulation, linearization and trimming
+       0                   # MaxFixedStep Maximum step size of fixed step size
+                           #              integrators, if > 0.0
+       8                   # Algorithm    Integration algorithm as integer (1...28)
+                           #
+                           #             | model|       |        | dense | state |
+                           # Algorithm   | typ  | stiff | order  | output| event |
+                           # ------------+------+-------+--------+-------+-------+
+                           #  1 | deabm  |  ode |   no  |  1-12  |  yes  |   no  |
+                           #  2 | lsode1 |  ode |   no  |  1-12  |  yes  |   no  |
+                           #  3 | lsode2 |  ode |  yes  |  1-5   |  yes  |   no  |
+                           #  4 | lsodar |  ode |  both |1-12,1-5|  yes  |  yes  |
+                           #  5 | dopri5 |  ode |   no  |   5    |   no  |   no  |
+                           #  6 | dopri8 |  ode |   no  |   8    |   no  |   no  |
+                           #  7 | grk4t  |  ode |  yes  |   4    |   no  |   no  |
+                           #  8 | dassl  |  dae |  yes  |  1-5   |  yes  |  yes  |
+                           #  9 | odassl | hdae |  yes  |  1-5   |  yes  |  yes  |
+                           # 10 | mexx   | hdae |   no  |  2-24  |   no  |   no  |
+                           # 11 | euler  |  ode |   no  |   1    |   no  |  yes  |
+                           # 12 | rkfix2 |  ode |   no  |   2    |   no  |  yes  |
+                           # 13 | rkfix3 |  ode |   no  |   3    |   no  |  yes  |
+                           # 14 | rkfix4 |  ode |   no  |   4    |   no  |  yes  |
+                           #>=14| others |  ode |yes/no |  2-5   |   yes |  yes  |
+                           # ---+--------+------+-------+--------+-------+-------+
+                           # euler and rkfix have fixed stepsize.
+
+
+#    Method tuning parameters
+double method(27,1)
+       1                   # grid     type of communication time grid, defined by
+                           #          = 1: equidistant points ("Increment/nInterval")
+                           #          = 2: vector of grid points ("tgrid")
+                           #          = 3: variable step integrator (automatically)
+                           #          = 4: model (call of "increment" in Dymola, e.g.
+                           #                      incr=Time > 2 then 0 else 0.1
+                           #                      dummy=increment(incr))
+                           #          grid = 1,3 is stopped by "StopTime"
+                           #          grid = 2   is stopped by "tgrid(last)"
+                           #          grid = 4   runs forever (stopped by model)
+       1                   # nt       Use every NT time instant, if grid = 3
+       3                   # dense    1/2/3 restart/step/interpolate GRID points
+       1                   # evgrid   0/1 do not/save event points in comm. time grid
+       1                   # evu      0/1 U-discontinuity does not/trigger events
+       0                   # evuord       U-discontinuity order to consider (0,1,...)
+       0                   # error    0/1/2 One message/warning/error messages
+       0                   # jac      0/1 Compute jacobian numerically/by BLOCKJ
+       0                   # xd0c     0/1 Compute/set XD0
+       0                   # f3       0/1 Ignore/use F3 of HDAE (= index 1)
+       0                   # f4       0/1 Ignore/use F4 of HDAE (= index 2)
+       0                   # f5       0/1 Ignore/use F5 of HDAE (= invar.)
+       0                   # debug    flags for debug information (1<<0 uses pdebug) 
+     100                   # pdebug       priority of debug information (1...100)
+       0                   # fmax     Maximum number of evaluations of BLOCKF, if > 0
+       0                   # ordmax   Maximum allowed integration order, if > 0
+       0                   # hmax     Maximum absolute stepsize, if > 0
+       0                   # hmin     Minimum absolute stepsize, if > 0 (use with care!)
+       0                   # h0       Stepsize to be attempted on first step, if > 0
+  2.000000000000000E-014   # teps     Bound to check, if 2 equal time instants
+  1.000000000000000E-010   # eveps    Hysteresis epsilon at event points
+      20                   # eviter   Maximum number of event iterations
+  1.000000000000000E-006   # delaym   Minimum time increment in delay buffers
+       1                   # fexcep   0/1 floating exception crashes/stops dymosim
+       1                   # tscale   clock-time = tscale*simulation-time, if grid = 5
+                           #          > 1: simulation too slow
+                           #          = 1: simulation-time = real-time
+                           #          < 1: simulation too fast
+       1                   # shared   (not used)
+    2473                   # memkey   (not used)
+
+
+#    Output parameters
+int settings(13,1)
+ 0                         # lprec    0/1 do not/store result data in double
+ 1                         # lx       0/1 do not/store x  (state variables)
+ 1                         # lxd      0/1 do not/store xd (derivative of states)
+ 1                         # lu       0/1 do not/store u  (input     signals)
+ 1                         # ly       0/1 do not/store y  (output    signals)
+ 0                         # lz       0/1 do not/store z  (indicator signals)
+ 1                         # lw       0/1 do not/store w  (auxiliary signals)
+ 1                         # la       0/1 do not/store a  (alias     signals)
+ 0                         # lperf    0/1 do not/store performance indicators
+ 0                         # levent   0/1 do not/store event point
+ 1                         # lres     0/1 do not/store results on result file
+ 0                         # lshare   0/1 do not/store info data for shared memory on dsshare.txt
+ 1                         # lform    0/1 ASCII/Matlab-binary storage format of results
+                           #              (for simulation/linearization; not for trimming)
+
+
+#    Names of initial variables
+char initialName(138,64)
+nonCondensing.Capacitance
+nonCondensing.SteadyStateEff
+nonCondensing.UA
+nonCondensing.ConductionCoefficient
+nonCondensing.nNode
+nonCondensing.EffPilot
+nonCondensing.Qdot_Pilot
+nonCondensing.Qdot_Rated
+nonCondensing.T_amb
+nonCondensing.SpecificHeat
+nonCondensing.T_Set
+nonCondensing.T_Inlet
+nonCondensing.T_Node[1]
+nonCondensing.der(T_Node[1])
+nonCondensing.T_Node[2]
+nonCondensing.der(T_Node[2])
+nonCondensing.T_Node[3]
+nonCondensing.der(T_Node[3])
+nonCondensing.T_Node[4]
+nonCondensing.der(T_Node[4])
+nonCondensing.T_Node[5]
+nonCondensing.der(T_Node[5])
+nonCondensing.T_Node[6]
+nonCondensing.der(T_Node[6])
+nonCondensing.T_Node[7]
+nonCondensing.der(T_Node[7])
+nonCondensing.T_Node[8]
+nonCondensing.der(T_Node[8])
+nonCondensing.T_Node[9]
+nonCondensing.der(T_Node[9])
+nonCondensing.T_Node[10]
+nonCondensing.der(T_Node[10])
+nonCondensing.a[1]
+nonCondensing.a[2]
+nonCondensing.a[3]
+nonCondensing.a[4]
+nonCondensing.a[5]
+nonCondensing.a[6]
+nonCondensing.a[7]
+nonCondensing.a[8]
+nonCondensing.a[9]
+nonCondensing.a[10]
+nonCondensing.b[1]
+nonCondensing.b[2]
+nonCondensing.b[3]
+nonCondensing.b[4]
+nonCondensing.b[5]
+nonCondensing.b[6]
+nonCondensing.b[7]
+nonCondensing.b[8]
+nonCondensing.b[9]
+nonCondensing.b[10]
+nonCondensing.Qdot_Delivered
+nonCondensing.Qdot_Env[1]
+nonCondensing.Qdot_Env[2]
+nonCondensing.Qdot_Env[3]
+nonCondensing.Qdot_Env[4]
+nonCondensing.Qdot_Env[5]
+nonCondensing.Qdot_Env[6]
+nonCondensing.Qdot_Env[7]
+nonCondensing.Qdot_Env[8]
+nonCondensing.Qdot_Env[9]
+nonCondensing.Qdot_Env[10]
+nonCondensing.Qdot_Environment
+nonCondensing.Q_Stored
+nonCondensing.AvgTemp
+nonCondensing.Qdot_in
+nonCondensing.mdot_water
+nonCondensing.ControlConstant
+nonCondensingTanklessHXController.add.y
+nonCondensingTanklessHXController.add.k1
+nonCondensingTanklessHXController.add.k2
+nonCondensingTanklessHXController.product.y
+nonCondensingTanklessHXController.product1.y
+nonCondensingTanklessHXController.product2.u1
+nonCondensingTanklessHXController.product2.u2
+nonCondensingTanklessHXController.product2.y
+nonCondensingTanklessHXController.booleanToReal.u
+nonCondensingTanklessHXController.booleanToReal.realTrue
+nonCondensingTanklessHXController.booleanToReal.realFalse
+nonCondensingTanklessHXController.booleanToReal1.u
+nonCondensingTanklessHXController.booleanToReal1.realTrue
+nonCondensingTanklessHXController.booleanToReal1.realFalse
+nonCondensingTanklessHXController.PID.u
+nonCondensingTanklessHXController.PID.y
+nonCondensingTanklessHXController.PID.k
+nonCondensingTanklessHXController.PID.Ti
+nonCondensingTanklessHXController.PID.Td
+nonCondensingTanklessHXController.PID.Nd
+nonCondensingTanklessHXController.PID.initType
+nonCondensingTanklessHXController.PID.xi_start
+nonCondensingTanklessHXController.PID.xd_start
+nonCondensingTanklessHXController.PID.y_start
+nonCondensingTanklessHXController.PID.P.k
+nonCondensingTanklessHXController.PID.P.y
+nonCondensingTanklessHXController.PID.I.k
+nonCondensingTanklessHXController.PID.I.initType
+nonCondensingTanklessHXController.PID.I.y_start
+nonCondensingTanklessHXController.PID.I.y
+nonCondensingTanklessHXController.PID.I.der(y)
+nonCondensingTanklessHXController.PID.D.k
+nonCondensingTanklessHXController.PID.D.T
+nonCondensingTanklessHXController.PID.D.initType
+nonCondensingTanklessHXController.PID.D.x_start
+nonCondensingTanklessHXController.PID.D.y_start
+nonCondensingTanklessHXController.PID.D.y
+nonCondensingTanklessHXController.PID.D.x
+nonCondensingTanklessHXController.PID.D.der(x)
+nonCondensingTanklessHXController.PID.D.zeroGain
+nonCondensingTanklessHXController.PID.Gain.k
+nonCondensingTanklessHXController.PID.Gain.u
+nonCondensingTanklessHXController.PID.Add.k1
+nonCondensingTanklessHXController.PID.Add.k2
+nonCondensingTanklessHXController.PID.Add.k3
+nonCondensingTanklessHXController.product3.u2
+nonCondensingTanklessHXController.product3.y
+nonCondensingTanklessHXController.FlowRateControl.SteadyStateEff
+nonCondensingTanklessHXController.FlowRateControl.Qdot_Rated
+nonCondensingTanklessHXController.FlowRateControl.SpecificHeat
+nonCondensingTanklessHXController.FlowRateControl.T_Set
+nonCondensingTanklessHXController.mdot_min_cons
+nonCondensingTanklessHXController.Qdot_min_cons
+nonCondensingTanklessHXController.T_Set_cons
+nonCondensingTanklessHXController.SpecificHeat_cons
+nonCondensingTanklessHXController.Qdot_Rated_cons
+nonCondensingTanklessHXController.SteadyStateEff_cons
+nonCondensingTanklessHXController.PID_k
+nonCondensingTanklessHXController.PID_I
+nonCondensingTanklessHXController.PID_D
+nonCondensingTanklessHXController.PID_y_start
+nonCondensingTanklessHXController.T_Inlet
+nonCondensingTanklessHXController.min.u2
+nonCondensingTanklessHXController.min.y
+nonCondensingTanklessHXController.ControlConstantMaximum.y
+nonCondensingTanklessHXController.fixedDelay.delayTime
+nonCondensingTanklessHXController.max.u2
+nonCondensingTanklessHXController.ControlConstantMinimum.y
+const.k
+
+double initialValue(138,6)
+ -1  1.813890000000000E+004       0                       0                
+  1   280   # nonCondensing.Capacitance
+ -1  8.300000000000000E-001       0                       0                
+  1   280   # nonCondensing.SteadyStateEff
+ -1  1.365210000000000E+001       0                       0                
+  1   280   # nonCondensing.UA
+ -1  1.000000000000000E-006       0                       0                
+  1   280   # nonCondensing.ConductionCoefficient
+  0      10                       0                       0                
+  6   258   # nonCondensing.nNode
+ -1  8.000000000000000E-001       0                       0                
+  1   280   # nonCondensing.EffPilot
+ -1       0                       0                       0                
+  1   280   # nonCondensing.Qdot_Pilot
+ -1   55555                       0                       0                
+  1   280   # nonCondensing.Qdot_Rated
+ -1      20                       0                       0                
+  1   280   # nonCondensing.T_amb
+ -1    4190                       0                       0                
+  1   280   # nonCondensing.SpecificHeat
+ -1      60                       0                       0                
+  1   280   # nonCondensing.T_Set
+ -1      20                       0                       0                
+  1   280   # nonCondensing.T_Inlet
+ -1      20                       0                       0                
+  2   280   # nonCondensing.T_Node[1]
+  0       0                       0                       0                
+  3   256   # nonCondensing.der(T_Node[1])
+ -1      20                       0                       0                
+  2   280   # nonCondensing.T_Node[2]
+  0       0                       0                       0                
+  3   256   # nonCondensing.der(T_Node[2])
+ -1      20                       0                       0                
+  2   280   # nonCondensing.T_Node[3]
+  0       0                       0                       0                
+  3   256   # nonCondensing.der(T_Node[3])
+ -1      20                       0                       0                
+  2   280   # nonCondensing.T_Node[4]
+  0       0                       0                       0                
+  3   256   # nonCondensing.der(T_Node[4])
+ -1      20                       0                       0                
+  2   280   # nonCondensing.T_Node[5]
+  0       0                       0                       0                
+  3   256   # nonCondensing.der(T_Node[5])
+ -1      20                       0                       0                
+  2   280   # nonCondensing.T_Node[6]
+  0       0                       0                       0                
+  3   256   # nonCondensing.der(T_Node[6])
+ -1      20                       0                       0                
+  2   280   # nonCondensing.T_Node[7]
+  0       0                       0                       0                
+  3   256   # nonCondensing.der(T_Node[7])
+ -1      20                       0                       0                
+  2   280   # nonCondensing.T_Node[8]
+  0       0                       0                       0                
+  3   256   # nonCondensing.der(T_Node[8])
+ -1      20                       0                       0                
+  2   280   # nonCondensing.T_Node[9]
+  0       0                       0                       0                
+  3   256   # nonCondensing.der(T_Node[9])
+ -1      20                       0                       0                
+  2   280   # nonCondensing.T_Node[10]
+  0       0                       0                       0                
+  3   256   # nonCondensing.der(T_Node[10])
+  0       0                       0                       0                
+  6   256   # nonCondensing.a[1]
+  0       0                       0                       0                
+  6   256   # nonCondensing.a[2]
+  0       0                       0                       0                
+  6   256   # nonCondensing.a[3]
+  0       0                       0                       0                
+  6   256   # nonCondensing.a[4]
+  0       0                       0                       0                
+  6   256   # nonCondensing.a[5]
+  0       0                       0                       0                
+  6   256   # nonCondensing.a[6]
+  0       0                       0                       0                
+  6   256   # nonCondensing.a[7]
+  0       0                       0                       0                
+  6   256   # nonCondensing.a[8]
+  0       0                       0                       0                
+  6   256   # nonCondensing.a[9]
+  0       0                       0                       0                
+  6   256   # nonCondensing.a[10]
+  0       0                       0                       0                
+  6   256   # nonCondensing.b[1]
+  0       0                       0                       0                
+  6   256   # nonCondensing.b[2]
+  0       0                       0                       0                
+  6   256   # nonCondensing.b[3]
+  0       0                       0                       0                
+  6   256   # nonCondensing.b[4]
+  0       0                       0                       0                
+  6   256   # nonCondensing.b[5]
+  0       0                       0                       0                
+  6   256   # nonCondensing.b[6]
+  0       0                       0                       0                
+  6   256   # nonCondensing.b[7]
+  0       0                       0                       0                
+  6   256   # nonCondensing.b[8]
+  0       0                       0                       0                
+  6   256   # nonCondensing.b[9]
+  0       0                       0                       0                
+  6   256   # nonCondensing.b[10]
+  0       0                       0                       0                
+  6   256   # nonCondensing.Qdot_Delivered
+  0       0                       0                       0                
+  6   256   # nonCondensing.Qdot_Env[1]
+  0       0                       0                       0                
+  6   256   # nonCondensing.Qdot_Env[2]
+  0       0                       0                       0                
+  6   256   # nonCondensing.Qdot_Env[3]
+  0       0                       0                       0                
+  6   256   # nonCondensing.Qdot_Env[4]
+  0       0                       0                       0                
+  6   256   # nonCondensing.Qdot_Env[5]
+  0       0                       0                       0                
+  6   256   # nonCondensing.Qdot_Env[6]
+  0       0                       0                       0                
+  6   256   # nonCondensing.Qdot_Env[7]
+  0       0                       0                       0                
+  6   256   # nonCondensing.Qdot_Env[8]
+  0       0                       0                       0                
+  6   256   # nonCondensing.Qdot_Env[9]
+  0       0                       0                       0                
+  6   256   # nonCondensing.Qdot_Env[10]
+  0       0                       0                       0                
+  6   256   # nonCondensing.Qdot_Environment
+  0       0                       0                       0                
+  6   256   # nonCondensing.Q_Stored
+  0       0                       0                       0                
+  6   256   # nonCondensing.AvgTemp
+  0       0                       0                       0                
+  6   256   # nonCondensing.Qdot_in
+  0       0                       0                       0                
+  6   256   # nonCondensing.mdot_water
+  0       0                       0                       0                
+  6   256   # nonCondensing.ControlConstant
+  0       0                       0                       0                
+  6   256   # nonCondensingTanklessHXController.add.y
+ -1      -1                       0                       0                
+  1   280   # nonCondensingTanklessHXController.add.k1
+ -1       1                       0                       0                
+  1   280   # nonCondensingTanklessHXController.add.k2
+  0       0                       0                       0                
+  6   256   # nonCondensingTanklessHXController.product.y
+  0       0                       0                       0                
+  6   256   # nonCondensingTanklessHXController.product1.y
+  0       0                       0                       0                
+  6   256   # nonCondensingTanklessHXController.product2.u1
+  0       0                       0                       0                
+  6   256   # nonCondensingTanklessHXController.product2.u2
+  0       0                       0                       0                
+  6   256   # nonCondensingTanklessHXController.product2.y
+  0       0                       0                       0                
+  6   257   # nonCondensingTanklessHXController.booleanToReal.u
+ -1       1                       0                       0                
+  1   280   # nonCondensingTanklessHXController.booleanToReal.realTrue
+ -1       0                       0                       0                
+  1   280   # nonCondensingTanklessHXController.booleanToReal.realFalse
+  0       0                       0                       0                
+  6   257   # nonCondensingTanklessHXController.booleanToReal1.u
+ -1       1                       0                       0                
+  1   280   # nonCondensingTanklessHXController.booleanToReal1.realTrue
+ -1       0                       0                       0                
+  1   280   # nonCondensingTanklessHXController.booleanToReal1.realFalse
+  0       0                       0                       0                
+  6   256   # nonCondensingTanklessHXController.PID.u
+  0       0                       0                       0                
+  6   256   # nonCondensingTanklessHXController.PID.y
+  0       0                       0                       0                
+  6   256   # nonCondensingTanklessHXController.PID.k
+  0  5.000000000000000E-001  1.000000000000000E-060  1.000000000000000E+100
+  6   256   # nonCondensingTanklessHXController.PID.Ti
+  0  1.000000000000000E-001       0                  1.000000000000000E+100
+  6   256   # nonCondensingTanklessHXController.PID.Td
+ -1      10                  1.000000000000000E-060  1.000000000000000E+100
+  1   280   # nonCondensingTanklessHXController.PID.Nd
+  0       5                       1                       5                
+  6   258   # nonCondensingTanklessHXController.PID.initType
+ -1       0                       0                       0                
+  1   280   # nonCondensingTanklessHXController.PID.xi_start
+ -1       0                       0                       0                
+  1   280   # nonCondensingTanklessHXController.PID.xd_start
+  0       0                       0                       0                
+  6   256   # nonCondensingTanklessHXController.PID.y_start
+ -1       1                       0                       0                
+  1   280   # nonCondensingTanklessHXController.PID.P.k
+  0       0                       0                       0                
+  6   256   # nonCondensingTanklessHXController.PID.P.y
+  0       0                       0                       0                
+  6   256   # nonCondensingTanklessHXController.PID.I.k
+  0       3                       1                       4                
+  6   258   # nonCondensingTanklessHXController.PID.I.initType
+  0       0                       0                       0                
+  6   256   # nonCondensingTanklessHXController.PID.I.y_start
+ -1       0                       0                       0                
+  2   272   # nonCondensingTanklessHXController.PID.I.y
+  0       0                       0                       0                
+  3   256   # nonCondensingTanklessHXController.PID.I.der(y)
+  0       0                       0                       0                
+  6   256   # nonCondensingTanklessHXController.PID.D.k
+  0  1.000000000000000E-060  1.000000000000000E-060  1.000000000000000E+100
+  6   256   # nonCondensingTanklessHXController.PID.D.T
+  0       1                       1                       4                
+  6   258   # nonCondensingTanklessHXController.PID.D.initType
+  0       0                       0                       0                
+  6   256   # nonCondensingTanklessHXController.PID.D.x_start
+ -1       0                       0                       0                
+  1   280   # nonCondensingTanklessHXController.PID.D.y_start
+  0       0                       0                       0                
+  6   256   # nonCondensingTanklessHXController.PID.D.y
+ -1       0                       0                       0                
+  2   272   # nonCondensingTanklessHXController.PID.D.x
+  0       0                       0                       0                
+  3   256   # nonCondensingTanklessHXController.PID.D.der(x)
+  0       0                       0                       0                
+  6  1281   # nonCondensingTanklessHXController.PID.D.zeroGain
+  0       1                       0                       0                
+  6   256   # nonCondensingTanklessHXController.PID.Gain.k
+  0       0                       0                       0                
+  6   256   # nonCondensingTanklessHXController.PID.Gain.u
+ -1       1                       0                       0                
+  1   280   # nonCondensingTanklessHXController.PID.Add.k1
+ -1       1                       0                       0                
+  1   280   # nonCondensingTanklessHXController.PID.Add.k2
+ -1       1                       0                       0                
+  1   280   # nonCondensingTanklessHXController.PID.Add.k3
+  0       0                       0                       0                
+  6   256   # nonCondensingTanklessHXController.product3.u2
+  0       0                       0                       0                
+  6   256   # nonCondensingTanklessHXController.product3.y
+  0  8.300000000000000E-001       0                       0                
+  6   256   # nonCondensingTanklessHXController.FlowRateControl.SteadyStateEff
+  0   55555                       0                       0                
+  6   256   # nonCondensingTanklessHXController.FlowRateControl.Qdot_Rated
+  0       0                       0                       0                
+  6   256   # nonCondensingTanklessHXController.FlowRateControl.SpecificHeat
+  0       0                       0                       0                
+  6   256   # nonCondensingTanklessHXController.FlowRateControl.T_Set
+ -1  2.520000000000000E-002       0                       0                
+  1   280   # nonCondensingTanklessHXController.mdot_min_cons
+ -1    5275                       0                       0                
+  1   280   # nonCondensingTanklessHXController.Qdot_min_cons
+ -1      60                       0                       0                
+  1   280   # nonCondensingTanklessHXController.T_Set_cons
+ -1    4190                       0                       0                
+  1   280   # nonCondensingTanklessHXController.SpecificHeat_cons
+  0   55555                       0                       0                
+  6   256   # nonCondensingTanklessHXController.Qdot_Rated_cons
+  0  8.300000000000000E-001       0                       0                
+  6   256   # nonCondensingTanklessHXController.SteadyStateEff_cons
+ -1  4.058910000000000E-001       0                       0                
+  1   280   # nonCondensingTanklessHXController.PID_k
+ -1  4.759710000000000E+004       0                       0                
+  1   280   # nonCondensingTanklessHXController.PID_I
+ -1  3.535390000000000E+001       0                       0                
+  1   280   # nonCondensingTanklessHXController.PID_D
+ -1       0                       0                       0                
+  1   280   # nonCondensingTanklessHXController.PID_y_start
+ -1      15                       0                       0                
+  1   280   # nonCondensingTanklessHXController.T_Inlet
+  0       1                       0                       0                
+  6   256   # nonCondensingTanklessHXController.min.u2
+  0       0                       0                       0                
+  6   256   # nonCondensingTanklessHXController.min.y
+  0       1                       0                       0                
+  6   256   # nonCondensingTanklessHXController.ControlConstantMaximum.y
+ -1       0                       0                       0                
+  1   280   # nonCondensingTanklessHXController.fixedDelay.delayTime
+  0       0                       0                       0                
+  6   256   # nonCondensingTanklessHXController.max.u2
+  0       0                       0                       0                
+  6   256   # nonCondensingTanklessHXController.ControlConstantMinimum.y
+ -1  3.000000000000000E-001       0                       0                
+  1   280   # const.k
+
+
+# Matrix with 6 columns defining the initial value calculation
+# (columns 5 and 6 are not utilized for the calculation but are
+#  reported by dymosim via dymosim -i for user convenience):
+#
+# column 1: Type of initial value
+#           = -2: special case: for continuing simulation (column 2 = value)
+#           = -1: fixed value (column 2 = fixed value)
+#           =  0: free value, i.e., no restriction (column 2 = initial value)
+#           >  0: desired value (column 1 = weight for optimization
+#                                column 2 = desired value)
+#                 use weight=1, since automatic scaling usually
+#                 leads to equally weighted terms
+# column 2: fixed, free or desired value according to column 1.
+# column 3: Minimum value (ignored, if Minimum >= Maximum).
+# column 4: Maximum value (ignored, if Minimum >= Maximum).
+#           Minimum and maximum restrict the search range in initial
+#           value calculation. They might also be used for scaling.
+# column 5: Category of variable.
+#           = 1: parameter.
+#           = 2: state.
+#           = 3: state derivative.
+#           = 4: output.
+#           = 5: input.
+#           = 6: auxiliary variable.
+# column 6: Data type of variable.
+#           = 0: real.
+#           = 1: boolean.
+#           = 2: integer.
+#
+# Initial values are calculated according to the following procedure:
+#
+# - If parameters, states and inputs are FIXED, and other variables
+#   are FREE, no special action takes place (default setting).
+#
+# - If there are only FIXED and FREE variables and the number of
+#   FREE parameters, states and inputs is IDENTICAL to the number of
+#   FIXED state derivatives, outputs and auxiliary variables, a non-linear
+#   equation is solved to determine a consistent set of initial conditions.
+#
+# - In all other cases the following optimization problem is solved:
+#      min( sum( weight(i)*( (value(i) - DESIRED(i))/scale(i) )^2 ) )
+#   under the constraint that the differential equation is fulfilled
+#   at the initial time. In most cases weight(i)=1 is sufficient, due
+#   to the automatic scaling (if DESIRED(i) is not close to zero,
+#   scale(i) = DESIRED(i). Otherwise, the scaling is based on the
+#   nominal value (and maybe minimum and maximum values given in 
+#   column 3 and 4). If these values are zero, scale(i)=1 is used).
+#
+char initialDescription(138,89)
+Thermal capacitance of the heat exchanger [J/C]
+Heater efficiency at steady state
+Coefficient describing heat loss to ambient conditions [W/C]
+Coefficient characterizing the conduction of heat in the heat exchanger [W/C]
+Number of nodes the heat exchanger is broken into
+Efficiency of the pilot light [1]
+Input heat rate of the pilot light [W]
+Rated capacity of the main burner [W]
+Ambient temperature around the water heater [C]
+Specific heat of the fluid being heated [J/(kg.C)]
+Set temperature of the tankless heater [C]
+Entering water temperature [C]
+[C]
+[A]
+[C]
+[A]
+[C]
+[A]
+[C]
+[A]
+[C]
+[A]
+[C]
+[A]
+[C]
+[A]
+[C]
+[A]
+[C]
+[A]
+[C]
+[A]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[W]
+[W]
+[W]
+[W]
+[W]
+[W]
+[W]
+[W]
+[W]
+[W]
+[W]
+[W]
+[J]
+[C]
+[W]
+[kg/s]
+[1]
+Connector of Real output signal
+Gain of upper input
+Gain of lower input
+Connector of Real output signal [V/s]
+Connector of Real output signal
+Connector of Real input signal 1
+Connector of Real input signal 2
+Connector of Real output signal
+Connector of Boolean input signal
+Output signal for true Boolean input
+Output signal for false Boolean input
+Connector of Boolean input signal
+Output signal for true Boolean input
+Output signal for false Boolean input
+Connector of Real input signal [C]
+Connector of Real output signal
+Gain [1]
+Time Constant of Integrator [s]
+Time Constant of Derivative block [s]
+The higher Nd, the more ideal the derivative block
+Type of initialization (1: no init, 2: steady state, 3: initial state, 4: initial output)
+Initial or guess value value for integrator output (= integrator state) [s2.A]
+Initial or guess value for state of derivative block [C]
+Initial value of output
+Gain value multiplied with input signal [1]
+Output signal connector [C]
+Integrator gain [1]
+Type of initialization (1: no init, 2: steady state, 3,4: initial output)
+Initial or guess value of output (= state) [s2.A]
+Connector of Real output signal [s2.A]
+der(Connector of Real output signal) [C]
+Gains [1]
+Time constants (T>0 required; T=0 is ideal derivative block) [s]
+Type of initialization (1: no init, 2: steady state, 3: initial state, 4: initial output)
+Initial or guess value of state [C]
+Initial value of output (= state) [A]
+Connector of Real output signal [A]
+State of block [C]
+der(State of block) [A]
+
+Gain value multiplied with input signal [1]
+Input signal connector
+Gain of upper input
+Gain of middle input
+Gain of lower input
+Connector of Real input signal 2
+Connector of Real output signal
+[1]
+[W]
+[J/(kg.C)]
+[C]
+Minimum flow rate of the tankless heater [kg/s]
+Minimum heat rate of the tankless heater [W]
+Set Temperature [C]
+Specific heat of the fluid being heated [J/(kg.C)]
+Raed heat input rate of the tankless heater [W]
+[1]
+[1]
+[s]
+[s]
+
+[C]
+Connector of Real input signal 2
+Connector of Real output signal
+Value of Real output
+Delay time of output with respect to input signal [s]
+Connector of Real input signal 2
+Value of Real output
+Constant output value [kg/s]
+

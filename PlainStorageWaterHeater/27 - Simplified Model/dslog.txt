@@ -1,0 +1,47 @@
+Log-file of program ./dymosim
+(generated: Fri Nov 30 15:42:40 2012)
+
+dymosim started
+... "dsin.txt" loading (dymosim input file)
+... "WaterFromTest16.txt" loading (tables for interpolation)
+... "InletFromTest16.txt" loading (tables for interpolation)
+... "AmbientFromTest16.txt" loading (tables for interpolation)
+... "ValidationDataFromTest16.txt" loading (tables for interpolation)
+... "SimplifiedStorageTankExample.mat" creating (simulation result file)
+
+Integration started at T = 0 using integration method DASSL
+(DAE multi-step solver (dassl/dasslrt of Petzold modified by Dynasim))
+
+... Warning message from dymosim
+At time T = 3.573827e+002 in current integration interval
+T_interval = 0.000000e+000 ... 4.965480e+002
+a large amount of work has been expended
+(about 500 steps) in the integrator. Probably the communciation
+interval is too large or the system is stiff.
+
+false
+The following error was detected at time: 3256.522795456386
+error in region computation of IF97 steam tables(p = 347700, h = -1.59272e+007)
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(tan.boundary[18].p, tan.vol[18].dynBal.medium.h, 0, 0)
+Solver will attempt to handle this problem.
+
+Integration terminated successfully at T = 248274
+   CPU-time for integration      : 383 seconds
+   CPU-time for one GRID interval: 767 milli-seconds
+   Number of result points       : 625
+   Number of GRID   points       : 501
+   Number of (successful) steps  : 36721
+   Number of F-evaluations       : 1161430
+   Number of H-evaluations       : 38174
+   Number of Jacobian-evaluations: 54154
+   Number of (model) time events : 0
+   Number of (U) time events     : 0
+   Number of state    events     : 62
+   Number of step     events     : 0
+   Minimum integration stepsize  : 0.000542
+   Maximum integration stepsize  : 1.37e+004
+   Maximum integration order     : 3
+Calling terminal section
+... "dsfinal.txt" creating (final states)

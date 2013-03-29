@@ -1,0 +1,9 @@
+Based on version 26 of the plain storage tank
+	Version 26 = Second validation using LBNL data
+Adding an equation to change the gas => flue convection coefficient depending on average tank temperature
+
+Validation
+	TWatAvg should be the average of all of the segment temperatures. Is it?
+		Yes
+	hGasFlu should equal TWatAvg^2 + TWatAvg + 1. Does it?
+		Yes

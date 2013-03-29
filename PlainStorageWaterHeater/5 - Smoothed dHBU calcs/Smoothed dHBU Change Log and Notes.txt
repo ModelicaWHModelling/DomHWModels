@@ -1,0 +1,17 @@
+Changes
+	Removed if statements around dHBU calcs, replaced with smoothing functions
+	Fixed segment references => was previously checking for Ti < TH < Ti+1
+		Needed to be Ti < TH < Ti-1 => Made change
+		With changes to segment references, needed to make new section for segment 1
+		Changed general for loop to "for i in 2:nSeg-1" and created eqns for segment 1
+			Segment 1 eqns check to see if TH > T1
+Notes
+	Simulates much faster than before the smoothing was added
+	Still seems to get hung up around t = 436s (Unclear why. Intend to let simulate over the weekend hoping it finishes/generates a useful message)
+Next Steps
+	1) Identify why it simulates slowly, improve code so that it does not
+	2) Move mass balance into buoHeaTra (calculation for m_D)
+	3) Move dHBU calcs into buoHeaTra
+	4) Move Q_Flow_Tot calcs into buoHeaTra
+	5) Add natural convection coefficient calculations (more accurate than using a hard coded value)
+	6) Increase bandwidth on controller (1 C is entirely too small; more like 7.5 C, but still a very rough estimate, per Jim)

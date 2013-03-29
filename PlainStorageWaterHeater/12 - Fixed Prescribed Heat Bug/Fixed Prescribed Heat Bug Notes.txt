@@ -1,0 +1,10 @@
+Was using Modelica standard library prescribed heat flow model
+eqn => Q_port = - Q_flow * (1 + alpha * (TPort - TRef))
+
+alpha was set to 1e6. Was causing massive change between input Q_flow and Q_Port
+Need Q_port = -Q_Flow. That is the equation in the buildings library version
+Changed component to be buildings library version
+
+Note: No longer simulates. Temperature keeps falling below 0, causing error. UA losses are huge
+	Is construction wrong?
+	What is TAmb?

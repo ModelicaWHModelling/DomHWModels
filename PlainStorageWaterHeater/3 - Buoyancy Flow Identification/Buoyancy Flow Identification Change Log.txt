@@ -1,0 +1,10 @@
+Improved heaBuoTra
+	Added class used to calculate the mass flow rate into a segment caused by buoyancy
+	Improved calculations over Thierrys version to not overwrite each other (should get different results)
+		How to check results? Sum(m_flow_F) = Sum(m_flow_in)
+	Modified spaghetti code in tan to accept new inputs and not repeat calculations
+Did NOT replace if statements with smoothing
+
+Next step
+	Current version runs slowly: Switch to using smoothing functions instead of "if" statements
+	Move mass balance equations (m_Flow_D) into buoHeaTra

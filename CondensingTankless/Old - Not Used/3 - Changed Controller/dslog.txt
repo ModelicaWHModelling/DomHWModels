@@ -1,0 +1,28 @@
+Log-file of program ./dymosim
+(generated: Fri Sep 07 12:28:59 2012)
+
+dymosim started
+... "dsin.txt" loading (dymosim input file)
+... "C:/Program Files (x86)/Dymola 2012 FD01/Models/models/modelica/WaterHeater/current/modeling/branches/pgrant/TanklessWaterHeater/TanklessValidationNREL.txt" loading (tables for interpolation)
+... "NonCondensingTanklessHeaterValidation.mat" creating (simulation result file)
+
+Integration started at T = 0 using integration method DASSL
+(DAE multi-step solver (dassl/dasslrt of Petzold modified by Dynasim))
+Integration terminated successfully at T = 6650
+   CPU-time for integration      : 0.045 seconds
+   CPU-time for one GRID interval: 0.09 milli-seconds
+   Number of result points       : 527
+   Number of GRID   points       : 501
+   Number of (successful) steps  : 2839
+   Number of F-evaluations       : 8913
+   Number of H-evaluations       : 3437
+   Number of Jacobian-evaluations: 473
+   Number of (model) time events : 0
+   Number of (U) time events     : 0
+   Number of state    events     : 14
+   Number of step     events     : 0
+   Minimum integration stepsize  : 8.71e-005
+   Maximum integration stepsize  : 173
+   Maximum integration order     : 4
+Calling terminal section
+... "dsfinal.txt" creating (final states)

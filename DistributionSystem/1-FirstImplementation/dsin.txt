@@ -1,0 +1,1211 @@
+#1
+char Aclass(3,24)
+Adymosim
+1.4
+Modelica experiment file
+
+
+#    Experiment parameters
+double experiment(7,1)
+       0                   # StartTime    Time at which integration starts
+                           #              (and linearization and trimming time)
+   50000                   # StopTime     Time at which integration stops
+       0                   # Increment    Communication step size, if > 0
+     500                   # nInterval    Number of communication intervals, if > 0
+  1.0000000000000000E-04   # Tolerance    Relative precision of signals for
+                           #              simulation, linearization and trimming
+       0                   # MaxFixedStep Maximum step size of fixed step size
+                           #              integrators, if > 0.0
+       8                   # Algorithm    Integration algorithm as integer (1...28)
+                           #
+                           #             | model|       |        | dense | state |
+                           # Algorithm   | typ  | stiff | order  | output| event |
+                           # ------------+------+-------+--------+-------+-------+
+                           #  1 | deabm  |  ode |   no  |  1-12  |  yes  |   no  |
+                           #  2 | lsode1 |  ode |   no  |  1-12  |  yes  |   no  |
+                           #  3 | lsode2 |  ode |  yes  |  1-5   |  yes  |   no  |
+                           #  4 | lsodar |  ode |  both |1-12,1-5|  yes  |  yes  |
+                           #  5 | dopri5 |  ode |   no  |   5    |   no  |   no  |
+                           #  6 | dopri8 |  ode |   no  |   8    |   no  |   no  |
+                           #  7 | grk4t  |  ode |  yes  |   4    |   no  |   no  |
+                           #  8 | dassl  |  dae |  yes  |  1-5   |  yes  |  yes  |
+                           #  9 | odassl | hdae |  yes  |  1-5   |  yes  |  yes  |
+                           # 10 | mexx   | hdae |   no  |  2-24  |   no  |   no  |
+                           # 11 | euler  |  ode |   no  |   1    |   no  |  yes  |
+                           # 12 | rkfix2 |  ode |   no  |   2    |   no  |  yes  |
+                           # 13 | rkfix3 |  ode |   no  |   3    |   no  |  yes  |
+                           # 14 | rkfix4 |  ode |   no  |   4    |   no  |  yes  |
+                           #>=14| others |  ode |yes/no |  2-5   |   yes |  yes  |
+                           # ---+--------+------+-------+--------+-------+-------+
+                           # euler and rkfix have fixed stepsize.
+
+
+#    Method tuning parameters
+double method(27,1)
+       1                   # grid     type of communication time grid, defined by
+                           #          = 1: equidistant points ("Increment/nInterval")
+                           #          = 2: vector of grid points ("tgrid")
+                           #          = 3: variable step integrator (automatically)
+                           #          = 4: model (call of "increment" in Dymola, e.g.
+                           #                      incr=Time > 2 then 0 else 0.1
+                           #                      dummy=increment(incr))
+                           #          grid = 1,3 is stopped by "StopTime"
+                           #          grid = 2   is stopped by "tgrid(last)"
+                           #          grid = 4   runs forever (stopped by model)
+       1                   # nt       Use every NT time instant, if grid = 3
+       3                   # dense    1/2/3 restart/step/interpolate GRID points
+       1                   # evgrid   0/1 do not/save event points in comm. time grid
+       1                   # evu      0/1 U-discontinuity does not/trigger events
+       0                   # evuord       U-discontinuity order to consider (0,1,...)
+       0                   # error    0/1/2 One message/warning/error messages
+       0                   # jac      0/1 Compute jacobian numerically/by BLOCKJ
+       0                   # xd0c     0/1 Compute/set XD0
+       0                   # f3       0/1 Ignore/use F3 of HDAE (= index 1)
+       0                   # f4       0/1 Ignore/use F4 of HDAE (= index 2)
+       0                   # f5       0/1 Ignore/use F5 of HDAE (= invar.)
+       0                   # debug    flags for debug information (1<<0 uses pdebug) 
+     100                   # pdebug       priority of debug information (1...100)
+       0                   # fmax     Maximum number of evaluations of BLOCKF, if > 0
+       0                   # ordmax   Maximum allowed integration order, if > 0
+       0                   # hmax     Maximum absolute stepsize, if > 0
+       0                   # hmin     Minimum absolute stepsize, if > 0 (use with care!)
+       0                   # h0       Stepsize to be attempted on first step, if > 0
+  2.0000000000000000E-14   # teps     Bound to check, if 2 equal time instants
+  1.0000000000000000E-10   # eveps    Hysteresis epsilon at event points
+      20                   # eviter   Maximum number of event iterations
+  9.9999999999999995E-07   # delaym   Minimum time increment in delay buffers
+       1                   # fexcep   0/1 floating exception crashes/stops dymosim
+       1                   # tscale   clock-time = tscale*simulation-time, if grid = 5
+                           #          > 1: simulation too slow
+                           #          = 1: simulation-time = real-time
+                           #          < 1: simulation too fast
+       1                   # shared   (not used)
+    2473                   # memkey   (not used)
+
+
+#    Output parameters
+int settings(13,1)
+ 0                         # lprec    0/1 do not/store result data in double
+ 1                         # lx       0/1 do not/store x  (state variables)
+ 1                         # lxd      0/1 do not/store xd (derivative of states)
+ 1                         # lu       0/1 do not/store u  (input     signals)
+ 1                         # ly       0/1 do not/store y  (output    signals)
+ 0                         # lz       0/1 do not/store z  (indicator signals)
+ 1                         # lw       0/1 do not/store w  (auxiliary signals)
+ 1                         # la       0/1 do not/store a  (alias     signals)
+ 0                         # lperf    0/1 do not/store performance indicators
+ 0                         # levent   0/1 do not/store event point
+ 1                         # lres     0/1 do not/store results on result file
+ 0                         # lshare   0/1 do not/store info data for shared memory on dsshare.txt
+ 1                         # lform    0/1 ASCII/Matlab-binary storage format of results
+                           #              (for simulation/linearization; not for trimming)
+
+
+#    Names of initial variables
+char initialName(263,72)
+system.p_ambient
+system.T_ambient
+system.g
+system.allowFlowReversal
+system.energyDynamics
+system.massDynamics
+system.substanceDynamics
+system.traceDynamics
+system.momentumDynamics
+system.m_flow_start
+system.p_start
+system.T_start
+system.m_flow_small
+system.dp_small
+boundary.nPorts
+boundary.medium.p
+boundary.medium.h
+boundary.medium.d
+boundary.medium.T
+boundary.medium.X[1]
+boundary.medium.u
+boundary.medium.R
+boundary.medium.MM
+boundary.medium.state.p
+boundary.medium.state.T
+boundary.medium.preferredMediumStates
+boundary.medium.standardOrderComponents
+boundary.medium.T_degC
+boundary.medium.p_bar
+boundary.ports[1].m_flow
+boundary.ports[1].p
+boundary.ports[1].h_outflow
+boundary.flowDirection
+boundary.use_m_flow_in
+boundary.use_T_in
+boundary.use_X_in
+boundary.use_C_in
+boundary.m_flow
+boundary.T
+boundary.X[1]
+boundary.m_flow_in_internal
+boundary.T_in_internal
+boundary.X_in_internal[1]
+boundary1.nPorts
+boundary1.medium.p
+boundary1.medium.h
+boundary1.medium.d
+boundary1.medium.T
+boundary1.medium.X[1]
+boundary1.medium.u
+boundary1.medium.R
+boundary1.medium.MM
+boundary1.medium.state.p
+boundary1.medium.state.T
+boundary1.medium.preferredMediumStates
+boundary1.medium.standardOrderComponents
+boundary1.medium.T_degC
+boundary1.medium.p_bar
+boundary1.ports[1].m_flow
+boundary1.ports[1].p
+boundary1.ports[1].h_outflow
+boundary1.flowDirection
+boundary1.use_p_in
+boundary1.use_T_in
+boundary1.use_X_in
+boundary1.use_C_in
+boundary1.p
+boundary1.T
+boundary1.X[1]
+boundary1.p_in_internal
+boundary1.T_in_internal
+boundary1.X_in_internal[1]
+Ideal.energyDynamics
+Ideal.massDynamics
+Ideal.substanceDynamics
+Ideal.traceDynamics
+Ideal.p_start
+Ideal.T_start
+Ideal.X_start[1]
+Ideal.m_flow_nominal
+Ideal.nPorts
+Ideal.m_flow_small
+Ideal.homotopyInitialization
+Ideal.allowFlowReversal
+Ideal.V
+Ideal.prescribedHeatFlowRate
+Ideal.ports[1].m_flow
+Ideal.ports[1].p
+Ideal.ports[1].h_outflow
+Ideal.ports[2].m_flow
+Ideal.ports[2].p
+Ideal.heatPort.T
+Ideal.heatPort.Q_flow
+Ideal.p
+Ideal.state_start.p
+Ideal.state_start.T
+Ideal.rho_nominal
+Ideal.useSteadyStateTwoPort
+Ideal.Q_flow
+Ideal.heaInp.y
+boundary2.nPorts
+boundary2.medium.p
+boundary2.medium.h
+boundary2.medium.d
+boundary2.medium.T
+boundary2.medium.X[1]
+boundary2.medium.u
+boundary2.medium.R
+boundary2.medium.MM
+boundary2.medium.state.p
+boundary2.medium.state.T
+boundary2.medium.preferredMediumStates
+boundary2.medium.standardOrderComponents
+boundary2.medium.T_degC
+boundary2.medium.p_bar
+boundary2.ports[1].m_flow
+boundary2.ports[1].p
+boundary2.ports[1].h_outflow
+boundary2.flowDirection
+boundary2.use_m_flow_in
+boundary2.use_T_in
+boundary2.use_X_in
+boundary2.use_C_in
+boundary2.m_flow
+boundary2.T
+boundary2.X[1]
+boundary2.m_flow_in_internal
+boundary2.T_in_internal
+boundary2.X_in_internal[1]
+boundary3.nPorts
+boundary3.medium.p
+boundary3.medium.h
+boundary3.medium.d
+boundary3.medium.T
+boundary3.medium.X[1]
+boundary3.medium.u
+boundary3.medium.R
+boundary3.medium.MM
+boundary3.medium.state.p
+boundary3.medium.state.T
+boundary3.medium.preferredMediumStates
+boundary3.medium.standardOrderComponents
+boundary3.medium.T_degC
+boundary3.medium.p_bar
+boundary3.ports[1].m_flow
+boundary3.ports[1].p
+boundary3.ports[1].h_outflow
+boundary3.flowDirection
+boundary3.use_p_in
+boundary3.use_T_in
+boundary3.use_X_in
+boundary3.use_C_in
+boundary3.p
+boundary3.T
+boundary3.X[1]
+boundary3.p_in_internal
+boundary3.T_in_internal
+boundary3.X_in_internal[1]
+UD.energyDynamics
+UD.massDynamics
+UD.substanceDynamics
+UD.traceDynamics
+UD.p_start
+UD.T_start
+UD.X_start[1]
+UD.m_flow_nominal
+UD.MixCoef
+UD.nPorts
+UD.m_flow_small
+UD.homotopyInitialization
+UD.allowFlowReversal
+UD.V
+UD.prescribedHeatFlowRate
+UD.ports[1].m_flow
+UD.ports[1].p
+UD.ports[1].h_outflow
+UD.ports[2].m_flow
+UD.ports[2].p
+UD.ports[2].h_outflow
+UD.heatPort.T
+UD.heatPort.Q_flow
+UD.p
+UD.state_start.p
+UD.state_start.T
+UD.rho_nominal
+UD.useSteadyStateTwoPort
+UD.Q_flow
+UD.hOut_internal
+UD.heaInp.y
+Ideal.dynBal.energyDynamics
+Ideal.dynBal.massDynamics
+Ideal.dynBal.substanceDynamics
+Ideal.dynBal.traceDynamics
+Ideal.dynBal.p_start
+Ideal.dynBal.T_start
+Ideal.dynBal.X_start[1]
+Ideal.dynBal.nPorts
+Ideal.dynBal.ports[1].m_flow
+Ideal.dynBal.ports[1].p
+Ideal.dynBal.ports[2].m_flow
+Ideal.dynBal.ports[2].p
+Ideal.dynBal.medium.p
+_GlobalScope.Modelica.Media.Interfaces.PartialPureSubstance.X_default[1]
+Ideal.dynBal.medium.d
+Ideal.dynBal.medium.T
+Ideal.dynBal.medium.der(T)
+Ideal.dynBal.medium.X[1]
+Ideal.dynBal.medium.u
+Ideal.dynBal.medium.der(u)
+Ideal.dynBal.medium.R
+Ideal.dynBal.medium.MM
+Ideal.dynBal.medium.state.p
+Ideal.dynBal.medium.preferredMediumStates
+Ideal.dynBal.medium.standardOrderComponents
+Ideal.dynBal.medium.T_degC
+Ideal.dynBal.medium.p_bar
+Ideal.dynBal.U
+Ideal.dynBal.der(U)
+Ideal.dynBal.m
+Ideal.dynBal.der(m)
+Ideal.dynBal.mb_flow
+Ideal.dynBal.Q_flow
+Ideal.dynBal.initialize_p
+Ideal.dynBal.ports_H_flow[1]
+Ideal.dynBal.ports_H_flow[2]
+Ideal.dynBal.rho_nominal
+UD.dynBal.energyDynamics
+UD.dynBal.massDynamics
+UD.dynBal.substanceDynamics
+UD.dynBal.traceDynamics
+UD.dynBal.p_start
+UD.dynBal.T_start
+UD.dynBal.X_start[1]
+UD.dynBal.nPorts
+UD.dynBal.MixCoef
+UD.dynBal.ports[1].m_flow
+UD.dynBal.ports[1].p
+UD.dynBal.ports[2].m_flow
+UD.dynBal.ports[2].p
+UD.dynBal.medium.p
+UD.dynBal.medium.d
+UD.dynBal.medium.T
+UD.dynBal.medium.der(T)
+UD.dynBal.medium.X[1]
+UD.dynBal.medium.u
+UD.dynBal.medium.der(u)
+UD.dynBal.medium.R
+UD.dynBal.medium.MM
+UD.dynBal.medium.state.p
+UD.dynBal.medium.preferredMediumStates
+UD.dynBal.medium.standardOrderComponents
+UD.dynBal.medium.T_degC
+UD.dynBal.medium.p_bar
+UD.dynBal.U
+UD.dynBal.der(U)
+UD.dynBal.m
+UD.dynBal.der(m)
+UD.dynBal.mb_flow
+UD.dynBal.Q_flow
+UD.dynBal.initialize_p
+UD.dynBal.ports_H_flow[1]
+UD.dynBal.ports_H_flow[2]
+UD.dynBal.rho_nominal
+
+double initialValue(263,6)
+ -1  1.0132500000000000E+05       0                 1.0000000000000000E+100
+  1   280   # system.p_ambient
+ -1  2.9314999999999998E+02       0                 1.0000000000000000E+100
+  1   280   # system.T_ambient
+ -1  9.8066499999999994E+00       0                       0                
+  1   280   # system.g
+  0       1                       0                       0                
+  6   257   # system.allowFlowReversal
+  0       1                       1                       4                
+  6   258   # system.energyDynamics
+  0       1                       1                       4                
+  6   258   # system.massDynamics
+  0       1                       1                       4                
+  6   258   # system.substanceDynamics
+  0       1                       1                       4                
+  6   258   # system.traceDynamics
+  0       4                       1                       4                
+  6   258   # system.momentumDynamics
+ -1       0                       0                       0                
+  1   280   # system.m_flow_start
+  0       0                       0                 1.0000000000000000E+100
+  6   256   # system.p_start
+  0  2.8814999999999998E+02       0                 1.0000000000000000E+100
+  6   256   # system.T_start
+ -1  1.0000000000000000E-02       0                 1.0000000000000000E+100
+  1   280   # system.m_flow_small
+ -1       1                       0                 1.0000000000000000E+100
+  1   280   # system.dp_small
+  0       1                       0                       0                
+  6   258   # boundary.nPorts
+  0  3.0000000000000000E+05       0                 1.0000000000000000E+100
+  6   256   # boundary.medium.p
+  0  2.0920000000000000E+05       0                       0                
+  6   256   # boundary.medium.h
+  0  9.9558600000000001E+02       0                  100000                
+  6   256   # boundary.medium.d
+  0  3.2314999999999998E+02       1                   10000                
+  6   256   # boundary.medium.T
+  0       1                       0                       1                
+  6   256   # boundary.medium.X[1]
+  0  2.0920000000000000E+05 -1.0000000000000000E+08  1.0000000000000000E+08
+  6   256   # boundary.medium.u
+  0       0                       0                  1.0000000000000000E+07
+  6   256   # boundary.medium.R
+  0  1.8015268000000001E-02  1.0000000000000000E-03  2.5000000000000000E-01
+  6   256   # boundary.medium.MM
+  0  3.0000000000000000E+05       0                  1.0000000000000000E+08
+  6   256   # boundary.medium.state.p
+  0  3.2314999999999998E+02       1                   10000                
+  6   256   # boundary.medium.state.T
+  0       0                       0                       0                
+  6   257   # boundary.medium.preferredMediumStates
+  0       1                       0                       0                
+  6   257   # boundary.medium.standardOrderComponents
+  0      50                       0                       0                
+  6   256   # boundary.medium.T_degC
+  0  3.0000000000000004E+00       0                       0                
+  6   256   # boundary.medium.p_bar
+  0 -1.0000000000000001E-01 -9.9999999999999995E+59  9.9999999999999995E+59
+  6   388   # boundary.ports[1].m_flow
+  0  3.0000000000000000E+05       0                  1.0000000000000000E+08
+  6   260   # boundary.ports[1].p
+  0  2.0920000000000000E+05 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   260   # boundary.ports[1].h_outflow
+  0       3                       1                       3                
+  6  1282   # boundary.flowDirection
+  0       0                       0                       0                
+  6   769   # boundary.use_m_flow_in
+  0       0                       0                       0                
+  6   769   # boundary.use_T_in
+  0       0                       0                       0                
+  6   769   # boundary.use_X_in
+  0       0                       0                       0                
+  6   769   # boundary.use_C_in
+  0  1.0000000000000001E-01 -100000                  100000                
+  6   256   # boundary.m_flow
+  0  3.2314999999999998E+02       1                   10000                
+  6   256   # boundary.T
+  0       1                       0                       1                
+  6   256   # boundary.X[1]
+  0  1.0000000000000001E-01       0                       0                
+  6  1280   # boundary.m_flow_in_internal
+  0  3.2314999999999998E+02       0                       0                
+  6  1280   # boundary.T_in_internal
+  0       1                       0                       0                
+  6  1280   # boundary.X_in_internal[1]
+  0       1                       0                       0                
+  6   258   # boundary1.nPorts
+  0  3.0000000000000000E+05       0                 1.0000000000000000E+100
+  6   256   # boundary1.medium.p
+  0   83680                       0                       0                
+  6   256   # boundary1.medium.h
+  0  9.9558600000000001E+02       0                  100000                
+  6   256   # boundary1.medium.d
+  0  2.9314999999999998E+02       1                   10000                
+  6   256   # boundary1.medium.T
+  0       1                       0                       1                
+  6   256   # boundary1.medium.X[1]
+  0   83680                 -1.0000000000000000E+08  1.0000000000000000E+08
+  6   256   # boundary1.medium.u
+  0       0                       0                  1.0000000000000000E+07
+  6   256   # boundary1.medium.R
+  0  1.8015268000000001E-02  1.0000000000000000E-03  2.5000000000000000E-01
+  6   256   # boundary1.medium.MM
+  0  3.0000000000000000E+05       0                  1.0000000000000000E+08
+  6   256   # boundary1.medium.state.p
+  0  2.9314999999999998E+02       1                   10000                
+  6   256   # boundary1.medium.state.T
+  0       0                       0                       0                
+  6   257   # boundary1.medium.preferredMediumStates
+  0       1                       0                       0                
+  6   257   # boundary1.medium.standardOrderComponents
+  0      20                       0                       0                
+  6   256   # boundary1.medium.T_degC
+  0  3.0000000000000004E+00       0                       0                
+  6   256   # boundary1.medium.p_bar
+  0  1.0000000000000001E-01 -9.9999999999999995E+59  9.9999999999999995E+59
+  6   388   # boundary1.ports[1].m_flow
+  0  3.0000000000000000E+05       0                  1.0000000000000000E+08
+  6   260   # boundary1.ports[1].p
+  0   83680                 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   260   # boundary1.ports[1].h_outflow
+  0       3                       1                       3                
+  6  1282   # boundary1.flowDirection
+  0       0                       0                       0                
+  6   769   # boundary1.use_p_in
+  0       0                       0                       0                
+  6   769   # boundary1.use_T_in
+  0       0                       0                       0                
+  6   769   # boundary1.use_X_in
+  0       0                       0                       0                
+  6   769   # boundary1.use_C_in
+  0  3.0000000000000000E+05       0                  1.0000000000000000E+08
+  6   256   # boundary1.p
+  0  2.9314999999999998E+02       1                   10000                
+  6   256   # boundary1.T
+  0       1                       0                       1                
+  6   256   # boundary1.X[1]
+  0  3.0000000000000000E+05       0                       0                
+  6  1280   # boundary1.p_in_internal
+  0  2.9314999999999998E+02       0                       0                
+  6  1280   # boundary1.T_in_internal
+  0       1                       0                       0                
+  6  1280   # boundary1.X_in_internal[1]
+  0       1                       1                       4                
+  6   258   # Ideal.energyDynamics
+  0       1                       1                       4                
+  6   258   # Ideal.massDynamics
+  0       1                       1                       4                
+  6   258   # Ideal.substanceDynamics
+  0       1                       1                       4                
+  6   258   # Ideal.traceDynamics
+ -1  3.0000000000000000E+05       0                  1.0000000000000000E+08
+  1   280   # Ideal.p_start
+ -1  2.9314999999999998E+02       1                   10000                
+  1   280   # Ideal.T_start
+ -1       1                       0                       1                
+  1   280   # Ideal.X_start[1]
+ -1  1.0000000000000001E-01       0                 1.0000000000000000E+100
+  1   280   # Ideal.m_flow_nominal
+  0       2                       0                       0                
+  6   258   # Ideal.nPorts
+  0       0                       0                  100000                
+  6   256   # Ideal.m_flow_small
+  0       1                       0                       0                
+  6   257   # Ideal.homotopyInitialization
+  0       1                       0                       0                
+  6   257   # Ideal.allowFlowReversal
+ -1       1                       0                       0                
+  1   280   # Ideal.V
+  0       0                       0                       0                
+  6   257   # Ideal.prescribedHeatFlowRate
+  0  1.0000000000000001E-01 -100000                  100000                
+  6   388   # Ideal.ports[1].m_flow
+  0  3.0000000000000000E+05       0                  1.0000000000000000E+08
+  6   260   # Ideal.ports[1].p
+  0       0                 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   260   # Ideal.ports[1].h_outflow
+  0 -1.0000000000000001E-01 -100000                  100000                
+  6   388   # Ideal.ports[2].m_flow
+  0  3.0000000000000000E+05       0                  1.0000000000000000E+08
+  6   260   # Ideal.ports[2].p
+  0  2.8814999999999998E+02       0                 1.0000000000000000E+100
+  6   260   # Ideal.heatPort.T
+  0       0                       0                       0                
+  6   388   # Ideal.heatPort.Q_flow
+  0  3.0000000000000000E+05       0                       0                
+  6   256   # Ideal.p
+  0  100000                       0                  1.0000000000000000E+08
+  6  1280   # Ideal.state_start.p
+  0     300                       1                   10000                
+  6  1280   # Ideal.state_start.T
+  0  9.9558600000000001E+02       0                 1.0000000000000000E+100
+  6  1280   # Ideal.rho_nominal
+  0       0                       0                       0                
+  6  1281   # Ideal.useSteadyStateTwoPort
+  0       0                       0                       0                
+  6  1280   # Ideal.Q_flow
+  0       0                       0                       0                
+  6  1280   # Ideal.heaInp.y
+  0       1                       0                       0                
+  6   258   # boundary2.nPorts
+  0  3.0000000000000000E+05       0                 1.0000000000000000E+100
+  6   256   # boundary2.medium.p
+  0  2.0920000000000000E+05       0                       0                
+  6   256   # boundary2.medium.h
+  0  9.9558600000000001E+02       0                  100000                
+  6   256   # boundary2.medium.d
+  0  3.2314999999999998E+02       1                   10000                
+  6   256   # boundary2.medium.T
+  0       1                       0                       1                
+  6   256   # boundary2.medium.X[1]
+  0  2.0920000000000000E+05 -1.0000000000000000E+08  1.0000000000000000E+08
+  6   256   # boundary2.medium.u
+  0       0                       0                  1.0000000000000000E+07
+  6   256   # boundary2.medium.R
+  0  1.8015268000000001E-02  1.0000000000000000E-03  2.5000000000000000E-01
+  6   256   # boundary2.medium.MM
+  0  3.0000000000000000E+05       0                  1.0000000000000000E+08
+  6   256   # boundary2.medium.state.p
+  0  3.2314999999999998E+02       1                   10000                
+  6   256   # boundary2.medium.state.T
+  0       0                       0                       0                
+  6   257   # boundary2.medium.preferredMediumStates
+  0       1                       0                       0                
+  6   257   # boundary2.medium.standardOrderComponents
+  0      50                       0                       0                
+  6   256   # boundary2.medium.T_degC
+  0  3.0000000000000004E+00       0                       0                
+  6   256   # boundary2.medium.p_bar
+  0 -1.0000000000000001E-01 -9.9999999999999995E+59  9.9999999999999995E+59
+  6   388   # boundary2.ports[1].m_flow
+  0  3.0000000000000000E+05       0                  1.0000000000000000E+08
+  6   260   # boundary2.ports[1].p
+  0  2.0920000000000000E+05 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   260   # boundary2.ports[1].h_outflow
+  0       3                       1                       3                
+  6  1282   # boundary2.flowDirection
+  0       0                       0                       0                
+  6   769   # boundary2.use_m_flow_in
+  0       0                       0                       0                
+  6   769   # boundary2.use_T_in
+  0       0                       0                       0                
+  6   769   # boundary2.use_X_in
+  0       0                       0                       0                
+  6   769   # boundary2.use_C_in
+  0  1.0000000000000001E-01 -100000                  100000                
+  6   256   # boundary2.m_flow
+  0  3.2314999999999998E+02       1                   10000                
+  6   256   # boundary2.T
+  0       1                       0                       1                
+  6   256   # boundary2.X[1]
+  0  1.0000000000000001E-01       0                       0                
+  6  1280   # boundary2.m_flow_in_internal
+  0  3.2314999999999998E+02       0                       0                
+  6  1280   # boundary2.T_in_internal
+  0       1                       0                       0                
+  6  1280   # boundary2.X_in_internal[1]
+  0       1                       0                       0                
+  6   258   # boundary3.nPorts
+  0  3.0000000000000000E+05       0                 1.0000000000000000E+100
+  6   256   # boundary3.medium.p
+  0   83680                       0                       0                
+  6   256   # boundary3.medium.h
+  0  9.9558600000000001E+02       0                  100000                
+  6   256   # boundary3.medium.d
+  0  2.9314999999999998E+02       1                   10000                
+  6   256   # boundary3.medium.T
+  0       1                       0                       1                
+  6   256   # boundary3.medium.X[1]
+  0   83680                 -1.0000000000000000E+08  1.0000000000000000E+08
+  6   256   # boundary3.medium.u
+  0       0                       0                  1.0000000000000000E+07
+  6   256   # boundary3.medium.R
+  0  1.8015268000000001E-02  1.0000000000000000E-03  2.5000000000000000E-01
+  6   256   # boundary3.medium.MM
+  0  3.0000000000000000E+05       0                  1.0000000000000000E+08
+  6   256   # boundary3.medium.state.p
+  0  2.9314999999999998E+02       1                   10000                
+  6   256   # boundary3.medium.state.T
+  0       0                       0                       0                
+  6   257   # boundary3.medium.preferredMediumStates
+  0       1                       0                       0                
+  6   257   # boundary3.medium.standardOrderComponents
+  0      20                       0                       0                
+  6   256   # boundary3.medium.T_degC
+  0  3.0000000000000004E+00       0                       0                
+  6   256   # boundary3.medium.p_bar
+  0  1.0000000000000001E-01 -9.9999999999999995E+59  9.9999999999999995E+59
+  6   388   # boundary3.ports[1].m_flow
+  0  3.0000000000000000E+05       0                  1.0000000000000000E+08
+  6   260   # boundary3.ports[1].p
+  0   83680                 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   260   # boundary3.ports[1].h_outflow
+  0       3                       1                       3                
+  6  1282   # boundary3.flowDirection
+  0       0                       0                       0                
+  6   769   # boundary3.use_p_in
+  0       0                       0                       0                
+  6   769   # boundary3.use_T_in
+  0       0                       0                       0                
+  6   769   # boundary3.use_X_in
+  0       0                       0                       0                
+  6   769   # boundary3.use_C_in
+  0  3.0000000000000000E+05       0                  1.0000000000000000E+08
+  6   256   # boundary3.p
+  0  2.9314999999999998E+02       1                   10000                
+  6   256   # boundary3.T
+  0       1                       0                       1                
+  6   256   # boundary3.X[1]
+  0  3.0000000000000000E+05       0                       0                
+  6  1280   # boundary3.p_in_internal
+  0  2.9314999999999998E+02       0                       0                
+  6  1280   # boundary3.T_in_internal
+  0       1                       0                       0                
+  6  1280   # boundary3.X_in_internal[1]
+  0       1                       1                       4                
+  6   258   # UD.energyDynamics
+  0       1                       1                       4                
+  6   258   # UD.massDynamics
+  0       1                       1                       4                
+  6   258   # UD.substanceDynamics
+  0       1                       1                       4                
+  6   258   # UD.traceDynamics
+ -1  3.0000000000000000E+05       0                  1.0000000000000000E+08
+  1   280   # UD.p_start
+ -1  2.9314999999999998E+02       1                   10000                
+  1   280   # UD.T_start
+ -1       1                       0                       1                
+  1   280   # UD.X_start[1]
+ -1  1.0000000000000001E-01       0                 1.0000000000000000E+100
+  1   280   # UD.m_flow_nominal
+ -1       1                       0                       1                
+  1   280   # UD.MixCoef
+  0       2                       0                       0                
+  6   258   # UD.nPorts
+  0       0                       0                  100000                
+  6   256   # UD.m_flow_small
+  0       1                       0                       0                
+  6   257   # UD.homotopyInitialization
+  0       1                       0                       0                
+  6   257   # UD.allowFlowReversal
+ -1       1                       0                       0                
+  1   280   # UD.V
+  0       0                       0                       0                
+  6   257   # UD.prescribedHeatFlowRate
+  0  1.0000000000000001E-01 -100000                  100000                
+  6   388   # UD.ports[1].m_flow
+  0  3.0000000000000000E+05       0                  1.0000000000000000E+08
+  6   260   # UD.ports[1].p
+  0       0                 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   260   # UD.ports[1].h_outflow
+  0 -1.0000000000000001E-01 -100000                  100000                
+  6   388   # UD.ports[2].m_flow
+  0  3.0000000000000000E+05       0                  1.0000000000000000E+08
+  6   260   # UD.ports[2].p
+  0       0                 -1.0000000000000000E+10  1.0000000000000000E+10
+  6   260   # UD.ports[2].h_outflow
+  0  2.8814999999999998E+02       0                 1.0000000000000000E+100
+  6   260   # UD.heatPort.T
+  0       0                       0                       0                
+  6   388   # UD.heatPort.Q_flow
+  0  3.0000000000000000E+05       0                       0                
+  6   256   # UD.p
+  0  100000                       0                  1.0000000000000000E+08
+  6  1280   # UD.state_start.p
+  0     300                       1                   10000                
+  6  1280   # UD.state_start.T
+  0  9.9558600000000001E+02       0                 1.0000000000000000E+100
+  6  1280   # UD.rho_nominal
+  0       0                       0                       0                
+  6  1281   # UD.useSteadyStateTwoPort
+  0       0                       0                       0                
+  6  1280   # UD.Q_flow
+  0       0                       0                       0                
+  6  1280   # UD.hOut_internal
+  0       0                       0                       0                
+  6  1280   # UD.heaInp.y
+  0       1                       1                       4                
+  6  1282   # Ideal.dynBal.energyDynamics
+  0       1                       1                       4                
+  6  1282   # Ideal.dynBal.massDynamics
+  0       1                       1                       4                
+  6  1282   # Ideal.dynBal.substanceDynamics
+  0       1                       1                       4                
+  6  1282   # Ideal.dynBal.traceDynamics
+  0  100000                       0                  1.0000000000000000E+08
+  6  1280   # Ideal.dynBal.p_start
+  0     300                       1                   10000                
+  6  1280   # Ideal.dynBal.T_start
+  0       0                       0                       1                
+  6  1280   # Ideal.dynBal.X_start[1]
+  0       2                       0                       0                
+  6  1282   # Ideal.dynBal.nPorts
+  0  1.0000000000000001E-01 -100000                  100000                
+  6  1412   # Ideal.dynBal.ports[1].m_flow
+  0  3.0000000000000000E+05       0                  1.0000000000000000E+08
+  6  1284   # Ideal.dynBal.ports[1].p
+  0 -1.0000000000000001E-01 -100000                  100000                
+  6  1412   # Ideal.dynBal.ports[2].m_flow
+  0  3.0000000000000000E+05       0                  1.0000000000000000E+08
+  6  1284   # Ideal.dynBal.ports[2].p
+  0  3.0000000000000000E+05       0                 1.0000000000000000E+100
+  6  1280   # Ideal.dynBal.medium.p
+  0       1                       0                       1                
+  6  1280   # _GlobalScope.Modelica.Media.Interfaces.PartialPureSubstance.X_default[1]
+  0  9.9558600000000001E+02       0                  100000                
+  6  1280   # Ideal.dynBal.medium.d
+ -1  2.9314999999999998E+02       1                   10000                
+  2  1296   # Ideal.dynBal.medium.T
+  0       0                       0                       0                
+  3  1280   # Ideal.dynBal.medium.der(T)
+  0       1                       0                       1                
+  6  1280   # Ideal.dynBal.medium.X[1]
+  0       0                 -1.0000000000000000E+08  1.0000000000000000E+08
+  6  1280   # Ideal.dynBal.medium.u
+  0       0                       0                       0                
+  6  1280   # Ideal.dynBal.medium.der(u)
+  0       0                       0                  1.0000000000000000E+07
+  6  1280   # Ideal.dynBal.medium.R
+  0  1.8015268000000001E-02  1.0000000000000000E-03  2.5000000000000000E-01
+  6  1280   # Ideal.dynBal.medium.MM
+  0  3.0000000000000000E+05       0                  1.0000000000000000E+08
+  6  1280   # Ideal.dynBal.medium.state.p
+  0       1                       0                       0                
+  6  1281   # Ideal.dynBal.medium.preferredMediumStates
+  0       1                       0                       0                
+  6  1281   # Ideal.dynBal.medium.standardOrderComponents
+  0       0                       0                       0                
+  6  1280   # Ideal.dynBal.medium.T_degC
+  0  3.0000000000000004E+00       0                       0                
+  6  1280   # Ideal.dynBal.medium.p_bar
+  0       0                       0                       0                
+  6  1280   # Ideal.dynBal.U
+  0       0                       0                       0                
+  6  1280   # Ideal.dynBal.der(U)
+  0       0                       0                 1.0000000000000000E+100
+  6  1280   # Ideal.dynBal.m
+  0       0                       0                       0                
+  6  1280   # Ideal.dynBal.der(m)
+  0       0                       0                       0                
+  6  1280   # Ideal.dynBal.mb_flow
+  0       0                       0                       0                
+  6  1280   # Ideal.dynBal.Q_flow
+ -1       0                       0                       0                
+  1  1305   # Ideal.dynBal.initialize_p
+  0   20920                 -1.0000000000000000E+08  1.0000000000000000E+08
+  6  1280   # Ideal.dynBal.ports_H_flow[1]
+  0       0                 -1.0000000000000000E+08  1.0000000000000000E+08
+  6  1280   # Ideal.dynBal.ports_H_flow[2]
+  0  9.9558600000000001E+02       0                 1.0000000000000000E+100
+  6  1280   # Ideal.dynBal.rho_nominal
+  0       1                       1                       4                
+  6  1282   # UD.dynBal.energyDynamics
+  0       1                       1                       4                
+  6  1282   # UD.dynBal.massDynamics
+  0       1                       1                       4                
+  6  1282   # UD.dynBal.substanceDynamics
+  0       1                       1                       4                
+  6  1282   # UD.dynBal.traceDynamics
+  0  100000                       0                  1.0000000000000000E+08
+  6  1280   # UD.dynBal.p_start
+  0     300                       1                   10000                
+  6  1280   # UD.dynBal.T_start
+  0       0                       0                       1                
+  6  1280   # UD.dynBal.X_start[1]
+  0       2                       0                       0                
+  6  1282   # UD.dynBal.nPorts
+  0       0                       0                       1                
+  6  1280   # UD.dynBal.MixCoef
+  0  1.0000000000000001E-01 -100000                  100000                
+  6  1412   # UD.dynBal.ports[1].m_flow
+  0  3.0000000000000000E+05       0                  1.0000000000000000E+08
+  6  1284   # UD.dynBal.ports[1].p
+  0 -1.0000000000000001E-01 -100000                  100000                
+  6  1412   # UD.dynBal.ports[2].m_flow
+  0  3.0000000000000000E+05       0                  1.0000000000000000E+08
+  6  1284   # UD.dynBal.ports[2].p
+  0  3.0000000000000000E+05       0                 1.0000000000000000E+100
+  6  1280   # UD.dynBal.medium.p
+  0  9.9558600000000001E+02       0                  100000                
+  6  1280   # UD.dynBal.medium.d
+ -1  2.9314999999999998E+02       1                   10000                
+  2  1296   # UD.dynBal.medium.T
+  0       0                       0                       0                
+  3  1280   # UD.dynBal.medium.der(T)
+  0       1                       0                       1                
+  6  1280   # UD.dynBal.medium.X[1]
+  0       0                 -1.0000000000000000E+08  1.0000000000000000E+08
+  6  1280   # UD.dynBal.medium.u
+  0       0                       0                       0                
+  6  1280   # UD.dynBal.medium.der(u)
+  0       0                       0                  1.0000000000000000E+07
+  6  1280   # UD.dynBal.medium.R
+  0  1.8015268000000001E-02  1.0000000000000000E-03  2.5000000000000000E-01
+  6  1280   # UD.dynBal.medium.MM
+  0  3.0000000000000000E+05       0                  1.0000000000000000E+08
+  6  1280   # UD.dynBal.medium.state.p
+  0       1                       0                       0                
+  6  1281   # UD.dynBal.medium.preferredMediumStates
+  0       1                       0                       0                
+  6  1281   # UD.dynBal.medium.standardOrderComponents
+  0       0                       0                       0                
+  6  1280   # UD.dynBal.medium.T_degC
+  0  3.0000000000000004E+00       0                       0                
+  6  1280   # UD.dynBal.medium.p_bar
+  0       0                       0                       0                
+  6  1280   # UD.dynBal.U
+  0       0                       0                       0                
+  6  1280   # UD.dynBal.der(U)
+  0       0                       0                 1.0000000000000000E+100
+  6  1280   # UD.dynBal.m
+  0       0                       0                       0                
+  6  1280   # UD.dynBal.der(m)
+  0       0                       0                       0                
+  6  1280   # UD.dynBal.mb_flow
+  0       0                       0                       0                
+  6  1280   # UD.dynBal.Q_flow
+ -1       0                       0                       0                
+  1  1305   # UD.dynBal.initialize_p
+  0   20920                 -1.0000000000000000E+08  1.0000000000000000E+08
+  6  1280   # UD.dynBal.ports_H_flow[1]
+  0       0                 -1.0000000000000000E+08  1.0000000000000000E+08
+  6  1280   # UD.dynBal.ports_H_flow[2]
+  0  9.9558600000000001E+02       0                 1.0000000000000000E+100
+  6  1280   # UD.dynBal.rho_nominal
+
+
+# Matrix with 6 columns defining the initial value calculation
+# (columns 5 and 6 are not utilized for the calculation but are
+#  reported by dymosim via dymosim -i for user convenience):
+#
+# column 1: Type of initial value
+#           = -2: special case: for continuing simulation (column 2 = value)
+#           = -1: fixed value (column 2 = fixed value)
+#           =  0: free value, i.e., no restriction (column 2 = initial value)
+#           >  0: desired value (column 1 = weight for optimization
+#                                column 2 = desired value)
+#                 use weight=1, since automatic scaling usually
+#                 leads to equally weighted terms
+# column 2: fixed, free or desired value according to column 1.
+# column 3: Minimum value (ignored, if Minimum >= Maximum).
+# column 4: Maximum value (ignored, if Minimum >= Maximum).
+#           Minimum and maximum restrict the search range in initial
+#           value calculation. They might also be used for scaling.
+# column 5: Category of variable.
+#           = 1: parameter.
+#           = 2: state.
+#           = 3: state derivative.
+#           = 4: output.
+#           = 5: input.
+#           = 6: auxiliary variable.
+# column 6: Data type of variable.
+#           = 0: real.
+#           = 1: boolean.
+#           = 2: integer.
+#
+# Initial values are calculated according to the following procedure:
+#
+# - If parameters, states and inputs are FIXED, and other variables
+#   are FREE, no special action takes place (default setting).
+#
+# - If there are only FIXED and FREE variables and the number of
+#   FREE parameters, states and inputs is IDENTICAL to the number of
+#   FIXED state derivatives, outputs and auxiliary variables, a non-linear
+#   equation is solved to determine a consistent set of initial conditions.
+#
+# - In all other cases the following optimization problem is solved:
+#      min( sum( weight(i)*( (value(i) - DESIRED(i))/scale(i) )^2 ) )
+#   under the constraint that the differential equation is fulfilled
+#   at the initial time. In most cases weight(i)=1 is sufficient, due
+#   to the automatic scaling (if DESIRED(i) is not close to zero,
+#   scale(i) = DESIRED(i). Otherwise, the scaling is based on the
+#   nominal value (and maybe minimum and maximum values given in 
+#   column 3 and 4). If these values are zero, scale(i)=1 is used).
+#
+char initialDescription(263,153)
+Default ambient pressure [Pa|bar]
+Default ambient temperature [K|degC]
+Constant gravity acceleration [m/s2]
+= false to restrict to design flow direction (port_a -> port_b) [:#(type=Boolean)]
+Default formulation of energy balances [:#(type=Modelica.Fluid.Types.Dynamics)]
+Default formulation of mass balances [:#(type=Modelica.Fluid.Types.Dynamics)]
+Default formulation of substance balances [:#(type=Modelica.Fluid.Types.Dynamics)]
+Default formulation of trace substance balances [:#(type=Modelica.Fluid.Types.Dynamics)]
+Default formulation of momentum balances, if options available [:#(type=Modelica.Fluid.Types.Dynamics)]
+Default start value for mass flow rates [kg/s]
+Default start value for pressures [Pa|bar]
+Default start value for temperatures [K|degC]
+Default small laminar mass flow rate for regularization of zero flow [kg/s]
+Default small pressure drop for regularization of laminar and zero flow [Pa|bar]
+Number of ports [:#(type=Integer)]
+Absolute pressure of medium [Pa|bar]
+Specific enthalpy of medium [J/kg]
+Density of medium [kg/m3|g/cm3]
+Temperature of medium [K|degC]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Specific internal energy of medium [J/kg]
+Gas constant (of mixture if applicable) [J/(kg.K)]
+Molar mass (of mixture or single fluid) [kg/mol]
+Absolute pressure of medium [Pa|bar]
+Temperature of medium [K|degC]
+= true if StateSelect.prefer shall be used for the independent property variables of the medium [:#(type=Boolean)]
+if true, and reducedX = true, the last element of X will be computed from the other ones [:#(type=Boolean)]
+Temperature of medium in [degC] [degC;]
+Absolute pressure of medium in [bar] [bar]
+Mass flow rate from the connection point into the component [kg/s]
+Thermodynamic pressure in the connection point [Pa|bar]
+Specific thermodynamic enthalpy close to the connection point if m_flow < 0 [J/kg]
+Allowed flow direction [:#(type=Modelica.Fluid.Types.PortFlowDirection)]
+Get the mass flow rate from the input connector [:#(type=Boolean)]
+Get the temperature from the input connector [:#(type=Boolean)]
+Get the composition from the input connector [:#(type=Boolean)]
+Get the trace substances from the input connector [:#(type=Boolean)]
+Fixed mass flow rate going out of the fluid port [kg/s]
+Fixed value of temperature [K|degC]
+Fixed value of composition [kg/kg]
+Needed to connect to conditional connector [kg/s]
+Needed to connect to conditional connector [K]
+Needed to connect to conditional connector [1]
+Number of ports [:#(type=Integer)]
+Absolute pressure of medium [Pa|bar]
+Specific enthalpy of medium [J/kg]
+Density of medium [kg/m3|g/cm3]
+Temperature of medium [K|degC]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Specific internal energy of medium [J/kg]
+Gas constant (of mixture if applicable) [J/(kg.K)]
+Molar mass (of mixture or single fluid) [kg/mol]
+Absolute pressure of medium [Pa|bar]
+Temperature of medium [K|degC]
+= true if StateSelect.prefer shall be used for the independent property variables of the medium [:#(type=Boolean)]
+if true, and reducedX = true, the last element of X will be computed from the other ones [:#(type=Boolean)]
+Temperature of medium in [degC] [degC;]
+Absolute pressure of medium in [bar] [bar]
+Mass flow rate from the connection point into the component [kg/s]
+Thermodynamic pressure in the connection point [Pa|bar]
+Specific thermodynamic enthalpy close to the connection point if m_flow < 0 [J/kg]
+Allowed flow direction [:#(type=Modelica.Fluid.Types.PortFlowDirection)]
+Get the pressure from the input connector [:#(type=Boolean)]
+Get the temperature from the input connector [:#(type=Boolean)]
+Get the composition from the input connector [:#(type=Boolean)]
+Get the trace substances from the input connector [:#(type=Boolean)]
+Fixed value of pressure [Pa|bar]
+Fixed value of temperature [K|degC]
+Fixed value of composition [kg/kg]
+Needed to connect to conditional connector [Pa]
+Needed to connect to conditional connector [K]
+Needed to connect to conditional connector [1]
+Formulation of energy balance [:#(type=Modelica.Fluid.Types.Dynamics)]
+Formulation of mass balance [:#(type=Modelica.Fluid.Types.Dynamics)]
+Formulation of substance balance [:#(type=Modelica.Fluid.Types.Dynamics)]
+Formulation of trace substance balance [:#(type=Modelica.Fluid.Types.Dynamics)]
+Start value of pressure [Pa|bar]
+Start value of temperature [K|degC]
+Start value of mass fractions m_i/m [kg/kg]
+Nominal mass flow rate [kg/s]
+Number of ports [:#(type=Integer)]
+Small mass flow rate for regularization of zero flow [kg/s]
+= true, use homotopy method [:#(type=Boolean)]
+= true to allow flow reversal in medium, false restricts to design direction (ports[1] -> ports[2]). Used only if model has two ports. [:#(type=Boolean)]
+Volume [m3]
+Set to true if the model has a prescribed heat flow at its heatPort [:#(type=Boolean)]
+Mass flow rate from the connection point into the component [kg/s]
+Thermodynamic pressure in the connection point [Pa|bar]
+Specific thermodynamic enthalpy close to the connection point if m_flow < 0 [J/kg]
+Mass flow rate from the connection point into the component [kg/s]
+Thermodynamic pressure in the connection point [Pa|bar]
+Port temperature [K|degC]
+Heat flow rate (positive if flowing from outside into the component) [W]
+Pressure of the fluid [Pa|bar]
+Absolute pressure of medium [Pa|bar]
+Temperature of medium [K|degC]
+Density, used to compute fluid mass [kg/m3|g/cm3]
+Flag, true if the model has two ports only and uses a steady state balance [:#(type=Boolean)]
+Heat flow across boundaries or energy source/sink [W]
+Value of Real output [W]
+Number of ports [:#(type=Integer)]
+Absolute pressure of medium [Pa|bar]
+Specific enthalpy of medium [J/kg]
+Density of medium [kg/m3|g/cm3]
+Temperature of medium [K|degC]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Specific internal energy of medium [J/kg]
+Gas constant (of mixture if applicable) [J/(kg.K)]
+Molar mass (of mixture or single fluid) [kg/mol]
+Absolute pressure of medium [Pa|bar]
+Temperature of medium [K|degC]
+= true if StateSelect.prefer shall be used for the independent property variables of the medium [:#(type=Boolean)]
+if true, and reducedX = true, the last element of X will be computed from the other ones [:#(type=Boolean)]
+Temperature of medium in [degC] [degC;]
+Absolute pressure of medium in [bar] [bar]
+Mass flow rate from the connection point into the component [kg/s]
+Thermodynamic pressure in the connection point [Pa|bar]
+Specific thermodynamic enthalpy close to the connection point if m_flow < 0 [J/kg]
+Allowed flow direction [:#(type=Modelica.Fluid.Types.PortFlowDirection)]
+Get the mass flow rate from the input connector [:#(type=Boolean)]
+Get the temperature from the input connector [:#(type=Boolean)]
+Get the composition from the input connector [:#(type=Boolean)]
+Get the trace substances from the input connector [:#(type=Boolean)]
+Fixed mass flow rate going out of the fluid port [kg/s]
+Fixed value of temperature [K|degC]
+Fixed value of composition [kg/kg]
+Needed to connect to conditional connector [kg/s]
+Needed to connect to conditional connector [K]
+Needed to connect to conditional connector [1]
+Number of ports [:#(type=Integer)]
+Absolute pressure of medium [Pa|bar]
+Specific enthalpy of medium [J/kg]
+Density of medium [kg/m3|g/cm3]
+Temperature of medium [K|degC]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Specific internal energy of medium [J/kg]
+Gas constant (of mixture if applicable) [J/(kg.K)]
+Molar mass (of mixture or single fluid) [kg/mol]
+Absolute pressure of medium [Pa|bar]
+Temperature of medium [K|degC]
+= true if StateSelect.prefer shall be used for the independent property variables of the medium [:#(type=Boolean)]
+if true, and reducedX = true, the last element of X will be computed from the other ones [:#(type=Boolean)]
+Temperature of medium in [degC] [degC;]
+Absolute pressure of medium in [bar] [bar]
+Mass flow rate from the connection point into the component [kg/s]
+Thermodynamic pressure in the connection point [Pa|bar]
+Specific thermodynamic enthalpy close to the connection point if m_flow < 0 [J/kg]
+Allowed flow direction [:#(type=Modelica.Fluid.Types.PortFlowDirection)]
+Get the pressure from the input connector [:#(type=Boolean)]
+Get the temperature from the input connector [:#(type=Boolean)]
+Get the composition from the input connector [:#(type=Boolean)]
+Get the trace substances from the input connector [:#(type=Boolean)]
+Fixed value of pressure [Pa|bar]
+Fixed value of temperature [K|degC]
+Fixed value of composition [kg/kg]
+Needed to connect to conditional connector [Pa]
+Needed to connect to conditional connector [K]
+Needed to connect to conditional connector [1]
+Formulation of energy balance [:#(type=Modelica.Fluid.Types.Dynamics)]
+Formulation of mass balance [:#(type=Modelica.Fluid.Types.Dynamics)]
+Formulation of substance balance [:#(type=Modelica.Fluid.Types.Dynamics)]
+Formulation of trace substance balance [:#(type=Modelica.Fluid.Types.Dynamics)]
+Start value of pressure [Pa|bar]
+Start value of temperature [K|degC]
+Start value of mass fractions m_i/m [kg/kg]
+Nominal mass flow rate [kg/s]
+Coefficient decribing extent of mixing
+Number of ports [:#(type=Integer)]
+Small mass flow rate for regularization of zero flow [kg/s]
+= true, use homotopy method [:#(type=Boolean)]
+= true to allow flow reversal in medium, false restricts to design direction (ports[1] -> ports[2]). Used only if model has two ports. [:#(type=Boolean)]
+Volume [m3]
+Set to true if the model has a prescribed heat flow at its heatPort [:#(type=Boolean)]
+Mass flow rate from the connection point into the component [kg/s]
+Thermodynamic pressure in the connection point [Pa|bar]
+Specific thermodynamic enthalpy close to the connection point if m_flow < 0 [J/kg]
+Mass flow rate from the connection point into the component [kg/s]
+Thermodynamic pressure in the connection point [Pa|bar]
+Specific thermodynamic enthalpy close to the connection point if m_flow < 0 [J/kg]
+Port temperature [K|degC]
+Heat flow rate (positive if flowing from outside into the component) [W]
+Pressure of the fluid [Pa|bar]
+Absolute pressure of medium [Pa|bar]
+Temperature of medium [K|degC]
+Density, used to compute fluid mass [kg/m3|g/cm3]
+Flag, true if the model has two ports only and uses a steady state balance [:#(type=Boolean)]
+Heat flow across boundaries or energy source/sink [W]
+Internal connector for leaving temperature of the component [J/kg]
+Value of Real output [W]
+Formulation of energy balance [:#(type=Modelica.Fluid.Types.Dynamics)]
+Formulation of mass balance [:#(type=Modelica.Fluid.Types.Dynamics)]
+Formulation of substance balance [:#(type=Modelica.Fluid.Types.Dynamics)]
+Formulation of trace substance balance [:#(type=Modelica.Fluid.Types.Dynamics)]
+Start value of pressure [Pa|bar]
+Start value of temperature [K|degC]
+Start value of mass fractions m_i/m [kg/kg]
+Number of ports [:#(type=Integer)]
+Mass flow rate from the connection point into the component [kg/s]
+Thermodynamic pressure in the connection point [Pa|bar]
+Mass flow rate from the connection point into the component [kg/s]
+Thermodynamic pressure in the connection point [Pa|bar]
+Absolute pressure of medium [Pa|bar]
+Default value for mass fractions of medium (for initialization) [kg/kg]
+Density of medium [kg/m3|g/cm3]
+Temperature of medium [K|degC]
+der(Temperature of medium) [K/s]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Specific internal energy of medium [J/kg]
+der(Specific internal energy of medium) [m2/s3]
+Gas constant (of mixture if applicable) [J/(kg.K)]
+Molar mass (of mixture or single fluid) [kg/mol]
+Absolute pressure of medium [Pa|bar]
+= true if StateSelect.prefer shall be used for the independent property variables of the medium [:#(type=Boolean)]
+if true, and reducedX = true, the last element of X will be computed from the other ones [:#(type=Boolean)]
+Temperature of medium in [degC] [degC;]
+Absolute pressure of medium in [bar] [bar]
+Internal energy of fluid [J]
+der(Internal energy of fluid) [W]
+Mass of fluid [kg]
+der(Mass of fluid) [kg/s]
+Mass flows across boundaries [kg/s]
+Heat transfered into the medium [W]
+= true to set up initial equations for pressure [:#(type=Boolean)]
+[W]
+[W]
+Density, used to compute fluid mass [kg/m3|g/cm3]
+Formulation of energy balance [:#(type=Modelica.Fluid.Types.Dynamics)]
+Formulation of mass balance [:#(type=Modelica.Fluid.Types.Dynamics)]
+Formulation of substance balance [:#(type=Modelica.Fluid.Types.Dynamics)]
+Formulation of trace substance balance [:#(type=Modelica.Fluid.Types.Dynamics)]
+Start value of pressure [Pa|bar]
+Start value of temperature [K|degC]
+Start value of mass fractions m_i/m [kg/kg]
+Number of ports [:#(type=Integer)]
+Describes extent of mixing in volume
+Mass flow rate from the connection point into the component [kg/s]
+Thermodynamic pressure in the connection point [Pa|bar]
+Mass flow rate from the connection point into the component [kg/s]
+Thermodynamic pressure in the connection point [Pa|bar]
+Absolute pressure of medium [Pa|bar]
+Density of medium [kg/m3|g/cm3]
+Temperature of medium [K|degC]
+der(Temperature of medium) [K/s]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Specific internal energy of medium [J/kg]
+der(Specific internal energy of medium) [m2/s3]
+Gas constant (of mixture if applicable) [J/(kg.K)]
+Molar mass (of mixture or single fluid) [kg/mol]
+Absolute pressure of medium [Pa|bar]
+= true if StateSelect.prefer shall be used for the independent property variables of the medium [:#(type=Boolean)]
+if true, and reducedX = true, the last element of X will be computed from the other ones [:#(type=Boolean)]
+Temperature of medium in [degC] [degC;]
+Absolute pressure of medium in [bar] [bar]
+Internal energy of fluid [J]
+der(Internal energy of fluid) [W]
+Mass of fluid [kg]
+der(Mass of fluid) [kg/s]
+Mass flows across boundaries [kg/s]
+Heat transfered into the medium [W]
+= true to set up initial equations for pressure [:#(type=Boolean)]
+[W]
+[W]
+Density, used to compute fluid mass [kg/m3|g/cm3]
+

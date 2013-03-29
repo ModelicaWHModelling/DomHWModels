@@ -1,0 +1,6 @@
+In file included from dsmodel.c:6:0:
+/opt/dymola/source/matrixop.h:73:22: warning: ‘EndRealbuffer’ initialized and declared ‘extern’ [enabled by default]
+/opt/dymola/source/matrixop.h:74:25: warning: ‘EndIntegerbuffer’ initialized and declared ‘extern’ [enabled by default]
+/opt/dymola/source/matrixop.h:75:26: warning: ‘EndSizebuffer’ initialized and declared ‘extern’ [enabled by default]
+/opt/dymola/source/matrixop.h:76:24: warning: ‘EndStringbuffer’ initialized and declared ‘extern’ [enabled by default]
+/opt/dymola/source/matrixop.h:77:22: warning: ‘Endsimplestring’ initialized and declared ‘extern’ [enabled by default]

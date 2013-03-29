@@ -1,0 +1,5 @@
+Previously there was an error in dHBU for nSeg
+	Was calculating dHBU_F_In twice. The first was correct, the second was not and overwrote the first
+		Was originally calculated using the second equation. A change was made intending to remove the first equation, replace with the second. The first was never deleted
+		Caused heat to enter the last segment via buoyancy in situations when it should not
+	The equations have been fixed, the buoyant heat flow entering nSeg is now 0 when it should be

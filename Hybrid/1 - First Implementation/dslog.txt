@@ -1,0 +1,13 @@
+Log-file of program ./dymosim
+(generated: Fri Nov 30 13:04:12 2012)
+
+dymosim started
+... "dsin.txt" loading (dymosim input file)
+... "StorageTankDrawProfile.txt" loading (tables for interpolation)
+The following error was detected at time: 0
+Not possible to open file "StorageTankDrawProfile.txt": No such file or directory
+
+The stack of functions is:
+Modelica.Blocks.Tables.CombiTable1Ds.tableInit
+Modelica.Blocks.Tables.CombiTable1Ds.tableInit("Flow", "StorageTankDrawProfile.txt", DrawFlow[1].table, DrawFlow[1].smoothness)
+Error: Failed to start model.

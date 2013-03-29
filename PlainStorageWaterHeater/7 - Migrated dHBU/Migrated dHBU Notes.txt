@@ -1,0 +1,10 @@
+Notes
+	Created new model called dHBU. Calculates dHBU as part of buoHeaTra
+	Changes some references in dHBU calcs
+		i+1 switched to i-1
+		Some loops were 1:i. Should have been 1:nSeg. Replaced
+	Calculations performed as Real values; no units. Want to improve model by changing that
+		How can I pass values from one model to another, containing temperature and/or flow rate values?
+Next Steps
+	Calculate Q_Flow_Tot in buoHeaTra
+	

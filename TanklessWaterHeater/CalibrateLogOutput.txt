@@ -1,0 +1,44 @@
+RunScript("c:/program files (x86)/dymola 2012 fd01/insert/dymola.mos", true);
+ = true
+ = true
+RunScript("C:/Users/Peter Grant/AppData/Roaming/Dynasim/setup.mos", true);
+ = true
+RunScript("C:\\Program Files (x86)\\Dymola 2012 FD01\\Models\\models\\modelica\\TanklessWaterHeater\\TanklessModelOptimizationScript.mos");
+openModel("C:/Program Files (x86)/Dymola 2012 FD01/Models/models/modelica/TanklessWaterHeater/TanklessWaterHeater.mo")
+ = true
+
+Design.Calibration.calibrate(Design.Internal.Records.ModelCalibrationSetup(Model="TanklessWaterHeater.NonCondensingTanklessHeaterValidation", tunerParameters={Design.Internal.Records.TunerParameter(name="nonCondensing.Capacitance", Value=83600)}, calibrationData=Design.Calibration.Internal.Dynamic_common(Design.Internal.Records.DynamicCommonCalibrationCases(experimentNames={"//vmware-host/Shared Folders/Documents/Water Heater Modeling (E81923 and EF8706)/Dymola Input Files/TanklessModelicaInput.csv"}, task={1}, startTime={3213}, stopTime={3294}, parameterNames={"nonCondensing.T_Node[10]", "nonCondensing.T_Node[1]", "nonCondensing.T_Node[2]", "nonCondensing.T_Node[3]", "nonCondensing.T_Node[4]", "nonCondensing.T_Node[5]", "nonCondensing.T_Node[6]", "nonCondensing.T_Node[7]", "nonCondensing.T_Node[8]", "nonCondensing.T_Node[9]"}, parameterValues=[59.75, 24, 28, 32, 36, 40, 44, 48, 52, 56]), resultCouplings={Design.Internal.Records.DynamicCalibrationResultCoupling(variable="nonCondensing.T_Out", data="T_N10")})));
+nonCondensing.Capacitance -> error
+83600                     -> 15575.1        
+47143.4                   -> 10599.4        
+28231.9                   -> 4778.68        
+8543.15                   -> 3128.2         
+12238                     -> 892.449        
+14244.5                   -> 460.121        
+14921.5                   -> 420.226        
+15088.8                   -> 417.957        
+15125.4                   -> 417.85         
+15133.1                   -> 417.845        
+15134.8                   -> 417.845        
+15135.1                   -> 417.845        
+15135.2                   -> 417.845        
+15135.2                   -> 417.845        
+15135.2                   -> 417.845        
+Evaluate for tuners (including validation):
+417.845
+ = {15135.1992014262}, 
+[], 417.844630256945, 91
+
+Modelica.Systems.Utilities.System.exit()
+Undeclared function: Modelica.Systems.Utilities.System.exit
+Undeclared function: Modelica.Systems.Utilities.System.exit
+ = false
+ = true
+ = true
+ = true
+ = true
+ = true
+ = true
+ = true
+ = true
+ = true

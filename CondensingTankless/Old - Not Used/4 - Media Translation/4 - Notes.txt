@@ -1,0 +1,8 @@
+Media used in the ThermoPower library are not compatible with the buildings library
+	Specific problem: The flue gas model in CombustionChamber from ThermoPower does not contain the information necessary for condensing calculations in WetCoilCounterFlow from Buildings
+		Need to create a model between the two which converts from ThermoPower.FlueGas to Buildings.MoistAir
+Changes
+	Ended up changing CombustionChamber model to a less complicated version
+	Now ignores calculations for gases in the flue gas, only identifies MX[Water]
+Next Steps
+	Model is once against showing up as singular. No idea why this has suddenly become the case again. Shown at top level. Try breaking into smaller components, hope to localize

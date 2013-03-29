@@ -1,0 +1,31 @@
+Log-file of program ./dymosim
+(generated: Thu Jul 26 15:42:19 2012)
+
+dymosim started
+Model: WaterHeaterLib.Examples.WaterHeaterCalibration
+... "dsin.txt" loading (dymosim input file)
+... "C:/Program Files (x86)/Dymola 2012 FD01/Models/WaterHeater/current/modeling/branches/pgrant/PlainStorageWaterHeater/StorageTankCharacterizationInputsWaterAndAmbient.txt" loading (tables for interpolation)
+... "dsres.mat" creating (simulation result file)
+
+Integration started at T = 150 using integration method DASSL
+(DAE multi-step solver (dassl/dasslrt of Petzold modified by Dynasim))
+Integration terminated before reaching "StopTime" at T = 183
+  WARNING: You have many state events. It might be due to chattering.
+  Enable logging of event in Simulation/Setup/Debug/Events during simulation
+   CPU-time for integration      : 717 seconds
+   CPU-time for one GRID interval: 3.58e+004 milli-seconds
+   Number of result points       : 23396
+   Number of GRID   points       : 21
+   Number of (successful) steps  : 97443
+   Number of F-evaluations       : 2272014
+   Number of H-evaluations       : 177478
+   Number of Jacobian-evaluations: 90494
+   Number of (model) time events : 0
+   Number of (U) time events     : 0
+   Number of state    events     : 11688
+   Number of step     events     : 0
+   Minimum integration stepsize  : 1.91e-009
+   Maximum integration stepsize  : 0.0302
+   Maximum integration order     : 5
+Calling terminal section
+... "dsfinal.txt" creating (final states)

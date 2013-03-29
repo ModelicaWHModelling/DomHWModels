@@ -1,0 +1,28 @@
+Log-file of program ./dymosim
+(generated: Tue Jul 03 14:37:25 2012)
+
+dymosim started
+Model: WaterHeaterLib.Examples.WaterHeater
+... "dsin.txt" loading (dymosim input file)
+... "WaterHeater.mat" creating (simulation result file)
+
+Integration started at T = 0 using integration method DASSL
+(DAE multi-step solver (dassl/dasslrt of Petzold modified by Dynasim))
+Integration terminated successfully at T = 400
+   CPU-time for integration      : 12.9 seconds
+   CPU-time for one GRID interval: 25.7 milli-seconds
+   Number of result points       : 503
+   Number of GRID   points       : 501
+   Number of (successful) steps  : 1827
+   Number of F-evaluations       : 36728
+   Number of H-evaluations       : 2333
+   Number of Jacobian-evaluations: 1336
+   Number of (model) time events : 0
+   Number of (U) time events     : 0
+   Number of state    events     : 1
+   Number of step     events     : 0
+   Minimum integration stepsize  : 9.96e-006
+   Maximum integration stepsize  : 49
+   Maximum integration order     : 3
+Calling terminal section
+... "dsfinal.txt" creating (final states)

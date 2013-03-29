@@ -1,0 +1,8 @@
+Notes
+	Created new model to calculate hWF
+		No longer convinced this is a good idea
+			Creates many simulation headaches
+			Need to carefully massage to get simulation to run - runs into problems with being unable to solve, too high residual
+			11 numerical jacobians (hWF calculation impacts most everything, is not linear, is based on Gr which is not linear)
+		Is there a more simplified way which can approximate but is easier on Modelica?
+	WorkingCopy does NOT reflect these changes

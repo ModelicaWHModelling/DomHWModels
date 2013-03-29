@@ -1,0 +1,45 @@
+Log-file of program ./dymosim
+(generated: Wed Nov 28 14:28:05 2012)
+
+dymosim started
+... "dsin.txt" loading (dymosim input file)
+... "TwoPipeInletTemp.txt" loading (tables for interpolation)
+... "TwoPipeShowerFlow.txt" loading (tables for interpolation)
+... "TwoPipeSinkFlow.txt" loading (tables for interpolation)
+Warning: In FixedResistanceDpM, m_flow_nominal is smaller than m_flow_turbulent.
+  m_flow_nominal = 1e-006
+  dh      = 0.01905
+  To fix, set dh < 3.1831e-007
+  Suggested value: dh = 3.1831e-008
+Warning: In FixedResistanceDpM, m_flow_nominal is smaller than m_flow_turbulent.
+  m_flow_nominal = 1e-006
+  dh      = 0.01905
+  To fix, set dh < 3.1831e-007
+  Suggested value: dh = 3.1831e-008
+Warning: In FixedResistanceDpM, m_flow_nominal is smaller than m_flow_turbulent.
+  m_flow_nominal = 1e-006
+  dh      = 0.01905
+  To fix, set dh < 3.1831e-007
+  Suggested value: dh = 3.1831e-008
+... "TwoPipes.mat" creating (simulation result file)
+
+Integration started at T = 0 using integration method DASSL
+(DAE multi-step solver (dassl/dasslrt of Petzold modified by Dynasim))
+Integration terminated successfully at T = 8000
+   CPU-time for integration      : 0.025 seconds
+   CPU-time for one GRID interval: 0.05 milli-seconds
+   Number of result points       : 505
+   Number of GRID   points       : 501
+   Number of (successful) steps  : 207
+   Number of F-evaluations       : 749
+   Number of H-evaluations       : 838
+   Number of Jacobian-evaluations: 74
+   Number of (model) time events : 0
+   Number of (U) time events     : 0
+   Number of state    events     : 2
+   Number of step     events     : 0
+   Minimum integration stepsize  : 0.004
+   Maximum integration stepsize  : 2.03e+003
+   Maximum integration order     : 5
+Calling terminal section
+... "dsfinal.txt" creating (final states)

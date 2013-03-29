@@ -1,0 +1,13 @@
+Log-file of program ./dymosim
+(generated: Wed Sep 12 13:11:35 2012)
+
+dymosim started
+... "dsin.txt" loading (dymosim input file)
+... "C:/Program Files (x86)/Dymola 2012 FD01/Models/models/modelica/WaterHeater/current/modeling/branches/pgrant/TanklessWaterHeater/Condensing Input Files/InletWater.txt" loading (tables for interpolation)
+comAna.comCha.fluegas.state.T >= 200 and comAna.comCha.fluegas.state.T <= 6000
+The following error was detected at time: 0
+
+Temperature T (=30.8323 K = 200 K) is not in the allowed range
+200 K <= T <= 6000 K
+required from medium model "FlueGas".
+Error: Failed to start model.

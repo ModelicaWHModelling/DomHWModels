@@ -1,0 +1,8 @@
+Changes
+	Moved mDotD calculations into buoHeaTra. Still in spaghetti code form. Want to change that
+		Not sure can be changed (questions about working with arrays and referencing (i-1) when i = 1. How do you handle that using the visual representation?
+Notes:
+	Still have not been able to locate numeric Jacobian. References all of the equations in the buoyancy calculations when describing how it came to be. How do I narrow it down?
+Next Steps
+	1) Keep looking for that numeric jacobian
+	2) Move Q_Flow_Tot equations into buoHeaTra

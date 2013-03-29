@@ -1,0 +1,4 @@
+Previously the convection coefficient between the gas and the base of the tank was represented by a real expression = 2
+	Added the parameter h_GB, put h_GB into the realExpression
+	Results sensitive to h_GB implying that the addition/connection is correct
+		Is this more complicated than necessary? Do we want to have h_GB and h_cw_B be the same? Not going to be able to identify the two (limits of experimental data, can't really measure Q_gas->base and Q_base->water)

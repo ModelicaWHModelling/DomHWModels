@@ -1,0 +1,41 @@
+Notes
+	Added an algorithm used to predict mixing in the tank caused by a hot water draw
+	Base Classes:
+		minFloIn calculates the minimum percentage (using the polynomial curves specified by the user)
+		timDel calculates the time delay of each segment for the specific flow rate (using the polynomial curves specified by the user)
+	Added a timer to draHeaTra which identifies how long a draw has been active (set as during a draw if mDot > 0.000001)
+	Added a comparison (greater than block) to determine when the draw duration is larger than the time delay for each node
+	Added a summation for number of segments with time delay < timer
+	Created perFloIn to identify the percentage of inlet flow entering a specific segment
+		Stuck trying to program to change perIn for a given node over time. Ended up using min value * binary(timer > time delay)
+		Need to improve later
+	Added calculations to draHeaTra which identify SumBelow and draHeaTra
+Validation
+	minFloIn
+		Calculations for a single node (#20) match the numbers used to develop the polynomial
+			0.02 kg/s => 0.45 (input), 0.449967 (minFloIn)
+			0.12 kg/s => 0.3 (input), 0.299965 (minFloIn)
+			0.25 kg/s => 0.225 (inpus), 0.224963 (minFloIn)
+		Calculations for a single node (#16) match the numbers used to develop the polynomial
+			0.25 kg/s => 0.2 (input), 0.200019 (minFloIn)
+			0.12 kg/s => 0.1 (input), 0.100012 (minFloIn)
+			0.02 kg/s => 0 (input) 8e-6 (minFloIn)
+		Calculations using vector inputs to identify all nodes at the same time match the number used to develop the polynomial
+			0.25 kg/s => {0.225, 0.175, 0.15, 0.2, 0.2} (input), {0.224963, 0.174956, 0.149981, 0.199975, 0.200019}
+			0.12 kg/s => {0.3, 0.25, 0.2, 0.05, 0.1} (input), {0.299965, 0.249953, 0.199986, 0.0499763, 0.100012}
+	timDel
+		Calculations using vector inputs to identify all nodes
+			0.25 kg/s => {0, 3, 6, 10, 15, 40, 60, 80} (input), {0, 2.99967, 6.00038, 10.013, 14.9976, 39.9975, 59.9984, 79.9995} (timDel)
+			0.12 kg/s => {0, 0, 23, 43, 60, 65, 70, 75} (input), {0, -9e-5, 23.002, 43.008, 59.9994, 64.9994, 69.9996, 74.9998}
+			0.02 kg/s => (0,0, 23.03, 23.03, 23.03, 23.03, 23.03, 23.03} (input), {0, -8e-6, 23.03, 23.03, 23.03, 23.03, 23.03, 23.03}
+	timer > timDel
+		Should be true when timer > timDel. Is it?
+	timer > timDel summation
+		Correctly sums booleanToInteger.y
+			Yes
+	perFloIn
+		Flow rate for a node should increase to the minimum value after the calculated delay
+			Does for all nodes
+	draHeaTra
+		SumBelow correctly sums the flow coming up from nodes below
+		draHeaTra calculations have not been validated!

@@ -1,0 +1,5 @@
+Previously the mass flow rate caused by buoyancy was constant regardless of whether or not the burner was on
+	Created a phantom mD flow, creating screwy heat transfer effects
+Added an if statement around mass flow calculations
+	If Q < 5, flow = 0
+	Works much better

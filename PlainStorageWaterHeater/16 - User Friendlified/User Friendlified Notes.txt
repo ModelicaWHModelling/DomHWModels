@@ -1,0 +1,2 @@
+Changed names of several models to be more clear (somewhat imply what they are)
+	Added descriptions to help with that effort

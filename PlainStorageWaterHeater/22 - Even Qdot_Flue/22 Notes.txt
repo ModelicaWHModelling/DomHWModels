@@ -1,0 +1,6 @@
+Notes
+	Based on conversation with Dr. William (Bill) R. Hoover
+		Stated that baffles are typically designed to produce even heat transfer along the flue
+	Attempting to create an algorithm which results in nearly identical heat transfer along the flue
+		First through: Calculate T_F_avg and use in all sections
+		Hopefully this will yield better results in the top segments of the tank (Above the stratification layer)

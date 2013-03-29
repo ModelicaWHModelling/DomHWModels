@@ -1,0 +1,11 @@
+Verification check
+	Is the shower branch inlet temperature the trunk outlet temperature?
+		Yes
+	Is the sink branch inlet temperature the trunk outlet temperature?
+		Yes
+	Is the trunk inlet temperature the specified inlet temperature?
+		Yes
+	Do the flow rates combine correctly?
+		Yes
+	Do the flow rates go down each path as desired?
+		Yes

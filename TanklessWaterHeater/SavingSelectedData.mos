@@ -1,0 +1,8 @@
+fileName = "NonCondensingTanklessHeaterValidation.mat";
+CSVfile = "TanklessResult10.csv";
+n = readTrajectorySize(fileName);
+names={"Time.y","nonCondensing.T_Out","nonCondensing.T_Inlet","nonCondensing.Qdot_Environment", "nonCondensing.Qdot_in","nonCondensing.Qdot_Delivered","nonCondensing.mdot_water", "nonCondensing.T_amb","nonCondensing.ControlConstant"};
+traj=readTrajectory(fileName,names,n);
+traj_transposed = transpose(traj);
+DataFiles.writeCSVmatrix(CSVfile, names, traj_transposed);
+CalibrationParameters = DataFiles.readCSVmatrix("CalibrationInput.csv");

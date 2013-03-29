@@ -1,0 +1,10 @@
+Began work on converting spaghetti code into visual representation. Combined buo_B and buo_F into a combined model called buoHeaTra. Intending to eventually pass out Q_Flow_Tot from that class, all calcs contained within
+
+Steps Completed
+1) Create buoHeaTra class
+2) Move buo_B and buo_F into the class
+
+Next steps
+1) Add code calculating m_flow_BU for each segment
+2) Calculate mass balance inside buoHeaTra
+3) Calculate Q_Flow_Tot

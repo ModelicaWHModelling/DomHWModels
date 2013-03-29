@@ -1,0 +1,7 @@
+Notes
+	This model is based on 9 - Removed Jacobian. It is NOT based on 10 - hWF Calcs
+	Seems to make model run slowly at high flow rates (0.1 kg/s = 16 gpm)
+Plan
+	Go back, figure out how to make model run quickly when T_H(j) = T(i)
+	Once that is resolved, can dig into this issue more rapidly
+

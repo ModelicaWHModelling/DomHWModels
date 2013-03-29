@@ -1,0 +1,18 @@
+Originally set with only one T_start value. All segments had same T_start
+	Changed code to allow user to enter T_start vector, specify a T_start for each segment
+	Also changed convection coefficients to give a better calibration (h_GB and h_CV_F changed so that T_F better matches exp data)
+Also changed T_F equation
+	Previously calculated temperature of T_F[i] based on T_WL[i]
+		Makes no sense. First term used to identify how much heat had been removed from the gas. Needs to reference temp of segments below i
+		Changed to use T_WL_avg[i:nSeg]
+Results look good!
+	Now much closer match in terms of time burner is on
+
+Future changes
+	1. Remembering hearing at HWF (...William...? Retired, used to work for a manufacturer) that baffles are designed to cause constant heat transfer along flue wall
+		Need to creat algorithm which modifies h_cv_F with location in flue. Goal being to keep Q_gas=>wall constant
+		This change would increase Q_wall=> water at higher segments, would likely make top seg data more closely match experimental data
+	2. Definitely need to change model to work more accurately when burner is off (pilot only operation)
+		Currently calculates T_F0_y to be -1400 C
+			But is this a problem? T_F ends up being ~60 C (close to T_WL). How does this compare against data?
+			Data (end of 24 hr test): 54 C at bottom, 46 C at top. Sim (end of 24 hr test) ranges from ~46 C to 50 C. Numbers look good. Out of order though (T_F[nSeg] > T_F[1])

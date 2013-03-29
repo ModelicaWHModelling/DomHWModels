@@ -1,0 +1,14 @@
+3 - Changed Controller
+	Attempting to overcome windup problem by over-writing T_Out signal to the controller
+		When burner is not firing (mdot_Water too low, PowerSignal = 0, etc) input T_set in place of T_Out
+		Error when burner not firing = 0, should avoid windup
+		This may not be a good idea; works for characterization data, but maybe not for a heater in use
+			Characterization data includes the heater being turned off between draws. I term in heater is reset when turned off, does not happen in simulation. May be trying to mimic false phenomenon
+	Also changed inputs to controller. u_s = T_set / T_set (so u_s = 1). u_m = T_out / T_set, expressing T_out as a percentage of T_set in decimal form
+		Reduces range of error from ~0-60 to ~0-1
+		Controller appears to be smoother, less twitchy as a result
+	Conclusions
+		Better matches characterization data
+			May need to remove T_out signal changes (potentially eronneous)
+		Need new data set to better characterize
+			Must involve delays between draws with the heater on, allowing for observation of windup behavior

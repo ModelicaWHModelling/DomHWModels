@@ -1,0 +1,84 @@
+//Opens the tankless water heater package
+openModel("C:/Program Files (x86)/Dymola 2012 FD01/Models/models/modelica/TanklessWaterHeater/TanklessWaterHeater.mo")
+
+//Reads inputs in from file the CalibrationInput.csv and assigns the values to the matrix CalibrationParameters. This file will be used to store/transfer parameters between simulations
+CalibrationParameters = DataFiles.readCSVmatrix("CalibrationInput.csv");
+
+//Repeats the entire calibration loop ten times. Ten not specified for any specific reason
+for i in 1:10 loop
+
+	//This section performs a calibration for the capacitance using the period where the heat exchanger is warming up at the start of a draw. Presumably, if the PID constants and steady state efficiency are right, T_Out should give a good signal for capacitance
+//	Design.Calibration.calibrate(Design.Internal.Records.ModelCalibrationSetup(Model="TanklessWaterHeater.NonCondensingTanklessHeaterValidation", tunerParameters={Design.Internal.Records.TunerParameter(name="nonCondensing.Capacitance", Value=CalibrationParameters [1,1])}, calibrationData=Design.Calibration.Internal.Dynamic_common(Design.Internal.Records.DynamicCommonCalibrationCases(experimentNames={"C:/Program Files (x86)/Dymola 2012 FD01/Models/WaterHeater/current/modeling/branches/pgrant/TanklessWaterHeater/TanklessModelicaInput.csv"}, task={1}, startTime={3204}, stopTime={3700}, parameterNames={"nonCondensing.T_Node[10]", "nonCondensing.T_Node[1]", "nonCondensing.T_Node[2]", "nonCondensing.T_Node[3]", "nonCondensing.T_Node[4]", "nonCondensing.T_Node[5]", "nonCondensing.T_Node[6]", "nonCondensing.T_Node[7]", "nonCondensing.T_Node[8]", "nonCondensing.T_Node[9]","nonCondensingTanklessHXController.PID_D","nonCondensing.ConductionCoefficient","nonCondensingTanklessHXController.PID_k","nonCondensingTanklessHXController.PID_I","nonCondensing//.UA","nonCondensingTanklessHXController.PID_y_start"}, parameterValues=[61, 22, 24, 40, 42, 44, 45, 46, 58, 62,CalibrationParameters[1,5], CalibrationParameters[1,2],CalibrationParameters[1,3],CalibrationParameters[1,4],CalibrationParameters[1,6],CalibrationParameters[1,7]]), resultCouplings={Design.Internal.Records.DynamicCalibrationResultCoupling(variable="nonCondensing.T_Out", data="T_N10")})));
+
+	//This section reads the results of the calibration, and prints all of the characterization variables to a .csv file. It then reads the characterization variables back into Dymola so that they can be used in the next characterization simulation.
+//	simulateModel("",resultFile="test");
+//	fileName = "test.mat";
+//	CSVfile = "CalibrationInput.csv";
+//	n = 1;
+//	names={"nonCondensing.Capacitance","nonCondensingTanklessHXController.PID_k","nonCondensingTanklessHXController.PID_I","nonCondensingTanklessHXController.PID_D","nonCondensing.UA","nonCondensingTanklessHXController.PID_y_start"};
+//	traj=readTrajectory(fileName,names,n);
+//	traj_transposed = transpose(traj);
+//	DataFiles.writeCSVmatrix(CSVfile, names, traj_transposed);
+//	CalibrationParameters = DataFiles.readCSVmatrix("CalibrationInput.csv");
+
+
+	//Repeats the loop working on PID constants ten times. This loop exists because there are three PID constants (instead of a single value mattering for a data segment) and because I have little idea of where they should be (poor start value)
+	for i in 1:10 loop
+
+		//This line calls the simulation. It runs the Calibrate command from the Design menu, states to use the model TanklessWaterHeater.NonCondensingTanklessHeaterValidation, states that the tuner parameter will be "PID_I" in the controller, sets the start value to be read from the data matrix, assigns calibration data, sets start/stop time, states the names of case variables, states the value of case variables (some from data, some from CalibrationInputs.csv, and states which simulation variable output and data input should be compared
+
+		Design.Calibration.calibrate(Design.Internal.Records.ModelCalibrationSetup(Model="TanklessWaterHeater.NonCondensingTanklessHeaterValidation", tunerParameters={Design.Internal.Records.TunerParameter(name="nonCondensingTanklessHXController.PID_I", Value=CalibrationParameters[1,4])}, calibrationData=Design.Calibration.Internal.Dynamic_common(Design.Internal.Records.DynamicCommonCalibrationCases(experimentNames={"C:/Program Files (x86)/Dymola 2012 FD01/Models/WaterHeater/current/modeling/branches/pgrant/TanklessWaterHeater/TanklessModelicaInput.csv"}, task={1}, startTime={2420}, stopTime={2550}, parameterNames={"nonCondensing.Capacitance", "nonCondensing.UA", "nonCondensing.ConductionCoefficient", "nonCondensing.T_Node[1]", "nonCondensing.T_Node[2]", "nonCondensing.T_Node[3]", "nonCondensing.T_Node[4]", "nonCondensing.T_Node[5]", "nonCondensing.T_Node[6]", "nonCondensing.T_Node[7]", "nonCondensing.T_Node[8]", "nonCondensing.T_Node[9]", "nonCondensing.T_Node[10]", "nonCondensingTanklessHXController.PID_k", "nonCondensingTanklessHXController.//PID_D", "nonCondensingTanklessHXController.PID_y_start"}, parameterValues=[CalibrationParameters[1,1], CalibrationParameters[1,6], CalibrationParameters[1,2], 11.3, 11.3, 11.3, 11.3, 11.3, 11.3, 11.3, 11.3, 11.3, 11.3, CalibrationParameters[1,3], CalibrationParameters[1,5], CalibrationParameters[1,7]]), resultCouplings={Design.Internal.Records.DynamicCalibrationResultCoupling(variable="nonCondensing.T_Out", data="T_N10")})));
+	
+		simulateModel("",resultFile="test");
+		fileName = "test.mat";
+		CSVfile = "CalibrationInput.csv";
+		n = 1;
+		names={"nonCondensing.Capacitance","nonCondensingTanklessHXController.PID_k","nonCondensingTanklessHXController.PID_I","nonCondensingTanklessHXController.PID_D","nonCondensing.UA","nonCondensingTanklessHXController.PID_y_start"};
+		traj=readTrajectory(fileName,names,n);
+		traj_transposed = transpose(traj);
+		DataFiles.writeCSVmatrix(CSVfile, names, traj_transposed);
+		CalibrationParameters = DataFiles.readCSVmatrix("CalibrationInput.csv");
+
+		//This section performs the same process for PID_k
+		Design.Calibration.calibrate(Design.Internal.Records.ModelCalibrationSetup(Model="TanklessWaterHeater.NonCondensingTanklessHeaterValidation", tunerParameters={Design.Internal.Records.TunerParameter(name="nonCondensingTanklessHXController.PID_k", Value=CalibrationParameters[1,3])}, calibrationData=Design.Calibration.Internal.Dynamic_common(Design.Internal.Records.DynamicCommonCalibrationCases(experimentNames={"C:/Program Files (x86)/Dymola 2012 FD01/Models/WaterHeater/current/modeling/branches/pgrant/TanklessWaterHeater/TanklessModelicaInput.csv"}, task={1}, startTime={2420}, stopTime={2550}, parameterNames={"nonCondensing.Capacitance", "nonCondensing.UA", "nonCondensing.ConductionCoefficient", "nonCondensing.T_Node[1]", "nonCondensing.T_Node[2]", "nonCondensing.T_Node[3]", "nonCondensing.T_Node[4]", "nonCondensing.T_Node[5]", "nonCondensing.T_Node[6]", "nonCondensing.T_Node[7]", "nonCondensing.T_Node[8]", "nonCondensing.T_Node[9]", "nonCondensing.T_Node[10]", "nonCondensingTanklessHXController.PID_I", "nonCondensingTanklessHXController.PID_D", "nonCondensingTanklessHXController.PID_I"}, parameterValues=[CalibrationParameters[1,1], CalibrationParameters[1,6], CalibrationParameters[1,2], 11.3, 11.3, 11.3, 11.3, 11.3, 11.3, 11.3, 11.3, 11.3, 11.3, CalibrationParameters[1,3], CalibrationParameters[1,5], CalibrationParameters[1,4]]), resultCouplings={Design.Internal.Records.DynamicCalibrationResultCoupling(variable="nonCondensing.T_Out", data="T_N10")})));
+
+		simulateModel("",resultFile="test");
+		fileName = "test.mat";
+		CSVfile = "CalibrationInput.csv";
+		n = 1;
+		names={"nonCondensing.Capacitance","nonCondensingTanklessHXController.PID_k","nonCondensingTanklessHXController.PID_I","nonCondensingTanklessHXController.PID_D","nonCondensing.UA","nonCondensingTanklessHXController.PID_y_start"};
+		traj=readTrajectory(fileName,names,n);
+		traj_transposed = transpose(traj);
+		DataFiles.writeCSVmatrix(CSVfile, names, traj_transposed);
+		CalibrationParameters = DataFiles.readCSVmatrix("CalibrationInput.csv");
+
+		//This section performs the same process for PID_D
+		Design.Calibration.calibrate(Design.Internal.Records.ModelCalibrationSetup(Model="TanklessWaterHeater.NonCondensingTanklessHeaterValidation", tunerParameters={Design.Internal.Records.TunerParameter(name="nonCondensingTanklessHXController.PID_D", Value=CalibrationParameters[1,5])}, calibrationData=Design.Calibration.Internal.Dynamic_common(Design.Internal.Records.DynamicCommonCalibrationCases(experimentNames={"C:/Program Files (x86)/Dymola 2012 FD01/Models/WaterHeater/current/modeling/branches/pgrant/TanklessWaterHeater/TanklessModelicaInput.csv"}, task={1}, startTime={2420}, stopTime={2550}, parameterNames={"nonCondensing.Capacitance", "nonCondensing.UA", "nonCondensing.ConductionCoefficient", "nonCondensing.T_Node[1]", "nonCondensing.T_Node[2]", "nonCondensing.T_Node[3]", "nonCondensing.T_Node[4]", "nonCondensing.T_Node[5]", "nonCondensing.T_Node[6]", "nonCondensing.T_Node[7]", "nonCondensing.T_Node[8]", "nonCondensing.T_Node[9]", "nonCondensing.T_Node[10]", "nonCondensingTanklessHXController.PID_k", "nonCondensingTanklessHXController.PID_y_start", "nonCondensingTanklessHXController.PID_I"}, parameterValues=[CalibrationParameters[1,1], CalibrationParameters[1,6], CalibrationParameters[1,2], 51, 51, 51, 51, 51, 51, 51, 51, 51, 51, CalibrationParameters[1,3], CalibrationParameters[1,7], CalibrationParameters[1,4]]), resultCouplings={Design.Internal.Records.DynamicCalibrationResultCoupling(variable="nonCondensing.T_Out", data="T_N10")})));
+	
+		simulateModel("",resultFile="test");
+		fileName = "test.mat";
+		CSVfile = "CalibrationInput.csv";
+		n = 1;
+		names={"nonCondensing.Capacitance","nonCondensingTanklessHXController.PID_k","nonCondensingTanklessHXController.PID_I","nonCondensingTanklessHXController.PID_D","nonCondensing.UA","nonCondensingTanklessHXController.PID_y_start"};
+		traj=readTrajectory(fileName,names,n);
+		traj_transposed = transpose(traj);
+		DataFiles.writeCSVmatrix(CSVfile, names, traj_transposed);
+		CalibrationParameters = DataFiles.readCSVmatrix("CalibrationInput.csv");
+
+	end for;
+
+	//Performs a calibration for the UA value. Some reason to believe that there should be a different UA value (Or a different capacitance? That would make more sense) depending on whether or not there is a draw. Investigate. Identify UA, C this way then look at how well it predicts the effects of delays between draws (no water flow)
+//	Design.Calibration.calibrate(Design.Internal.Records.ModelCalibrationSetup(Model="TanklessWaterHeater.NonCondensingTanklessHeaterValidation", tunerParameters={Design.Internal.Records.TunerParameter(name="nonCondensing.UA", Value=CalibrationParameters[1,6])}, calibrationData=Design.Calibration.Internal.Dynamic_common(Design.Internal.Records.DynamicCommonCalibrationCases(experimentNames={"C:/Program Files (x86)/Dymola 2012 FD01/Models/WaterHeater/current/modeling/branches/pgrant/TanklessWaterHeater/TanklessModelicaInput.csv"}, task={1}, startTime={0}, stopTime={1580}, parameterNames={"nonCondensing.Capacitance", "nonCondensing.ConductionCoefficient", "nonCondensing.T_Node[1]", "nonCondensing.T_Node[2]", "nonCondensing.T_Node[3]", "nonCondensing.T_Node[4]", "nonCondensing.T_Node[5]", "nonCondensing.T_Node[6]", "nonCondensing.T_Node[7]", "nonCondensing.T_Node[8]", "nonCondensing.T_Node[9]", "nonCondensing.T_Node[10]", "nonCondensingTanklessHXController.PID_k", "nonCondensingTanklessHXController.PID_I", "nonCondensingTanklessHXController.P//ID_D"}, parameterValues=[CalibrationParameters[1,1], CalibrationParameters[1,2], 51, 51, 51, 51.5, 51.5, 51.5, 51.5, 52, 52, 52, CalibrationParameters[1,3], CalibrationParameters[1,4], CalibrationParameters[1,5]]), resultCouplings={Design.Internal.Records.DynamicCalibrationResultCoupling(variable="nonCondensing.T_Out", data="T_N10")})));
+
+//	simulateModel("",resultFile="test");
+//	fileName = "test.mat";
+//	CSVfile = "CalibrationInput.csv";
+//	n = 1;
+//	names={"nonCondensing.Capacitance","nonCondensingTanklessHXController.PID_k","nonCondensingTanklessHXController.PID_I","nonCondensingTanklessHXController.PID_D","nonCondensing.UA","nonCondensingTanklessHXController.PID_y_start"};
+//	traj=readTrajectory(fileName,names,n);
+//	traj_transposed = transpose(traj);
+//	DataFiles.writeCSVmatrix(CSVfile, names, traj_transposed);
+//	CalibrationParameters = DataFiles.readCSVmatrix("CalibrationInput.csv");
+
+
+end for;

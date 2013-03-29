@@ -1,0 +1,8 @@
+Model was again reporting a singularity when checked
+	Solved issue by adding a volume model to the outlet of the cooling coil. Set P_volume = P_atm (similar to outlet on gas side)
+	Fixed singularity issue
+NExt Steps
+	Currently cannot simulate model. Reports an error b/c mdot_gas < 0 and CombustionChamber model does not allow reverse flow
+		mdot_Gas should not be < 0 anyway
+		Worried that this issue is likely caused by changes used to use MoistAirUnsaturated in CombustionChamber
+		Need to use ThermoPower.Media.FlueGas in CombustionChamber, MoistAirUnsaturated in cooCoi, add a model somehow taking mdot_gas, H2O% from FlueGas and converting to MoistAir? 

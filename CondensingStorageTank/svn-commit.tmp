@@ -1,0 +1,11 @@
+
+--This line, and those below, will be ignored--
+
+A    DataInputFiles
+A    DataInputFiles/UALoss.txt
+A    DataInputFiles/UALoss
+A    DataInputFiles/RepeatedDraws.txt
+A    DataInputFiles/Validation.txt
+A    DataInputFiles/Test.csv
+A    DataInputFiles/Test
+A    DataInputFiles/RepeatedDrawsAveTempUsedToFindEff.txt

@@ -1,0 +1,11 @@
+Notes
+	Removed all unneccsary, commented out code in the tank model
+	Moved T_F calculation from algorithm to equation. Doing so removed the numerical jacobian
+		Does T_F in the new one match T_F in the old one?
+			Yes
+	Also changed bandwidth on controller to 8C (roughly 15 F per Jim Lutz)
+	Current version can end up running very slowly
+		If T_H is very close to TWat may rapidly switch between > and <
+		Dramatically slows down the simulation
+		How can this be improved?
+			May be OK for the GTI version, something to worry about for PIER

@@ -1,0 +1,13 @@
+Changed parameters in storage tank and burner to use values identified in calibration
+	Values not very good; could not achieve good calibration due to "lost heat" effect. Details later
+Added calculations for mDotC. Identifies height of straitification layer based on dt >= 1 C, changes mDotC above/below
+Believed this version of the model will not work
+	ADL equations only work if tank is well mixed. Otherwise buoyancy eqns lose heat (see pg 60, Water Heater Model Notes)
+	Cannot both keep perfect mixing (to avoid losing heat) and allow stratification layer to develop
+		Tried varying both mDotC and c_wI. c_wI is unable to generate enough mixing, mDotC must be too high for stratification layer to ever form
+Next Steps:
+	1) Redevlop buoyancy/mixing equations to use a much simpler method
+		a) Identify location of boundary layer based on dT >= 1 C
+		b) Sum all heat below stratification layer
+		c) Divide heat below strat layer among all segs below strat layer
+		d) Add heat directly to all segs above strat layer (QFlu = QSeg)

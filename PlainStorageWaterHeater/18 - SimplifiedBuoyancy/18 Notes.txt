@@ -1,0 +1,16 @@
+Changes
+	Removed all ADL buoyancy calculations
+	Replaced with a new methodology
+		1. Identifies location of a stratification layer based on dT(Seg(i) - Seg(i+1)) > 0.5 C
+		2. Takes all flue/base heat below stratification layer and divides it evenly among all segments below strat layer
+		3. Flue heat added above strat layer is added to its specific segment
+Things to look into
+	1) Do the equations work right when a segment is above the stratification layer? Should get heat directly from the flue
+		Doesn't this mean that buoHeaTra[i] = 0 for segs above stratification layer?
+		Checked: Works 99% right. Some error caused by smoothing functions identified. Need to eventually include logic to remove smoothing error, but OK for now
+	2) Check +/- signs on all terms. Make sure they are correct
+Next Steps
+	1) Make connections to storage tank using fluid ports
+		Allows input/output to be a real fluid with mass flow rate, temperature, pressure
+		Then can include a boundary condition external pressure for thermal expansion reasons
+			See Buildings.Examples.Tutorial

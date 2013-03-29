@@ -1,0 +1,331 @@
+Log-file of program ./dymosim
+(generated: Fri Oct 26 13:13:30 2012)
+
+dymosim started
+... "dsin.txt" loading (dymosim input file)
+... "StorageTankDrawProfile.txt" loading (tables for interpolation)
+Iterating to find consistent restart conditions.
+      during event at Time :  0
+... "WaterHeater.mat" creating (simulation result file)
+
+Integration started at T = 0 using integration method DASSL
+(DAE multi-step solver (dassl/dasslrt of Petzold modified by Dynasim))
+Expression tan.m_flow_in[15] > tan.draHeaTra.const[15].k became true ( (tan.m_flow_in[15])-(tan.draHeaTra.const[15].k) = 1.46157e-009 )
+Expression tan.m_flow_in[16] > tan.draHeaTra.const[16].k became true ( (tan.m_flow_in[16])-(tan.draHeaTra.const[16].k) = 1.46157e-009 )
+Expression tan.m_flow_in[17] > tan.draHeaTra.const[17].k became true ( (tan.m_flow_in[17])-(tan.draHeaTra.const[17].k) = 1.46157e-009 )
+Expression tan.m_flow_in[18] > tan.draHeaTra.const[18].k became true ( (tan.m_flow_in[18])-(tan.draHeaTra.const[18].k) = 1.46157e-009 )
+Expression tan.m_flow_in[19] > tan.draHeaTra.const[19].k became true ( (tan.m_flow_in[19])-(tan.draHeaTra.const[19].k) = 1.46157e-009 )
+Expression tan.m_flow_in[20] > tan.draHeaTra.const[20].k became true ( (tan.m_flow_in[20])-(tan.draHeaTra.const[20].k) = 1.46157e-009 )
+Expression tan.m_flow_in[1] > tan.draHeaTra.const[1].k became true ( (tan.m_flow_in[1])-(tan.draHeaTra.const[1].k) = 1.46157e-009 )
+Expression tan.m_flow_in[2] > tan.draHeaTra.const[2].k became true ( (tan.m_flow_in[2])-(tan.draHeaTra.const[2].k) = 1.46157e-009 )
+Expression tan.m_flow_in[3] > tan.draHeaTra.const[3].k became true ( (tan.m_flow_in[3])-(tan.draHeaTra.const[3].k) = 1.46157e-009 )
+Expression tan.m_flow_in[4] > tan.draHeaTra.const[4].k became true ( (tan.m_flow_in[4])-(tan.draHeaTra.const[4].k) = 1.46157e-009 )
+Expression tan.m_flow_in[5] > tan.draHeaTra.const[5].k became true ( (tan.m_flow_in[5])-(tan.draHeaTra.const[5].k) = 1.46157e-009 )
+Expression tan.m_flow_in[6] > tan.draHeaTra.const[6].k became true ( (tan.m_flow_in[6])-(tan.draHeaTra.const[6].k) = 1.46157e-009 )
+Expression tan.m_flow_in[7] > tan.draHeaTra.const[7].k became true ( (tan.m_flow_in[7])-(tan.draHeaTra.const[7].k) = 1.46157e-009 )
+Expression tan.m_flow_in[8] > tan.draHeaTra.const[8].k became true ( (tan.m_flow_in[8])-(tan.draHeaTra.const[8].k) = 1.46157e-009 )
+Expression tan.m_flow_in[9] > tan.draHeaTra.const[9].k became true ( (tan.m_flow_in[9])-(tan.draHeaTra.const[9].k) = 1.46157e-009 )
+Expression tan.m_flow_in[10] > tan.draHeaTra.const[10].k became true ( (tan.m_flow_in[10])-(tan.draHeaTra.const[10].k) = 1.46157e-009 )
+Expression tan.m_flow_in[11] > tan.draHeaTra.const[11].k became true ( (tan.m_flow_in[11])-(tan.draHeaTra.const[11].k) = 1.46157e-009 )
+Expression tan.m_flow_in[12] > tan.draHeaTra.const[12].k became true ( (tan.m_flow_in[12])-(tan.draHeaTra.const[12].k) = 1.46157e-009 )
+Expression tan.m_flow_in[13] > tan.draHeaTra.const[13].k became true ( (tan.m_flow_in[13])-(tan.draHeaTra.const[13].k) = 1.46157e-009 )
+Expression tan.m_flow_in[14] > tan.draHeaTra.const[14].k became true ( (tan.m_flow_in[14])-(tan.draHeaTra.const[14].k) = 1.46157e-009 )
+Iterating to find consistent restart conditions.
+      during event at Time :  1199.900005337614
+Expression tan.draHeaTra.timer[20].y > tan.draHeaTra.timDel1.y[20] became true ( (tan.draHeaTra.timer[20].y)-(tan.draHeaTra.timDel1.y[20]) = 6.00039e-010 )
+Iterating to find consistent restart conditions.
+      during event at Time :  1199.900005338214
+Expression tan.draHeaTra.timer[19].y > tan.draHeaTra.timDel1.y[19] became true ( (tan.draHeaTra.timer[19].y)-(tan.draHeaTra.timDel1.y[19]) = 7.64882e-010 )
+Iterating to find consistent restart conditions.
+      during event at Time :  1199.910139563064
+Expression tan.draHeaTra.timer[19].y > tan.draHeaTra.timDel1.y[19] became false ( (tan.draHeaTra.timer[19].y)-(tan.draHeaTra.timDel1.y[19]) = -1.22057e-008 )
+Iterating to find consistent restart conditions.
+      during event at Time :  1199.967419185108
+Expression tan.draHeaTra.timer[19].y > tan.draHeaTra.timDel1.y[19] became true ( (tan.draHeaTra.timer[19].y)-(tan.draHeaTra.timDel1.y[19]) = 6.01081e-010 )
+Iterating to find consistent restart conditions.
+      during event at Time :  1201.031320978358
+Expression tan.draHeaTra.timer[18].y > tan.draHeaTra.timDel1.y[18] became true ( (tan.draHeaTra.timer[18].y)-(tan.draHeaTra.timDel1.y[18]) = 6.11756e-010 )
+Iterating to find consistent restart conditions.
+      during event at Time :  1216.482703455656
+Expression tan.draHeaTra.timer[17].y > tan.draHeaTra.timDel1.y[17] became true ( (tan.draHeaTra.timer[17].y)-(tan.draHeaTra.timDel1.y[17]) = 7.10543e-015 )
+Iterating to find consistent restart conditions.
+      during event at Time :  1234.117801537239
+Expression tan.draHeaTra.timer[16].y > tan.draHeaTra.timDel1.y[16] became true ( (tan.draHeaTra.timer[16].y)-(tan.draHeaTra.timDel1.y[16]) = 6.25853e-010 )
+Iterating to find consistent restart conditions.
+      during event at Time :  1249.707988540741
+Expression tan.draHeaTra.timer[15].y > tan.draHeaTra.timDel1.y[15] became true ( (tan.draHeaTra.timer[15].y)-(tan.draHeaTra.timDel1.y[15]) = 6.34998e-010 )
+Iterating to find consistent restart conditions.
+      during event at Time :  1263.168566638993
+Expression tan.draHeaTra.timer[14].y > tan.draHeaTra.timDel1.y[14] became true ( (tan.draHeaTra.timer[14].y)-(tan.draHeaTra.timDel1.y[14]) = 6.40426e-010 )
+Iterating to find consistent restart conditions.
+      during event at Time :  1274.743824877673
+Expression tan.draHeaTra.timer[1].y > tan.draHeaTra.timDel1.y[1] became true ( (tan.draHeaTra.timer[1].y)-(tan.draHeaTra.timDel1.y[1]) = 9.9476e-014 )
+Expression tan.draHeaTra.timer[2].y > tan.draHeaTra.timDel1.y[2] became true ( (tan.draHeaTra.timer[2].y)-(tan.draHeaTra.timDel1.y[2]) = 9.9476e-014 )
+Expression tan.draHeaTra.timer[3].y > tan.draHeaTra.timDel1.y[3] became true ( (tan.draHeaTra.timer[3].y)-(tan.draHeaTra.timDel1.y[3]) = 9.9476e-014 )
+Expression tan.draHeaTra.timer[4].y > tan.draHeaTra.timDel1.y[4] became true ( (tan.draHeaTra.timer[4].y)-(tan.draHeaTra.timDel1.y[4]) = 9.9476e-014 )
+Expression tan.draHeaTra.timer[5].y > tan.draHeaTra.timDel1.y[5] became true ( (tan.draHeaTra.timer[5].y)-(tan.draHeaTra.timDel1.y[5]) = 9.9476e-014 )
+Expression tan.draHeaTra.timer[6].y > tan.draHeaTra.timDel1.y[6] became true ( (tan.draHeaTra.timer[6].y)-(tan.draHeaTra.timDel1.y[6]) = 9.9476e-014 )
+Expression tan.draHeaTra.timer[7].y > tan.draHeaTra.timDel1.y[7] became true ( (tan.draHeaTra.timer[7].y)-(tan.draHeaTra.timDel1.y[7]) = 9.9476e-014 )
+Expression tan.draHeaTra.timer[8].y > tan.draHeaTra.timDel1.y[8] became true ( (tan.draHeaTra.timer[8].y)-(tan.draHeaTra.timDel1.y[8]) = 9.9476e-014 )
+Expression tan.draHeaTra.timer[9].y > tan.draHeaTra.timDel1.y[9] became true ( (tan.draHeaTra.timer[9].y)-(tan.draHeaTra.timDel1.y[9]) = 9.9476e-014 )
+Expression tan.draHeaTra.timer[10].y > tan.draHeaTra.timDel1.y[10] became true ( (tan.draHeaTra.timer[10].y)-(tan.draHeaTra.timDel1.y[10]) = 9.9476e-014 )
+Expression tan.draHeaTra.timer[11].y > tan.draHeaTra.timDel1.y[11] became true ( (tan.draHeaTra.timer[11].y)-(tan.draHeaTra.timDel1.y[11]) = 9.9476e-014 )
+Expression tan.draHeaTra.timer[12].y > tan.draHeaTra.timDel1.y[12] became true ( (tan.draHeaTra.timer[12].y)-(tan.draHeaTra.timDel1.y[12]) = 9.9476e-014 )
+Expression tan.draHeaTra.timer[13].y > tan.draHeaTra.timDel1.y[13] became true ( (tan.draHeaTra.timer[13].y)-(tan.draHeaTra.timDel1.y[13]) = 9.9476e-014 )
+Iterating to find consistent restart conditions.
+      during event at Time :  1286.319183115708
+Expression T_sensor.T < T_switch.k-onOffController.bandwidth/2 became true ( (T_sensor.T)-(T_switch.k-onOffController.bandwidth/2) = -1.13687e-013 )
+  Variable onOffController.y = 1 at time 1323.73
+Iterating to find consistent restart conditions.
+Expression T_sensor.T < T_switch.k+onOffController.bandwidth/2 became true ( (T_sensor.T)-(T_switch.k+onOffController.bandwidth/2) = -12 )
+Iterating to find consistent restart conditions.
+      during event at Time :  1323.726401570907
+
+... Warning message from dymosim
+At time T = 1.377759e+003 in current integration interval
+T_interval = 1.376000e+003 ... 1.382400e+003
+a large amount of work has been expended
+(about 500 steps) in the integrator. Probably the communciation
+interval is too large or the system is stiff.
+
+Expression tan.m_flow_in[15] > tan.draHeaTra.const[15].k became false ( (tan.m_flow_in[15])-(tan.draHeaTra.const[15].k) = -1.95389e-013 )
+Expression tan.draHeaTra.timer[15].y > tan.draHeaTra.timDel1.y[15] became false ( (tan.draHeaTra.timer[15].y)-(tan.draHeaTra.timDel1.y[15]) = -8.25912 )
+Expression tan.m_flow_in[16] > tan.draHeaTra.const[16].k became false ( (tan.m_flow_in[16])-(tan.draHeaTra.const[16].k) = -1.95389e-013 )
+Expression tan.draHeaTra.timer[16].y > tan.draHeaTra.timDel1.y[16] became false ( (tan.draHeaTra.timer[16].y)-(tan.draHeaTra.timDel1.y[16]) = -8.17565 )
+Expression tan.m_flow_in[17] > tan.draHeaTra.const[17].k became false ( (tan.m_flow_in[17])-(tan.draHeaTra.const[17].k) = -1.95389e-013 )
+Expression tan.draHeaTra.timer[17].y > tan.draHeaTra.timDel1.y[17] became false ( (tan.draHeaTra.timer[17].y)-(tan.draHeaTra.timDel1.y[17]) = -14.3098 )
+Expression tan.m_flow_in[18] > tan.draHeaTra.const[18].k became false ( (tan.m_flow_in[18])-(tan.draHeaTra.const[18].k) = -1.95389e-013 )
+Expression tan.draHeaTra.timer[18].y > tan.draHeaTra.timDel1.y[18] became false ( (tan.draHeaTra.timer[18].y)-(tan.draHeaTra.timDel1.y[18]) = -21.6768 )
+Expression tan.m_flow_in[19] > tan.draHeaTra.const[19].k became false ( (tan.m_flow_in[19])-(tan.draHeaTra.const[19].k) = -1.95389e-013 )
+Expression tan.draHeaTra.timer[19].y > tan.draHeaTra.timDel1.y[19] became false ( (tan.draHeaTra.timer[19].y)-(tan.draHeaTra.timDel1.y[19]) = -0.24066 )
+Expression tan.m_flow_in[20] > tan.draHeaTra.const[20].k became false ( (tan.m_flow_in[20])-(tan.draHeaTra.const[20].k) = -1.95389e-013 )
+Expression tan.draHeaTra.timer[20].y > tan.draHeaTra.timDel1.y[20] became false ( (tan.draHeaTra.timer[20].y)-(tan.draHeaTra.timDel1.y[20]) = 0 )
+Expression tan.m_flow_in[1] > tan.draHeaTra.const[1].k became false ( (tan.m_flow_in[1])-(tan.draHeaTra.const[1].k) = -1.95389e-013 )
+Expression tan.draHeaTra.timer[1].y > tan.draHeaTra.timDel1.y[1] became false ( (tan.draHeaTra.timer[1].y)-(tan.draHeaTra.timDel1.y[1]) = -7.62383 )
+Expression tan.m_flow_in[2] > tan.draHeaTra.const[2].k became false ( (tan.m_flow_in[2])-(tan.draHeaTra.const[2].k) = -1.95389e-013 )
+Expression tan.draHeaTra.timer[2].y > tan.draHeaTra.timDel1.y[2] became false ( (tan.draHeaTra.timer[2].y)-(tan.draHeaTra.timDel1.y[2]) = -7.62383 )
+Expression tan.m_flow_in[3] > tan.draHeaTra.const[3].k became false ( (tan.m_flow_in[3])-(tan.draHeaTra.const[3].k) = -1.95389e-013 )
+Expression tan.draHeaTra.timer[3].y > tan.draHeaTra.timDel1.y[3] became false ( (tan.draHeaTra.timer[3].y)-(tan.draHeaTra.timDel1.y[3]) = -7.62383 )
+Expression tan.m_flow_in[4] > tan.draHeaTra.const[4].k became false ( (tan.m_flow_in[4])-(tan.draHeaTra.const[4].k) = -1.95389e-013 )
+Expression tan.draHeaTra.timer[4].y > tan.draHeaTra.timDel1.y[4] became false ( (tan.draHeaTra.timer[4].y)-(tan.draHeaTra.timDel1.y[4]) = -7.62383 )
+Expression tan.m_flow_in[5] > tan.draHeaTra.const[5].k became false ( (tan.m_flow_in[5])-(tan.draHeaTra.const[5].k) = -1.95389e-013 )
+Expression tan.draHeaTra.timer[5].y > tan.draHeaTra.timDel1.y[5] became false ( (tan.draHeaTra.timer[5].y)-(tan.draHeaTra.timDel1.y[5]) = -7.62383 )
+Expression tan.m_flow_in[6] > tan.draHeaTra.const[6].k became false ( (tan.m_flow_in[6])-(tan.draHeaTra.const[6].k) = -1.95389e-013 )
+Expression tan.draHeaTra.timer[6].y > tan.draHeaTra.timDel1.y[6] became false ( (tan.draHeaTra.timer[6].y)-(tan.draHeaTra.timDel1.y[6]) = -7.62383 )
+Expression tan.m_flow_in[7] > tan.draHeaTra.const[7].k became false ( (tan.m_flow_in[7])-(tan.draHeaTra.const[7].k) = -1.95389e-013 )
+Expression tan.draHeaTra.timer[7].y > tan.draHeaTra.timDel1.y[7] became false ( (tan.draHeaTra.timer[7].y)-(tan.draHeaTra.timDel1.y[7]) = -7.62383 )
+Expression tan.m_flow_in[8] > tan.draHeaTra.const[8].k became false ( (tan.m_flow_in[8])-(tan.draHeaTra.const[8].k) = -1.95389e-013 )
+Expression tan.draHeaTra.timer[8].y > tan.draHeaTra.timDel1.y[8] became false ( (tan.draHeaTra.timer[8].y)-(tan.draHeaTra.timDel1.y[8]) = -7.62383 )
+Expression tan.m_flow_in[9] > tan.draHeaTra.const[9].k became false ( (tan.m_flow_in[9])-(tan.draHeaTra.const[9].k) = -1.95389e-013 )
+Expression tan.draHeaTra.timer[9].y > tan.draHeaTra.timDel1.y[9] became false ( (tan.draHeaTra.timer[9].y)-(tan.draHeaTra.timDel1.y[9]) = -7.62383 )
+Expression tan.m_flow_in[10] > tan.draHeaTra.const[10].k became false ( (tan.m_flow_in[10])-(tan.draHeaTra.const[10].k) = -1.95389e-013 )
+Expression tan.draHeaTra.timer[10].y > tan.draHeaTra.timDel1.y[10] became false ( (tan.draHeaTra.timer[10].y)-(tan.draHeaTra.timDel1.y[10]) = -7.62383 )
+Expression tan.m_flow_in[11] > tan.draHeaTra.const[11].k became false ( (tan.m_flow_in[11])-(tan.draHeaTra.const[11].k) = -1.95389e-013 )
+Expression tan.draHeaTra.timer[11].y > tan.draHeaTra.timDel1.y[11] became false ( (tan.draHeaTra.timer[11].y)-(tan.draHeaTra.timDel1.y[11]) = -7.62383 )
+Expression tan.m_flow_in[12] > tan.draHeaTra.const[12].k became false ( (tan.m_flow_in[12])-(tan.draHeaTra.const[12].k) = -1.95389e-013 )
+Expression tan.draHeaTra.timer[12].y > tan.draHeaTra.timDel1.y[12] became false ( (tan.draHeaTra.timer[12].y)-(tan.draHeaTra.timDel1.y[12]) = -7.62383 )
+Expression tan.m_flow_in[13] > tan.draHeaTra.const[13].k became false ( (tan.m_flow_in[13])-(tan.draHeaTra.const[13].k) = -1.95389e-013 )
+Expression tan.draHeaTra.timer[13].y > tan.draHeaTra.timDel1.y[13] became false ( (tan.draHeaTra.timer[13].y)-(tan.draHeaTra.timDel1.y[13]) = -7.62383 )
+Expression tan.m_flow_in[14] > tan.draHeaTra.const[14].k became false ( (tan.m_flow_in[14])-(tan.draHeaTra.const[14].k) = -1.95389e-013 )
+Expression tan.draHeaTra.timer[14].y > tan.draHeaTra.timDel1.y[14] became false ( (tan.draHeaTra.timer[14].y)-(tan.draHeaTra.timDel1.y[14]) = -7.94142 )
+Iterating to find consistent restart conditions.
+      during event at Time :  1900.099994663166
+Expression T_sensor.T < T_switch.k+onOffController.bandwidth/2 became false ( (T_sensor.T)-(T_switch.k+onOffController.bandwidth/2) = 2.17142e-011 )
+Expression T_sensor.T < T_switch.k-onOffController.bandwidth/2 became false ( (T_sensor.T)-(T_switch.k-onOffController.bandwidth/2) = 12 )
+  Variable onOffController.y = 0 at time 2099
+Iterating to find consistent restart conditions.
+      during event at Time :  2098.999377948986
+false
+The following error was detected at time: 2102.442654210538
+error in region computation of IF97 steam tables(p = 347700, h = -129890)
+The stack of functions is:
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph
+Modelica.Media.Water.IF97_Utilities.waterBaseProp_ph(tan.boundary[10].p, tan.vol[10].dynBal.medium.h, 0, 0)
+Solver will attempt to handle this problem.
+
+Expression tan.m_flow_in[15] > tan.draHeaTra.const[15].k became true ( (tan.m_flow_in[15])-(tan.draHeaTra.const[15].k) = 3.90557e-010 )
+Expression tan.m_flow_in[16] > tan.draHeaTra.const[16].k became true ( (tan.m_flow_in[16])-(tan.draHeaTra.const[16].k) = 3.90557e-010 )
+Expression tan.m_flow_in[17] > tan.draHeaTra.const[17].k became true ( (tan.m_flow_in[17])-(tan.draHeaTra.const[17].k) = 3.90557e-010 )
+Expression tan.m_flow_in[18] > tan.draHeaTra.const[18].k became true ( (tan.m_flow_in[18])-(tan.draHeaTra.const[18].k) = 3.90557e-010 )
+Expression tan.m_flow_in[19] > tan.draHeaTra.const[19].k became true ( (tan.m_flow_in[19])-(tan.draHeaTra.const[19].k) = 3.90557e-010 )
+Expression tan.m_flow_in[20] > tan.draHeaTra.const[20].k became true ( (tan.m_flow_in[20])-(tan.draHeaTra.const[20].k) = 3.90557e-010 )
+Expression tan.m_flow_in[1] > tan.draHeaTra.const[1].k became true ( (tan.m_flow_in[1])-(tan.draHeaTra.const[1].k) = 3.90557e-010 )
+Expression tan.m_flow_in[2] > tan.draHeaTra.const[2].k became true ( (tan.m_flow_in[2])-(tan.draHeaTra.const[2].k) = 3.90557e-010 )
+Expression tan.m_flow_in[3] > tan.draHeaTra.const[3].k became true ( (tan.m_flow_in[3])-(tan.draHeaTra.const[3].k) = 3.90557e-010 )
+Expression tan.m_flow_in[4] > tan.draHeaTra.const[4].k became true ( (tan.m_flow_in[4])-(tan.draHeaTra.const[4].k) = 3.90557e-010 )
+Expression tan.m_flow_in[5] > tan.draHeaTra.const[5].k became true ( (tan.m_flow_in[5])-(tan.draHeaTra.const[5].k) = 3.90557e-010 )
+Expression tan.m_flow_in[6] > tan.draHeaTra.const[6].k became true ( (tan.m_flow_in[6])-(tan.draHeaTra.const[6].k) = 3.90557e-010 )
+Expression tan.m_flow_in[7] > tan.draHeaTra.const[7].k became true ( (tan.m_flow_in[7])-(tan.draHeaTra.const[7].k) = 3.90557e-010 )
+Expression tan.m_flow_in[8] > tan.draHeaTra.const[8].k became true ( (tan.m_flow_in[8])-(tan.draHeaTra.const[8].k) = 3.90557e-010 )
+Expression tan.m_flow_in[9] > tan.draHeaTra.const[9].k became true ( (tan.m_flow_in[9])-(tan.draHeaTra.const[9].k) = 3.90557e-010 )
+Expression tan.m_flow_in[10] > tan.draHeaTra.const[10].k became true ( (tan.m_flow_in[10])-(tan.draHeaTra.const[10].k) = 3.90557e-010 )
+Expression tan.m_flow_in[11] > tan.draHeaTra.const[11].k became true ( (tan.m_flow_in[11])-(tan.draHeaTra.const[11].k) = 3.90557e-010 )
+Expression tan.m_flow_in[12] > tan.draHeaTra.const[12].k became true ( (tan.m_flow_in[12])-(tan.draHeaTra.const[12].k) = 3.90557e-010 )
+Expression tan.m_flow_in[13] > tan.draHeaTra.const[13].k became true ( (tan.m_flow_in[13])-(tan.draHeaTra.const[13].k) = 3.90557e-010 )
+Expression tan.m_flow_in[14] > tan.draHeaTra.const[14].k became true ( (tan.m_flow_in[14])-(tan.draHeaTra.const[14].k) = 3.90557e-010 )
+Iterating to find consistent restart conditions.
+      during event at Time :  2900.000050001953
+Expression tan.draHeaTra.timer[20].y > tan.draHeaTra.timDel1.y[20] became true ( (tan.draHeaTra.timer[20].y)-(tan.draHeaTra.timDel1.y[20]) = 1.45019e-009 )
+Iterating to find consistent restart conditions.
+      during event at Time :  2900.000050003403
+Expression tan.draHeaTra.timer[19].y > tan.draHeaTra.timDel1.y[19] became true ( (tan.draHeaTra.timer[19].y)-(tan.draHeaTra.timDel1.y[19]) = 6.84585e-010 )
+Iterating to find consistent restart conditions.
+      during event at Time :  2900.068112725178
+Expression tan.draHeaTra.timer[14].y > tan.draHeaTra.timDel1.y[14] became true ( (tan.draHeaTra.timer[14].y)-(tan.draHeaTra.timDel1.y[14]) = 4.9738e-014 )
+Iterating to find consistent restart conditions.
+      during event at Time :  2923.031010001953
+Expression tan.draHeaTra.timer[1].y > tan.draHeaTra.timDel1.y[1] became true ( (tan.draHeaTra.timer[1].y)-(tan.draHeaTra.timDel1.y[1]) = 1.46155e-009 )
+Expression tan.draHeaTra.timer[2].y > tan.draHeaTra.timDel1.y[2] became true ( (tan.draHeaTra.timer[2].y)-(tan.draHeaTra.timDel1.y[2]) = 1.46155e-009 )
+Expression tan.draHeaTra.timer[3].y > tan.draHeaTra.timDel1.y[3] became true ( (tan.draHeaTra.timer[3].y)-(tan.draHeaTra.timDel1.y[3]) = 1.46155e-009 )
+Expression tan.draHeaTra.timer[4].y > tan.draHeaTra.timDel1.y[4] became true ( (tan.draHeaTra.timer[4].y)-(tan.draHeaTra.timDel1.y[4]) = 1.46155e-009 )
+Expression tan.draHeaTra.timer[5].y > tan.draHeaTra.timDel1.y[5] became true ( (tan.draHeaTra.timer[5].y)-(tan.draHeaTra.timDel1.y[5]) = 1.46155e-009 )
+Expression tan.draHeaTra.timer[6].y > tan.draHeaTra.timDel1.y[6] became true ( (tan.draHeaTra.timer[6].y)-(tan.draHeaTra.timDel1.y[6]) = 1.46155e-009 )
+Expression tan.draHeaTra.timer[7].y > tan.draHeaTra.timDel1.y[7] became true ( (tan.draHeaTra.timer[7].y)-(tan.draHeaTra.timDel1.y[7]) = 1.46155e-009 )
+Expression tan.draHeaTra.timer[8].y > tan.draHeaTra.timDel1.y[8] became true ( (tan.draHeaTra.timer[8].y)-(tan.draHeaTra.timDel1.y[8]) = 1.46155e-009 )
+Expression tan.draHeaTra.timer[9].y > tan.draHeaTra.timDel1.y[9] became true ( (tan.draHeaTra.timer[9].y)-(tan.draHeaTra.timDel1.y[9]) = 1.46155e-009 )
+Expression tan.draHeaTra.timer[10].y > tan.draHeaTra.timDel1.y[10] became true ( (tan.draHeaTra.timer[10].y)-(tan.draHeaTra.timDel1.y[10]) = 1.46155e-009 )
+Expression tan.draHeaTra.timer[11].y > tan.draHeaTra.timDel1.y[11] became true ( (tan.draHeaTra.timer[11].y)-(tan.draHeaTra.timDel1.y[11]) = 1.46155e-009 )
+Expression tan.draHeaTra.timer[12].y > tan.draHeaTra.timDel1.y[12] became true ( (tan.draHeaTra.timer[12].y)-(tan.draHeaTra.timDel1.y[12]) = 1.46155e-009 )
+Expression tan.draHeaTra.timer[13].y > tan.draHeaTra.timDel1.y[13] became true ( (tan.draHeaTra.timer[13].y)-(tan.draHeaTra.timDel1.y[13]) = 1.46155e-009 )
+Iterating to find consistent restart conditions.
+      during event at Time :  2923.031030003414
+Expression tan.draHeaTra.timer[15].y > tan.draHeaTra.timDel1.y[15] became true ( (tan.draHeaTra.timer[15].y)-(tan.draHeaTra.timDel1.y[15]) = 1.46141e-009 )
+Expression tan.draHeaTra.timer[16].y > tan.draHeaTra.timDel1.y[16] became true ( (tan.draHeaTra.timer[16].y)-(tan.draHeaTra.timDel1.y[16]) = 1.46141e-009 )
+Iterating to find consistent restart conditions.
+      during event at Time :  2923.031090003414
+Expression tan.draHeaTra.timer[18].y > tan.draHeaTra.timDel1.y[18] became true ( (tan.draHeaTra.timer[18].y)-(tan.draHeaTra.timDel1.y[18]) = 1.13687e-013 )
+Iterating to find consistent restart conditions.
+      during event at Time :  2923.031166001953
+Expression tan.draHeaTra.timer[17].y > tan.draHeaTra.timDel1.y[17] became true ( (tan.draHeaTra.timer[17].y)-(tan.draHeaTra.timDel1.y[17]) = 2.02505e-013 )
+Iterating to find consistent restart conditions.
+      during event at Time :  2923.031490001953
+Expression tan.m_flow_in[15] > tan.draHeaTra.const[15].k became false ( (tan.m_flow_in[15])-(tan.draHeaTra.const[15].k) = -3.00295e-010 )
+Expression tan.draHeaTra.timer[15].y > tan.draHeaTra.timDel1.y[15] became false ( (tan.draHeaTra.timer[15].y)-(tan.draHeaTra.timDel1.y[15]) = -8.25912 )
+Expression tan.m_flow_in[16] > tan.draHeaTra.const[16].k became false ( (tan.m_flow_in[16])-(tan.draHeaTra.const[16].k) = -3.00295e-010 )
+Expression tan.draHeaTra.timer[16].y > tan.draHeaTra.timDel1.y[16] became false ( (tan.draHeaTra.timer[16].y)-(tan.draHeaTra.timDel1.y[16]) = -8.17565 )
+Expression tan.m_flow_in[17] > tan.draHeaTra.const[17].k became false ( (tan.m_flow_in[17])-(tan.draHeaTra.const[17].k) = -3.00295e-010 )
+Expression tan.draHeaTra.timer[17].y > tan.draHeaTra.timDel1.y[17] became false ( (tan.draHeaTra.timer[17].y)-(tan.draHeaTra.timDel1.y[17]) = -14.3098 )
+Expression tan.m_flow_in[18] > tan.draHeaTra.const[18].k became false ( (tan.m_flow_in[18])-(tan.draHeaTra.const[18].k) = -3.00295e-010 )
+Expression tan.draHeaTra.timer[18].y > tan.draHeaTra.timDel1.y[18] became false ( (tan.draHeaTra.timer[18].y)-(tan.draHeaTra.timDel1.y[18]) = -21.6768 )
+Expression tan.m_flow_in[19] > tan.draHeaTra.const[19].k became false ( (tan.m_flow_in[19])-(tan.draHeaTra.const[19].k) = -3.00295e-010 )
+Expression tan.draHeaTra.timer[19].y > tan.draHeaTra.timDel1.y[19] became false ( (tan.draHeaTra.timer[19].y)-(tan.draHeaTra.timDel1.y[19]) = -0.24066 )
+Expression tan.m_flow_in[20] > tan.draHeaTra.const[20].k became false ( (tan.m_flow_in[20])-(tan.draHeaTra.const[20].k) = -3.00295e-010 )
+Expression tan.draHeaTra.timer[20].y > tan.draHeaTra.timDel1.y[20] became false ( (tan.draHeaTra.timer[20].y)-(tan.draHeaTra.timDel1.y[20]) = 0 )
+Expression tan.m_flow_in[1] > tan.draHeaTra.const[1].k became false ( (tan.m_flow_in[1])-(tan.draHeaTra.const[1].k) = -3.00295e-010 )
+Expression tan.draHeaTra.timer[1].y > tan.draHeaTra.timDel1.y[1] became false ( (tan.draHeaTra.timer[1].y)-(tan.draHeaTra.timDel1.y[1]) = -7.62383 )
+Expression tan.m_flow_in[2] > tan.draHeaTra.const[2].k became false ( (tan.m_flow_in[2])-(tan.draHeaTra.const[2].k) = -3.00295e-010 )
+Expression tan.draHeaTra.timer[2].y > tan.draHeaTra.timDel1.y[2] became false ( (tan.draHeaTra.timer[2].y)-(tan.draHeaTra.timDel1.y[2]) = -7.62383 )
+Expression tan.m_flow_in[3] > tan.draHeaTra.const[3].k became false ( (tan.m_flow_in[3])-(tan.draHeaTra.const[3].k) = -3.00295e-010 )
+Expression tan.draHeaTra.timer[3].y > tan.draHeaTra.timDel1.y[3] became false ( (tan.draHeaTra.timer[3].y)-(tan.draHeaTra.timDel1.y[3]) = -7.62383 )
+Expression tan.m_flow_in[4] > tan.draHeaTra.const[4].k became false ( (tan.m_flow_in[4])-(tan.draHeaTra.const[4].k) = -3.00295e-010 )
+Expression tan.draHeaTra.timer[4].y > tan.draHeaTra.timDel1.y[4] became false ( (tan.draHeaTra.timer[4].y)-(tan.draHeaTra.timDel1.y[4]) = -7.62383 )
+Expression tan.m_flow_in[5] > tan.draHeaTra.const[5].k became false ( (tan.m_flow_in[5])-(tan.draHeaTra.const[5].k) = -3.00295e-010 )
+Expression tan.draHeaTra.timer[5].y > tan.draHeaTra.timDel1.y[5] became false ( (tan.draHeaTra.timer[5].y)-(tan.draHeaTra.timDel1.y[5]) = -7.62383 )
+Expression tan.m_flow_in[6] > tan.draHeaTra.const[6].k became false ( (tan.m_flow_in[6])-(tan.draHeaTra.const[6].k) = -3.00295e-010 )
+Expression tan.draHeaTra.timer[6].y > tan.draHeaTra.timDel1.y[6] became false ( (tan.draHeaTra.timer[6].y)-(tan.draHeaTra.timDel1.y[6]) = -7.62383 )
+Expression tan.m_flow_in[7] > tan.draHeaTra.const[7].k became false ( (tan.m_flow_in[7])-(tan.draHeaTra.const[7].k) = -3.00295e-010 )
+Expression tan.draHeaTra.timer[7].y > tan.draHeaTra.timDel1.y[7] became false ( (tan.draHeaTra.timer[7].y)-(tan.draHeaTra.timDel1.y[7]) = -7.62383 )
+Expression tan.m_flow_in[8] > tan.draHeaTra.const[8].k became false ( (tan.m_flow_in[8])-(tan.draHeaTra.const[8].k) = -3.00295e-010 )
+Expression tan.draHeaTra.timer[8].y > tan.draHeaTra.timDel1.y[8] became false ( (tan.draHeaTra.timer[8].y)-(tan.draHeaTra.timDel1.y[8]) = -7.62383 )
+Expression tan.m_flow_in[9] > tan.draHeaTra.const[9].k became false ( (tan.m_flow_in[9])-(tan.draHeaTra.const[9].k) = -3.00295e-010 )
+Expression tan.draHeaTra.timer[9].y > tan.draHeaTra.timDel1.y[9] became false ( (tan.draHeaTra.timer[9].y)-(tan.draHeaTra.timDel1.y[9]) = -7.62383 )
+Expression tan.m_flow_in[10] > tan.draHeaTra.const[10].k became false ( (tan.m_flow_in[10])-(tan.draHeaTra.const[10].k) = -3.00295e-010 )
+Expression tan.draHeaTra.timer[10].y > tan.draHeaTra.timDel1.y[10] became false ( (tan.draHeaTra.timer[10].y)-(tan.draHeaTra.timDel1.y[10]) = -7.62383 )
+Expression tan.m_flow_in[11] > tan.draHeaTra.const[11].k became false ( (tan.m_flow_in[11])-(tan.draHeaTra.const[11].k) = -3.00295e-010 )
+Expression tan.draHeaTra.timer[11].y > tan.draHeaTra.timDel1.y[11] became false ( (tan.draHeaTra.timer[11].y)-(tan.draHeaTra.timDel1.y[11]) = -7.62383 )
+Expression tan.m_flow_in[12] > tan.draHeaTra.const[12].k became false ( (tan.m_flow_in[12])-(tan.draHeaTra.const[12].k) = -3.00295e-010 )
+Expression tan.draHeaTra.timer[12].y > tan.draHeaTra.timDel1.y[12] became false ( (tan.draHeaTra.timer[12].y)-(tan.draHeaTra.timDel1.y[12]) = -7.62383 )
+Expression tan.m_flow_in[13] > tan.draHeaTra.const[13].k became false ( (tan.m_flow_in[13])-(tan.draHeaTra.const[13].k) = -3.00295e-010 )
+Expression tan.draHeaTra.timer[13].y > tan.draHeaTra.timDel1.y[13] became false ( (tan.draHeaTra.timer[13].y)-(tan.draHeaTra.timDel1.y[13]) = -7.62383 )
+Expression tan.m_flow_in[14] > tan.draHeaTra.const[14].k became false ( (tan.m_flow_in[14])-(tan.draHeaTra.const[14].k) = -3.00295e-010 )
+Expression tan.draHeaTra.timer[14].y > tan.draHeaTra.timDel1.y[14] became false ( (tan.draHeaTra.timer[14].y)-(tan.draHeaTra.timDel1.y[14]) = -7.94142 )
+Iterating to find consistent restart conditions.
+      during event at Time :  3000.099950001501
+Expression tan.m_flow_in[15] > tan.draHeaTra.const[15].k became true ( (tan.m_flow_in[15])-(tan.draHeaTra.const[15].k) = 8.05923e-009 )
+Expression tan.m_flow_in[16] > tan.draHeaTra.const[16].k became true ( (tan.m_flow_in[16])-(tan.draHeaTra.const[16].k) = 8.05923e-009 )
+Expression tan.m_flow_in[17] > tan.draHeaTra.const[17].k became true ( (tan.m_flow_in[17])-(tan.draHeaTra.const[17].k) = 8.05923e-009 )
+Expression tan.m_flow_in[18] > tan.draHeaTra.const[18].k became true ( (tan.m_flow_in[18])-(tan.draHeaTra.const[18].k) = 8.05923e-009 )
+Expression tan.m_flow_in[19] > tan.draHeaTra.const[19].k became true ( (tan.m_flow_in[19])-(tan.draHeaTra.const[19].k) = 8.05923e-009 )
+Expression tan.m_flow_in[20] > tan.draHeaTra.const[20].k became true ( (tan.m_flow_in[20])-(tan.draHeaTra.const[20].k) = 8.05923e-009 )
+Expression tan.m_flow_in[1] > tan.draHeaTra.const[1].k became true ( (tan.m_flow_in[1])-(tan.draHeaTra.const[1].k) = 8.05923e-009 )
+Expression tan.m_flow_in[2] > tan.draHeaTra.const[2].k became true ( (tan.m_flow_in[2])-(tan.draHeaTra.const[2].k) = 8.05923e-009 )
+Expression tan.m_flow_in[3] > tan.draHeaTra.const[3].k became true ( (tan.m_flow_in[3])-(tan.draHeaTra.const[3].k) = 8.05923e-009 )
+Expression tan.m_flow_in[4] > tan.draHeaTra.const[4].k became true ( (tan.m_flow_in[4])-(tan.draHeaTra.const[4].k) = 8.05923e-009 )
+Expression tan.m_flow_in[5] > tan.draHeaTra.const[5].k became true ( (tan.m_flow_in[5])-(tan.draHeaTra.const[5].k) = 8.05923e-009 )
+Expression tan.m_flow_in[6] > tan.draHeaTra.const[6].k became true ( (tan.m_flow_in[6])-(tan.draHeaTra.const[6].k) = 8.05923e-009 )
+Expression tan.m_flow_in[7] > tan.draHeaTra.const[7].k became true ( (tan.m_flow_in[7])-(tan.draHeaTra.const[7].k) = 8.05923e-009 )
+Expression tan.m_flow_in[8] > tan.draHeaTra.const[8].k became true ( (tan.m_flow_in[8])-(tan.draHeaTra.const[8].k) = 8.05923e-009 )
+Expression tan.m_flow_in[9] > tan.draHeaTra.const[9].k became true ( (tan.m_flow_in[9])-(tan.draHeaTra.const[9].k) = 8.05923e-009 )
+Expression tan.m_flow_in[10] > tan.draHeaTra.const[10].k became true ( (tan.m_flow_in[10])-(tan.draHeaTra.const[10].k) = 8.05923e-009 )
+Expression tan.m_flow_in[11] > tan.draHeaTra.const[11].k became true ( (tan.m_flow_in[11])-(tan.draHeaTra.const[11].k) = 8.05923e-009 )
+Expression tan.m_flow_in[12] > tan.draHeaTra.const[12].k became true ( (tan.m_flow_in[12])-(tan.draHeaTra.const[12].k) = 8.05923e-009 )
+Expression tan.m_flow_in[13] > tan.draHeaTra.const[13].k became true ( (tan.m_flow_in[13])-(tan.draHeaTra.const[13].k) = 8.05923e-009 )
+Expression tan.m_flow_in[14] > tan.draHeaTra.const[14].k became true ( (tan.m_flow_in[14])-(tan.draHeaTra.const[14].k) = 8.05923e-009 )
+Iterating to find consistent restart conditions.
+      during event at Time :  3100.000002001612
+Expression tan.draHeaTra.timer[20].y > tan.draHeaTra.timDel1.y[20] became true ( (tan.draHeaTra.timer[20].y)-(tan.draHeaTra.timDel1.y[20]) = 1.54978e-009 )
+Iterating to find consistent restart conditions.
+      during event at Time :  3100.000002003162
+Expression tan.draHeaTra.timer[19].y > tan.draHeaTra.timDel1.y[19] became true ( (tan.draHeaTra.timer[19].y)-(tan.draHeaTra.timDel1.y[19]) = 1.08933e-010 )
+Iterating to find consistent restart conditions.
+      during event at Time :  3100.00392200861
+Expression tan.draHeaTra.timer[19].y > tan.draHeaTra.timDel1.y[19] became false ( (tan.draHeaTra.timer[19].y)-(tan.draHeaTra.timDel1.y[19]) = -7.98704e-008 )
+Iterating to find consistent restart conditions.
+      during event at Time :  3100.024478272021
+Expression tan.draHeaTra.timer[17].y > tan.draHeaTra.timDel1.y[17] became true ( (tan.draHeaTra.timer[17].y)-(tan.draHeaTra.timDel1.y[17]) = 4.18962e-006 )
+Iterating to find consistent restart conditions.
+      during event at Time :  3100.053643086937
+Expression tan.draHeaTra.timer[16].y > tan.draHeaTra.timDel1.y[16] became true ( (tan.draHeaTra.timer[16].y)-(tan.draHeaTra.timDel1.y[16]) = 6.70965e-006 )
+Iterating to find consistent restart conditions.
+      during event at Time :  3100.053697519874
+Expression tan.draHeaTra.timer[18].y > tan.draHeaTra.timDel1.y[18] became true ( (tan.draHeaTra.timer[18].y)-(tan.draHeaTra.timDel1.y[18]) = 1.80512e-006 )
+Iterating to find consistent restart conditions.
+      during event at Time :  3100.055408368285
+Expression tan.draHeaTra.timer[15].y > tan.draHeaTra.timDel1.y[15] became true ( (tan.draHeaTra.timer[15].y)-(tan.draHeaTra.timDel1.y[15]) = 6.90436e-008 )
+Iterating to find consistent restart conditions.
+      during event at Time :  3100.061544862104
+Expression tan.draHeaTra.timer[14].y > tan.draHeaTra.timDel1.y[14] became true ( (tan.draHeaTra.timer[14].y)-(tan.draHeaTra.timDel1.y[14]) = 6.29502e-006 )
+Iterating to find consistent restart conditions.
+      during event at Time :  3100.0694321519
+Expression tan.draHeaTra.timer[1].y > tan.draHeaTra.timDel1.y[1] became true ( (tan.draHeaTra.timer[1].y)-(tan.draHeaTra.timDel1.y[1]) = 6.17562e-006 )
+Expression tan.draHeaTra.timer[2].y > tan.draHeaTra.timDel1.y[2] became true ( (tan.draHeaTra.timer[2].y)-(tan.draHeaTra.timDel1.y[2]) = 6.17562e-006 )
+Expression tan.draHeaTra.timer[3].y > tan.draHeaTra.timDel1.y[3] became true ( (tan.draHeaTra.timer[3].y)-(tan.draHeaTra.timDel1.y[3]) = 6.17562e-006 )
+Expression tan.draHeaTra.timer[4].y > tan.draHeaTra.timDel1.y[4] became true ( (tan.draHeaTra.timer[4].y)-(tan.draHeaTra.timDel1.y[4]) = 6.17562e-006 )
+Expression tan.draHeaTra.timer[5].y > tan.draHeaTra.timDel1.y[5] became true ( (tan.draHeaTra.timer[5].y)-(tan.draHeaTra.timDel1.y[5]) = 6.17562e-006 )
+Expression tan.draHeaTra.timer[6].y > tan.draHeaTra.timDel1.y[6] became true ( (tan.draHeaTra.timer[6].y)-(tan.draHeaTra.timDel1.y[6]) = 6.17562e-006 )
+Expression tan.draHeaTra.timer[7].y > tan.draHeaTra.timDel1.y[7] became true ( (tan.draHeaTra.timer[7].y)-(tan.draHeaTra.timDel1.y[7]) = 6.17562e-006 )
+Expression tan.draHeaTra.timer[8].y > tan.draHeaTra.timDel1.y[8] became true ( (tan.draHeaTra.timer[8].y)-(tan.draHeaTra.timDel1.y[8]) = 6.17562e-006 )
+Expression tan.draHeaTra.timer[9].y > tan.draHeaTra.timDel1.y[9] became true ( (tan.draHeaTra.timer[9].y)-(tan.draHeaTra.timDel1.y[9]) = 6.17562e-006 )
+Expression tan.draHeaTra.timer[10].y > tan.draHeaTra.timDel1.y[10] became true ( (tan.draHeaTra.timer[10].y)-(tan.draHeaTra.timDel1.y[10]) = 6.17562e-006 )
+Expression tan.draHeaTra.timer[11].y > tan.draHeaTra.timDel1.y[11] became true ( (tan.draHeaTra.timer[11].y)-(tan.draHeaTra.timDel1.y[11]) = 6.17562e-006 )
+Expression tan.draHeaTra.timer[12].y > tan.draHeaTra.timDel1.y[12] became true ( (tan.draHeaTra.timer[12].y)-(tan.draHeaTra.timDel1.y[12]) = 6.17562e-006 )
+Expression tan.draHeaTra.timer[13].y > tan.draHeaTra.timDel1.y[13] became true ( (tan.draHeaTra.timer[13].y)-(tan.draHeaTra.timDel1.y[13]) = 6.17562e-006 )
+Iterating to find consistent restart conditions.
+      during event at Time :  3100.079488765671
+Expression tan.draHeaTra.timer[19].y > tan.draHeaTra.timDel1.y[19] became true ( (tan.draHeaTra.timer[19].y)-(tan.draHeaTra.timDel1.y[19]) = 1.56229e-009 )
+Iterating to find consistent restart conditions.
+      during event at Time :  3118.299802003174
+Expression T_sensor.T < T_switch.k-onOffController.bandwidth/2 became true ( (T_sensor.T)-(T_switch.k-onOffController.bandwidth/2) = -1.26079e-010 )
+  Variable onOffController.y = 1 at time 3120.14
+Iterating to find consistent restart conditions.
+Expression T_sensor.T < T_switch.k+onOffController.bandwidth/2 became true ( (T_sensor.T)-(T_switch.k+onOffController.bandwidth/2) = -12 )
+Iterating to find consistent restart conditions.
+      during event at Time :  3120.142598651197
+Integration terminated successfully at T = 3200
+   CPU-time for integration      : 131 seconds
+   CPU-time for one GRID interval: 262 milli-seconds
+   Number of result points       : 571
+   Number of GRID   points       : 501
+   Number of (successful) steps  : 4971
+   Number of F-evaluations       : 319729
+   Number of H-evaluations       : 6027
+   Number of Jacobian-evaluations: 7030
+   Number of (model) time events : 0
+   Number of (U) time events     : 0
+   Number of state    events     : 35
+   Number of step     events     : 0
+   Minimum integration stepsize  : 8.08e-005
+   Maximum integration stepsize  : 213
+   Maximum integration order     : 5
+Calling terminal section
+... "dsfinal.txt" creating (final states)

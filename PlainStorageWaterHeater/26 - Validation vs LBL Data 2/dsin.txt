@@ -1,0 +1,3619 @@
+#1
+char Aclass(3,24)
+Adymosim
+1.4
+Modelica experiment file
+
+
+#    Experiment parameters
+double experiment(7,1)
+       0                   # StartTime    Time at which integration starts
+                           #              (and linearization and trimming time)
+  100000                   # StopTime     Time at which integration stops
+       0                   # Increment    Communication step size, if > 0
+     500                   # nInterval    Number of communication intervals, if > 0
+  1.000000000000000E-004   # Tolerance    Relative precision of signals for
+                           #              simulation, linearization and trimming
+       0                   # MaxFixedStep Maximum step size of fixed step size
+                           #              integrators, if > 0.0
+       8                   # Algorithm    Integration algorithm as integer (1...28)
+                           #
+                           #             | model|       |        | dense | state |
+                           # Algorithm   | typ  | stiff | order  | output| event |
+                           # ------------+------+-------+--------+-------+-------+
+                           #  1 | deabm  |  ode |   no  |  1-12  |  yes  |   no  |
+                           #  2 | lsode1 |  ode |   no  |  1-12  |  yes  |   no  |
+                           #  3 | lsode2 |  ode |  yes  |  1-5   |  yes  |   no  |
+                           #  4 | lsodar |  ode |  both |1-12,1-5|  yes  |  yes  |
+                           #  5 | dopri5 |  ode |   no  |   5    |   no  |   no  |
+                           #  6 | dopri8 |  ode |   no  |   8    |   no  |   no  |
+                           #  7 | grk4t  |  ode |  yes  |   4    |   no  |   no  |
+                           #  8 | dassl  |  dae |  yes  |  1-5   |  yes  |  yes  |
+                           #  9 | odassl | hdae |  yes  |  1-5   |  yes  |  yes  |
+                           # 10 | mexx   | hdae |   no  |  2-24  |   no  |   no  |
+                           # 11 | euler  |  ode |   no  |   1    |   no  |  yes  |
+                           # 12 | rkfix2 |  ode |   no  |   2    |   no  |  yes  |
+                           # 13 | rkfix3 |  ode |   no  |   3    |   no  |  yes  |
+                           # 14 | rkfix4 |  ode |   no  |   4    |   no  |  yes  |
+                           #>=14| others |  ode |yes/no |  2-5   |   yes |  yes  |
+                           # ---+--------+------+-------+--------+-------+-------+
+                           # euler and rkfix have fixed stepsize.
+
+
+#    Method tuning parameters
+double method(27,1)
+       1                   # grid     type of communication time grid, defined by
+                           #          = 1: equidistant points ("Increment/nInterval")
+                           #          = 2: vector of grid points ("tgrid")
+                           #          = 3: variable step integrator (automatically)
+                           #          = 4: model (call of "increment" in Dymola, e.g.
+                           #                      incr=Time > 2 then 0 else 0.1
+                           #                      dummy=increment(incr))
+                           #          grid = 1,3 is stopped by "StopTime"
+                           #          grid = 2   is stopped by "tgrid(last)"
+                           #          grid = 4   runs forever (stopped by model)
+       1                   # nt       Use every NT time instant, if grid = 3
+       3                   # dense    1/2/3 restart/step/interpolate GRID points
+       1                   # evgrid   0/1 do not/save event points in comm. time grid
+       1                   # evu      0/1 U-discontinuity does not/trigger events
+       0                   # evuord       U-discontinuity order to consider (0,1,...)
+       0                   # error    0/1/2 One message/warning/error messages
+       0                   # jac      0/1 Compute jacobian numerically/by BLOCKJ
+       0                   # xd0c     0/1 Compute/set XD0
+       0                   # f3       0/1 Ignore/use F3 of HDAE (= index 1)
+       0                   # f4       0/1 Ignore/use F4 of HDAE (= index 2)
+       0                   # f5       0/1 Ignore/use F5 of HDAE (= invar.)
+       0                   # debug    flags for debug information (1<<0 uses pdebug) 
+     100                   # pdebug       priority of debug information (1...100)
+       0                   # fmax     Maximum number of evaluations of BLOCKF, if > 0
+       0                   # ordmax   Maximum allowed integration order, if > 0
+       0                   # hmax     Maximum absolute stepsize, if > 0
+       0                   # hmin     Minimum absolute stepsize, if > 0 (use with care!)
+       0                   # h0       Stepsize to be attempted on first step, if > 0
+  2.000000000000000E-014   # teps     Bound to check, if 2 equal time instants
+  1.000000000000000E-010   # eveps    Hysteresis epsilon at event points
+      20                   # eviter   Maximum number of event iterations
+  1.000000000000000E-006   # delaym   Minimum time increment in delay buffers
+       1                   # fexcep   0/1 floating exception crashes/stops dymosim
+       1                   # tscale   clock-time = tscale*simulation-time, if grid = 5
+                           #          > 1: simulation too slow
+                           #          = 1: simulation-time = real-time
+                           #          < 1: simulation too fast
+       1                   # shared   (not used)
+    2473                   # memkey   (not used)
+
+
+#    Output parameters
+int settings(13,1)
+ 0                         # lprec    0/1 do not/store result data in double
+ 1                         # lx       0/1 do not/store x  (state variables)
+ 1                         # lxd      0/1 do not/store xd (derivative of states)
+ 1                         # lu       0/1 do not/store u  (input     signals)
+ 1                         # ly       0/1 do not/store y  (output    signals)
+ 0                         # lz       0/1 do not/store z  (indicator signals)
+ 1                         # lw       0/1 do not/store w  (auxiliary signals)
+ 1                         # la       0/1 do not/store a  (alias     signals)
+ 0                         # lperf    0/1 do not/store performance indicators
+ 0                         # levent   0/1 do not/store event point
+ 1                         # lres     0/1 do not/store results on result file
+ 0                         # lshare   0/1 do not/store info data for shared memory on dsshare.txt
+ 1                         # lform    0/1 ASCII/Matlab-binary storage format of results
+                           #              (for simulation/linearization; not for trimming)
+
+
+#    Names of initial variables
+char initialName(865,94)
+system.p_ambient
+system.T_ambient
+system.g
+system.allowFlowReversal
+system.energyDynamics
+system.massDynamics
+system.substanceDynamics
+system.traceDynamics
+system.momentumDynamics
+system.m_flow_start
+system.p_start
+system.T_start
+system.m_flow_small
+system.dp_small
+tan.T_Initial[1]
+tan.T_Initial[2]
+tan.T_Initial[3]
+tan.T_Initial[4]
+tan.T_Initial[5]
+tan.T_Initial[6]
+tan.T_Initial[7]
+tan.T_Initial[8]
+tan.c_p
+tan.nSeg
+tan.p_start
+tan.X_start[1]
+tan.TStatHeight
+tan.TSet
+tan.RecircOutSeg
+tan.RecircInSeg
+tan.Deadband
+tan.UA
+tan.EffTan
+tan.VTan
+tan.vol[1].energyDynamics
+tan.vol[1].massDynamics
+tan.vol[1].substanceDynamics
+tan.vol[1].traceDynamics
+tan.vol[1].p_start
+tan.vol[1].T_start
+tan.vol[1].X_start[1]
+tan.vol[1].m_flow_nominal
+tan.vol[1].nPorts
+tan.vol[1].m_flow_small
+tan.vol[1].homotopyInitialization
+tan.vol[1].allowFlowReversal
+tan.vol[1].V
+tan.vol[1].prescribedHeatFlowRate
+tan.vol[1].heatPort.Q_flow
+tan.vol[1].state_start.phase
+tan.vol[1].state_start.h
+tan.vol[1].state_start.d
+tan.vol[1].state_start.T
+tan.vol[1].state_start.p
+tan.vol[1].rho_nominal
+tan.vol[1].useSteadyStateTwoPort
+tan.vol[2].energyDynamics
+tan.vol[2].massDynamics
+tan.vol[2].substanceDynamics
+tan.vol[2].traceDynamics
+tan.vol[2].p_start
+tan.vol[2].T_start
+tan.vol[2].X_start[1]
+tan.vol[2].m_flow_nominal
+tan.vol[2].nPorts
+tan.vol[2].m_flow_small
+tan.vol[2].homotopyInitialization
+tan.vol[2].allowFlowReversal
+tan.vol[2].V
+tan.vol[2].prescribedHeatFlowRate
+tan.vol[2].heatPort.Q_flow
+tan.vol[2].state_start.phase
+tan.vol[2].state_start.h
+tan.vol[2].state_start.d
+tan.vol[2].state_start.T
+tan.vol[2].state_start.p
+tan.vol[2].rho_nominal
+tan.vol[2].useSteadyStateTwoPort
+tan.vol[3].energyDynamics
+tan.vol[3].massDynamics
+tan.vol[3].substanceDynamics
+tan.vol[3].traceDynamics
+tan.vol[3].p_start
+tan.vol[3].T_start
+tan.vol[3].X_start[1]
+tan.vol[3].m_flow_nominal
+tan.vol[3].nPorts
+tan.vol[3].m_flow_small
+tan.vol[3].homotopyInitialization
+tan.vol[3].allowFlowReversal
+tan.vol[3].V
+tan.vol[3].prescribedHeatFlowRate
+tan.vol[3].heatPort.Q_flow
+tan.vol[3].state_start.phase
+tan.vol[3].state_start.h
+tan.vol[3].state_start.d
+tan.vol[3].state_start.T
+tan.vol[3].state_start.p
+tan.vol[3].rho_nominal
+tan.vol[3].useSteadyStateTwoPort
+tan.vol[4].energyDynamics
+tan.vol[4].massDynamics
+tan.vol[4].substanceDynamics
+tan.vol[4].traceDynamics
+tan.vol[4].p_start
+tan.vol[4].T_start
+tan.vol[4].X_start[1]
+tan.vol[4].m_flow_nominal
+tan.vol[4].nPorts
+tan.vol[4].m_flow_small
+tan.vol[4].homotopyInitialization
+tan.vol[4].allowFlowReversal
+tan.vol[4].V
+tan.vol[4].prescribedHeatFlowRate
+tan.vol[4].heatPort.Q_flow
+tan.vol[4].state_start.phase
+tan.vol[4].state_start.h
+tan.vol[4].state_start.d
+tan.vol[4].state_start.T
+tan.vol[4].state_start.p
+tan.vol[4].rho_nominal
+tan.vol[4].useSteadyStateTwoPort
+tan.vol[5].energyDynamics
+tan.vol[5].massDynamics
+tan.vol[5].substanceDynamics
+tan.vol[5].traceDynamics
+tan.vol[5].p_start
+tan.vol[5].T_start
+tan.vol[5].X_start[1]
+tan.vol[5].m_flow_nominal
+tan.vol[5].nPorts
+tan.vol[5].m_flow_small
+tan.vol[5].homotopyInitialization
+tan.vol[5].allowFlowReversal
+tan.vol[5].V
+tan.vol[5].prescribedHeatFlowRate
+tan.vol[5].heatPort.Q_flow
+tan.vol[5].state_start.phase
+tan.vol[5].state_start.h
+tan.vol[5].state_start.d
+tan.vol[5].state_start.T
+tan.vol[5].state_start.p
+tan.vol[5].rho_nominal
+tan.vol[5].useSteadyStateTwoPort
+tan.vol[6].energyDynamics
+tan.vol[6].massDynamics
+tan.vol[6].substanceDynamics
+tan.vol[6].traceDynamics
+tan.vol[6].p_start
+tan.vol[6].T_start
+tan.vol[6].X_start[1]
+tan.vol[6].m_flow_nominal
+tan.vol[6].nPorts
+tan.vol[6].m_flow_small
+tan.vol[6].homotopyInitialization
+tan.vol[6].allowFlowReversal
+tan.vol[6].V
+tan.vol[6].prescribedHeatFlowRate
+tan.vol[6].heatPort.Q_flow
+tan.vol[6].state_start.phase
+tan.vol[6].state_start.h
+tan.vol[6].state_start.d
+tan.vol[6].state_start.T
+tan.vol[6].state_start.p
+tan.vol[6].rho_nominal
+tan.vol[6].useSteadyStateTwoPort
+tan.vol[7].energyDynamics
+tan.vol[7].massDynamics
+tan.vol[7].substanceDynamics
+tan.vol[7].traceDynamics
+tan.vol[7].p_start
+tan.vol[7].T_start
+tan.vol[7].X_start[1]
+tan.vol[7].m_flow_nominal
+tan.vol[7].nPorts
+tan.vol[7].m_flow_small
+tan.vol[7].homotopyInitialization
+tan.vol[7].allowFlowReversal
+tan.vol[7].V
+tan.vol[7].prescribedHeatFlowRate
+tan.vol[7].heatPort.Q_flow
+tan.vol[7].state_start.phase
+tan.vol[7].state_start.h
+tan.vol[7].state_start.d
+tan.vol[7].state_start.T
+tan.vol[7].state_start.p
+tan.vol[7].rho_nominal
+tan.vol[7].useSteadyStateTwoPort
+tan.vol[8].energyDynamics
+tan.vol[8].massDynamics
+tan.vol[8].substanceDynamics
+tan.vol[8].traceDynamics
+tan.vol[8].p_start
+tan.vol[8].T_start
+tan.vol[8].X_start[1]
+tan.vol[8].m_flow_nominal
+tan.vol[8].nPorts
+tan.vol[8].m_flow_small
+tan.vol[8].homotopyInitialization
+tan.vol[8].allowFlowReversal
+tan.vol[8].V
+tan.vol[8].prescribedHeatFlowRate
+tan.vol[8].heatPort.Q_flow
+tan.vol[8].state_start.phase
+tan.vol[8].state_start.h
+tan.vol[8].state_start.d
+tan.vol[8].state_start.T
+tan.vol[8].state_start.p
+tan.vol[8].rho_nominal
+tan.vol[8].useSteadyStateTwoPort
+tan.m_flow_in[1]
+tan.m_flow_in[2]
+tan.m_flow_in[3]
+tan.m_flow_in[4]
+tan.m_flow_in[5]
+tan.m_flow_in[6]
+tan.m_flow_in[7]
+tan.m_flow_in[8]
+tan.draHeaTra.c_p
+tan.draHeaTra.nSeg
+tan.draHeaTra.draHeaTra[1]
+tan.draHeaTra.draHeaTra[2]
+tan.draHeaTra.draHeaTra[3]
+tan.draHeaTra.draHeaTra[4]
+tan.draHeaTra.draHeaTra[5]
+tan.draHeaTra.draHeaTra[6]
+tan.draHeaTra.draHeaTra[7]
+tan.draHeaTra.draHeaTra[8]
+tan.draHeaTra.TWat[2]
+tan.draHeaTra.TWat[3]
+tan.draHeaTra.TWat[4]
+tan.draHeaTra.TWat[5]
+tan.draHeaTra.TWat[6]
+tan.draHeaTra.TWat[7]
+tan.temperatureSensor[1].port.Q_flow
+tan.temperatureSensor[2].port.Q_flow
+tan.temperatureSensor[3].port.Q_flow
+tan.temperatureSensor[4].port.Q_flow
+tan.temperatureSensor[5].port.Q_flow
+tan.temperatureSensor[6].port.Q_flow
+tan.temperatureSensor[7].port.Q_flow
+tan.temperatureSensor[8].port.Q_flow
+tan.boundary[1].nPorts
+tan.boundary[1].medium.d
+tan.boundary[1].medium.T
+tan.boundary[1].medium.X[1]
+tan.boundary[1].medium.u
+tan.boundary[1].medium.R
+tan.boundary[1].medium.MM
+tan.boundary[1].medium.state.phase
+tan.boundary[1].medium.preferredMediumStates
+tan.boundary[1].medium.standardOrderComponents
+tan.boundary[1].medium.T_degC
+tan.boundary[1].medium.p_bar
+tan.boundary[1].medium.sat.Tsat
+_GlobalScope.Modelica.Media.Water.waterConstants[1].molarMass
+_GlobalScope.Modelica.Media.Water.waterConstants[1].criticalTemperature
+_GlobalScope.Modelica.Media.Water.waterConstants[1].criticalPressure
+_GlobalScope.Modelica.Media.Water.waterConstants[1].criticalMolarVolume
+_GlobalScope.Modelica.Media.Water.waterConstants[1].acentricFactor
+_GlobalScope.Modelica.Media.Water.waterConstants[1].triplePointTemperature
+_GlobalScope.Modelica.Media.Water.waterConstants[1].triplePointPressure
+_GlobalScope.Modelica.Media.Water.waterConstants[1].meltingPoint
+_GlobalScope.Modelica.Media.Water.waterConstants[1].normalBoilingPoint
+_GlobalScope.Modelica.Media.Water.waterConstants[1].dipoleMoment
+_GlobalScope.Modelica.Media.Water.waterConstants[1].hasIdealGasHeatCapacity
+_GlobalScope.Modelica.Media.Water.waterConstants[1].hasCriticalData
+_GlobalScope.Modelica.Media.Water.waterConstants[1].hasDipoleMoment
+_GlobalScope.Modelica.Media.Water.waterConstants[1].hasFundamentalEquation
+_GlobalScope.Modelica.Media.Water.waterConstants[1].hasLiquidHeatCapacity
+_GlobalScope.Modelica.Media.Water.waterConstants[1].hasSolidHeatCapacity
+_GlobalScope.Modelica.Media.Water.waterConstants[1].hasAccurateViscosityData
+_GlobalScope.Modelica.Media.Water.waterConstants[1].hasAccurateConductivityData
+_GlobalScope.Modelica.Media.Water.waterConstants[1].hasVapourPressureCurve
+_GlobalScope.Modelica.Media.Water.waterConstants[1].hasAcentricFactor
+_GlobalScope.Modelica.Media.Water.waterConstants[1].HCRIT0
+_GlobalScope.Modelica.Media.Water.waterConstants[1].SCRIT0
+_GlobalScope.Modelica.Media.Water.waterConstants[1].deltah
+_GlobalScope.Modelica.Media.Water.waterConstants[1].deltas
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].molarMass
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].criticalTemperature
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].criticalPressure
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].criticalMolarVolume
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].acentricFactor
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].triplePointTemperature
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].triplePointPressure
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].meltingPoint
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].normalBoilingPoint
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].dipoleMoment
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasIdealGasHeatCapacity
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasCriticalData
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasDipoleMoment
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasFundamentalEquation
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasLiquidHeatCapacity
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasSolidHeatCapacity
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasAccurateViscosityData
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasAccurateConductivityData
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasVapourPressureCurve
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasAcentricFactor
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].HCRIT0
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].SCRIT0
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].deltah
+_GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].deltas
+tan.boundary[1].ports[1].h_outflow
+tan.boundary[1].flowDirection
+tan.boundary[1].use_p
+tan.boundary[1].p
+tan.boundary[1].d
+tan.boundary[1].use_T
+tan.boundary[1].T
+tan.boundary[1].h
+tan.boundary[1].X[1]
+tan.boundary[1].state.phase
+tan.boundary[1].state.d
+tan.boundary[2].nPorts
+tan.boundary[2].medium.d
+tan.boundary[2].medium.T
+tan.boundary[2].medium.X[1]
+tan.boundary[2].medium.u
+tan.boundary[2].medium.R
+tan.boundary[2].medium.MM
+tan.boundary[2].medium.state.phase
+tan.boundary[2].medium.preferredMediumStates
+tan.boundary[2].medium.standardOrderComponents
+tan.boundary[2].medium.T_degC
+tan.boundary[2].medium.p_bar
+tan.boundary[2].medium.sat.Tsat
+tan.boundary[2].ports[1].h_outflow
+tan.boundary[2].flowDirection
+tan.boundary[2].use_p
+tan.boundary[2].p
+tan.boundary[2].d
+tan.boundary[2].use_T
+tan.boundary[2].T
+tan.boundary[2].h
+tan.boundary[2].X[1]
+tan.boundary[2].state.phase
+tan.boundary[2].state.d
+tan.boundary[3].nPorts
+tan.boundary[3].medium.d
+tan.boundary[3].medium.T
+tan.boundary[3].medium.X[1]
+tan.boundary[3].medium.u
+tan.boundary[3].medium.R
+tan.boundary[3].medium.MM
+tan.boundary[3].medium.state.phase
+tan.boundary[3].medium.preferredMediumStates
+tan.boundary[3].medium.standardOrderComponents
+tan.boundary[3].medium.T_degC
+tan.boundary[3].medium.p_bar
+tan.boundary[3].medium.sat.Tsat
+tan.boundary[3].ports[1].h_outflow
+tan.boundary[3].flowDirection
+tan.boundary[3].use_p
+tan.boundary[3].p
+tan.boundary[3].d
+tan.boundary[3].use_T
+tan.boundary[3].T
+tan.boundary[3].h
+tan.boundary[3].X[1]
+tan.boundary[3].state.phase
+tan.boundary[3].state.d
+tan.boundary[4].nPorts
+tan.boundary[4].medium.d
+tan.boundary[4].medium.T
+tan.boundary[4].medium.X[1]
+tan.boundary[4].medium.u
+tan.boundary[4].medium.R
+tan.boundary[4].medium.MM
+tan.boundary[4].medium.state.phase
+tan.boundary[4].medium.preferredMediumStates
+tan.boundary[4].medium.standardOrderComponents
+tan.boundary[4].medium.T_degC
+tan.boundary[4].medium.p_bar
+tan.boundary[4].medium.sat.Tsat
+tan.boundary[4].ports[1].h_outflow
+tan.boundary[4].flowDirection
+tan.boundary[4].use_p
+tan.boundary[4].p
+tan.boundary[4].d
+tan.boundary[4].use_T
+tan.boundary[4].T
+tan.boundary[4].h
+tan.boundary[4].X[1]
+tan.boundary[4].state.phase
+tan.boundary[4].state.d
+tan.boundary[5].nPorts
+tan.boundary[5].medium.d
+tan.boundary[5].medium.T
+tan.boundary[5].medium.X[1]
+tan.boundary[5].medium.u
+tan.boundary[5].medium.R
+tan.boundary[5].medium.MM
+tan.boundary[5].medium.state.phase
+tan.boundary[5].medium.preferredMediumStates
+tan.boundary[5].medium.standardOrderComponents
+tan.boundary[5].medium.T_degC
+tan.boundary[5].medium.p_bar
+tan.boundary[5].medium.sat.Tsat
+tan.boundary[5].ports[1].h_outflow
+tan.boundary[5].flowDirection
+tan.boundary[5].use_p
+tan.boundary[5].p
+tan.boundary[5].d
+tan.boundary[5].use_T
+tan.boundary[5].T
+tan.boundary[5].h
+tan.boundary[5].X[1]
+tan.boundary[5].state.phase
+tan.boundary[5].state.d
+tan.boundary[6].nPorts
+tan.boundary[6].medium.d
+tan.boundary[6].medium.T
+tan.boundary[6].medium.X[1]
+tan.boundary[6].medium.u
+tan.boundary[6].medium.R
+tan.boundary[6].medium.MM
+tan.boundary[6].medium.state.phase
+tan.boundary[6].medium.preferredMediumStates
+tan.boundary[6].medium.standardOrderComponents
+tan.boundary[6].medium.T_degC
+tan.boundary[6].medium.p_bar
+tan.boundary[6].medium.sat.Tsat
+tan.boundary[6].ports[1].h_outflow
+tan.boundary[6].flowDirection
+tan.boundary[6].use_p
+tan.boundary[6].p
+tan.boundary[6].d
+tan.boundary[6].use_T
+tan.boundary[6].T
+tan.boundary[6].h
+tan.boundary[6].X[1]
+tan.boundary[6].state.phase
+tan.boundary[6].state.d
+tan.boundary[7].nPorts
+tan.boundary[7].medium.d
+tan.boundary[7].medium.T
+tan.boundary[7].medium.X[1]
+tan.boundary[7].medium.u
+tan.boundary[7].medium.R
+tan.boundary[7].medium.MM
+tan.boundary[7].medium.state.phase
+tan.boundary[7].medium.preferredMediumStates
+tan.boundary[7].medium.standardOrderComponents
+tan.boundary[7].medium.T_degC
+tan.boundary[7].medium.p_bar
+tan.boundary[7].medium.sat.Tsat
+tan.boundary[7].ports[1].h_outflow
+tan.boundary[7].flowDirection
+tan.boundary[7].use_p
+tan.boundary[7].p
+tan.boundary[7].d
+tan.boundary[7].use_T
+tan.boundary[7].T
+tan.boundary[7].h
+tan.boundary[7].X[1]
+tan.boundary[7].state.phase
+tan.boundary[7].state.d
+tan.boundary[8].nPorts
+tan.boundary[8].medium.d
+tan.boundary[8].medium.T
+tan.boundary[8].medium.X[1]
+tan.boundary[8].medium.u
+tan.boundary[8].medium.R
+tan.boundary[8].medium.MM
+tan.boundary[8].medium.state.phase
+tan.boundary[8].medium.preferredMediumStates
+tan.boundary[8].medium.standardOrderComponents
+tan.boundary[8].medium.T_degC
+tan.boundary[8].medium.p_bar
+tan.boundary[8].medium.sat.Tsat
+tan.boundary[8].ports[1].h_outflow
+tan.boundary[8].flowDirection
+tan.boundary[8].use_p
+tan.boundary[8].p
+tan.boundary[8].d
+tan.boundary[8].use_T
+tan.boundary[8].T
+tan.boundary[8].h
+tan.boundary[8].X[1]
+tan.boundary[8].state.phase
+tan.boundary[8].state.d
+tan.TStatSig
+tan.TOutRec
+tan.mFloRec
+tan.cirHeaTra.c_p
+tan.cirHeaTra.nSeg
+tan.cirHeaTra.cirHeaTra[1]
+tan.cirHeaTra.cirHeaTra[2]
+tan.cirHeaTra.cirHeaTra[3]
+tan.cirHeaTra.cirHeaTra[4]
+tan.cirHeaTra.cirHeaTra[5]
+tan.cirHeaTra.cirHeaTra[6]
+tan.cirHeaTra.cirHeaTra[7]
+tan.cirHeaTra.cirHeaTra[8]
+tan.QFluIn
+tan.fluHeaTra.nSeg
+tan.fluHeaTra.EffTan
+tan.fluHeaTra.fluHeaTra[1]
+tan.fluHeaTra.fluHeaTra[2]
+tan.fluHeaTra.fluHeaTra[3]
+tan.fluHeaTra.fluHeaTra[4]
+tan.fluHeaTra.fluHeaTra[5]
+tan.fluHeaTra.fluHeaTra[6]
+tan.fluHeaTra.fluHeaTra[7]
+tan.fluHeaTra.fluHeaTra[8]
+tan.uALoss.nSeg
+tan.uALoss.UA
+tan.uALoss.UALoss[1]
+tan.uALoss.UALoss[2]
+tan.uALoss.UALoss[3]
+tan.uALoss.UALoss[4]
+tan.uALoss.UALoss[5]
+tan.uALoss.UALoss[6]
+tan.uALoss.UALoss[7]
+tan.uALoss.UALoss[8]
+tan.TOutDra
+tan.Setpoint.k
+tan.onOffController.y
+tan.onOffController.bandwidth
+tan.onOffController.pre_y_start
+tan.booleanToInteger.integerTrue
+tan.booleanToInteger.integerFalse
+QInFlu.k
+Tamb.k
+mFloCir.k
+const.k
+TIn.k
+sine[1].amplitude
+sine[1].freqHz
+sine[1].phase
+sine[1].offset
+sine[1].startTime
+sine[1].y
+sine[1].pi
+sine[2].amplitude
+sine[2].freqHz
+sine[2].phase
+sine[2].offset
+sine[2].startTime
+sine[2].y
+sine[2].pi
+sine[3].amplitude
+sine[3].freqHz
+sine[3].phase
+sine[3].offset
+sine[3].startTime
+sine[3].y
+sine[3].pi
+sine[4].amplitude
+sine[4].freqHz
+sine[4].phase
+sine[4].offset
+sine[4].startTime
+sine[4].y
+sine[4].pi
+sine[5].amplitude
+sine[5].freqHz
+sine[5].phase
+sine[5].offset
+sine[5].startTime
+sine[5].y
+sine[5].pi
+sine[6].amplitude
+sine[6].freqHz
+sine[6].phase
+sine[6].offset
+sine[6].startTime
+sine[6].y
+sine[6].pi
+sine[7].amplitude
+sine[7].freqHz
+sine[7].phase
+sine[7].offset
+sine[7].startTime
+sine[7].y
+sine[7].pi
+sine[8].amplitude
+sine[8].freqHz
+sine[8].phase
+sine[8].offset
+sine[8].startTime
+sine[8].y
+sine[8].pi
+realToInteger[1].y
+realToInteger[2].y
+realToInteger[3].y
+realToInteger[4].y
+realToInteger[5].y
+realToInteger[6].y
+realToInteger[7].y
+realToInteger[8].y
+gain[1].k
+gain[2].k
+gain[3].k
+gain[4].k
+gain[5].k
+gain[6].k
+gain[7].k
+gain[8].k
+tan.vol[1].dynBal.energyDynamics
+tan.vol[1].dynBal.massDynamics
+tan.vol[1].dynBal.substanceDynamics
+tan.vol[1].dynBal.traceDynamics
+tan.vol[1].dynBal.p_start
+tan.vol[1].dynBal.T_start
+tan.vol[1].dynBal.X_start[1]
+tan.vol[1].dynBal.nPorts
+tan.vol[1].dynBal.medium.p
+_GlobalScope.Modelica.Media.Interfaces.PartialPureSubstance.X_default[1]
+tan.vol[1].dynBal.medium.h
+tan.vol[1].dynBal.medium.der(h)
+tan.vol[1].dynBal.medium.d
+tan.vol[1].dynBal.medium.der(d)
+tan.vol[1].dynBal.medium.T
+tan.vol[1].dynBal.medium.der(T)
+tan.vol[1].dynBal.medium.X[1]
+tan.vol[1].dynBal.medium.u
+tan.vol[1].dynBal.medium.der(u)
+tan.vol[1].dynBal.medium.R
+tan.vol[1].dynBal.medium.MM
+tan.vol[1].dynBal.medium.state.phase
+tan.vol[1].dynBal.medium.preferredMediumStates
+tan.vol[1].dynBal.medium.standardOrderComponents
+tan.vol[1].dynBal.medium.T_degC
+tan.vol[1].dynBal.medium.p_bar
+tan.vol[1].dynBal.medium.sat.Tsat
+tan.vol[1].dynBal.U
+tan.vol[1].dynBal.der(U)
+tan.vol[1].dynBal.m
+tan.vol[1].dynBal.der(m)
+tan.vol[1].dynBal.Hb_flow
+tan.vol[1].dynBal.initialize_p
+tan.vol[1].dynBal.rho_nominal
+tan.vol[2].dynBal.energyDynamics
+tan.vol[2].dynBal.massDynamics
+tan.vol[2].dynBal.substanceDynamics
+tan.vol[2].dynBal.traceDynamics
+tan.vol[2].dynBal.p_start
+tan.vol[2].dynBal.T_start
+tan.vol[2].dynBal.X_start[1]
+tan.vol[2].dynBal.nPorts
+tan.vol[2].dynBal.medium.p
+tan.vol[2].dynBal.medium.h
+tan.vol[2].dynBal.medium.der(h)
+tan.vol[2].dynBal.medium.d
+tan.vol[2].dynBal.medium.der(d)
+tan.vol[2].dynBal.medium.T
+tan.vol[2].dynBal.medium.der(T)
+tan.vol[2].dynBal.medium.X[1]
+tan.vol[2].dynBal.medium.u
+tan.vol[2].dynBal.medium.der(u)
+tan.vol[2].dynBal.medium.R
+tan.vol[2].dynBal.medium.MM
+tan.vol[2].dynBal.medium.state.phase
+tan.vol[2].dynBal.medium.preferredMediumStates
+tan.vol[2].dynBal.medium.standardOrderComponents
+tan.vol[2].dynBal.medium.T_degC
+tan.vol[2].dynBal.medium.p_bar
+tan.vol[2].dynBal.medium.sat.Tsat
+tan.vol[2].dynBal.U
+tan.vol[2].dynBal.der(U)
+tan.vol[2].dynBal.m
+tan.vol[2].dynBal.der(m)
+tan.vol[2].dynBal.Hb_flow
+tan.vol[2].dynBal.initialize_p
+tan.vol[2].dynBal.rho_nominal
+tan.vol[3].dynBal.energyDynamics
+tan.vol[3].dynBal.massDynamics
+tan.vol[3].dynBal.substanceDynamics
+tan.vol[3].dynBal.traceDynamics
+tan.vol[3].dynBal.p_start
+tan.vol[3].dynBal.T_start
+tan.vol[3].dynBal.X_start[1]
+tan.vol[3].dynBal.nPorts
+tan.vol[3].dynBal.medium.p
+tan.vol[3].dynBal.medium.h
+tan.vol[3].dynBal.medium.der(h)
+tan.vol[3].dynBal.medium.d
+tan.vol[3].dynBal.medium.der(d)
+tan.vol[3].dynBal.medium.T
+tan.vol[3].dynBal.medium.der(T)
+tan.vol[3].dynBal.medium.X[1]
+tan.vol[3].dynBal.medium.u
+tan.vol[3].dynBal.medium.der(u)
+tan.vol[3].dynBal.medium.R
+tan.vol[3].dynBal.medium.MM
+tan.vol[3].dynBal.medium.state.phase
+tan.vol[3].dynBal.medium.preferredMediumStates
+tan.vol[3].dynBal.medium.standardOrderComponents
+tan.vol[3].dynBal.medium.T_degC
+tan.vol[3].dynBal.medium.p_bar
+tan.vol[3].dynBal.medium.sat.Tsat
+tan.vol[3].dynBal.U
+tan.vol[3].dynBal.der(U)
+tan.vol[3].dynBal.m
+tan.vol[3].dynBal.der(m)
+tan.vol[3].dynBal.Hb_flow
+tan.vol[3].dynBal.initialize_p
+tan.vol[3].dynBal.rho_nominal
+tan.vol[4].dynBal.energyDynamics
+tan.vol[4].dynBal.massDynamics
+tan.vol[4].dynBal.substanceDynamics
+tan.vol[4].dynBal.traceDynamics
+tan.vol[4].dynBal.p_start
+tan.vol[4].dynBal.T_start
+tan.vol[4].dynBal.X_start[1]
+tan.vol[4].dynBal.nPorts
+tan.vol[4].dynBal.medium.p
+tan.vol[4].dynBal.medium.h
+tan.vol[4].dynBal.medium.der(h)
+tan.vol[4].dynBal.medium.d
+tan.vol[4].dynBal.medium.der(d)
+tan.vol[4].dynBal.medium.T
+tan.vol[4].dynBal.medium.der(T)
+tan.vol[4].dynBal.medium.X[1]
+tan.vol[4].dynBal.medium.u
+tan.vol[4].dynBal.medium.der(u)
+tan.vol[4].dynBal.medium.R
+tan.vol[4].dynBal.medium.MM
+tan.vol[4].dynBal.medium.state.phase
+tan.vol[4].dynBal.medium.preferredMediumStates
+tan.vol[4].dynBal.medium.standardOrderComponents
+tan.vol[4].dynBal.medium.T_degC
+tan.vol[4].dynBal.medium.p_bar
+tan.vol[4].dynBal.medium.sat.Tsat
+tan.vol[4].dynBal.U
+tan.vol[4].dynBal.der(U)
+tan.vol[4].dynBal.m
+tan.vol[4].dynBal.der(m)
+tan.vol[4].dynBal.Hb_flow
+tan.vol[4].dynBal.initialize_p
+tan.vol[4].dynBal.rho_nominal
+tan.vol[5].dynBal.energyDynamics
+tan.vol[5].dynBal.massDynamics
+tan.vol[5].dynBal.substanceDynamics
+tan.vol[5].dynBal.traceDynamics
+tan.vol[5].dynBal.p_start
+tan.vol[5].dynBal.T_start
+tan.vol[5].dynBal.X_start[1]
+tan.vol[5].dynBal.nPorts
+tan.vol[5].dynBal.medium.p
+tan.vol[5].dynBal.medium.h
+tan.vol[5].dynBal.medium.der(h)
+tan.vol[5].dynBal.medium.d
+tan.vol[5].dynBal.medium.der(d)
+tan.vol[5].dynBal.medium.T
+tan.vol[5].dynBal.medium.der(T)
+tan.vol[5].dynBal.medium.X[1]
+tan.vol[5].dynBal.medium.u
+tan.vol[5].dynBal.medium.der(u)
+tan.vol[5].dynBal.medium.R
+tan.vol[5].dynBal.medium.MM
+tan.vol[5].dynBal.medium.state.phase
+tan.vol[5].dynBal.medium.preferredMediumStates
+tan.vol[5].dynBal.medium.standardOrderComponents
+tan.vol[5].dynBal.medium.T_degC
+tan.vol[5].dynBal.medium.p_bar
+tan.vol[5].dynBal.medium.sat.Tsat
+tan.vol[5].dynBal.U
+tan.vol[5].dynBal.der(U)
+tan.vol[5].dynBal.m
+tan.vol[5].dynBal.der(m)
+tan.vol[5].dynBal.Hb_flow
+tan.vol[5].dynBal.initialize_p
+tan.vol[5].dynBal.rho_nominal
+tan.vol[6].dynBal.energyDynamics
+tan.vol[6].dynBal.massDynamics
+tan.vol[6].dynBal.substanceDynamics
+tan.vol[6].dynBal.traceDynamics
+tan.vol[6].dynBal.p_start
+tan.vol[6].dynBal.T_start
+tan.vol[6].dynBal.X_start[1]
+tan.vol[6].dynBal.nPorts
+tan.vol[6].dynBal.medium.p
+tan.vol[6].dynBal.medium.h
+tan.vol[6].dynBal.medium.der(h)
+tan.vol[6].dynBal.medium.d
+tan.vol[6].dynBal.medium.der(d)
+tan.vol[6].dynBal.medium.T
+tan.vol[6].dynBal.medium.der(T)
+tan.vol[6].dynBal.medium.X[1]
+tan.vol[6].dynBal.medium.u
+tan.vol[6].dynBal.medium.der(u)
+tan.vol[6].dynBal.medium.R
+tan.vol[6].dynBal.medium.MM
+tan.vol[6].dynBal.medium.state.phase
+tan.vol[6].dynBal.medium.preferredMediumStates
+tan.vol[6].dynBal.medium.standardOrderComponents
+tan.vol[6].dynBal.medium.T_degC
+tan.vol[6].dynBal.medium.p_bar
+tan.vol[6].dynBal.medium.sat.Tsat
+tan.vol[6].dynBal.U
+tan.vol[6].dynBal.der(U)
+tan.vol[6].dynBal.m
+tan.vol[6].dynBal.der(m)
+tan.vol[6].dynBal.Hb_flow
+tan.vol[6].dynBal.initialize_p
+tan.vol[6].dynBal.rho_nominal
+tan.vol[7].dynBal.energyDynamics
+tan.vol[7].dynBal.massDynamics
+tan.vol[7].dynBal.substanceDynamics
+tan.vol[7].dynBal.traceDynamics
+tan.vol[7].dynBal.p_start
+tan.vol[7].dynBal.T_start
+tan.vol[7].dynBal.X_start[1]
+tan.vol[7].dynBal.nPorts
+tan.vol[7].dynBal.medium.p
+tan.vol[7].dynBal.medium.h
+tan.vol[7].dynBal.medium.der(h)
+tan.vol[7].dynBal.medium.d
+tan.vol[7].dynBal.medium.der(d)
+tan.vol[7].dynBal.medium.T
+tan.vol[7].dynBal.medium.der(T)
+tan.vol[7].dynBal.medium.X[1]
+tan.vol[7].dynBal.medium.u
+tan.vol[7].dynBal.medium.der(u)
+tan.vol[7].dynBal.medium.R
+tan.vol[7].dynBal.medium.MM
+tan.vol[7].dynBal.medium.state.phase
+tan.vol[7].dynBal.medium.preferredMediumStates
+tan.vol[7].dynBal.medium.standardOrderComponents
+tan.vol[7].dynBal.medium.T_degC
+tan.vol[7].dynBal.medium.p_bar
+tan.vol[7].dynBal.medium.sat.Tsat
+tan.vol[7].dynBal.U
+tan.vol[7].dynBal.der(U)
+tan.vol[7].dynBal.m
+tan.vol[7].dynBal.der(m)
+tan.vol[7].dynBal.Hb_flow
+tan.vol[7].dynBal.initialize_p
+tan.vol[7].dynBal.rho_nominal
+tan.vol[8].dynBal.energyDynamics
+tan.vol[8].dynBal.massDynamics
+tan.vol[8].dynBal.substanceDynamics
+tan.vol[8].dynBal.traceDynamics
+tan.vol[8].dynBal.p_start
+tan.vol[8].dynBal.T_start
+tan.vol[8].dynBal.X_start[1]
+tan.vol[8].dynBal.nPorts
+tan.vol[8].dynBal.medium.p
+tan.vol[8].dynBal.medium.h
+tan.vol[8].dynBal.medium.der(h)
+tan.vol[8].dynBal.medium.d
+tan.vol[8].dynBal.medium.der(d)
+tan.vol[8].dynBal.medium.T
+tan.vol[8].dynBal.medium.der(T)
+tan.vol[8].dynBal.medium.X[1]
+tan.vol[8].dynBal.medium.u
+tan.vol[8].dynBal.medium.der(u)
+tan.vol[8].dynBal.medium.R
+tan.vol[8].dynBal.medium.MM
+tan.vol[8].dynBal.medium.state.phase
+tan.vol[8].dynBal.medium.preferredMediumStates
+tan.vol[8].dynBal.medium.standardOrderComponents
+tan.vol[8].dynBal.medium.T_degC
+tan.vol[8].dynBal.medium.p_bar
+tan.vol[8].dynBal.medium.sat.Tsat
+tan.vol[8].dynBal.U
+tan.vol[8].dynBal.der(U)
+tan.vol[8].dynBal.m
+tan.vol[8].dynBal.der(m)
+tan.vol[8].dynBal.Hb_flow
+tan.vol[8].dynBal.initialize_p
+tan.vol[8].dynBal.rho_nominal
+
+double initialValue(865,6)
+ -1  1.013250000000000E+005       0                  1.000000000000000E+100
+  1   280   # system.p_ambient
+ -1  2.931500000000000E+002       0                  1.000000000000000E+100
+  1   280   # system.T_ambient
+ -1  9.806649999999999E+000       0                       0                
+  1   280   # system.g
+  0       1                       0                       0                
+  6   257   # system.allowFlowReversal
+  0       1                       1                       4                
+  6   258   # system.energyDynamics
+  0       1                       1                       4                
+  6   258   # system.massDynamics
+  0       1                       1                       4                
+  6   258   # system.substanceDynamics
+  0       1                       1                       4                
+  6   258   # system.traceDynamics
+  0       4                       1                       4                
+  6   258   # system.momentumDynamics
+ -1       0                       0                       0                
+  1   280   # system.m_flow_start
+  0       0                       0                  1.000000000000000E+100
+  6   256   # system.p_start
+  0  2.881500000000000E+002       0                  1.000000000000000E+100
+  6   256   # system.T_start
+ -1  1.000000000000000E-002       0                  1.000000000000000E+100
+  1   280   # system.m_flow_small
+ -1       1                       0                  1.000000000000000E+100
+  1   280   # system.dp_small
+  0  2.931050000000000E+002       0                  1.000000000000000E+100
+  6   256   # tan.T_Initial[1]
+  0  2.931050000000000E+002       0                  1.000000000000000E+100
+  6   256   # tan.T_Initial[2]
+  0  2.931050000000000E+002       0                  1.000000000000000E+100
+  6   256   # tan.T_Initial[3]
+  0  2.931050000000000E+002       0                  1.000000000000000E+100
+  6   256   # tan.T_Initial[4]
+  0  2.931050000000000E+002       0                  1.000000000000000E+100
+  6   256   # tan.T_Initial[5]
+  0  2.931050000000000E+002       0                  1.000000000000000E+100
+  6   256   # tan.T_Initial[6]
+  0  2.931050000000000E+002       0                  1.000000000000000E+100
+  6   256   # tan.T_Initial[7]
+  0  2.931050000000000E+002       0                  1.000000000000000E+100
+  6   256   # tan.T_Initial[8]
+  0    1000                       0                  1.000000000000000E+007
+  6   256   # tan.c_p
+  0       8                       2                  1.000000000000000E+100
+  6   258   # tan.nSeg
+  0  1.013250000000000E+005       0                  1.000000000000000E+008
+  6   256   # tan.p_start
+ -1       1                       0                       1                
+  1   280   # tan.X_start[1]
+  0       7                       0                       0                
+  6   258   # tan.TStatHeight
+ -1  3.251050000000000E+002       0                       0                
+  1   280   # tan.TSet
+  0       8                       0                       0                
+  6   258   # tan.RecircOutSeg
+ -1       1                       0                       0                
+  1   282   # tan.RecircInSeg
+ -1      12                       0                       0                
+  1   280   # tan.Deadband
+ -1      30                       0                       0                
+  1   280   # tan.UA
+ -1  2.500000000000000E-001       0                       0                
+  1   280   # tan.EffTan
+ -1  1.500000000000000E-001       0                       0                
+  1   280   # tan.VTan
+  0       1                       1                       4                
+  6   258   # tan.vol[1].energyDynamics
+  0       1                       1                       4                
+  6   258   # tan.vol[1].massDynamics
+  0       1                       1                       4                
+  6   258   # tan.vol[1].substanceDynamics
+  0       1                       1                       4                
+  6   258   # tan.vol[1].traceDynamics
+  0  1.013250000000000E+005       0                  1.000000000000000E+008
+  6   256   # tan.vol[1].p_start
+  0  2.931050000000000E+002       1                   10000                
+  6   256   # tan.vol[1].T_start
+  0       0                       0                       1                
+  6   256   # tan.vol[1].X_start[1]
+ -1  1.000000000000000E-003       0                  1.000000000000000E+100
+  1   280   # tan.vol[1].m_flow_nominal
+  0       1                       0                       0                
+  6   258   # tan.vol[1].nPorts
+  0       0                       0                  100000                
+  6   256   # tan.vol[1].m_flow_small
+  0       1                       0                       0                
+  6   257   # tan.vol[1].homotopyInitialization
+  0       1                       0                       0                
+  6   257   # tan.vol[1].allowFlowReversal
+  0       0                       0                       0                
+  6   256   # tan.vol[1].V
+  0       0                       0                       0                
+  6   257   # tan.vol[1].prescribedHeatFlowRate
+  0       0                       0                       0                
+  6   388   # tan.vol[1].heatPort.Q_flow
+  0       1                       0                       2                
+  6  1282   # tan.vol[1].state_start.phase
+  0  100000                 -1.000000000000000E+010  1.000000000000000E+010
+  6  1280   # tan.vol[1].state_start.h
+  0     150                       0                  100000                
+  6  1280   # tan.vol[1].state_start.d
+  0  2.931050000000000E+002       1                   10000                
+  6  1280   # tan.vol[1].state_start.T
+  0  1.013250000000000E+005       0                  1.000000000000000E+008
+  6  1280   # tan.vol[1].state_start.p
+  0       0                       0                  1.000000000000000E+100
+  6  1280   # tan.vol[1].rho_nominal
+  0       0                       0                       0                
+  6  1281   # tan.vol[1].useSteadyStateTwoPort
+  0       1                       1                       4                
+  6   258   # tan.vol[2].energyDynamics
+  0       1                       1                       4                
+  6   258   # tan.vol[2].massDynamics
+  0       1                       1                       4                
+  6   258   # tan.vol[2].substanceDynamics
+  0       1                       1                       4                
+  6   258   # tan.vol[2].traceDynamics
+  0  1.013250000000000E+005       0                  1.000000000000000E+008
+  6   256   # tan.vol[2].p_start
+  0  2.931050000000000E+002       1                   10000                
+  6   256   # tan.vol[2].T_start
+  0       0                       0                       1                
+  6   256   # tan.vol[2].X_start[1]
+ -1  1.000000000000000E-003       0                  1.000000000000000E+100
+  1   280   # tan.vol[2].m_flow_nominal
+  0       1                       0                       0                
+  6   258   # tan.vol[2].nPorts
+  0       0                       0                  100000                
+  6   256   # tan.vol[2].m_flow_small
+  0       1                       0                       0                
+  6   257   # tan.vol[2].homotopyInitialization
+  0       1                       0                       0                
+  6   257   # tan.vol[2].allowFlowReversal
+  0       0                       0                       0                
+  6   256   # tan.vol[2].V
+  0       0                       0                       0                
+  6   257   # tan.vol[2].prescribedHeatFlowRate
+  0       0                       0                       0                
+  6   388   # tan.vol[2].heatPort.Q_flow
+  0       1                       0                       2                
+  6  1282   # tan.vol[2].state_start.phase
+  0  100000                 -1.000000000000000E+010  1.000000000000000E+010
+  6  1280   # tan.vol[2].state_start.h
+  0     150                       0                  100000                
+  6  1280   # tan.vol[2].state_start.d
+  0  2.931050000000000E+002       1                   10000                
+  6  1280   # tan.vol[2].state_start.T
+  0  1.013250000000000E+005       0                  1.000000000000000E+008
+  6  1280   # tan.vol[2].state_start.p
+  0       0                       0                  1.000000000000000E+100
+  6  1280   # tan.vol[2].rho_nominal
+  0       0                       0                       0                
+  6  1281   # tan.vol[2].useSteadyStateTwoPort
+  0       1                       1                       4                
+  6   258   # tan.vol[3].energyDynamics
+  0       1                       1                       4                
+  6   258   # tan.vol[3].massDynamics
+  0       1                       1                       4                
+  6   258   # tan.vol[3].substanceDynamics
+  0       1                       1                       4                
+  6   258   # tan.vol[3].traceDynamics
+  0  1.013250000000000E+005       0                  1.000000000000000E+008
+  6   256   # tan.vol[3].p_start
+  0  2.931050000000000E+002       1                   10000                
+  6   256   # tan.vol[3].T_start
+  0       0                       0                       1                
+  6   256   # tan.vol[3].X_start[1]
+ -1  1.000000000000000E-003       0                  1.000000000000000E+100
+  1   280   # tan.vol[3].m_flow_nominal
+  0       1                       0                       0                
+  6   258   # tan.vol[3].nPorts
+  0       0                       0                  100000                
+  6   256   # tan.vol[3].m_flow_small
+  0       1                       0                       0                
+  6   257   # tan.vol[3].homotopyInitialization
+  0       1                       0                       0                
+  6   257   # tan.vol[3].allowFlowReversal
+  0       0                       0                       0                
+  6   256   # tan.vol[3].V
+  0       0                       0                       0                
+  6   257   # tan.vol[3].prescribedHeatFlowRate
+  0       0                       0                       0                
+  6   388   # tan.vol[3].heatPort.Q_flow
+  0       1                       0                       2                
+  6  1282   # tan.vol[3].state_start.phase
+  0  100000                 -1.000000000000000E+010  1.000000000000000E+010
+  6  1280   # tan.vol[3].state_start.h
+  0     150                       0                  100000                
+  6  1280   # tan.vol[3].state_start.d
+  0  2.931050000000000E+002       1                   10000                
+  6  1280   # tan.vol[3].state_start.T
+  0  1.013250000000000E+005       0                  1.000000000000000E+008
+  6  1280   # tan.vol[3].state_start.p
+  0       0                       0                  1.000000000000000E+100
+  6  1280   # tan.vol[3].rho_nominal
+  0       0                       0                       0                
+  6  1281   # tan.vol[3].useSteadyStateTwoPort
+  0       1                       1                       4                
+  6   258   # tan.vol[4].energyDynamics
+  0       1                       1                       4                
+  6   258   # tan.vol[4].massDynamics
+  0       1                       1                       4                
+  6   258   # tan.vol[4].substanceDynamics
+  0       1                       1                       4                
+  6   258   # tan.vol[4].traceDynamics
+  0  1.013250000000000E+005       0                  1.000000000000000E+008
+  6   256   # tan.vol[4].p_start
+  0  2.931050000000000E+002       1                   10000                
+  6   256   # tan.vol[4].T_start
+  0       0                       0                       1                
+  6   256   # tan.vol[4].X_start[1]
+ -1  1.000000000000000E-003       0                  1.000000000000000E+100
+  1   280   # tan.vol[4].m_flow_nominal
+  0       1                       0                       0                
+  6   258   # tan.vol[4].nPorts
+  0       0                       0                  100000                
+  6   256   # tan.vol[4].m_flow_small
+  0       1                       0                       0                
+  6   257   # tan.vol[4].homotopyInitialization
+  0       1                       0                       0                
+  6   257   # tan.vol[4].allowFlowReversal
+  0       0                       0                       0                
+  6   256   # tan.vol[4].V
+  0       0                       0                       0                
+  6   257   # tan.vol[4].prescribedHeatFlowRate
+  0       0                       0                       0                
+  6   388   # tan.vol[4].heatPort.Q_flow
+  0       1                       0                       2                
+  6  1282   # tan.vol[4].state_start.phase
+  0  100000                 -1.000000000000000E+010  1.000000000000000E+010
+  6  1280   # tan.vol[4].state_start.h
+  0     150                       0                  100000                
+  6  1280   # tan.vol[4].state_start.d
+  0  2.931050000000000E+002       1                   10000                
+  6  1280   # tan.vol[4].state_start.T
+  0  1.013250000000000E+005       0                  1.000000000000000E+008
+  6  1280   # tan.vol[4].state_start.p
+  0       0                       0                  1.000000000000000E+100
+  6  1280   # tan.vol[4].rho_nominal
+  0       0                       0                       0                
+  6  1281   # tan.vol[4].useSteadyStateTwoPort
+  0       1                       1                       4                
+  6   258   # tan.vol[5].energyDynamics
+  0       1                       1                       4                
+  6   258   # tan.vol[5].massDynamics
+  0       1                       1                       4                
+  6   258   # tan.vol[5].substanceDynamics
+  0       1                       1                       4                
+  6   258   # tan.vol[5].traceDynamics
+  0  1.013250000000000E+005       0                  1.000000000000000E+008
+  6   256   # tan.vol[5].p_start
+  0  2.931050000000000E+002       1                   10000                
+  6   256   # tan.vol[5].T_start
+  0       0                       0                       1                
+  6   256   # tan.vol[5].X_start[1]
+ -1  1.000000000000000E-003       0                  1.000000000000000E+100
+  1   280   # tan.vol[5].m_flow_nominal
+  0       1                       0                       0                
+  6   258   # tan.vol[5].nPorts
+  0       0                       0                  100000                
+  6   256   # tan.vol[5].m_flow_small
+  0       1                       0                       0                
+  6   257   # tan.vol[5].homotopyInitialization
+  0       1                       0                       0                
+  6   257   # tan.vol[5].allowFlowReversal
+  0       0                       0                       0                
+  6   256   # tan.vol[5].V
+  0       0                       0                       0                
+  6   257   # tan.vol[5].prescribedHeatFlowRate
+  0       0                       0                       0                
+  6   388   # tan.vol[5].heatPort.Q_flow
+  0       1                       0                       2                
+  6  1282   # tan.vol[5].state_start.phase
+  0  100000                 -1.000000000000000E+010  1.000000000000000E+010
+  6  1280   # tan.vol[5].state_start.h
+  0     150                       0                  100000                
+  6  1280   # tan.vol[5].state_start.d
+  0  2.931050000000000E+002       1                   10000                
+  6  1280   # tan.vol[5].state_start.T
+  0  1.013250000000000E+005       0                  1.000000000000000E+008
+  6  1280   # tan.vol[5].state_start.p
+  0       0                       0                  1.000000000000000E+100
+  6  1280   # tan.vol[5].rho_nominal
+  0       0                       0                       0                
+  6  1281   # tan.vol[5].useSteadyStateTwoPort
+  0       1                       1                       4                
+  6   258   # tan.vol[6].energyDynamics
+  0       1                       1                       4                
+  6   258   # tan.vol[6].massDynamics
+  0       1                       1                       4                
+  6   258   # tan.vol[6].substanceDynamics
+  0       1                       1                       4                
+  6   258   # tan.vol[6].traceDynamics
+  0  1.013250000000000E+005       0                  1.000000000000000E+008
+  6   256   # tan.vol[6].p_start
+  0  2.931050000000000E+002       1                   10000                
+  6   256   # tan.vol[6].T_start
+  0       0                       0                       1                
+  6   256   # tan.vol[6].X_start[1]
+ -1  1.000000000000000E-003       0                  1.000000000000000E+100
+  1   280   # tan.vol[6].m_flow_nominal
+  0       1                       0                       0                
+  6   258   # tan.vol[6].nPorts
+  0       0                       0                  100000                
+  6   256   # tan.vol[6].m_flow_small
+  0       1                       0                       0                
+  6   257   # tan.vol[6].homotopyInitialization
+  0       1                       0                       0                
+  6   257   # tan.vol[6].allowFlowReversal
+  0       0                       0                       0                
+  6   256   # tan.vol[6].V
+  0       0                       0                       0                
+  6   257   # tan.vol[6].prescribedHeatFlowRate
+  0       0                       0                       0                
+  6   388   # tan.vol[6].heatPort.Q_flow
+  0       1                       0                       2                
+  6  1282   # tan.vol[6].state_start.phase
+  0  100000                 -1.000000000000000E+010  1.000000000000000E+010
+  6  1280   # tan.vol[6].state_start.h
+  0     150                       0                  100000                
+  6  1280   # tan.vol[6].state_start.d
+  0  2.931050000000000E+002       1                   10000                
+  6  1280   # tan.vol[6].state_start.T
+  0  1.013250000000000E+005       0                  1.000000000000000E+008
+  6  1280   # tan.vol[6].state_start.p
+  0       0                       0                  1.000000000000000E+100
+  6  1280   # tan.vol[6].rho_nominal
+  0       0                       0                       0                
+  6  1281   # tan.vol[6].useSteadyStateTwoPort
+  0       1                       1                       4                
+  6   258   # tan.vol[7].energyDynamics
+  0       1                       1                       4                
+  6   258   # tan.vol[7].massDynamics
+  0       1                       1                       4                
+  6   258   # tan.vol[7].substanceDynamics
+  0       1                       1                       4                
+  6   258   # tan.vol[7].traceDynamics
+  0  1.013250000000000E+005       0                  1.000000000000000E+008
+  6   256   # tan.vol[7].p_start
+  0  2.931050000000000E+002       1                   10000                
+  6   256   # tan.vol[7].T_start
+  0       0                       0                       1                
+  6   256   # tan.vol[7].X_start[1]
+ -1  1.000000000000000E-003       0                  1.000000000000000E+100
+  1   280   # tan.vol[7].m_flow_nominal
+  0       1                       0                       0                
+  6   258   # tan.vol[7].nPorts
+  0       0                       0                  100000                
+  6   256   # tan.vol[7].m_flow_small
+  0       1                       0                       0                
+  6   257   # tan.vol[7].homotopyInitialization
+  0       1                       0                       0                
+  6   257   # tan.vol[7].allowFlowReversal
+  0       0                       0                       0                
+  6   256   # tan.vol[7].V
+  0       0                       0                       0                
+  6   257   # tan.vol[7].prescribedHeatFlowRate
+  0       0                       0                       0                
+  6   388   # tan.vol[7].heatPort.Q_flow
+  0       1                       0                       2                
+  6  1282   # tan.vol[7].state_start.phase
+  0  100000                 -1.000000000000000E+010  1.000000000000000E+010
+  6  1280   # tan.vol[7].state_start.h
+  0     150                       0                  100000                
+  6  1280   # tan.vol[7].state_start.d
+  0  2.931050000000000E+002       1                   10000                
+  6  1280   # tan.vol[7].state_start.T
+  0  1.013250000000000E+005       0                  1.000000000000000E+008
+  6  1280   # tan.vol[7].state_start.p
+  0       0                       0                  1.000000000000000E+100
+  6  1280   # tan.vol[7].rho_nominal
+  0       0                       0                       0                
+  6  1281   # tan.vol[7].useSteadyStateTwoPort
+  0       1                       1                       4                
+  6   258   # tan.vol[8].energyDynamics
+  0       1                       1                       4                
+  6   258   # tan.vol[8].massDynamics
+  0       1                       1                       4                
+  6   258   # tan.vol[8].substanceDynamics
+  0       1                       1                       4                
+  6   258   # tan.vol[8].traceDynamics
+  0  1.013250000000000E+005       0                  1.000000000000000E+008
+  6   256   # tan.vol[8].p_start
+  0  2.931050000000000E+002       1                   10000                
+  6   256   # tan.vol[8].T_start
+  0       0                       0                       1                
+  6   256   # tan.vol[8].X_start[1]
+ -1  1.000000000000000E-003       0                  1.000000000000000E+100
+  1   280   # tan.vol[8].m_flow_nominal
+  0       1                       0                       0                
+  6   258   # tan.vol[8].nPorts
+  0       0                       0                  100000                
+  6   256   # tan.vol[8].m_flow_small
+  0       1                       0                       0                
+  6   257   # tan.vol[8].homotopyInitialization
+  0       1                       0                       0                
+  6   257   # tan.vol[8].allowFlowReversal
+  0       0                       0                       0                
+  6   256   # tan.vol[8].V
+  0       0                       0                       0                
+  6   257   # tan.vol[8].prescribedHeatFlowRate
+  0       0                       0                       0                
+  6   388   # tan.vol[8].heatPort.Q_flow
+  0       1                       0                       2                
+  6  1282   # tan.vol[8].state_start.phase
+  0  100000                 -1.000000000000000E+010  1.000000000000000E+010
+  6  1280   # tan.vol[8].state_start.h
+  0     150                       0                  100000                
+  6  1280   # tan.vol[8].state_start.d
+  0  2.931050000000000E+002       1                   10000                
+  6  1280   # tan.vol[8].state_start.T
+  0  1.013250000000000E+005       0                  1.000000000000000E+008
+  6  1280   # tan.vol[8].state_start.p
+  0       0                       0                  1.000000000000000E+100
+  6  1280   # tan.vol[8].rho_nominal
+  0       0                       0                       0                
+  6  1281   # tan.vol[8].useSteadyStateTwoPort
+  0       0                       0                       0                
+  6   320   # tan.m_flow_in[1]
+  0       0                       0                       0                
+  6   320   # tan.m_flow_in[2]
+  0       0                       0                       0                
+  6   320   # tan.m_flow_in[3]
+  0       0                       0                       0                
+  6   320   # tan.m_flow_in[4]
+  0       0                       0                       0                
+  6   320   # tan.m_flow_in[5]
+  0       0                       0                       0                
+  6   320   # tan.m_flow_in[6]
+  0       0                       0                       0                
+  6   320   # tan.m_flow_in[7]
+  0       0                       0                       0                
+  6   320   # tan.m_flow_in[8]
+  0    1000                       0                  1.000000000000000E+007
+  6   256   # tan.draHeaTra.c_p
+  0       8                       2                  1.000000000000000E+100
+  6   258   # tan.draHeaTra.nSeg
+  0       0                       0                       0                
+  6   256   # tan.draHeaTra.draHeaTra[1]
+  0       0                       0                       0                
+  6   256   # tan.draHeaTra.draHeaTra[2]
+  0       0                       0                       0                
+  6   256   # tan.draHeaTra.draHeaTra[3]
+  0       0                       0                       0                
+  6   256   # tan.draHeaTra.draHeaTra[4]
+  0       0                       0                       0                
+  6   256   # tan.draHeaTra.draHeaTra[5]
+  0       0                       0                       0                
+  6   256   # tan.draHeaTra.draHeaTra[6]
+  0       0                       0                       0                
+  6   256   # tan.draHeaTra.draHeaTra[7]
+  0       0                       0                       0                
+  6   256   # tan.draHeaTra.draHeaTra[8]
+  0  2.881500000000000E+002       0                  1.000000000000000E+100
+  6   256   # tan.draHeaTra.TWat[2]
+  0  2.881500000000000E+002       0                  1.000000000000000E+100
+  6   256   # tan.draHeaTra.TWat[3]
+  0  2.881500000000000E+002       0                  1.000000000000000E+100
+  6   256   # tan.draHeaTra.TWat[4]
+  0  2.881500000000000E+002       0                  1.000000000000000E+100
+  6   256   # tan.draHeaTra.TWat[5]
+  0  2.881500000000000E+002       0                  1.000000000000000E+100
+  6   256   # tan.draHeaTra.TWat[6]
+  0  2.881500000000000E+002       0                  1.000000000000000E+100
+  6   256   # tan.draHeaTra.TWat[7]
+  0       0                       0                       0                
+  6   388   # tan.temperatureSensor[1].port.Q_flow
+  0       0                       0                       0                
+  6   388   # tan.temperatureSensor[2].port.Q_flow
+  0       0                       0                       0                
+  6   388   # tan.temperatureSensor[3].port.Q_flow
+  0       0                       0                       0                
+  6   388   # tan.temperatureSensor[4].port.Q_flow
+  0       0                       0                       0                
+  6   388   # tan.temperatureSensor[5].port.Q_flow
+  0       0                       0                       0                
+  6   388   # tan.temperatureSensor[6].port.Q_flow
+  0       0                       0                       0                
+  6   388   # tan.temperatureSensor[7].port.Q_flow
+  0       0                       0                       0                
+  6   388   # tan.temperatureSensor[8].port.Q_flow
+  0       1                       0                       0                
+  6   258   # tan.boundary[1].nPorts
+  0     150                       0                  100000                
+  6   256   # tan.boundary[1].medium.d
+  0     500                       1                   10000                
+  6   256   # tan.boundary[1].medium.T
+  0       1                       0                       1                
+  6   256   # tan.boundary[1].medium.X[1]
+  0       0                 -1.000000000000000E+008  1.000000000000000E+008
+  6   256   # tan.boundary[1].medium.u
+  0  4.615236365065450E+002       0                  1.000000000000000E+007
+  6   256   # tan.boundary[1].medium.R
+  0  1.801526800000000E-002  1.000000000000000E-003  2.500000000000000E-001
+  6   256   # tan.boundary[1].medium.MM
+  0       1                       0                       2                
+  6   258   # tan.boundary[1].medium.state.phase
+  0       0                       0                       0                
+  6   257   # tan.boundary[1].medium.preferredMediumStates
+  0       1                       0                       0                
+  6   257   # tan.boundary[1].medium.standardOrderComponents
+  0       0                       0                       0                
+  6   256   # tan.boundary[1].medium.T_degC
+  0       0                       0                       0                
+  6   256   # tan.boundary[1].medium.p_bar
+  0     500                       1                   10000                
+  6   256   # tan.boundary[1].medium.sat.Tsat
+  0  1.801526800000000E-002  1.000000000000000E-003  2.500000000000000E-001
+  6  1280   # _GlobalScope.Modelica.Media.Water.waterConstants[1].molarMass
+  0  6.470960000000000E+002       1                   10000                
+  6  1280   # _GlobalScope.Modelica.Media.Water.waterConstants[1].criticalTemperature
+  0  2.206400000000000E+007       0                  1.000000000000000E+008
+  6  1280   # _GlobalScope.Modelica.Media.Water.waterConstants[1].criticalPressure
+  0  5.594803726708070E-005  1.000000000000000E-006  1.000000000000000E+006
+  6  1280   # _GlobalScope.Modelica.Media.Water.waterConstants[1].criticalMolarVolume
+  0  3.440000000000000E-001       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.Water.waterConstants[1].acentricFactor
+  0  2.731600000000000E+002       1                   10000                
+  6  1280   # _GlobalScope.Modelica.Media.Water.waterConstants[1].triplePointTemperature
+  0  6.116570000000000E+002       0                  1.000000000000000E+008
+  6  1280   # _GlobalScope.Modelica.Media.Water.waterConstants[1].triplePointPressure
+  0  2.731500000000000E+002       1                   10000                
+  6  1280   # _GlobalScope.Modelica.Media.Water.waterConstants[1].meltingPoint
+  0  3.731240000000000E+002       1                   10000                
+  6  1280   # _GlobalScope.Modelica.Media.Water.waterConstants[1].normalBoilingPoint
+  0  1.800000000000000E+000       0                       2                
+  6  1280   # _GlobalScope.Modelica.Media.Water.waterConstants[1].dipoleMoment
+  0       0                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.waterConstants[1].hasIdealGasHeatCapacity
+  0       1                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.waterConstants[1].hasCriticalData
+  0       0                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.waterConstants[1].hasDipoleMoment
+  0       0                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.waterConstants[1].hasFundamentalEquation
+  0       0                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.waterConstants[1].hasLiquidHeatCapacity
+  0       0                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.waterConstants[1].hasSolidHeatCapacity
+  0       0                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.waterConstants[1].hasAccurateViscosityData
+  0       0                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.waterConstants[1].hasAccurateConductivityData
+  0       0                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.waterConstants[1].hasVapourPressureCurve
+  0       0                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.waterConstants[1].hasAcentricFactor
+  0       0                 -1.000000000000000E+010  1.000000000000000E+010
+  6  1280   # _GlobalScope.Modelica.Media.Water.waterConstants[1].HCRIT0
+  0       0                 -1.000000000000000E+007  1.000000000000000E+007
+  6  1280   # _GlobalScope.Modelica.Media.Water.waterConstants[1].SCRIT0
+  0       0                 -1.000000000000000E+010  1.000000000000000E+010
+  6  1280   # _GlobalScope.Modelica.Media.Water.waterConstants[1].deltah
+  0       0                 -1.000000000000000E+007  1.000000000000000E+007
+  6  1280   # _GlobalScope.Modelica.Media.Water.waterConstants[1].deltas
+  0  1.801526800000000E-002  1.000000000000000E-003  2.500000000000000E-001
+  6  1280   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].molarMass
+  0  6.470960000000000E+002       1                   10000                
+  6  1280   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].criticalTemperature
+  0  2.206400000000000E+007       0                  1.000000000000000E+008
+  6  1280   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].criticalPressure
+  0  5.594803726708070E-005  1.000000000000000E-006  1.000000000000000E+006
+  6  1280   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].criticalMolarVolume
+  0  3.440000000000000E-001       0                       0                
+  6  1280   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].acentricFactor
+  0  2.731600000000000E+002       1                   10000                
+  6  1280   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].triplePointTemperature
+  0  6.116570000000000E+002       0                  1.000000000000000E+008
+  6  1280   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].triplePointPressure
+  0  2.731500000000000E+002       1                   10000                
+  6  1280   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].meltingPoint
+  0  3.731240000000000E+002       1                   10000                
+  6  1280   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].normalBoilingPoint
+  0  1.800000000000000E+000       0                       2                
+  6  1280   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].dipoleMoment
+  0       0                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasIdealGasHeatCapacity
+  0       1                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasCriticalData
+  0       0                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasDipoleMoment
+  0       0                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasFundamentalEquation
+  0       0                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasLiquidHeatCapacity
+  0       0                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasSolidHeatCapacity
+  0       0                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasAccurateViscosityData
+  0       0                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasAccurateConductivityData
+  0       0                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasVapourPressureCurve
+  0       0                       0                       0                
+  6  1281   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].hasAcentricFactor
+  0       0                 -1.000000000000000E+010  1.000000000000000E+010
+  6  1280   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].HCRIT0
+  0       0                 -1.000000000000000E+007  1.000000000000000E+007
+  6  1280   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].SCRIT0
+  0       0                 -1.000000000000000E+010  1.000000000000000E+010
+  6  1280   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].deltah
+  0       0                 -1.000000000000000E+007  1.000000000000000E+007
+  6  1280   # _GlobalScope.Modelica.Media.Water.WaterIF97_base.fluidConstants[1].deltas
+  0  100000                 -1.000000000000000E+010  1.000000000000000E+010
+  6   260   # tan.boundary[1].ports[1].h_outflow
+  0       3                       1                       3                
+  6  1282   # tan.boundary[1].flowDirection
+  0       1                       0                       0                
+  6   257   # tan.boundary[1].use_p
+ -1  3.477000000000000E+005       0                  1.000000000000000E+008
+  1   280   # tan.boundary[1].p
+  0     150                       0                  100000                
+  6   256   # tan.boundary[1].d
+  0       1                       0                       0                
+  6   257   # tan.boundary[1].use_T
+ -1  2.931500000000000E+002       1                   10000                
+  1   280   # tan.boundary[1].T
+  0  100000                 -1.000000000000000E+010  1.000000000000000E+010
+  6   256   # tan.boundary[1].h
+ -1       1                       0                       1                
+  1   280   # tan.boundary[1].X[1]
+  0       1                       0                       2                
+  6  1282   # tan.boundary[1].state.phase
+  0     150                       0                  100000                
+  6  1280   # tan.boundary[1].state.d
+  0       1                       0                       0                
+  6   258   # tan.boundary[2].nPorts
+  0     150                       0                  100000                
+  6   256   # tan.boundary[2].medium.d
+  0     500                       1                   10000                
+  6   256   # tan.boundary[2].medium.T
+  0       1                       0                       1                
+  6   256   # tan.boundary[2].medium.X[1]
+  0       0                 -1.000000000000000E+008  1.000000000000000E+008
+  6   256   # tan.boundary[2].medium.u
+  0  4.615236365065450E+002       0                  1.000000000000000E+007
+  6   256   # tan.boundary[2].medium.R
+  0  1.801526800000000E-002  1.000000000000000E-003  2.500000000000000E-001
+  6   256   # tan.boundary[2].medium.MM
+  0       1                       0                       2                
+  6   258   # tan.boundary[2].medium.state.phase
+  0       0                       0                       0                
+  6   257   # tan.boundary[2].medium.preferredMediumStates
+  0       1                       0                       0                
+  6   257   # tan.boundary[2].medium.standardOrderComponents
+  0       0                       0                       0                
+  6   256   # tan.boundary[2].medium.T_degC
+  0       0                       0                       0                
+  6   256   # tan.boundary[2].medium.p_bar
+  0     500                       1                   10000                
+  6   256   # tan.boundary[2].medium.sat.Tsat
+  0  100000                 -1.000000000000000E+010  1.000000000000000E+010
+  6   260   # tan.boundary[2].ports[1].h_outflow
+  0       3                       1                       3                
+  6  1282   # tan.boundary[2].flowDirection
+  0       1                       0                       0                
+  6   257   # tan.boundary[2].use_p
+ -1  3.477000000000000E+005       0                  1.000000000000000E+008
+  1   280   # tan.boundary[2].p
+  0     150                       0                  100000                
+  6   256   # tan.boundary[2].d
+  0       1                       0                       0                
+  6   257   # tan.boundary[2].use_T
+ -1  2.931500000000000E+002       1                   10000                
+  1   280   # tan.boundary[2].T
+  0  100000                 -1.000000000000000E+010  1.000000000000000E+010
+  6   256   # tan.boundary[2].h
+ -1       1                       0                       1                
+  1   280   # tan.boundary[2].X[1]
+  0       1                       0                       2                
+  6  1282   # tan.boundary[2].state.phase
+  0     150                       0                  100000                
+  6  1280   # tan.boundary[2].state.d
+  0       1                       0                       0                
+  6   258   # tan.boundary[3].nPorts
+  0     150                       0                  100000                
+  6   256   # tan.boundary[3].medium.d
+  0     500                       1                   10000                
+  6   256   # tan.boundary[3].medium.T
+  0       1                       0                       1                
+  6   256   # tan.boundary[3].medium.X[1]
+  0       0                 -1.000000000000000E+008  1.000000000000000E+008
+  6   256   # tan.boundary[3].medium.u
+  0  4.615236365065450E+002       0                  1.000000000000000E+007
+  6   256   # tan.boundary[3].medium.R
+  0  1.801526800000000E-002  1.000000000000000E-003  2.500000000000000E-001
+  6   256   # tan.boundary[3].medium.MM
+  0       1                       0                       2                
+  6   258   # tan.boundary[3].medium.state.phase
+  0       0                       0                       0                
+  6   257   # tan.boundary[3].medium.preferredMediumStates
+  0       1                       0                       0                
+  6   257   # tan.boundary[3].medium.standardOrderComponents
+  0       0                       0                       0                
+  6   256   # tan.boundary[3].medium.T_degC
+  0       0                       0                       0                
+  6   256   # tan.boundary[3].medium.p_bar
+  0     500                       1                   10000                
+  6   256   # tan.boundary[3].medium.sat.Tsat
+  0  100000                 -1.000000000000000E+010  1.000000000000000E+010
+  6   260   # tan.boundary[3].ports[1].h_outflow
+  0       3                       1                       3                
+  6  1282   # tan.boundary[3].flowDirection
+  0       1                       0                       0                
+  6   257   # tan.boundary[3].use_p
+ -1  3.477000000000000E+005       0                  1.000000000000000E+008
+  1   280   # tan.boundary[3].p
+  0     150                       0                  100000                
+  6   256   # tan.boundary[3].d
+  0       1                       0                       0                
+  6   257   # tan.boundary[3].use_T
+ -1  2.931500000000000E+002       1                   10000                
+  1   280   # tan.boundary[3].T
+  0  100000                 -1.000000000000000E+010  1.000000000000000E+010
+  6   256   # tan.boundary[3].h
+ -1       1                       0                       1                
+  1   280   # tan.boundary[3].X[1]
+  0       1                       0                       2                
+  6  1282   # tan.boundary[3].state.phase
+  0     150                       0                  100000                
+  6  1280   # tan.boundary[3].state.d
+  0       1                       0                       0                
+  6   258   # tan.boundary[4].nPorts
+  0     150                       0                  100000                
+  6   256   # tan.boundary[4].medium.d
+  0     500                       1                   10000                
+  6   256   # tan.boundary[4].medium.T
+  0       1                       0                       1                
+  6   256   # tan.boundary[4].medium.X[1]
+  0       0                 -1.000000000000000E+008  1.000000000000000E+008
+  6   256   # tan.boundary[4].medium.u
+  0  4.615236365065450E+002       0                  1.000000000000000E+007
+  6   256   # tan.boundary[4].medium.R
+  0  1.801526800000000E-002  1.000000000000000E-003  2.500000000000000E-001
+  6   256   # tan.boundary[4].medium.MM
+  0       1                       0                       2                
+  6   258   # tan.boundary[4].medium.state.phase
+  0       0                       0                       0                
+  6   257   # tan.boundary[4].medium.preferredMediumStates
+  0       1                       0                       0                
+  6   257   # tan.boundary[4].medium.standardOrderComponents
+  0       0                       0                       0                
+  6   256   # tan.boundary[4].medium.T_degC
+  0       0                       0                       0                
+  6   256   # tan.boundary[4].medium.p_bar
+  0     500                       1                   10000                
+  6   256   # tan.boundary[4].medium.sat.Tsat
+  0  100000                 -1.000000000000000E+010  1.000000000000000E+010
+  6   260   # tan.boundary[4].ports[1].h_outflow
+  0       3                       1                       3                
+  6  1282   # tan.boundary[4].flowDirection
+  0       1                       0                       0                
+  6   257   # tan.boundary[4].use_p
+ -1  3.477000000000000E+005       0                  1.000000000000000E+008
+  1   280   # tan.boundary[4].p
+  0     150                       0                  100000                
+  6   256   # tan.boundary[4].d
+  0       1                       0                       0                
+  6   257   # tan.boundary[4].use_T
+ -1  2.931500000000000E+002       1                   10000                
+  1   280   # tan.boundary[4].T
+  0  100000                 -1.000000000000000E+010  1.000000000000000E+010
+  6   256   # tan.boundary[4].h
+ -1       1                       0                       1                
+  1   280   # tan.boundary[4].X[1]
+  0       1                       0                       2                
+  6  1282   # tan.boundary[4].state.phase
+  0     150                       0                  100000                
+  6  1280   # tan.boundary[4].state.d
+  0       1                       0                       0                
+  6   258   # tan.boundary[5].nPorts
+  0     150                       0                  100000                
+  6   256   # tan.boundary[5].medium.d
+  0     500                       1                   10000                
+  6   256   # tan.boundary[5].medium.T
+  0       1                       0                       1                
+  6   256   # tan.boundary[5].medium.X[1]
+  0       0                 -1.000000000000000E+008  1.000000000000000E+008
+  6   256   # tan.boundary[5].medium.u
+  0  4.615236365065450E+002       0                  1.000000000000000E+007
+  6   256   # tan.boundary[5].medium.R
+  0  1.801526800000000E-002  1.000000000000000E-003  2.500000000000000E-001
+  6   256   # tan.boundary[5].medium.MM
+  0       1                       0                       2                
+  6   258   # tan.boundary[5].medium.state.phase
+  0       0                       0                       0                
+  6   257   # tan.boundary[5].medium.preferredMediumStates
+  0       1                       0                       0                
+  6   257   # tan.boundary[5].medium.standardOrderComponents
+  0       0                       0                       0                
+  6   256   # tan.boundary[5].medium.T_degC
+  0       0                       0                       0                
+  6   256   # tan.boundary[5].medium.p_bar
+  0     500                       1                   10000                
+  6   256   # tan.boundary[5].medium.sat.Tsat
+  0  100000                 -1.000000000000000E+010  1.000000000000000E+010
+  6   260   # tan.boundary[5].ports[1].h_outflow
+  0       3                       1                       3                
+  6  1282   # tan.boundary[5].flowDirection
+  0       1                       0                       0                
+  6   257   # tan.boundary[5].use_p
+ -1  3.477000000000000E+005       0                  1.000000000000000E+008
+  1   280   # tan.boundary[5].p
+  0     150                       0                  100000                
+  6   256   # tan.boundary[5].d
+  0       1                       0                       0                
+  6   257   # tan.boundary[5].use_T
+ -1  2.931500000000000E+002       1                   10000                
+  1   280   # tan.boundary[5].T
+  0  100000                 -1.000000000000000E+010  1.000000000000000E+010
+  6   256   # tan.boundary[5].h
+ -1       1                       0                       1                
+  1   280   # tan.boundary[5].X[1]
+  0       1                       0                       2                
+  6  1282   # tan.boundary[5].state.phase
+  0     150                       0                  100000                
+  6  1280   # tan.boundary[5].state.d
+  0       1                       0                       0                
+  6   258   # tan.boundary[6].nPorts
+  0     150                       0                  100000                
+  6   256   # tan.boundary[6].medium.d
+  0     500                       1                   10000                
+  6   256   # tan.boundary[6].medium.T
+  0       1                       0                       1                
+  6   256   # tan.boundary[6].medium.X[1]
+  0       0                 -1.000000000000000E+008  1.000000000000000E+008
+  6   256   # tan.boundary[6].medium.u
+  0  4.615236365065450E+002       0                  1.000000000000000E+007
+  6   256   # tan.boundary[6].medium.R
+  0  1.801526800000000E-002  1.000000000000000E-003  2.500000000000000E-001
+  6   256   # tan.boundary[6].medium.MM
+  0       1                       0                       2                
+  6   258   # tan.boundary[6].medium.state.phase
+  0       0                       0                       0                
+  6   257   # tan.boundary[6].medium.preferredMediumStates
+  0       1                       0                       0                
+  6   257   # tan.boundary[6].medium.standardOrderComponents
+  0       0                       0                       0                
+  6   256   # tan.boundary[6].medium.T_degC
+  0       0                       0                       0                
+  6   256   # tan.boundary[6].medium.p_bar
+  0     500                       1                   10000                
+  6   256   # tan.boundary[6].medium.sat.Tsat
+  0  100000                 -1.000000000000000E+010  1.000000000000000E+010
+  6   260   # tan.boundary[6].ports[1].h_outflow
+  0       3                       1                       3                
+  6  1282   # tan.boundary[6].flowDirection
+  0       1                       0                       0                
+  6   257   # tan.boundary[6].use_p
+ -1  3.477000000000000E+005       0                  1.000000000000000E+008
+  1   280   # tan.boundary[6].p
+  0     150                       0                  100000                
+  6   256   # tan.boundary[6].d
+  0       1                       0                       0                
+  6   257   # tan.boundary[6].use_T
+ -1  2.931500000000000E+002       1                   10000                
+  1   280   # tan.boundary[6].T
+  0  100000                 -1.000000000000000E+010  1.000000000000000E+010
+  6   256   # tan.boundary[6].h
+ -1       1                       0                       1                
+  1   280   # tan.boundary[6].X[1]
+  0       1                       0                       2                
+  6  1282   # tan.boundary[6].state.phase
+  0     150                       0                  100000                
+  6  1280   # tan.boundary[6].state.d
+  0       1                       0                       0                
+  6   258   # tan.boundary[7].nPorts
+  0     150                       0                  100000                
+  6   256   # tan.boundary[7].medium.d
+  0     500                       1                   10000                
+  6   256   # tan.boundary[7].medium.T
+  0       1                       0                       1                
+  6   256   # tan.boundary[7].medium.X[1]
+  0       0                 -1.000000000000000E+008  1.000000000000000E+008
+  6   256   # tan.boundary[7].medium.u
+  0  4.615236365065450E+002       0                  1.000000000000000E+007
+  6   256   # tan.boundary[7].medium.R
+  0  1.801526800000000E-002  1.000000000000000E-003  2.500000000000000E-001
+  6   256   # tan.boundary[7].medium.MM
+  0       1                       0                       2                
+  6   258   # tan.boundary[7].medium.state.phase
+  0       0                       0                       0                
+  6   257   # tan.boundary[7].medium.preferredMediumStates
+  0       1                       0                       0                
+  6   257   # tan.boundary[7].medium.standardOrderComponents
+  0       0                       0                       0                
+  6   256   # tan.boundary[7].medium.T_degC
+  0       0                       0                       0                
+  6   256   # tan.boundary[7].medium.p_bar
+  0     500                       1                   10000                
+  6   256   # tan.boundary[7].medium.sat.Tsat
+  0  100000                 -1.000000000000000E+010  1.000000000000000E+010
+  6   260   # tan.boundary[7].ports[1].h_outflow
+  0       3                       1                       3                
+  6  1282   # tan.boundary[7].flowDirection
+  0       1                       0                       0                
+  6   257   # tan.boundary[7].use_p
+ -1  3.477000000000000E+005       0                  1.000000000000000E+008
+  1   280   # tan.boundary[7].p
+  0     150                       0                  100000                
+  6   256   # tan.boundary[7].d
+  0       1                       0                       0                
+  6   257   # tan.boundary[7].use_T
+ -1  2.931500000000000E+002       1                   10000                
+  1   280   # tan.boundary[7].T
+  0  100000                 -1.000000000000000E+010  1.000000000000000E+010
+  6   256   # tan.boundary[7].h
+ -1       1                       0                       1                
+  1   280   # tan.boundary[7].X[1]
+  0       1                       0                       2                
+  6  1282   # tan.boundary[7].state.phase
+  0     150                       0                  100000                
+  6  1280   # tan.boundary[7].state.d
+  0       1                       0                       0                
+  6   258   # tan.boundary[8].nPorts
+  0     150                       0                  100000                
+  6   256   # tan.boundary[8].medium.d
+  0     500                       1                   10000                
+  6   256   # tan.boundary[8].medium.T
+  0       1                       0                       1                
+  6   256   # tan.boundary[8].medium.X[1]
+  0       0                 -1.000000000000000E+008  1.000000000000000E+008
+  6   256   # tan.boundary[8].medium.u
+  0  4.615236365065450E+002       0                  1.000000000000000E+007
+  6   256   # tan.boundary[8].medium.R
+  0  1.801526800000000E-002  1.000000000000000E-003  2.500000000000000E-001
+  6   256   # tan.boundary[8].medium.MM
+  0       1                       0                       2                
+  6   258   # tan.boundary[8].medium.state.phase
+  0       0                       0                       0                
+  6   257   # tan.boundary[8].medium.preferredMediumStates
+  0       1                       0                       0                
+  6   257   # tan.boundary[8].medium.standardOrderComponents
+  0       0                       0                       0                
+  6   256   # tan.boundary[8].medium.T_degC
+  0       0                       0                       0                
+  6   256   # tan.boundary[8].medium.p_bar
+  0     500                       1                   10000                
+  6   256   # tan.boundary[8].medium.sat.Tsat
+  0  100000                 -1.000000000000000E+010  1.000000000000000E+010
+  6   260   # tan.boundary[8].ports[1].h_outflow
+  0       3                       1                       3                
+  6  1282   # tan.boundary[8].flowDirection
+  0       1                       0                       0                
+  6   257   # tan.boundary[8].use_p
+ -1  3.477000000000000E+005       0                  1.000000000000000E+008
+  1   280   # tan.boundary[8].p
+  0     150                       0                  100000                
+  6   256   # tan.boundary[8].d
+  0       1                       0                       0                
+  6   257   # tan.boundary[8].use_T
+ -1  2.931500000000000E+002       1                   10000                
+  1   280   # tan.boundary[8].T
+  0  100000                 -1.000000000000000E+010  1.000000000000000E+010
+  6   256   # tan.boundary[8].h
+ -1       1                       0                       1                
+  1   280   # tan.boundary[8].X[1]
+  0       1                       0                       2                
+  6  1282   # tan.boundary[8].state.phase
+  0     150                       0                  100000                
+  6  1280   # tan.boundary[8].state.d
+  0       0                       0                       0                
+  6   322   # tan.TStatSig
+  0  2.881500000000000E+002       0                  1.000000000000000E+100
+  6   256   # tan.TOutRec
+  0       0                       0                       0                
+  6   320   # tan.mFloRec
+  0    1000                       0                  1.000000000000000E+007
+  6   256   # tan.cirHeaTra.c_p
+  0       8                       2                  1.000000000000000E+100
+  6   258   # tan.cirHeaTra.nSeg
+  0       0                       0                       0                
+  6   256   # tan.cirHeaTra.cirHeaTra[1]
+  0       0                       0                       0                
+  6   256   # tan.cirHeaTra.cirHeaTra[2]
+  0       0                       0                       0                
+  6   256   # tan.cirHeaTra.cirHeaTra[3]
+  0       0                       0                       0                
+  6   256   # tan.cirHeaTra.cirHeaTra[4]
+  0       0                       0                       0                
+  6   256   # tan.cirHeaTra.cirHeaTra[5]
+  0       0                       0                       0                
+  6   256   # tan.cirHeaTra.cirHeaTra[6]
+  0       0                       0                       0                
+  6   256   # tan.cirHeaTra.cirHeaTra[7]
+  0       0                       0                       0                
+  6   256   # tan.cirHeaTra.cirHeaTra[8]
+  0       0                       0                       0                
+  6   320   # tan.QFluIn
+  0       8                       2                  1.000000000000000E+100
+  6   258   # tan.fluHeaTra.nSeg
+  0       0                       0                       0                
+  6   256   # tan.fluHeaTra.EffTan
+  0       0                       0                       0                
+  6   320   # tan.fluHeaTra.fluHeaTra[1]
+  0       0                       0                       0                
+  6   320   # tan.fluHeaTra.fluHeaTra[2]
+  0       0                       0                       0                
+  6   320   # tan.fluHeaTra.fluHeaTra[3]
+  0       0                       0                       0                
+  6   320   # tan.fluHeaTra.fluHeaTra[4]
+  0       0                       0                       0                
+  6   320   # tan.fluHeaTra.fluHeaTra[5]
+  0       0                       0                       0                
+  6   320   # tan.fluHeaTra.fluHeaTra[6]
+  0       0                       0                       0                
+  6   320   # tan.fluHeaTra.fluHeaTra[7]
+  0       0                       0                       0                
+  6   320   # tan.fluHeaTra.fluHeaTra[8]
+  0       8                       2                  1.000000000000000E+100
+  6   258   # tan.uALoss.nSeg
+  0       0                       0                       0                
+  6   256   # tan.uALoss.UA
+  0       0                       0                       0                
+  6   256   # tan.uALoss.UALoss[1]
+  0       0                       0                       0                
+  6   256   # tan.uALoss.UALoss[2]
+  0       0                       0                       0                
+  6   256   # tan.uALoss.UALoss[3]
+  0       0                       0                       0                
+  6   256   # tan.uALoss.UALoss[4]
+  0       0                       0                       0                
+  6   256   # tan.uALoss.UALoss[5]
+  0       0                       0                       0                
+  6   256   # tan.uALoss.UALoss[6]
+  0       0                       0                       0                
+  6   256   # tan.uALoss.UALoss[7]
+  0       0                       0                       0                
+  6   256   # tan.uALoss.UALoss[8]
+  0  2.881500000000000E+002       0                  1.000000000000000E+100
+  6   256   # tan.TOutDra
+  0       1                       0                       0                
+  6   256   # tan.Setpoint.k
+  0       0                       0                       0                
+  6   321   # tan.onOffController.y
+  0  1.000000000000000E-001       0                       0                
+  6   256   # tan.onOffController.bandwidth
+ -1       0                       0                       0                
+  1   281   # tan.onOffController.pre_y_start
+ -1       1                       0                       0                
+  1   282   # tan.booleanToInteger.integerTrue
+ -1       0                       0                       0                
+  1   282   # tan.booleanToInteger.integerFalse
+ -1  5.861400000000000E+003       0                       0                
+  1   280   # QInFlu.k
+ -1  2.931050000000000E+002       0                       0                
+  1   280   # Tamb.k
+ -1  1.200000000000000E-001       0                       0                
+  1   280   # mFloCir.k
+ -1  3.331050000000000E+002       0                       0                
+  1   280   # const.k
+ -1  2.931050000000000E+002       0                       0                
+  1   280   # TIn.k
+ -1  5.000000000000000E-001       0                       0                
+  1   280   # sine[1].amplitude
+ -1  1.000000000000000E-004       0                       0                
+  1   280   # sine[1].freqHz
+ -1       0                       0                       0                
+  1   280   # sine[1].phase
+ -1  5.000000000000000E-001       0                       0                
+  1   280   # sine[1].offset
+ -1       0                       0                       0                
+  1   280   # sine[1].startTime
+  0       0                       0                       0                
+  6   256   # sine[1].y
+  0  3.141592653589790E+000       0                       0                
+  6  1280   # sine[1].pi
+ -1  5.000000000000000E-001       0                       0                
+  1   280   # sine[2].amplitude
+ -1  1.000000000000000E-004       0                       0                
+  1   280   # sine[2].freqHz
+ -1       0                       0                       0                
+  1   280   # sine[2].phase
+ -1  5.000000000000000E-001       0                       0                
+  1   280   # sine[2].offset
+ -1       0                       0                       0                
+  1   280   # sine[2].startTime
+  0       0                       0                       0                
+  6   256   # sine[2].y
+  0  3.141592653589790E+000       0                       0                
+  6  1280   # sine[2].pi
+ -1  5.000000000000000E-001       0                       0                
+  1   280   # sine[3].amplitude
+ -1  1.000000000000000E-004       0                       0                
+  1   280   # sine[3].freqHz
+ -1       0                       0                       0                
+  1   280   # sine[3].phase
+ -1  5.000000000000000E-001       0                       0                
+  1   280   # sine[3].offset
+ -1       0                       0                       0                
+  1   280   # sine[3].startTime
+  0       0                       0                       0                
+  6   256   # sine[3].y
+  0  3.141592653589790E+000       0                       0                
+  6  1280   # sine[3].pi
+ -1  5.000000000000000E-001       0                       0                
+  1   280   # sine[4].amplitude
+ -1  1.000000000000000E-004       0                       0                
+  1   280   # sine[4].freqHz
+ -1       0                       0                       0                
+  1   280   # sine[4].phase
+ -1  5.000000000000000E-001       0                       0                
+  1   280   # sine[4].offset
+ -1       0                       0                       0                
+  1   280   # sine[4].startTime
+  0       0                       0                       0                
+  6   256   # sine[4].y
+  0  3.141592653589790E+000       0                       0                
+  6  1280   # sine[4].pi
+ -1  5.000000000000000E-001       0                       0                
+  1   280   # sine[5].amplitude
+ -1  1.000000000000000E-004       0                       0                
+  1   280   # sine[5].freqHz
+ -1       0                       0                       0                
+  1   280   # sine[5].phase
+ -1  5.000000000000000E-001       0                       0                
+  1   280   # sine[5].offset
+ -1       0                       0                       0                
+  1   280   # sine[5].startTime
+  0       0                       0                       0                
+  6   256   # sine[5].y
+  0  3.141592653589790E+000       0                       0                
+  6  1280   # sine[5].pi
+ -1  5.000000000000000E-001       0                       0                
+  1   280   # sine[6].amplitude
+ -1  1.000000000000000E-004       0                       0                
+  1   280   # sine[6].freqHz
+ -1       0                       0                       0                
+  1   280   # sine[6].phase
+ -1  5.000000000000000E-001       0                       0                
+  1   280   # sine[6].offset
+ -1       0                       0                       0                
+  1   280   # sine[6].startTime
+  0       0                       0                       0                
+  6   256   # sine[6].y
+  0  3.141592653589790E+000       0                       0                
+  6  1280   # sine[6].pi
+ -1  5.000000000000000E-001       0                       0                
+  1   280   # sine[7].amplitude
+ -1  1.000000000000000E-004       0                       0                
+  1   280   # sine[7].freqHz
+ -1       0                       0                       0                
+  1   280   # sine[7].phase
+ -1  5.000000000000000E-001       0                       0                
+  1   280   # sine[7].offset
+ -1       0                       0                       0                
+  1   280   # sine[7].startTime
+  0       0                       0                       0                
+  6   256   # sine[7].y
+  0  3.141592653589790E+000       0                       0                
+  6  1280   # sine[7].pi
+ -1  5.000000000000000E-001       0                       0                
+  1   280   # sine[8].amplitude
+ -1  1.000000000000000E-004       0                       0                
+  1   280   # sine[8].freqHz
+ -1       0                       0                       0                
+  1   280   # sine[8].phase
+ -1  5.000000000000000E-001       0                       0                
+  1   280   # sine[8].offset
+ -1       0                       0                       0                
+  1   280   # sine[8].startTime
+  0       0                       0                       0                
+  6   256   # sine[8].y
+  0  3.141592653589790E+000       0                       0                
+  6  1280   # sine[8].pi
+  0       0                       0                       0                
+  6   322   # realToInteger[1].y
+  0       0                       0                       0                
+  6   322   # realToInteger[2].y
+  0       0                       0                       0                
+  6   322   # realToInteger[3].y
+  0       0                       0                       0                
+  6   322   # realToInteger[4].y
+  0       0                       0                       0                
+  6   322   # realToInteger[5].y
+  0       0                       0                       0                
+  6   322   # realToInteger[6].y
+  0       0                       0                       0                
+  6   322   # realToInteger[7].y
+  0       0                       0                       0                
+  6   322   # realToInteger[8].y
+ -1  2.500000000000000E-001       0                       0                
+  1   280   # gain[1].k
+ -1  2.500000000000000E-001       0                       0                
+  1   280   # gain[2].k
+ -1  2.500000000000000E-001       0                       0                
+  1   280   # gain[3].k
+ -1  2.500000000000000E-001       0                       0                
+  1   280   # gain[4].k
+ -1  2.500000000000000E-001       0                       0                
+  1   280   # gain[5].k
+ -1  2.500000000000000E-001       0                       0                
+  1   280   # gain[6].k
+ -1  2.500000000000000E-001       0                       0                
+  1   280   # gain[7].k
+ -1  2.500000000000000E-001       0                       0                
+  1   280   # gain[8].k
+  0       1                       1                       4                
+  6  1282   # tan.vol[1].dynBal.energyDynamics
+  0       1                       1                       4                
+  6  1282   # tan.vol[1].dynBal.massDynamics
+  0       1                       1                       4                
+  6  1282   # tan.vol[1].dynBal.substanceDynamics
+  0       1                       1                       4                
+  6  1282   # tan.vol[1].dynBal.traceDynamics
+  0  1.013250000000000E+005       0                  1.000000000000000E+008
+  6  1280   # tan.vol[1].dynBal.p_start
+  0  2.931050000000000E+002       1                   10000                
+  6  1280   # tan.vol[1].dynBal.T_start
+  0       0                       0                       1                
+  6  1280   # tan.vol[1].dynBal.X_start[1]
+  0       1                       0                       0                
+  6  1282   # tan.vol[1].dynBal.nPorts
+  0  1.013250000000000E+005       0                  1.000000000000000E+100
+  6  1280   # tan.vol[1].dynBal.medium.p
+  0       1                       0                       1                
+  6  1280   # _GlobalScope.Modelica.Media.Interfaces.PartialPureSubstance.X_default[1]
+ -1       0                 -1.000000000000000E+010  1.000000000000000E+010
+  2  1296   # tan.vol[1].dynBal.medium.h
+  0       0                       0                       0                
+  3  1312   # tan.vol[1].dynBal.medium.der(h)
+  0       0                       0                  100000                
+  6  1280   # tan.vol[1].dynBal.medium.d
+  0       0                       0                       0                
+  6  1280   # tan.vol[1].dynBal.medium.der(d)
+  0  2.931050000000000E+002       1                   10000                
+  6  1280   # tan.vol[1].dynBal.medium.T
+  0       0                       0                       0                
+  6  1280   # tan.vol[1].dynBal.medium.der(T)
+  0       1                       0                       1                
+  6  1280   # tan.vol[1].dynBal.medium.X[1]
+  0       0                 -1.000000000000000E+008  1.000000000000000E+008
+  6  1280   # tan.vol[1].dynBal.medium.u
+  0       0                       0                       0                
+  6  1280   # tan.vol[1].dynBal.medium.der(u)
+  0  4.615236365065450E+002       0                  1.000000000000000E+007
+  6  1280   # tan.vol[1].dynBal.medium.R
+  0  1.801526800000000E-002  1.000000000000000E-003  2.500000000000000E-001
+  6  1280   # tan.vol[1].dynBal.medium.MM
+  0       1                       0                       2                
+  6  1346   # tan.vol[1].dynBal.medium.state.phase
+  0       1                       0                       0                
+  6  1281   # tan.vol[1].dynBal.medium.preferredMediumStates
+  0       1                       0                       0                
+  6  1281   # tan.vol[1].dynBal.medium.standardOrderComponents
+  0       0                       0                       0                
+  6  1280   # tan.vol[1].dynBal.medium.T_degC
+  0       0                       0                       0                
+  6  1280   # tan.vol[1].dynBal.medium.p_bar
+  0     500                       1                   10000                
+  6  1280   # tan.vol[1].dynBal.medium.sat.Tsat
+  0       0                       0                       0                
+  6  1280   # tan.vol[1].dynBal.U
+  0       0                       0                       0                
+  6  1280   # tan.vol[1].dynBal.der(U)
+  0       0                       0                  1.000000000000000E+100
+  6  1280   # tan.vol[1].dynBal.m
+  0       0                       0                       0                
+  6  1280   # tan.vol[1].dynBal.der(m)
+  0       0                 -1.000000000000000E+008  1.000000000000000E+008
+  6  1280   # tan.vol[1].dynBal.Hb_flow
+ -1       1                       0                       0                
+  1  1305   # tan.vol[1].dynBal.initialize_p
+  0       0                       0                  1.000000000000000E+100
+  6  1280   # tan.vol[1].dynBal.rho_nominal
+  0       1                       1                       4                
+  6  1282   # tan.vol[2].dynBal.energyDynamics
+  0       1                       1                       4                
+  6  1282   # tan.vol[2].dynBal.massDynamics
+  0       1                       1                       4                
+  6  1282   # tan.vol[2].dynBal.substanceDynamics
+  0       1                       1                       4                
+  6  1282   # tan.vol[2].dynBal.traceDynamics
+  0  1.013250000000000E+005       0                  1.000000000000000E+008
+  6  1280   # tan.vol[2].dynBal.p_start
+  0  2.931050000000000E+002       1                   10000                
+  6  1280   # tan.vol[2].dynBal.T_start
+  0       0                       0                       1                
+  6  1280   # tan.vol[2].dynBal.X_start[1]
+  0       1                       0                       0                
+  6  1282   # tan.vol[2].dynBal.nPorts
+  0  1.013250000000000E+005       0                  1.000000000000000E+100
+  6  1280   # tan.vol[2].dynBal.medium.p
+ -1       0                 -1.000000000000000E+010  1.000000000000000E+010
+  2  1296   # tan.vol[2].dynBal.medium.h
+  0       0                       0                       0                
+  3  1312   # tan.vol[2].dynBal.medium.der(h)
+  0       0                       0                  100000                
+  6  1280   # tan.vol[2].dynBal.medium.d
+  0       0                       0                       0                
+  6  1280   # tan.vol[2].dynBal.medium.der(d)
+  0  2.931050000000000E+002       1                   10000                
+  6  1280   # tan.vol[2].dynBal.medium.T
+  0       0                       0                       0                
+  6  1280   # tan.vol[2].dynBal.medium.der(T)
+  0       1                       0                       1                
+  6  1280   # tan.vol[2].dynBal.medium.X[1]
+  0       0                 -1.000000000000000E+008  1.000000000000000E+008
+  6  1280   # tan.vol[2].dynBal.medium.u
+  0       0                       0                       0                
+  6  1280   # tan.vol[2].dynBal.medium.der(u)
+  0  4.615236365065450E+002       0                  1.000000000000000E+007
+  6  1280   # tan.vol[2].dynBal.medium.R
+  0  1.801526800000000E-002  1.000000000000000E-003  2.500000000000000E-001
+  6  1280   # tan.vol[2].dynBal.medium.MM
+  0       1                       0                       2                
+  6  1346   # tan.vol[2].dynBal.medium.state.phase
+  0       1                       0                       0                
+  6  1281   # tan.vol[2].dynBal.medium.preferredMediumStates
+  0       1                       0                       0                
+  6  1281   # tan.vol[2].dynBal.medium.standardOrderComponents
+  0       0                       0                       0                
+  6  1280   # tan.vol[2].dynBal.medium.T_degC
+  0       0                       0                       0                
+  6  1280   # tan.vol[2].dynBal.medium.p_bar
+  0     500                       1                   10000                
+  6  1280   # tan.vol[2].dynBal.medium.sat.Tsat
+  0       0                       0                       0                
+  6  1280   # tan.vol[2].dynBal.U
+  0       0                       0                       0                
+  6  1280   # tan.vol[2].dynBal.der(U)
+  0       0                       0                  1.000000000000000E+100
+  6  1280   # tan.vol[2].dynBal.m
+  0       0                       0                       0                
+  6  1280   # tan.vol[2].dynBal.der(m)
+  0       0                 -1.000000000000000E+008  1.000000000000000E+008
+  6  1280   # tan.vol[2].dynBal.Hb_flow
+ -1       1                       0                       0                
+  1  1305   # tan.vol[2].dynBal.initialize_p
+  0       0                       0                  1.000000000000000E+100
+  6  1280   # tan.vol[2].dynBal.rho_nominal
+  0       1                       1                       4                
+  6  1282   # tan.vol[3].dynBal.energyDynamics
+  0       1                       1                       4                
+  6  1282   # tan.vol[3].dynBal.massDynamics
+  0       1                       1                       4                
+  6  1282   # tan.vol[3].dynBal.substanceDynamics
+  0       1                       1                       4                
+  6  1282   # tan.vol[3].dynBal.traceDynamics
+  0  1.013250000000000E+005       0                  1.000000000000000E+008
+  6  1280   # tan.vol[3].dynBal.p_start
+  0  2.931050000000000E+002       1                   10000                
+  6  1280   # tan.vol[3].dynBal.T_start
+  0       0                       0                       1                
+  6  1280   # tan.vol[3].dynBal.X_start[1]
+  0       1                       0                       0                
+  6  1282   # tan.vol[3].dynBal.nPorts
+  0  1.013250000000000E+005       0                  1.000000000000000E+100
+  6  1280   # tan.vol[3].dynBal.medium.p
+ -1       0                 -1.000000000000000E+010  1.000000000000000E+010
+  2  1296   # tan.vol[3].dynBal.medium.h
+  0       0                       0                       0                
+  3  1312   # tan.vol[3].dynBal.medium.der(h)
+  0       0                       0                  100000                
+  6  1280   # tan.vol[3].dynBal.medium.d
+  0       0                       0                       0                
+  6  1280   # tan.vol[3].dynBal.medium.der(d)
+  0  2.931050000000000E+002       1                   10000                
+  6  1280   # tan.vol[3].dynBal.medium.T
+  0       0                       0                       0                
+  6  1280   # tan.vol[3].dynBal.medium.der(T)
+  0       1                       0                       1                
+  6  1280   # tan.vol[3].dynBal.medium.X[1]
+  0       0                 -1.000000000000000E+008  1.000000000000000E+008
+  6  1280   # tan.vol[3].dynBal.medium.u
+  0       0                       0                       0                
+  6  1280   # tan.vol[3].dynBal.medium.der(u)
+  0  4.615236365065450E+002       0                  1.000000000000000E+007
+  6  1280   # tan.vol[3].dynBal.medium.R
+  0  1.801526800000000E-002  1.000000000000000E-003  2.500000000000000E-001
+  6  1280   # tan.vol[3].dynBal.medium.MM
+  0       1                       0                       2                
+  6  1346   # tan.vol[3].dynBal.medium.state.phase
+  0       1                       0                       0                
+  6  1281   # tan.vol[3].dynBal.medium.preferredMediumStates
+  0       1                       0                       0                
+  6  1281   # tan.vol[3].dynBal.medium.standardOrderComponents
+  0       0                       0                       0                
+  6  1280   # tan.vol[3].dynBal.medium.T_degC
+  0       0                       0                       0                
+  6  1280   # tan.vol[3].dynBal.medium.p_bar
+  0     500                       1                   10000                
+  6  1280   # tan.vol[3].dynBal.medium.sat.Tsat
+  0       0                       0                       0                
+  6  1280   # tan.vol[3].dynBal.U
+  0       0                       0                       0                
+  6  1280   # tan.vol[3].dynBal.der(U)
+  0       0                       0                  1.000000000000000E+100
+  6  1280   # tan.vol[3].dynBal.m
+  0       0                       0                       0                
+  6  1280   # tan.vol[3].dynBal.der(m)
+  0       0                 -1.000000000000000E+008  1.000000000000000E+008
+  6  1280   # tan.vol[3].dynBal.Hb_flow
+ -1       1                       0                       0                
+  1  1305   # tan.vol[3].dynBal.initialize_p
+  0       0                       0                  1.000000000000000E+100
+  6  1280   # tan.vol[3].dynBal.rho_nominal
+  0       1                       1                       4                
+  6  1282   # tan.vol[4].dynBal.energyDynamics
+  0       1                       1                       4                
+  6  1282   # tan.vol[4].dynBal.massDynamics
+  0       1                       1                       4                
+  6  1282   # tan.vol[4].dynBal.substanceDynamics
+  0       1                       1                       4                
+  6  1282   # tan.vol[4].dynBal.traceDynamics
+  0  1.013250000000000E+005       0                  1.000000000000000E+008
+  6  1280   # tan.vol[4].dynBal.p_start
+  0  2.931050000000000E+002       1                   10000                
+  6  1280   # tan.vol[4].dynBal.T_start
+  0       0                       0                       1                
+  6  1280   # tan.vol[4].dynBal.X_start[1]
+  0       1                       0                       0                
+  6  1282   # tan.vol[4].dynBal.nPorts
+  0  1.013250000000000E+005       0                  1.000000000000000E+100
+  6  1280   # tan.vol[4].dynBal.medium.p
+ -1       0                 -1.000000000000000E+010  1.000000000000000E+010
+  2  1296   # tan.vol[4].dynBal.medium.h
+  0       0                       0                       0                
+  3  1312   # tan.vol[4].dynBal.medium.der(h)
+  0       0                       0                  100000                
+  6  1280   # tan.vol[4].dynBal.medium.d
+  0       0                       0                       0                
+  6  1280   # tan.vol[4].dynBal.medium.der(d)
+  0  2.931050000000000E+002       1                   10000                
+  6  1280   # tan.vol[4].dynBal.medium.T
+  0       0                       0                       0                
+  6  1280   # tan.vol[4].dynBal.medium.der(T)
+  0       1                       0                       1                
+  6  1280   # tan.vol[4].dynBal.medium.X[1]
+  0       0                 -1.000000000000000E+008  1.000000000000000E+008
+  6  1280   # tan.vol[4].dynBal.medium.u
+  0       0                       0                       0                
+  6  1280   # tan.vol[4].dynBal.medium.der(u)
+  0  4.615236365065450E+002       0                  1.000000000000000E+007
+  6  1280   # tan.vol[4].dynBal.medium.R
+  0  1.801526800000000E-002  1.000000000000000E-003  2.500000000000000E-001
+  6  1280   # tan.vol[4].dynBal.medium.MM
+  0       1                       0                       2                
+  6  1346   # tan.vol[4].dynBal.medium.state.phase
+  0       1                       0                       0                
+  6  1281   # tan.vol[4].dynBal.medium.preferredMediumStates
+  0       1                       0                       0                
+  6  1281   # tan.vol[4].dynBal.medium.standardOrderComponents
+  0       0                       0                       0                
+  6  1280   # tan.vol[4].dynBal.medium.T_degC
+  0       0                       0                       0                
+  6  1280   # tan.vol[4].dynBal.medium.p_bar
+  0     500                       1                   10000                
+  6  1280   # tan.vol[4].dynBal.medium.sat.Tsat
+  0       0                       0                       0                
+  6  1280   # tan.vol[4].dynBal.U
+  0       0                       0                       0                
+  6  1280   # tan.vol[4].dynBal.der(U)
+  0       0                       0                  1.000000000000000E+100
+  6  1280   # tan.vol[4].dynBal.m
+  0       0                       0                       0                
+  6  1280   # tan.vol[4].dynBal.der(m)
+  0       0                 -1.000000000000000E+008  1.000000000000000E+008
+  6  1280   # tan.vol[4].dynBal.Hb_flow
+ -1       1                       0                       0                
+  1  1305   # tan.vol[4].dynBal.initialize_p
+  0       0                       0                  1.000000000000000E+100
+  6  1280   # tan.vol[4].dynBal.rho_nominal
+  0       1                       1                       4                
+  6  1282   # tan.vol[5].dynBal.energyDynamics
+  0       1                       1                       4                
+  6  1282   # tan.vol[5].dynBal.massDynamics
+  0       1                       1                       4                
+  6  1282   # tan.vol[5].dynBal.substanceDynamics
+  0       1                       1                       4                
+  6  1282   # tan.vol[5].dynBal.traceDynamics
+  0  1.013250000000000E+005       0                  1.000000000000000E+008
+  6  1280   # tan.vol[5].dynBal.p_start
+  0  2.931050000000000E+002       1                   10000                
+  6  1280   # tan.vol[5].dynBal.T_start
+  0       0                       0                       1                
+  6  1280   # tan.vol[5].dynBal.X_start[1]
+  0       1                       0                       0                
+  6  1282   # tan.vol[5].dynBal.nPorts
+  0  1.013250000000000E+005       0                  1.000000000000000E+100
+  6  1280   # tan.vol[5].dynBal.medium.p
+ -1       0                 -1.000000000000000E+010  1.000000000000000E+010
+  2  1296   # tan.vol[5].dynBal.medium.h
+  0       0                       0                       0                
+  3  1312   # tan.vol[5].dynBal.medium.der(h)
+  0       0                       0                  100000                
+  6  1280   # tan.vol[5].dynBal.medium.d
+  0       0                       0                       0                
+  6  1280   # tan.vol[5].dynBal.medium.der(d)
+  0  2.931050000000000E+002       1                   10000                
+  6  1280   # tan.vol[5].dynBal.medium.T
+  0       0                       0                       0                
+  6  1280   # tan.vol[5].dynBal.medium.der(T)
+  0       1                       0                       1                
+  6  1280   # tan.vol[5].dynBal.medium.X[1]
+  0       0                 -1.000000000000000E+008  1.000000000000000E+008
+  6  1280   # tan.vol[5].dynBal.medium.u
+  0       0                       0                       0                
+  6  1280   # tan.vol[5].dynBal.medium.der(u)
+  0  4.615236365065450E+002       0                  1.000000000000000E+007
+  6  1280   # tan.vol[5].dynBal.medium.R
+  0  1.801526800000000E-002  1.000000000000000E-003  2.500000000000000E-001
+  6  1280   # tan.vol[5].dynBal.medium.MM
+  0       1                       0                       2                
+  6  1346   # tan.vol[5].dynBal.medium.state.phase
+  0       1                       0                       0                
+  6  1281   # tan.vol[5].dynBal.medium.preferredMediumStates
+  0       1                       0                       0                
+  6  1281   # tan.vol[5].dynBal.medium.standardOrderComponents
+  0       0                       0                       0                
+  6  1280   # tan.vol[5].dynBal.medium.T_degC
+  0       0                       0                       0                
+  6  1280   # tan.vol[5].dynBal.medium.p_bar
+  0     500                       1                   10000                
+  6  1280   # tan.vol[5].dynBal.medium.sat.Tsat
+  0       0                       0                       0                
+  6  1280   # tan.vol[5].dynBal.U
+  0       0                       0                       0                
+  6  1280   # tan.vol[5].dynBal.der(U)
+  0       0                       0                  1.000000000000000E+100
+  6  1280   # tan.vol[5].dynBal.m
+  0       0                       0                       0                
+  6  1280   # tan.vol[5].dynBal.der(m)
+  0       0                 -1.000000000000000E+008  1.000000000000000E+008
+  6  1280   # tan.vol[5].dynBal.Hb_flow
+ -1       1                       0                       0                
+  1  1305   # tan.vol[5].dynBal.initialize_p
+  0       0                       0                  1.000000000000000E+100
+  6  1280   # tan.vol[5].dynBal.rho_nominal
+  0       1                       1                       4                
+  6  1282   # tan.vol[6].dynBal.energyDynamics
+  0       1                       1                       4                
+  6  1282   # tan.vol[6].dynBal.massDynamics
+  0       1                       1                       4                
+  6  1282   # tan.vol[6].dynBal.substanceDynamics
+  0       1                       1                       4                
+  6  1282   # tan.vol[6].dynBal.traceDynamics
+  0  1.013250000000000E+005       0                  1.000000000000000E+008
+  6  1280   # tan.vol[6].dynBal.p_start
+  0  2.931050000000000E+002       1                   10000                
+  6  1280   # tan.vol[6].dynBal.T_start
+  0       0                       0                       1                
+  6  1280   # tan.vol[6].dynBal.X_start[1]
+  0       1                       0                       0                
+  6  1282   # tan.vol[6].dynBal.nPorts
+  0  1.013250000000000E+005       0                  1.000000000000000E+100
+  6  1280   # tan.vol[6].dynBal.medium.p
+ -1       0                 -1.000000000000000E+010  1.000000000000000E+010
+  2  1296   # tan.vol[6].dynBal.medium.h
+  0       0                       0                       0                
+  3  1312   # tan.vol[6].dynBal.medium.der(h)
+  0       0                       0                  100000                
+  6  1280   # tan.vol[6].dynBal.medium.d
+  0       0                       0                       0                
+  6  1280   # tan.vol[6].dynBal.medium.der(d)
+  0  2.931050000000000E+002       1                   10000                
+  6  1280   # tan.vol[6].dynBal.medium.T
+  0       0                       0                       0                
+  6  1280   # tan.vol[6].dynBal.medium.der(T)
+  0       1                       0                       1                
+  6  1280   # tan.vol[6].dynBal.medium.X[1]
+  0       0                 -1.000000000000000E+008  1.000000000000000E+008
+  6  1280   # tan.vol[6].dynBal.medium.u
+  0       0                       0                       0                
+  6  1280   # tan.vol[6].dynBal.medium.der(u)
+  0  4.615236365065450E+002       0                  1.000000000000000E+007
+  6  1280   # tan.vol[6].dynBal.medium.R
+  0  1.801526800000000E-002  1.000000000000000E-003  2.500000000000000E-001
+  6  1280   # tan.vol[6].dynBal.medium.MM
+  0       1                       0                       2                
+  6  1346   # tan.vol[6].dynBal.medium.state.phase
+  0       1                       0                       0                
+  6  1281   # tan.vol[6].dynBal.medium.preferredMediumStates
+  0       1                       0                       0                
+  6  1281   # tan.vol[6].dynBal.medium.standardOrderComponents
+  0       0                       0                       0                
+  6  1280   # tan.vol[6].dynBal.medium.T_degC
+  0       0                       0                       0                
+  6  1280   # tan.vol[6].dynBal.medium.p_bar
+  0     500                       1                   10000                
+  6  1280   # tan.vol[6].dynBal.medium.sat.Tsat
+  0       0                       0                       0                
+  6  1280   # tan.vol[6].dynBal.U
+  0       0                       0                       0                
+  6  1280   # tan.vol[6].dynBal.der(U)
+  0       0                       0                  1.000000000000000E+100
+  6  1280   # tan.vol[6].dynBal.m
+  0       0                       0                       0                
+  6  1280   # tan.vol[6].dynBal.der(m)
+  0       0                 -1.000000000000000E+008  1.000000000000000E+008
+  6  1280   # tan.vol[6].dynBal.Hb_flow
+ -1       1                       0                       0                
+  1  1305   # tan.vol[6].dynBal.initialize_p
+  0       0                       0                  1.000000000000000E+100
+  6  1280   # tan.vol[6].dynBal.rho_nominal
+  0       1                       1                       4                
+  6  1282   # tan.vol[7].dynBal.energyDynamics
+  0       1                       1                       4                
+  6  1282   # tan.vol[7].dynBal.massDynamics
+  0       1                       1                       4                
+  6  1282   # tan.vol[7].dynBal.substanceDynamics
+  0       1                       1                       4                
+  6  1282   # tan.vol[7].dynBal.traceDynamics
+  0  1.013250000000000E+005       0                  1.000000000000000E+008
+  6  1280   # tan.vol[7].dynBal.p_start
+  0  2.931050000000000E+002       1                   10000                
+  6  1280   # tan.vol[7].dynBal.T_start
+  0       0                       0                       1                
+  6  1280   # tan.vol[7].dynBal.X_start[1]
+  0       1                       0                       0                
+  6  1282   # tan.vol[7].dynBal.nPorts
+  0  1.013250000000000E+005       0                  1.000000000000000E+100
+  6  1280   # tan.vol[7].dynBal.medium.p
+ -1       0                 -1.000000000000000E+010  1.000000000000000E+010
+  2  1296   # tan.vol[7].dynBal.medium.h
+  0       0                       0                       0                
+  3  1312   # tan.vol[7].dynBal.medium.der(h)
+  0       0                       0                  100000                
+  6  1280   # tan.vol[7].dynBal.medium.d
+  0       0                       0                       0                
+  6  1280   # tan.vol[7].dynBal.medium.der(d)
+  0  2.931050000000000E+002       1                   10000                
+  6  1280   # tan.vol[7].dynBal.medium.T
+  0       0                       0                       0                
+  6  1280   # tan.vol[7].dynBal.medium.der(T)
+  0       1                       0                       1                
+  6  1280   # tan.vol[7].dynBal.medium.X[1]
+  0       0                 -1.000000000000000E+008  1.000000000000000E+008
+  6  1280   # tan.vol[7].dynBal.medium.u
+  0       0                       0                       0                
+  6  1280   # tan.vol[7].dynBal.medium.der(u)
+  0  4.615236365065450E+002       0                  1.000000000000000E+007
+  6  1280   # tan.vol[7].dynBal.medium.R
+  0  1.801526800000000E-002  1.000000000000000E-003  2.500000000000000E-001
+  6  1280   # tan.vol[7].dynBal.medium.MM
+  0       1                       0                       2                
+  6  1346   # tan.vol[7].dynBal.medium.state.phase
+  0       1                       0                       0                
+  6  1281   # tan.vol[7].dynBal.medium.preferredMediumStates
+  0       1                       0                       0                
+  6  1281   # tan.vol[7].dynBal.medium.standardOrderComponents
+  0       0                       0                       0                
+  6  1280   # tan.vol[7].dynBal.medium.T_degC
+  0       0                       0                       0                
+  6  1280   # tan.vol[7].dynBal.medium.p_bar
+  0     500                       1                   10000                
+  6  1280   # tan.vol[7].dynBal.medium.sat.Tsat
+  0       0                       0                       0                
+  6  1280   # tan.vol[7].dynBal.U
+  0       0                       0                       0                
+  6  1280   # tan.vol[7].dynBal.der(U)
+  0       0                       0                  1.000000000000000E+100
+  6  1280   # tan.vol[7].dynBal.m
+  0       0                       0                       0                
+  6  1280   # tan.vol[7].dynBal.der(m)
+  0       0                 -1.000000000000000E+008  1.000000000000000E+008
+  6  1280   # tan.vol[7].dynBal.Hb_flow
+ -1       1                       0                       0                
+  1  1305   # tan.vol[7].dynBal.initialize_p
+  0       0                       0                  1.000000000000000E+100
+  6  1280   # tan.vol[7].dynBal.rho_nominal
+  0       1                       1                       4                
+  6  1282   # tan.vol[8].dynBal.energyDynamics
+  0       1                       1                       4                
+  6  1282   # tan.vol[8].dynBal.massDynamics
+  0       1                       1                       4                
+  6  1282   # tan.vol[8].dynBal.substanceDynamics
+  0       1                       1                       4                
+  6  1282   # tan.vol[8].dynBal.traceDynamics
+  0  1.013250000000000E+005       0                  1.000000000000000E+008
+  6  1280   # tan.vol[8].dynBal.p_start
+  0  2.931050000000000E+002       1                   10000                
+  6  1280   # tan.vol[8].dynBal.T_start
+  0       0                       0                       1                
+  6  1280   # tan.vol[8].dynBal.X_start[1]
+  0       1                       0                       0                
+  6  1282   # tan.vol[8].dynBal.nPorts
+  0  1.013250000000000E+005       0                  1.000000000000000E+100
+  6  1280   # tan.vol[8].dynBal.medium.p
+ -1       0                 -1.000000000000000E+010  1.000000000000000E+010
+  2  1296   # tan.vol[8].dynBal.medium.h
+  0       0                       0                       0                
+  3  1312   # tan.vol[8].dynBal.medium.der(h)
+  0       0                       0                  100000                
+  6  1280   # tan.vol[8].dynBal.medium.d
+  0       0                       0                       0                
+  6  1280   # tan.vol[8].dynBal.medium.der(d)
+  0  2.931050000000000E+002       1                   10000                
+  6  1280   # tan.vol[8].dynBal.medium.T
+  0       0                       0                       0                
+  6  1280   # tan.vol[8].dynBal.medium.der(T)
+  0       1                       0                       1                
+  6  1280   # tan.vol[8].dynBal.medium.X[1]
+  0       0                 -1.000000000000000E+008  1.000000000000000E+008
+  6  1280   # tan.vol[8].dynBal.medium.u
+  0       0                       0                       0                
+  6  1280   # tan.vol[8].dynBal.medium.der(u)
+  0  4.615236365065450E+002       0                  1.000000000000000E+007
+  6  1280   # tan.vol[8].dynBal.medium.R
+  0  1.801526800000000E-002  1.000000000000000E-003  2.500000000000000E-001
+  6  1280   # tan.vol[8].dynBal.medium.MM
+  0       1                       0                       2                
+  6  1346   # tan.vol[8].dynBal.medium.state.phase
+  0       1                       0                       0                
+  6  1281   # tan.vol[8].dynBal.medium.preferredMediumStates
+  0       1                       0                       0                
+  6  1281   # tan.vol[8].dynBal.medium.standardOrderComponents
+  0       0                       0                       0                
+  6  1280   # tan.vol[8].dynBal.medium.T_degC
+  0       0                       0                       0                
+  6  1280   # tan.vol[8].dynBal.medium.p_bar
+  0     500                       1                   10000                
+  6  1280   # tan.vol[8].dynBal.medium.sat.Tsat
+  0       0                       0                       0                
+  6  1280   # tan.vol[8].dynBal.U
+  0       0                       0                       0                
+  6  1280   # tan.vol[8].dynBal.der(U)
+  0       0                       0                  1.000000000000000E+100
+  6  1280   # tan.vol[8].dynBal.m
+  0       0                       0                       0                
+  6  1280   # tan.vol[8].dynBal.der(m)
+  0       0                 -1.000000000000000E+008  1.000000000000000E+008
+  6  1280   # tan.vol[8].dynBal.Hb_flow
+ -1       1                       0                       0                
+  1  1305   # tan.vol[8].dynBal.initialize_p
+  0       0                       0                  1.000000000000000E+100
+  6  1280   # tan.vol[8].dynBal.rho_nominal
+
+
+# Matrix with 6 columns defining the initial value calculation
+# (columns 5 and 6 are not utilized for the calculation but are
+#  reported by dymosim via dymosim -i for user convenience):
+#
+# column 1: Type of initial value
+#           = -2: special case: for continuing simulation (column 2 = value)
+#           = -1: fixed value (column 2 = fixed value)
+#           =  0: free value, i.e., no restriction (column 2 = initial value)
+#           >  0: desired value (column 1 = weight for optimization
+#                                column 2 = desired value)
+#                 use weight=1, since automatic scaling usually
+#                 leads to equally weighted terms
+# column 2: fixed, free or desired value according to column 1.
+# column 3: Minimum value (ignored, if Minimum >= Maximum).
+# column 4: Maximum value (ignored, if Minimum >= Maximum).
+#           Minimum and maximum restrict the search range in initial
+#           value calculation. They might also be used for scaling.
+# column 5: Category of variable.
+#           = 1: parameter.
+#           = 2: state.
+#           = 3: state derivative.
+#           = 4: output.
+#           = 5: input.
+#           = 6: auxiliary variable.
+# column 6: Data type of variable.
+#           = 0: real.
+#           = 1: boolean.
+#           = 2: integer.
+#
+# Initial values are calculated according to the following procedure:
+#
+# - If parameters, states and inputs are FIXED, and other variables
+#   are FREE, no special action takes place (default setting).
+#
+# - If there are only FIXED and FREE variables and the number of
+#   FREE parameters, states and inputs is IDENTICAL to the number of
+#   FIXED state derivatives, outputs and auxiliary variables, a non-linear
+#   equation is solved to determine a consistent set of initial conditions.
+#
+# - In all other cases the following optimization problem is solved:
+#      min( sum( weight(i)*( (value(i) - DESIRED(i))/scale(i) )^2 ) )
+#   under the constraint that the differential equation is fulfilled
+#   at the initial time. In most cases weight(i)=1 is sufficient, due
+#   to the automatic scaling (if DESIRED(i) is not close to zero,
+#   scale(i) = DESIRED(i). Otherwise, the scaling is based on the
+#   nominal value (and maybe minimum and maximum values given in 
+#   column 3 and 4). If these values are zero, scale(i)=1 is used).
+#
+char initialDescription(865,134)
+Default ambient pressure [Pa|bar]
+Default ambient temperature [K|degC]
+Constant gravity acceleration [m/s2]
+= false to restrict to design flow direction (port_a -> port_b)
+Default formulation of energy balances
+Default formulation of mass balances
+Default formulation of substance balances
+Default formulation of trace substance balances
+Default formulation of momentum balances, if options available
+Default start value for mass flow rates [kg/s]
+Default start value for pressures [Pa|bar]
+Default start value for temperatures [K|degC]
+Default small laminar mass flow rate for regularization of zero flow [kg/s]
+Default small pressure drop for regularization of laminar and zero flow [Pa|bar]
+[K|degC]
+[K|degC]
+[K|degC]
+[K|degC]
+[K|degC]
+[K|degC]
+[K|degC]
+[K|degC]
+[J/(kg.K)]
+Number of volume segments
+Start value of pressure [Pa|bar]
+Start value of mass fractions m_i/m [kg/kg]
+Segment the thermostat is located in
+Setpoint
+Outlet segment in the recirculation loop
+Inlet segment in the recirculation loop
+The total width of the deadband on the thermostat
+The UA value of the storage tank
+Heat exhange effectiveness of the storage tank
+Volume of the tank
+Formulation of energy balance
+Formulation of mass balance
+Formulation of substance balance
+Formulation of trace substance balance
+Start value of pressure [Pa|bar]
+Start value of temperature [K|degC]
+Start value of mass fractions m_i/m [kg/kg]
+Nominal mass flow rate [kg/s]
+Number of ports
+Small mass flow rate for regularization of zero flow [kg/s]
+= true, use homotopy method
+= true to allow flow reversal in medium, false restricts to design direction (ports[1] -> ports[2]). Used only if model has two ports.
+Volume [m3]
+Set to true if the model has a prescribed heat flow at its heatPort
+Heat flow rate (positive if flowing from outside into the component) [W]
+phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use
+specific enthalpy [J/kg]
+density [kg/m3|g/cm3]
+temperature [K|degC]
+pressure [Pa|bar]
+Density, used to compute fluid mass [kg/m3|g/cm3]
+Flag, true if the model has two ports only and uses a steady state balance
+Formulation of energy balance
+Formulation of mass balance
+Formulation of substance balance
+Formulation of trace substance balance
+Start value of pressure [Pa|bar]
+Start value of temperature [K|degC]
+Start value of mass fractions m_i/m [kg/kg]
+Nominal mass flow rate [kg/s]
+Number of ports
+Small mass flow rate for regularization of zero flow [kg/s]
+= true, use homotopy method
+= true to allow flow reversal in medium, false restricts to design direction (ports[1] -> ports[2]). Used only if model has two ports.
+Volume [m3]
+Set to true if the model has a prescribed heat flow at its heatPort
+Heat flow rate (positive if flowing from outside into the component) [W]
+phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use
+specific enthalpy [J/kg]
+density [kg/m3|g/cm3]
+temperature [K|degC]
+pressure [Pa|bar]
+Density, used to compute fluid mass [kg/m3|g/cm3]
+Flag, true if the model has two ports only and uses a steady state balance
+Formulation of energy balance
+Formulation of mass balance
+Formulation of substance balance
+Formulation of trace substance balance
+Start value of pressure [Pa|bar]
+Start value of temperature [K|degC]
+Start value of mass fractions m_i/m [kg/kg]
+Nominal mass flow rate [kg/s]
+Number of ports
+Small mass flow rate for regularization of zero flow [kg/s]
+= true, use homotopy method
+= true to allow flow reversal in medium, false restricts to design direction (ports[1] -> ports[2]). Used only if model has two ports.
+Volume [m3]
+Set to true if the model has a prescribed heat flow at its heatPort
+Heat flow rate (positive if flowing from outside into the component) [W]
+phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use
+specific enthalpy [J/kg]
+density [kg/m3|g/cm3]
+temperature [K|degC]
+pressure [Pa|bar]
+Density, used to compute fluid mass [kg/m3|g/cm3]
+Flag, true if the model has two ports only and uses a steady state balance
+Formulation of energy balance
+Formulation of mass balance
+Formulation of substance balance
+Formulation of trace substance balance
+Start value of pressure [Pa|bar]
+Start value of temperature [K|degC]
+Start value of mass fractions m_i/m [kg/kg]
+Nominal mass flow rate [kg/s]
+Number of ports
+Small mass flow rate for regularization of zero flow [kg/s]
+= true, use homotopy method
+= true to allow flow reversal in medium, false restricts to design direction (ports[1] -> ports[2]). Used only if model has two ports.
+Volume [m3]
+Set to true if the model has a prescribed heat flow at its heatPort
+Heat flow rate (positive if flowing from outside into the component) [W]
+phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use
+specific enthalpy [J/kg]
+density [kg/m3|g/cm3]
+temperature [K|degC]
+pressure [Pa|bar]
+Density, used to compute fluid mass [kg/m3|g/cm3]
+Flag, true if the model has two ports only and uses a steady state balance
+Formulation of energy balance
+Formulation of mass balance
+Formulation of substance balance
+Formulation of trace substance balance
+Start value of pressure [Pa|bar]
+Start value of temperature [K|degC]
+Start value of mass fractions m_i/m [kg/kg]
+Nominal mass flow rate [kg/s]
+Number of ports
+Small mass flow rate for regularization of zero flow [kg/s]
+= true, use homotopy method
+= true to allow flow reversal in medium, false restricts to design direction (ports[1] -> ports[2]). Used only if model has two ports.
+Volume [m3]
+Set to true if the model has a prescribed heat flow at its heatPort
+Heat flow rate (positive if flowing from outside into the component) [W]
+phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use
+specific enthalpy [J/kg]
+density [kg/m3|g/cm3]
+temperature [K|degC]
+pressure [Pa|bar]
+Density, used to compute fluid mass [kg/m3|g/cm3]
+Flag, true if the model has two ports only and uses a steady state balance
+Formulation of energy balance
+Formulation of mass balance
+Formulation of substance balance
+Formulation of trace substance balance
+Start value of pressure [Pa|bar]
+Start value of temperature [K|degC]
+Start value of mass fractions m_i/m [kg/kg]
+Nominal mass flow rate [kg/s]
+Number of ports
+Small mass flow rate for regularization of zero flow [kg/s]
+= true, use homotopy method
+= true to allow flow reversal in medium, false restricts to design direction (ports[1] -> ports[2]). Used only if model has two ports.
+Volume [m3]
+Set to true if the model has a prescribed heat flow at its heatPort
+Heat flow rate (positive if flowing from outside into the component) [W]
+phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use
+specific enthalpy [J/kg]
+density [kg/m3|g/cm3]
+temperature [K|degC]
+pressure [Pa|bar]
+Density, used to compute fluid mass [kg/m3|g/cm3]
+Flag, true if the model has two ports only and uses a steady state balance
+Formulation of energy balance
+Formulation of mass balance
+Formulation of substance balance
+Formulation of trace substance balance
+Start value of pressure [Pa|bar]
+Start value of temperature [K|degC]
+Start value of mass fractions m_i/m [kg/kg]
+Nominal mass flow rate [kg/s]
+Number of ports
+Small mass flow rate for regularization of zero flow [kg/s]
+= true, use homotopy method
+= true to allow flow reversal in medium, false restricts to design direction (ports[1] -> ports[2]). Used only if model has two ports.
+Volume [m3]
+Set to true if the model has a prescribed heat flow at its heatPort
+Heat flow rate (positive if flowing from outside into the component) [W]
+phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use
+specific enthalpy [J/kg]
+density [kg/m3|g/cm3]
+temperature [K|degC]
+pressure [Pa|bar]
+Density, used to compute fluid mass [kg/m3|g/cm3]
+Flag, true if the model has two ports only and uses a steady state balance
+Formulation of energy balance
+Formulation of mass balance
+Formulation of substance balance
+Formulation of trace substance balance
+Start value of pressure [Pa|bar]
+Start value of temperature [K|degC]
+Start value of mass fractions m_i/m [kg/kg]
+Nominal mass flow rate [kg/s]
+Number of ports
+Small mass flow rate for regularization of zero flow [kg/s]
+= true, use homotopy method
+= true to allow flow reversal in medium, false restricts to design direction (ports[1] -> ports[2]). Used only if model has two ports.
+Volume [m3]
+Set to true if the model has a prescribed heat flow at its heatPort
+Heat flow rate (positive if flowing from outside into the component) [W]
+phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use
+specific enthalpy [J/kg]
+density [kg/m3|g/cm3]
+temperature [K|degC]
+pressure [Pa|bar]
+Density, used to compute fluid mass [kg/m3|g/cm3]
+Flag, true if the model has two ports only and uses a steady state balance
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+[1]
+[J/(kg.K)]
+
+
+
+
+
+
+
+
+
+[K]
+[K]
+[K]
+[K]
+[K]
+[K]
+Heat flow rate (positive if flowing from outside into the component) [W]
+Heat flow rate (positive if flowing from outside into the component) [W]
+Heat flow rate (positive if flowing from outside into the component) [W]
+Heat flow rate (positive if flowing from outside into the component) [W]
+Heat flow rate (positive if flowing from outside into the component) [W]
+Heat flow rate (positive if flowing from outside into the component) [W]
+Heat flow rate (positive if flowing from outside into the component) [W]
+Heat flow rate (positive if flowing from outside into the component) [W]
+Number of ports
+Density of medium [kg/m3|g/cm3]
+Temperature of medium [K|degC]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Specific internal energy of medium [J/kg]
+Gas constant (of mixture if applicable) [J/(kg.K)]
+Molar mass (of mixture or single fluid) [kg/mol]
+phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use
+= true if StateSelect.prefer shall be used for the independent property variables of the medium
+if true, and reducedX = true, the last element of X will be computed from the other ones
+Temperature of medium in [degC] [degC;]
+Absolute pressure of medium in [bar] [bar]
+saturation temperature [K|degC]
+molar mass [kg/mol]
+critical temperature [K|degC]
+critical pressure [Pa|bar]
+critical molar Volume [m3/mol]
+Pitzer acentric factor
+triple point temperature [K|degC]
+triple point pressure [Pa|bar]
+melting point at 101325 Pa [K|degC]
+normal boiling point (at 101325 Pa) [K|degC]
+dipole moment of molecule in Debye (1 debye = 3.33564e10-30 C.m) [debye]
+true if ideal gas heat capacity is available
+true if critical data are known
+true if a dipole moment known
+true if a fundamental equation
+true if liquid heat capacity is available
+true if solid heat capacity is available
+true if accurate data for a viscosity function is available
+true if accurate data for thermal conductivity is available
+true if vapour pressure data, e.g., Antoine coefficents are known
+true if Pitzer accentric factor is known
+Critical specific enthalpy of the fundamental equation [J/kg]
+Critical specific entropy of the fundamental equation [J/(kg.K)]
+Difference between specific enthalpy model (h_m) and f.eq. (h_f) (h_m - h_f) [J/kg]
+Difference between specific enthalpy model (s_m) and f.eq. (s_f) (s_m - s_f) [J/(kg.K)]
+molar mass [kg/mol]
+critical temperature [K|degC]
+critical pressure [Pa|bar]
+critical molar Volume [m3/mol]
+Pitzer acentric factor
+triple point temperature [K|degC]
+triple point pressure [Pa|bar]
+melting point at 101325 Pa [K|degC]
+normal boiling point (at 101325 Pa) [K|degC]
+dipole moment of molecule in Debye (1 debye = 3.33564e10-30 C.m) [debye]
+true if ideal gas heat capacity is available
+true if critical data are known
+true if a dipole moment known
+true if a fundamental equation
+true if liquid heat capacity is available
+true if solid heat capacity is available
+true if accurate data for a viscosity function is available
+true if accurate data for thermal conductivity is available
+true if vapour pressure data, e.g., Antoine coefficents are known
+true if Pitzer accentric factor is known
+Critical specific enthalpy of the fundamental equation [J/kg]
+Critical specific entropy of the fundamental equation [J/(kg.K)]
+Difference between specific enthalpy model (h_m) and f.eq. (h_f) (h_m - h_f) [J/kg]
+Difference between specific enthalpy model (s_m) and f.eq. (s_f) (s_m - s_f) [J/(kg.K)]
+Specific thermodynamic enthalpy close to the connection point if m_flow < 0 [J/kg]
+Allowed flow direction
+select p or d
+Boundary pressure [Pa|bar]
+Boundary density [kg/m3|g/cm3]
+select T or h
+Boundary temperature [K|degC]
+Boundary specific enthalpy [J/kg]
+Boundary mass fractions m_i/m [kg/kg]
+phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use
+density [kg/m3|g/cm3]
+Number of ports
+Density of medium [kg/m3|g/cm3]
+Temperature of medium [K|degC]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Specific internal energy of medium [J/kg]
+Gas constant (of mixture if applicable) [J/(kg.K)]
+Molar mass (of mixture or single fluid) [kg/mol]
+phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use
+= true if StateSelect.prefer shall be used for the independent property variables of the medium
+if true, and reducedX = true, the last element of X will be computed from the other ones
+Temperature of medium in [degC] [degC;]
+Absolute pressure of medium in [bar] [bar]
+saturation temperature [K|degC]
+Specific thermodynamic enthalpy close to the connection point if m_flow < 0 [J/kg]
+Allowed flow direction
+select p or d
+Boundary pressure [Pa|bar]
+Boundary density [kg/m3|g/cm3]
+select T or h
+Boundary temperature [K|degC]
+Boundary specific enthalpy [J/kg]
+Boundary mass fractions m_i/m [kg/kg]
+phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use
+density [kg/m3|g/cm3]
+Number of ports
+Density of medium [kg/m3|g/cm3]
+Temperature of medium [K|degC]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Specific internal energy of medium [J/kg]
+Gas constant (of mixture if applicable) [J/(kg.K)]
+Molar mass (of mixture or single fluid) [kg/mol]
+phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use
+= true if StateSelect.prefer shall be used for the independent property variables of the medium
+if true, and reducedX = true, the last element of X will be computed from the other ones
+Temperature of medium in [degC] [degC;]
+Absolute pressure of medium in [bar] [bar]
+saturation temperature [K|degC]
+Specific thermodynamic enthalpy close to the connection point if m_flow < 0 [J/kg]
+Allowed flow direction
+select p or d
+Boundary pressure [Pa|bar]
+Boundary density [kg/m3|g/cm3]
+select T or h
+Boundary temperature [K|degC]
+Boundary specific enthalpy [J/kg]
+Boundary mass fractions m_i/m [kg/kg]
+phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use
+density [kg/m3|g/cm3]
+Number of ports
+Density of medium [kg/m3|g/cm3]
+Temperature of medium [K|degC]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Specific internal energy of medium [J/kg]
+Gas constant (of mixture if applicable) [J/(kg.K)]
+Molar mass (of mixture or single fluid) [kg/mol]
+phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use
+= true if StateSelect.prefer shall be used for the independent property variables of the medium
+if true, and reducedX = true, the last element of X will be computed from the other ones
+Temperature of medium in [degC] [degC;]
+Absolute pressure of medium in [bar] [bar]
+saturation temperature [K|degC]
+Specific thermodynamic enthalpy close to the connection point if m_flow < 0 [J/kg]
+Allowed flow direction
+select p or d
+Boundary pressure [Pa|bar]
+Boundary density [kg/m3|g/cm3]
+select T or h
+Boundary temperature [K|degC]
+Boundary specific enthalpy [J/kg]
+Boundary mass fractions m_i/m [kg/kg]
+phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use
+density [kg/m3|g/cm3]
+Number of ports
+Density of medium [kg/m3|g/cm3]
+Temperature of medium [K|degC]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Specific internal energy of medium [J/kg]
+Gas constant (of mixture if applicable) [J/(kg.K)]
+Molar mass (of mixture or single fluid) [kg/mol]
+phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use
+= true if StateSelect.prefer shall be used for the independent property variables of the medium
+if true, and reducedX = true, the last element of X will be computed from the other ones
+Temperature of medium in [degC] [degC;]
+Absolute pressure of medium in [bar] [bar]
+saturation temperature [K|degC]
+Specific thermodynamic enthalpy close to the connection point if m_flow < 0 [J/kg]
+Allowed flow direction
+select p or d
+Boundary pressure [Pa|bar]
+Boundary density [kg/m3|g/cm3]
+select T or h
+Boundary temperature [K|degC]
+Boundary specific enthalpy [J/kg]
+Boundary mass fractions m_i/m [kg/kg]
+phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use
+density [kg/m3|g/cm3]
+Number of ports
+Density of medium [kg/m3|g/cm3]
+Temperature of medium [K|degC]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Specific internal energy of medium [J/kg]
+Gas constant (of mixture if applicable) [J/(kg.K)]
+Molar mass (of mixture or single fluid) [kg/mol]
+phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use
+= true if StateSelect.prefer shall be used for the independent property variables of the medium
+if true, and reducedX = true, the last element of X will be computed from the other ones
+Temperature of medium in [degC] [degC;]
+Absolute pressure of medium in [bar] [bar]
+saturation temperature [K|degC]
+Specific thermodynamic enthalpy close to the connection point if m_flow < 0 [J/kg]
+Allowed flow direction
+select p or d
+Boundary pressure [Pa|bar]
+Boundary density [kg/m3|g/cm3]
+select T or h
+Boundary temperature [K|degC]
+Boundary specific enthalpy [J/kg]
+Boundary mass fractions m_i/m [kg/kg]
+phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use
+density [kg/m3|g/cm3]
+Number of ports
+Density of medium [kg/m3|g/cm3]
+Temperature of medium [K|degC]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Specific internal energy of medium [J/kg]
+Gas constant (of mixture if applicable) [J/(kg.K)]
+Molar mass (of mixture or single fluid) [kg/mol]
+phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use
+= true if StateSelect.prefer shall be used for the independent property variables of the medium
+if true, and reducedX = true, the last element of X will be computed from the other ones
+Temperature of medium in [degC] [degC;]
+Absolute pressure of medium in [bar] [bar]
+saturation temperature [K|degC]
+Specific thermodynamic enthalpy close to the connection point if m_flow < 0 [J/kg]
+Allowed flow direction
+select p or d
+Boundary pressure [Pa|bar]
+Boundary density [kg/m3|g/cm3]
+select T or h
+Boundary temperature [K|degC]
+Boundary specific enthalpy [J/kg]
+Boundary mass fractions m_i/m [kg/kg]
+phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use
+density [kg/m3|g/cm3]
+Number of ports
+Density of medium [kg/m3|g/cm3]
+Temperature of medium [K|degC]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Specific internal energy of medium [J/kg]
+Gas constant (of mixture if applicable) [J/(kg.K)]
+Molar mass (of mixture or single fluid) [kg/mol]
+phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use
+= true if StateSelect.prefer shall be used for the independent property variables of the medium
+if true, and reducedX = true, the last element of X will be computed from the other ones
+Temperature of medium in [degC] [degC;]
+Absolute pressure of medium in [bar] [bar]
+saturation temperature [K|degC]
+Specific thermodynamic enthalpy close to the connection point if m_flow < 0 [J/kg]
+Allowed flow direction
+select p or d
+Boundary pressure [Pa|bar]
+Boundary density [kg/m3|g/cm3]
+select T or h
+Boundary temperature [K|degC]
+Boundary specific enthalpy [J/kg]
+Boundary mass fractions m_i/m [kg/kg]
+phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use
+density [kg/m3|g/cm3]
+
+Temperature out to the recirculation loop [K]
+Recirculation flow rate
+[J/(kg.K)]
+
+
+
+
+
+
+
+
+
+Heat entering the flue
+
+
+Heat entering each segment through the flue
+Heat entering each segment through the flue
+Heat entering each segment through the flue
+Heat entering each segment through the flue
+Heat entering each segment through the flue
+Heat entering each segment through the flue
+Heat entering each segment through the flue
+Heat entering each segment through the flue
+
+
+
+
+
+
+
+
+
+
+Temperature of water going to the draw [K]
+Constant output value
+Connector of Real output signal used as actuator signal
+Bandwidth around reference signal
+Value of pre(y) at initial time
+Output signal for true Boolean input
+Output signal for false Boolean input
+Constant output value
+Constant output value
+Constant output value
+Constant output value
+Constant output value
+Amplitude of sine wave
+Frequency of sine wave [Hz]
+Phase of sine wave [rad|deg]
+Offset of output signal
+Output = offset for time < startTime [s]
+Connector of Real output signal
+
+Amplitude of sine wave
+Frequency of sine wave [Hz]
+Phase of sine wave [rad|deg]
+Offset of output signal
+Output = offset for time < startTime [s]
+Connector of Real output signal
+
+Amplitude of sine wave
+Frequency of sine wave [Hz]
+Phase of sine wave [rad|deg]
+Offset of output signal
+Output = offset for time < startTime [s]
+Connector of Real output signal
+
+Amplitude of sine wave
+Frequency of sine wave [Hz]
+Phase of sine wave [rad|deg]
+Offset of output signal
+Output = offset for time < startTime [s]
+Connector of Real output signal
+
+Amplitude of sine wave
+Frequency of sine wave [Hz]
+Phase of sine wave [rad|deg]
+Offset of output signal
+Output = offset for time < startTime [s]
+Connector of Real output signal
+
+Amplitude of sine wave
+Frequency of sine wave [Hz]
+Phase of sine wave [rad|deg]
+Offset of output signal
+Output = offset for time < startTime [s]
+Connector of Real output signal
+
+Amplitude of sine wave
+Frequency of sine wave [Hz]
+Phase of sine wave [rad|deg]
+Offset of output signal
+Output = offset for time < startTime [s]
+Connector of Real output signal
+
+Amplitude of sine wave
+Frequency of sine wave [Hz]
+Phase of sine wave [rad|deg]
+Offset of output signal
+Output = offset for time < startTime [s]
+Connector of Real output signal
+
+Connector of Integer output signal
+Connector of Integer output signal
+Connector of Integer output signal
+Connector of Integer output signal
+Connector of Integer output signal
+Connector of Integer output signal
+Connector of Integer output signal
+Connector of Integer output signal
+Gain value multiplied with input signal [1]
+Gain value multiplied with input signal [1]
+Gain value multiplied with input signal [1]
+Gain value multiplied with input signal [1]
+Gain value multiplied with input signal [1]
+Gain value multiplied with input signal [1]
+Gain value multiplied with input signal [1]
+Gain value multiplied with input signal [1]
+Formulation of energy balance
+Formulation of mass balance
+Formulation of substance balance
+Formulation of trace substance balance
+Start value of pressure [Pa|bar]
+Start value of temperature [K|degC]
+Start value of mass fractions m_i/m [kg/kg]
+Number of ports
+Absolute pressure of medium [Pa|bar]
+Default value for mass fractions of medium (for initialization) [kg/kg]
+Specific enthalpy of medium [J/kg]
+der(Specific enthalpy of medium) [m2/s3]
+Density of medium [kg/m3|g/cm3]
+der(Density of medium) [Pa.m-2.s]
+Temperature of medium [K|degC]
+der(Temperature of medium) [K/s]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Specific internal energy of medium [J/kg]
+der(Specific internal energy of medium) [m2/s3]
+Gas constant (of mixture if applicable) [J/(kg.K)]
+Molar mass (of mixture or single fluid) [kg/mol]
+phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use
+= true if StateSelect.prefer shall be used for the independent property variables of the medium
+if true, and reducedX = true, the last element of X will be computed from the other ones
+Temperature of medium in [degC] [degC;]
+Absolute pressure of medium in [bar] [bar]
+saturation temperature [K|degC]
+Internal energy of fluid [J]
+der(Internal energy of fluid) [W]
+Mass of fluid [kg]
+der(Mass of fluid) [kg/s]
+Enthalpy flow across boundaries or energy source/sink [W]
+= true to set up initial equations for pressure
+Density, used to compute fluid mass [kg/m3|g/cm3]
+Formulation of energy balance
+Formulation of mass balance
+Formulation of substance balance
+Formulation of trace substance balance
+Start value of pressure [Pa|bar]
+Start value of temperature [K|degC]
+Start value of mass fractions m_i/m [kg/kg]
+Number of ports
+Absolute pressure of medium [Pa|bar]
+Specific enthalpy of medium [J/kg]
+der(Specific enthalpy of medium) [m2/s3]
+Density of medium [kg/m3|g/cm3]
+der(Density of medium) [Pa.m-2.s]
+Temperature of medium [K|degC]
+der(Temperature of medium) [K/s]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Specific internal energy of medium [J/kg]
+der(Specific internal energy of medium) [m2/s3]
+Gas constant (of mixture if applicable) [J/(kg.K)]
+Molar mass (of mixture or single fluid) [kg/mol]
+phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use
+= true if StateSelect.prefer shall be used for the independent property variables of the medium
+if true, and reducedX = true, the last element of X will be computed from the other ones
+Temperature of medium in [degC] [degC;]
+Absolute pressure of medium in [bar] [bar]
+saturation temperature [K|degC]
+Internal energy of fluid [J]
+der(Internal energy of fluid) [W]
+Mass of fluid [kg]
+der(Mass of fluid) [kg/s]
+Enthalpy flow across boundaries or energy source/sink [W]
+= true to set up initial equations for pressure
+Density, used to compute fluid mass [kg/m3|g/cm3]
+Formulation of energy balance
+Formulation of mass balance
+Formulation of substance balance
+Formulation of trace substance balance
+Start value of pressure [Pa|bar]
+Start value of temperature [K|degC]
+Start value of mass fractions m_i/m [kg/kg]
+Number of ports
+Absolute pressure of medium [Pa|bar]
+Specific enthalpy of medium [J/kg]
+der(Specific enthalpy of medium) [m2/s3]
+Density of medium [kg/m3|g/cm3]
+der(Density of medium) [Pa.m-2.s]
+Temperature of medium [K|degC]
+der(Temperature of medium) [K/s]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Specific internal energy of medium [J/kg]
+der(Specific internal energy of medium) [m2/s3]
+Gas constant (of mixture if applicable) [J/(kg.K)]
+Molar mass (of mixture or single fluid) [kg/mol]
+phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use
+= true if StateSelect.prefer shall be used for the independent property variables of the medium
+if true, and reducedX = true, the last element of X will be computed from the other ones
+Temperature of medium in [degC] [degC;]
+Absolute pressure of medium in [bar] [bar]
+saturation temperature [K|degC]
+Internal energy of fluid [J]
+der(Internal energy of fluid) [W]
+Mass of fluid [kg]
+der(Mass of fluid) [kg/s]
+Enthalpy flow across boundaries or energy source/sink [W]
+= true to set up initial equations for pressure
+Density, used to compute fluid mass [kg/m3|g/cm3]
+Formulation of energy balance
+Formulation of mass balance
+Formulation of substance balance
+Formulation of trace substance balance
+Start value of pressure [Pa|bar]
+Start value of temperature [K|degC]
+Start value of mass fractions m_i/m [kg/kg]
+Number of ports
+Absolute pressure of medium [Pa|bar]
+Specific enthalpy of medium [J/kg]
+der(Specific enthalpy of medium) [m2/s3]
+Density of medium [kg/m3|g/cm3]
+der(Density of medium) [Pa.m-2.s]
+Temperature of medium [K|degC]
+der(Temperature of medium) [K/s]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Specific internal energy of medium [J/kg]
+der(Specific internal energy of medium) [m2/s3]
+Gas constant (of mixture if applicable) [J/(kg.K)]
+Molar mass (of mixture or single fluid) [kg/mol]
+phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use
+= true if StateSelect.prefer shall be used for the independent property variables of the medium
+if true, and reducedX = true, the last element of X will be computed from the other ones
+Temperature of medium in [degC] [degC;]
+Absolute pressure of medium in [bar] [bar]
+saturation temperature [K|degC]
+Internal energy of fluid [J]
+der(Internal energy of fluid) [W]
+Mass of fluid [kg]
+der(Mass of fluid) [kg/s]
+Enthalpy flow across boundaries or energy source/sink [W]
+= true to set up initial equations for pressure
+Density, used to compute fluid mass [kg/m3|g/cm3]
+Formulation of energy balance
+Formulation of mass balance
+Formulation of substance balance
+Formulation of trace substance balance
+Start value of pressure [Pa|bar]
+Start value of temperature [K|degC]
+Start value of mass fractions m_i/m [kg/kg]
+Number of ports
+Absolute pressure of medium [Pa|bar]
+Specific enthalpy of medium [J/kg]
+der(Specific enthalpy of medium) [m2/s3]
+Density of medium [kg/m3|g/cm3]
+der(Density of medium) [Pa.m-2.s]
+Temperature of medium [K|degC]
+der(Temperature of medium) [K/s]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Specific internal energy of medium [J/kg]
+der(Specific internal energy of medium) [m2/s3]
+Gas constant (of mixture if applicable) [J/(kg.K)]
+Molar mass (of mixture or single fluid) [kg/mol]
+phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use
+= true if StateSelect.prefer shall be used for the independent property variables of the medium
+if true, and reducedX = true, the last element of X will be computed from the other ones
+Temperature of medium in [degC] [degC;]
+Absolute pressure of medium in [bar] [bar]
+saturation temperature [K|degC]
+Internal energy of fluid [J]
+der(Internal energy of fluid) [W]
+Mass of fluid [kg]
+der(Mass of fluid) [kg/s]
+Enthalpy flow across boundaries or energy source/sink [W]
+= true to set up initial equations for pressure
+Density, used to compute fluid mass [kg/m3|g/cm3]
+Formulation of energy balance
+Formulation of mass balance
+Formulation of substance balance
+Formulation of trace substance balance
+Start value of pressure [Pa|bar]
+Start value of temperature [K|degC]
+Start value of mass fractions m_i/m [kg/kg]
+Number of ports
+Absolute pressure of medium [Pa|bar]
+Specific enthalpy of medium [J/kg]
+der(Specific enthalpy of medium) [m2/s3]
+Density of medium [kg/m3|g/cm3]
+der(Density of medium) [Pa.m-2.s]
+Temperature of medium [K|degC]
+der(Temperature of medium) [K/s]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Specific internal energy of medium [J/kg]
+der(Specific internal energy of medium) [m2/s3]
+Gas constant (of mixture if applicable) [J/(kg.K)]
+Molar mass (of mixture or single fluid) [kg/mol]
+phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use
+= true if StateSelect.prefer shall be used for the independent property variables of the medium
+if true, and reducedX = true, the last element of X will be computed from the other ones
+Temperature of medium in [degC] [degC;]
+Absolute pressure of medium in [bar] [bar]
+saturation temperature [K|degC]
+Internal energy of fluid [J]
+der(Internal energy of fluid) [W]
+Mass of fluid [kg]
+der(Mass of fluid) [kg/s]
+Enthalpy flow across boundaries or energy source/sink [W]
+= true to set up initial equations for pressure
+Density, used to compute fluid mass [kg/m3|g/cm3]
+Formulation of energy balance
+Formulation of mass balance
+Formulation of substance balance
+Formulation of trace substance balance
+Start value of pressure [Pa|bar]
+Start value of temperature [K|degC]
+Start value of mass fractions m_i/m [kg/kg]
+Number of ports
+Absolute pressure of medium [Pa|bar]
+Specific enthalpy of medium [J/kg]
+der(Specific enthalpy of medium) [m2/s3]
+Density of medium [kg/m3|g/cm3]
+der(Density of medium) [Pa.m-2.s]
+Temperature of medium [K|degC]
+der(Temperature of medium) [K/s]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Specific internal energy of medium [J/kg]
+der(Specific internal energy of medium) [m2/s3]
+Gas constant (of mixture if applicable) [J/(kg.K)]
+Molar mass (of mixture or single fluid) [kg/mol]
+phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use
+= true if StateSelect.prefer shall be used for the independent property variables of the medium
+if true, and reducedX = true, the last element of X will be computed from the other ones
+Temperature of medium in [degC] [degC;]
+Absolute pressure of medium in [bar] [bar]
+saturation temperature [K|degC]
+Internal energy of fluid [J]
+der(Internal energy of fluid) [W]
+Mass of fluid [kg]
+der(Mass of fluid) [kg/s]
+Enthalpy flow across boundaries or energy source/sink [W]
+= true to set up initial equations for pressure
+Density, used to compute fluid mass [kg/m3|g/cm3]
+Formulation of energy balance
+Formulation of mass balance
+Formulation of substance balance
+Formulation of trace substance balance
+Start value of pressure [Pa|bar]
+Start value of temperature [K|degC]
+Start value of mass fractions m_i/m [kg/kg]
+Number of ports
+Absolute pressure of medium [Pa|bar]
+Specific enthalpy of medium [J/kg]
+der(Specific enthalpy of medium) [m2/s3]
+Density of medium [kg/m3|g/cm3]
+der(Density of medium) [Pa.m-2.s]
+Temperature of medium [K|degC]
+der(Temperature of medium) [K/s]
+Mass fractions (= (component mass)/total mass  m_i/m) [kg/kg]
+Specific internal energy of medium [J/kg]
+der(Specific internal energy of medium) [m2/s3]
+Gas constant (of mixture if applicable) [J/(kg.K)]
+Molar mass (of mixture or single fluid) [kg/mol]
+phase of the fluid: 1 for 1-phase, 2 for two-phase, 0 for not known, e.g., interactive use
+= true if StateSelect.prefer shall be used for the independent property variables of the medium
+if true, and reducedX = true, the last element of X will be computed from the other ones
+Temperature of medium in [degC] [degC;]
+Absolute pressure of medium in [bar] [bar]
+saturation temperature [K|degC]
+Internal energy of fluid [J]
+der(Internal energy of fluid) [W]
+Mass of fluid [kg]
+der(Mass of fluid) [kg/s]
+Enthalpy flow across boundaries or energy source/sink [W]
+= true to set up initial equations for pressure
+Density, used to compute fluid mass [kg/m3|g/cm3]
+

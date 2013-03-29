@@ -1,0 +1,13 @@
+Notes
+	Using version 25 - AddedMixingAlgorithm as base while characterizing/validation model
+	Changed thickness (x) of insulation material from 0.002 to 0.013
+		Losses to ambient (no pilot) now match
+	158W used for pilot light input. Taken from beginning of Test8
+	10515W used for burner input. Taken from first burn in Test8
+	T_Set = 46 C. See pg 24 of Water Heater Experiments
+	T_Deadband = 12 (+/-6) deg C. See pg 24 of Water Heater Experiments
+Additions
+	Added a model, QEle, which models fan energy consumption
+		Uses two electricity consumption rates: Idle and active
+		Switches between the two depending on whether the burner is idle/active
+	Added a second example, StorageTankWithFan, which uses QEle

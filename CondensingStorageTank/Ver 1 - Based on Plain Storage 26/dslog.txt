@@ -1,0 +1,39 @@
+Log-file of program ./dymosim
+(generated: Wed Oct 31 09:10:04 2012)
+
+dymosim started
+... "dsin.txt" loading (dymosim input file)
+... "26-WaterFlowFromTest8.txt" loading (tables for interpolation)
+... "26-UALossTempData.txt" loading (tables for interpolation)
+... "26-TstatDataFromTest8.txt" loading (tables for interpolation)
+... "26-TempDataFromTest8.txt" loading (tables for interpolation)
+... "WaterHeater.mat" creating (simulation result file)
+
+Integration started at T = 0 using integration method DASSL
+(DAE multi-step solver (dassl/dasslrt of Petzold modified by Dynasim))
+
+... Warning message from dymosim
+At time T = 1.371271e+003 in current integration interval
+T_interval = 1.366400e+003 ... 1.378600e+003
+a large amount of work has been expended
+(about 500 steps) in the integrator. Probably the communciation
+interval is too large or the system is stiff.
+
+Integration terminated successfully at T = 6100
+   CPU-time for integration      : 573 seconds
+   CPU-time for one GRID interval: 1.15e+003 milli-seconds
+   Number of result points       : 603
+   Number of GRID   points       : 501
+   Number of (successful) steps  : 15537
+   Number of F-evaluations       : 1031612
+   Number of H-evaluations       : 16773
+   Number of Jacobian-evaluations: 22718
+   Number of (model) time events : 0
+   Number of (U) time events     : 0
+   Number of state    events     : 51
+   Number of step     events     : 0
+   Minimum integration stepsize  : 0.00045
+   Maximum integration stepsize  : 51.5
+   Maximum integration order     : 4
+Calling terminal section
+... "dsfinal.txt" creating (final states)

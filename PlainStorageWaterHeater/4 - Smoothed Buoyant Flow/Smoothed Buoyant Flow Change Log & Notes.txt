@@ -1,0 +1,8 @@
+Changes
+	Removed if statements in mass balance equations (reduction in state events)
+	Simulates faster
+	Some error in mass balance - Should be able to resolve with PrevApp variable and e = f(m_in - m_out) terms
+	Still many state events - delta_H_BU calcs still use if statements. Should dramatically reduce chattering, improve simulation time
+Next steps
+1) Use smoothing functions in delta_H_BU calcs
+2) Complete mass balance in buoHeaTra (move calcs for m_D into it)

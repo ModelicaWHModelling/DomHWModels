@@ -1,0 +1,22 @@
+ 
+Compiling and linking the model (Visual C++). 
+ 
+Setting environment for using Microsoft Visual Studio 2010 x86 tools.
+dsmodel.c
+dsmodel.c(17845) : warning C4244: 'function' : conversion from 'double' to 'int', possible loss of data
+dsmodel.c(18672) : warning C4244: 'function' : conversion from 'double' to 'int', possible loss of data
+dsmodel.c(18672) : warning C4244: 'function' : conversion from 'double' to 'int', possible loss of data
+dsmodel.c(18676) : warning C4244: 'function' : conversion from 'double' to 'int', possible loss of data
+dsmodel.c(18676) : warning C4244: 'function' : conversion from 'double' to 'int', possible loss of data
+dsmodel.c(18688) : warning C4244: 'function' : conversion from 'double' to 'int', possible loss of data
+dsmodel.c(18688) : warning C4244: 'function' : conversion from 'double' to 'int', possible loss of data
+dsmodel.c(20401) : warning C4244: 'function' : conversion from 'double' to 'int', possible loss of data
+dsmodel.c(20401) : warning C4244: 'function' : conversion from 'double' to 'int', possible loss of data
+dsmodel.c(20405) : warning C4244: 'function' : conversion from 'double' to 'int', possible loss of data
+dsmodel.c(20405) : warning C4244: 'function' : conversion from 'double' to 'int', possible loss of data
+dsmodel.c(20417) : warning C4244: 'function' : conversion from 'double' to 'int', possible loss of data
+dsmodel.c(20417) : warning C4244: 'function' : conversion from 'double' to 'int', possible loss of data
+   Creating library dymosim.lib and object dymosim.exp
+ 
+Successful generation of Dymosim. 
+ 

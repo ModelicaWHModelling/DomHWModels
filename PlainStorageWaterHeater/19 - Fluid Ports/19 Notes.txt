@@ -1,0 +1,9 @@
+Changes
+	Connected a boundary condition to the volume of water
+		User specifies pressure of boundary condition, allows mass flow in/out of tank
+		Removed problems caused by extremely high/low pressure (water now connected to other volume allowing expansion/contraction)
+	Changed definition of stratification layer so that a segment gets below-strLay treatment if T_Seg - T_Seg+1 < 0.01 C. Causes temps to be very close
+Notes
+	Top segment still getting disconnected from the rest
+		Loses heat to environment faster b/c of losses from top, never gets mixed back in with the others (assuming no draw, does get roped back in if a draw)
+		Solution: Changed heat transfer below stratification layer to also share all ambient losses. Then all segs will lose heat at matching rate between burns

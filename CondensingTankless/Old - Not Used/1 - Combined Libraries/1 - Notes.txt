@@ -1,0 +1,6 @@
+Notes
+	This model is able to use both the combustion chamber model from the ThermoPower library and the WetCoilCounterFlow heat exchanger from the Buildings Library
+	Includes modified models (CombustionChamber) and modified media (FlueGas) in an attempt to make the models communicate
+		Edited CombustionChamber to use different media
+		Edited the FlueGas model used in CombustionChamber to include the values needed by WetCoilCounterFlow (Water integer, enthalpyOfLiquid, enthalpyOfCondensingGas)
+	Model in current state does not simulate. Structurally singular (ACK!)

@@ -1,0 +1,21 @@
+Studying the problem
+	Water flow rate, natural gas flow rate, air flow rate all set to +
+		Under these conditions there is no way that gasOut.m_flow <= 0 unless there is an error in the simulation
+		Likely caused by modifications to CombustionChamber, specifically removing calculations of certain elements so that MoistAirUnsaturated could be used
+	Plan
+		Return CombustionChamber to how it was originally, use ThermoPower.Media.FlueGas in that model
+		Create another model which converts between FlueGas and MoistAirUnsaturated
+			Use a m_dot, T flow source (if it exists to describe MoistAirUnsaturated. Might have to use P,T
+			How do I pull those values out of FlueGas?
+Solution
+	As described in Plan
+	Connected a boundary condition to inlet port for FlueGas
+		Referenced port_a.T, port_a.h, etc in flow source for MoistAirUnsaturated
+
+New Problem
+	When attempting to simulate errors out
+		Gas in the combustion chamber calculated to be 30 K (!!!!) which is out of acceptable range for the medium (200 K -> 6000 K)
+		Based on experimental observations, would expect somewhere between 350 C and 1000 C
+		Gas temperature does not appear to be sensitive to...anything (ambient temperature, gas/air flow rate, outlet conditions)
+			...What?
+			Could it be calculating incorrectly because I changed the way MM is referenced in CombustionChamber?

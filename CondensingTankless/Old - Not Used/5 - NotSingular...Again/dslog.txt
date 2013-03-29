@@ -1,0 +1,10 @@
+Log-file of program ./dymosim
+(generated: Tue Sep 11 11:48:05 2012)
+
+dymosim started
+... "dsin.txt" loading (dymosim input file)
+... "C:/Program Files (x86)/Dymola 2012 FD01/Models/models/modelica/WaterHeater/current/modeling/branches/pgrant/TanklessWaterHeater/Condensing Input Files/InletWater.txt" loading (tables for interpolation)
+comAna.gasOut.m_flow <= 0
+The following error was detected at time: 0
+The model does not support flow reversal
+Error: Failed to start model.

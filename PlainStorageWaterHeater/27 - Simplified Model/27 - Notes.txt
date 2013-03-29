@@ -1,0 +1,10 @@
+Motivation
+	The more detailed model was very problematic, and seemed to be overly complicated
+		Several complications did not seem to add any value (example: Detailed wall construction rather than a UA value
+		The method of identifying gas temperature in the flue and using convection coefficients to identify heat transfer into the water did not work
+			Convection coefficients which caused flue temperatures to match resulted in ~50% less heat transfer into the water than test data showed
+		Also requires uneccessary inputs - convection coefficients between water and tank wall, tank wall and air. Only going to have a total UA value available!
+
+Plan
+	Create model in a manner similar to the simplified tank used in hybrid model (actually, start using hybrid model)
+	Primary change from hybrid model: Use the bottom up heat buoHeaTra instead of the top down fluHeaTra

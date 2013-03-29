@@ -1,0 +1,13 @@
+The two radiation models in the tank model had connections reversed
+	Two connections each: T_In, u
+		T_In describes the ambient air temperature
+		u is a function of the surface (Absorptivity)
+	T_In was connected to u, u connected to T_In
+	Reversed the connections
+		No longer losing 1.5 kW per segment to the ambient conditions
+		Simulations no longer erroring out because TWat < 0 after time
+Notes:
+	Buoyancy calcs seem suspicious when burner is off
+	Bottom segments suddenly start gaining lots of buoyant heat -> Why? There shouldn'y be much to gain!
+		mC...?
+		mD? Looks like mFloFlu is constant (which seems wrong...) which causes mD when potentially there shouldn't be one

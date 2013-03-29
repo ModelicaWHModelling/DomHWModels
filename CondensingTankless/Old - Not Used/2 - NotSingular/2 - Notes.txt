@@ -1,0 +1,7 @@
+Notes
+	Added parameters at top level used to describe WetCoilCounterFlow and CombustionChamber
+	Structurally singular for type...BOOLEAN!?
+	Still structurally singular even when only WetCoilCounterFlow included in model
+		Used exact same mediums as in example file for the heat exchanger
+		States structurally singular for type Real
+		Don't understand; talk to Michael on Tuesday

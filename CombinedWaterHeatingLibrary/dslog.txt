@@ -1,0 +1,17 @@
+Model: WaterHeatingLibrary.CombinedExamples.TanklessWithPIDDraw
+Integration started at 0 using integration method:
+RK-method: radau IIa
+Local extrapolation
+FSAL
+Continuous extension
+
+Integration terminated successfully at T = 250
+   CPU time for integration      : 0.1 seconds
+   Number of (successful) steps  : 132
+   Number of rejected steps      : 55
+   Number of F-evaluations       : 1484
+   Number of H-evaluations       : 568
+   Number of Jacobian-evaluations: 12
+   Number of (model) time events : 0
+   Number of state    events     : 10
+   Number of step     events     : 0

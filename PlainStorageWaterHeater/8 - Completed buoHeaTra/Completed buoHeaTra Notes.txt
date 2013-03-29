@@ -1,0 +1,5 @@
+Changes
+	Moved calculation of Q_flow_tot into buoHeaTra. Changed output name to buoHeaTra.buoHeaTra
+	Fixed m_C calculations. Were previously written as if 1 was bottom, nSeg top. Switched references so that 1 is top, nSeg is bottom
+Notes
+	1 numerical jacobian remains (not in qBuo model). Need to begin removing equations to see what makes it clear up

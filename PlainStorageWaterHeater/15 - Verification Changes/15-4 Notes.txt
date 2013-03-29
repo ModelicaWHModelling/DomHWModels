@@ -1,0 +1,6 @@
+Previously there was no term describing the heat leaving a segment caused by mDotD
+	Added a term to all segments (except the bottom, because it has no mDotD)
+		-mDotD * c_p * (T_Seg - T_SegBelow)
+	Verification
+		When the temperature of all segs are identical has no impact
+		Changed the temperature of specific segments. Correctly calculated heat flows with new term

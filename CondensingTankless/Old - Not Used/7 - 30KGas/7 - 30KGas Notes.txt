@@ -1,0 +1,37 @@
+Problem
+	Simulation currently errors out because the gas in the combustion chamber is calculated to be at 30K
+		CLEARLY not correct - Expect somewhere between 350 C and 1000 C when burning
+				      Expect somewhere between TAmb and 1000 C when not burning (decay from T_Burn to T_Amb between burns)
+Possible Causes
+	Low gas/air flow rate
+		No - despite 1000 kg/s gas and 20000 kg/s air flow gave exact same answer
+	Sensitive to T_amb?
+		No - 2000 C TAmb still resulted in 30 K gas temp
+	Changed coding for MM - Changed incorrectly?
+		No - returning to their code generated the exact same answer
+	Simply an issue with initial conditions?
+		No - Set T_Start (any/all) to 2000 C and got the exact same result
+	Impacted by outlet conditions? (Outlet is currently a volume with a given pressure, T_default)
+		No - Set outlet temperature to 2000 K, no change
+	Impacted by heat transfer coefficient in combustion chamber and combustion chamber surface area?
+		No - Switched between 0 and 10000^2 with no change
+	Occurs at t = 0. Is this a simulation or initialization problem?
+		Trying different initialization options
+			initOpt = ThermoPower.Choices.Init.Options.noInit => 30 K
+			initOpt = ThermoPower.Choices.Init.Options.steadyState => Different error message!
+				Complains about array dimensions not matching. Appears to be nonCon.port_a2
+			initOpt = ThermoPower.Choices.Init.Options.steadyState.NoP => Complains about singular calculation in comCha
+			initOpt = ThermoPower.Choices.Init.Options.steadyState.NoT => Same as NoP. Cannot calculate comCha.gasOut.m_flow
+			initOpt = ThermoPower.Choices.Init.Options.steadyState.NoPT => Unsupported initialization option
+				The strange part: .NoT should have given this result as well. Why did it not?
+			Appears that 30 K flue gas problem can be solved with initialization options. Also, steady state would be the best assumption
+				Unfortunately, SteadyState assumption creates other problems
+		Continuing using SteadyState assumption
+			Unable to calculate FlueGas.T using function ThermoPower.Media.FlueGas.T_HX
+				Claims incorrect number of array dimensions
+				Checking inputs, appears to not be true. Has same number of inputs as function requests
+					So...why?
+				Mass fraction input appears suspicious. Instead of taking value uses cat(1, X, {1-sum(X)})
+					Not sure what this means/implies. Could it dislike the format of X in ThermoPower.Media.FlueGas?
+					What does "cat" mean/do?
+Check warning: Unequal dimensions in nonCon.ele[4].vol2.dynBal.medium.Xi

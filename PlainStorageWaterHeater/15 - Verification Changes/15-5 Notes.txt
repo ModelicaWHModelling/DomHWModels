@@ -1,0 +1,7 @@
+Previously the heat transfer to the base was being added to the heat in the combustion chamber (instead of subtracted)
+	Resulted in T_F0 increasing as QBase increased
+	Model adds lost heat to combustion energy (assumes that loss term is negative)
+		Was passing in a positive QBase, negative QRadLoss
+	Added a "-" in front of the RealExpression describing the heat transferred to base
+		Now passes a negative QBase, negative QRadLoss
+		TF_0 decreases with increasing QBase
