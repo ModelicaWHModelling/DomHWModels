@@ -1,4 +1,4 @@
 #1
-double	TAmb(2, 2)
+double	TRadMea(2, 2)
 0	293.15
 1000000	293.15

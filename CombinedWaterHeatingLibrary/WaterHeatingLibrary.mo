@@ -6,10 +6,16 @@ package WaterHeatingLibrary "Library of water heating models and packages"
     model TanklessWithTrunkAndBranch
       "Demonstrates how to simulate a trunk and branch distribution system with a tankless heater"
       extends Modelica.Icons.Example;
+      package Water = Buildings.Media.ConstantPropertyLiquidWater
+        "Fluid in the system";
+
+      parameter Modelica.SIunits.Temperature T_start_dis = 273.15+30
+        "Initial temperature of the distribution system";
+
       NonCondensingTankless.NonCondensingTanklessHeaterMediumModel
         nonCondensingTanklessHeater(mdot_min_input=0.018, redeclare package
           Medium =
-            Buildings.Media.ConstantPropertyLiquidWater)
+            Water)
         annotation (Placement(transformation(extent={{-10,-14},{12,14}})));
       Modelica.Blocks.Sources.CombiTimeTable watFlo(
         tableOnFile=true,
@@ -18,143 +24,184 @@ package WaterHeatingLibrary "Library of water heating models and packages"
             "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchFlow.txt",
         columns=2:5)
         "Reads a data file describing the desired water flow rate at each fixture[Dishwasher, KitchenSink, Shower, Sink]"
-        annotation (Placement(transformation(extent={{-78,-74},{-58,-54}})));
+        annotation (Placement(transformation(extent={{-80,-74},{-60,-54}})));
 
-      HWDis.Components.Pipe  tru1(
-        thicknessIns=0.1,
+      HWDis.Components.PipeLumpedCap
+                             tru1(
         length=10,
         m_flow_nominal=0.1,
-        redeclare package Medium = Buildings.Media.ConstantPropertyLiquidWater,
         dp_nominal=1,
-        diameter=0.0205994,
         allowFlowReversal=false,
         nSeg=20,
         MixCoef=0.6,
-        lambdaIns=0.1208142396) "First section of the trunk pipe"
-        annotation (Placement(transformation(extent={{50,-10},{70,10}})));
+        til=0,
+        diameter_i=0.019939,
+        c_p_pip=390,
+        rho_pip=8960,
+        diameter_o=0.022225,
+        redeclare package Medium = Water,
+        ePipe=0.95,
+        thicknessIns=0.0127,
+        lambdaIns=0.04,
+        T_start=T_start_dis) "First section of the trunk pipe"
+        annotation (Placement(transformation(extent={{36,-6},{56,14}})));
 
-      HWDis.Components.Pipe  bra11(
+      HWDis.Components.PipeLumpedCap
+                             bra11(
         m_flow_nominal=0.1,
-        thicknessIns=0.1,
+        thicknessIns=0.0127,
         length=10,
-        redeclare package Medium = Buildings.Media.ConstantPropertyLiquidWater,
         dp_nominal=1,
         nSeg=20,
-        diameter=0.0205994,
         MixCoef=0.6,
-        lambdaIns=0.1208142396) annotation (Placement(transformation(
+        lambdaIns=0.04,
+        c_p_pip=390,
+        rho_pip=8960,
+        diameter_o=0.022225,
+        til=0,
+        diameter_i=0.019939,
+        redeclare package Medium = Water,
+        ePipe=0.95,
+        T_start=T_start_dis)    annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=0,
-            origin={90,40})));
+            origin={80,44})));
 
-      HWDis.Components.Pipe  bra2(
-        redeclare package Medium = Buildings.Media.ConstantPropertyLiquidWater,
+      HWDis.Components.PipeLumpedCap
+                             bra2(
         m_flow_nominal=0.1,
         dp_nominal=1,
         nSeg=20,
-        thicknessIns=0.1,
+        thicknessIns=0.0127,
         length=10,
-        diameter=0.0205994,
         MixCoef=0.6,
-        lambdaIns=0.1208142396) annotation (Placement(transformation(
+        lambdaIns=0.04,
+        diameter_i=0.019939,
+        c_p_pip=390,
+        rho_pip=8960,
+        diameter_o=0.022225,
+        til=0,
+        redeclare package Medium = Water,
+        ePipe=0.95,
+        T_start=T_start_dis)    annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=0,
-            origin={148,-32})));
+            origin={150,-32})));
 
-      HWDis.Components.Pipe  twi1(
+      HWDis.Components.PipeLumpedCap
+                             twi1(
+        m_flow_nominal=0.1,
+        dp_nominal=1,
+        nSeg=20,
+        thicknessIns=0.0127,
+        length=10,
+        MixCoef=0.6,
+        lambdaIns=0.04,
+        diameter_i=0.019939,
+        c_p_pip=390,
+        rho_pip=8960,
+        diameter_o=0.022225,
+        til=0,
+        redeclare package Medium = Water,
+        ePipe=0.95,
+        T_start=T_start_dis)
+        annotation (Placement(transformation(extent={{140,76},{160,96}})));
+
+      HWDis.Components.PipeLumpedCap
+                             bra12(
+        m_flow_nominal=0.1,
+        dp_nominal=1,
+        nSeg=20,
+        thicknessIns=0.0127,
+        length=10,
+        MixCoef=0.6,
+        lambdaIns=0.04,
+        diameter_i=0.019939,
+        c_p_pip=390,
+        rho_pip=8960,
+        diameter_o=0.022225,
+        til=0,
+        redeclare package Medium = Water,
+        ePipe=0.95,
+        T_start=T_start_dis)
+        annotation (Placement(transformation(extent={{140,34},{160,54}})));
+
+      HWDis.Components.PipeLumpedCap
+                             tru2(
         redeclare package Medium = Buildings.Media.ConstantPropertyLiquidWater,
         m_flow_nominal=0.1,
         dp_nominal=1,
         nSeg=20,
-        thicknessIns=0.1,
+        thicknessIns=0.0127,
         length=10,
-        diameter=0.0205994,
         MixCoef=0.6,
-        lambdaIns=0.1208142396)
-        annotation (Placement(transformation(extent={{140,60},{160,80}})));
+        lambdaIns=0.04,
+        diameter_i=0.019939,
+        c_p_pip=390,
+        rho_pip=8960,
+        diameter_o=0.022225,
+        til=0,
+        ePipe=0.95,
+        T_start=T_start_dis)
+        annotation (Placement(transformation(extent={{94,-6},{114,14}})));
 
-      HWDis.Components.Pipe  bra12(
-        redeclare package Medium = Buildings.Media.ConstantPropertyLiquidWater,
+      HWDis.Components.PipeLumpedCap
+                             tru3(
         m_flow_nominal=0.1,
         dp_nominal=1,
         nSeg=20,
-        thicknessIns=0.1,
+        thicknessIns=0.0127,
         length=10,
-        diameter=0.0205994,
         MixCoef=0.6,
-        lambdaIns=0.1208142396)
-        annotation (Placement(transformation(extent={{140,30},{160,50}})));
+        lambdaIns=0.04,
+        diameter_i=0.019939,
+        c_p_pip=390,
+        rho_pip=8960,
+        diameter_o=0.022225,
+        til=0,
+        redeclare package Medium = Water,
+        ePipe=0.95,
+        T_start=T_start_dis)
+        annotation (Placement(transformation(extent={{140,-6},{160,14}})));
 
-      HWDis.Components.Pipe  tru2(
-        redeclare package Medium = Buildings.Media.ConstantPropertyLiquidWater,
-        m_flow_nominal=0.1,
-        dp_nominal=1,
-        nSeg=20,
-        thicknessIns=0.1,
-        length=10,
-        diameter=0.0205994,
-        MixCoef=0.6,
-        lambdaIns=0.1208142396)
-        annotation (Placement(transformation(extent={{100,-10},{120,10}})));
-
-      HWDis.Components.Pipe  tru3(
-        redeclare package Medium = Buildings.Media.ConstantPropertyLiquidWater,
-        m_flow_nominal=0.1,
-        dp_nominal=1,
-        nSeg=20,
-        thicknessIns=0.1,
-        length=10,
-        diameter=0.0205994,
-        MixCoef=0.6,
-        lambdaIns=0.1208142396)
-        annotation (Placement(transformation(extent={{140,-10},{160,10}})));
-
-      HWDis.Components.EndUseLPS  Sink(redeclare package Medium =
-            Buildings.Media.ConstantPropertyLiquidWater, gain=valCon)
-        "Models the draw at a sink"
-        annotation (Placement(transformation(extent={{180,60},{200,80}})));
-      HWDis.Components.EndUseLPS  Shower(redeclare package Medium =
-            Buildings.Media.ConstantPropertyLiquidWater, gain=valCon)
-        "Models the draw at a shower"
-        annotation (Placement(transformation(extent={{180,30},{200,50}})));
-      HWDis.Components.EndUseLPS  Dishwasher(redeclare package Medium =
-            Buildings.Media.ConstantPropertyLiquidWater, gain=valCon)
-        "Models the draw at a dishwasher"
-        annotation (Placement(transformation(extent={{180,-10},{200,10}})));
-      HWDis.Components.EndUseLPS  KitchenSink(redeclare package Medium =
-            Buildings.Media.ConstantPropertyLiquidWater, gain=valCon)
-        "Models the draw at a kitchen sink"
+      HWDis.Components.EndUse     Sink(                  gain=valCon, redeclare
+          package Medium = Water) "Models the draw at a sink"
+        annotation (Placement(transformation(extent={{180,76},{200,96}})));
+      HWDis.Components.EndUse     Shower(                gain=valCon, redeclare
+          package Medium = Water) "Models the draw at a shower"
+        annotation (Placement(transformation(extent={{180,34},{200,54}})));
+      HWDis.Components.EndUse     Dishwasher(            gain=valCon, redeclare
+          package Medium = Water) "Models the draw at a dishwasher"
+        annotation (Placement(transformation(extent={{180,-6},{200,14}})));
+      HWDis.Components.EndUse     KitchenSink(           gain=valCon, redeclare
+          package Medium = Water) "Models the draw at a kitchen sink"
         annotation (Placement(transformation(extent={{180,-42},{200,-22}})));
-      Buildings.HeatTransfer.Sources.PrescribedTemperature
-        prescribedTemperature
-        annotation (Placement(transformation(extent={{26,52},{46,72}})));
       Modelica.Blocks.Sources.CombiTimeTable TAmb(
         tableOnFile=true,
-        tableName="Temp",
         fileName=
-            "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchTAmb.txt")
-        "Temperature surrounding the system(unit = K)"
-        annotation (Placement(transformation(extent={{-78,52},{-58,72}})));
+            "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchTAmb.txt",
+        tableName="TAmb") "Temperature surrounding the system(unit = K)"
+        annotation (Placement(transformation(extent={{-80,96},{-60,116}})));
       Modelica.Blocks.Sources.CombiTimeTable TIn(
         tableOnFile=true,
         tableName="Temp",
         fileName=
             "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchTIn.txt")
         "Inlet temperature (unit = K)"
-        annotation (Placement(transformation(extent={{-100,8},{-80,28}})));
+        annotation (Placement(transformation(extent={{-100,-30},{-80,-10}})));
       Modelica.Blocks.Sources.CombiTimeTable pwrSig(
         tableOnFile=true,
         tableName="pwr",
         fileName=
             "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchpwr.txt")
         "Power signal (1 = on, 0 = off)"
-        annotation (Placement(transformation(extent={{-78,-48},{-58,-28}})));
+        annotation (Placement(transformation(extent={{-80,-4},{-60,16}})));
       Buildings.Fluid.Sources.Boundary_pT Mains(
-        redeclare package Medium = Buildings.Media.ConstantPropertyLiquidWater,
         use_T_in=true,
-        p=150000,
-        nPorts=1) "Connects to the mains water system"
-        annotation (Placement(transformation(extent={{-70,4},{-50,24}})));
+        nPorts=1,
+        redeclare package Medium = Water,
+        p=150000) "Connects to the mains water system"
+        annotation (Placement(transformation(extent={{-70,-34},{-50,-14}})));
       HWDis.Components.FlowReduction  floRed(nDra=4)
         "Reduces flow at outlet fixtures when tankless heater reduces flow because it cannot meet demand"
         annotation (Placement(transformation(extent={{78,-60},{98,-40}})));
@@ -164,97 +211,69 @@ package WaterHeatingLibrary "Library of water heating models and packages"
         annotation (Placement(transformation(extent={{-28,-58},{-8,-38}})));
       Modelica.Blocks.Math.Min min1
         annotation (Placement(transformation(extent={{40,-52},{60,-32}})));
+      Modelica.Blocks.Sources.CombiTimeTable TRadMea(tableOnFile=true, tableName="TRadMea",
+        fileName=
+            "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchTRadMea.txt")
+        "Mean radiant temperature surrounding the pipes(unit = K)"
+        annotation (Placement(transformation(extent={{-80,124},{-60,144}})));
     equation
       connect(tru1.port_b, tru2.port_a) annotation (Line(
-          points={{70,0},{100,0}},
+          points={{56,4},{94,4}},
           color={0,127,255},
           smooth=Smooth.None));
       connect(tru1.port_b, bra11.port_a) annotation (Line(
-          points={{70,4.44089e-16},{76,4.44089e-16},{76,40},{80,40}},
+          points={{56,4},{64,4},{64,44},{70,44}},
           color={0,127,255},
           smooth=Smooth.None));
       connect(bra11.port_b, bra12.port_a) annotation (Line(
-          points={{100,40},{140,40}},
+          points={{90,44},{140,44}},
           color={0,127,255},
           smooth=Smooth.None));
       connect(bra11.port_b, twi1.port_a) annotation (Line(
-          points={{100,40},{120,40},{120,70},{140,70}},
+          points={{90,44},{116,44},{116,86},{140,86}},
           color={0,127,255},
           smooth=Smooth.None));
       connect(tru2.port_b, bra2.port_a) annotation (Line(
-          points={{120,0},{130,0},{130,-32},{138,-32}},
+          points={{114,4},{130,4},{130,-32},{140,-32}},
           color={0,127,255},
           smooth=Smooth.None));
       connect(tru2.port_b, tru3.port_a) annotation (Line(
-          points={{120,0},{140,0}},
+          points={{114,4},{140,4}},
           color={0,127,255},
           smooth=Smooth.None));
       connect(twi1.port_b, Sink.Inlet) annotation (Line(
-          points={{160,70},{180,70}},
+          points={{160,86},{180,86}},
           color={0,127,255},
           smooth=Smooth.None));
       connect(bra12.port_b, Shower.Inlet) annotation (Line(
-          points={{160,40},{180,40}},
+          points={{160,44},{180,44}},
           color={0,127,255},
           smooth=Smooth.None));
       connect(tru3.port_b, Dishwasher.Inlet) annotation (Line(
-          points={{160,0},{170,0},{170,8.88178e-16},{180,8.88178e-16}},
+          points={{160,4},{180,4}},
           color={0,127,255},
           smooth=Smooth.None));
       connect(bra2.port_b, KitchenSink.Inlet) annotation (Line(
-          points={{158,-32},{180,-32}},
+          points={{160,-32},{180,-32}},
           color={0,127,255},
           smooth=Smooth.None));
 
-      connect(prescribedTemperature.port, tru1.heatPort) annotation (Line(
-          points={{46,62},{60,62},{60,5}},
-          color={191,0,0},
-          smooth=Smooth.None));
-      connect(prescribedTemperature.port, bra11.heatPort) annotation (Line(
-          points={{46,62},{90,62},{90,45}},
-          color={191,0,0},
-          smooth=Smooth.None));
-      connect(prescribedTemperature.port, tru2.heatPort) annotation (Line(
-          points={{46,62},{110,62},{110,5}},
-          color={191,0,0},
-          smooth=Smooth.None));
-      connect(prescribedTemperature.port, bra12.heatPort) annotation (Line(
-          points={{46,62},{110,62},{110,50},{150,50},{150,45}},
-          color={191,0,0},
-          smooth=Smooth.None));
-      connect(prescribedTemperature.port, tru3.heatPort) annotation (Line(
-          points={{46,62},{110,62},{110,20},{150,20},{150,5}},
-          color={191,0,0},
-          smooth=Smooth.None));
-      connect(prescribedTemperature.port, twi1.heatPort) annotation (Line(
-          points={{46,62},{110,62},{110,84},{150,84},{150,75}},
-          color={191,0,0},
-          smooth=Smooth.None));
-      connect(prescribedTemperature.port, bra2.heatPort) annotation (Line(
-          points={{46,62},{110,62},{110,20},{134,20},{134,-20},{148,-20},{148,
-              -27}},
-          color={191,0,0},
-          smooth=Smooth.None));
-      connect(TAmb.y[1], prescribedTemperature.T) annotation (Line(
-          points={{-57,62},{24,62}},
-          color={0,0,127},
-          smooth=Smooth.None));
       connect(TAmb.y[1], nonCondensingTanklessHeater.AmbientTemperature)
         annotation (Line(
-          points={{-57,62},{-18,62},{-18,7.952},{-12.2,7.952}},
+          points={{-59,106},{-18,106},{-18,7.952},{-12.2,7.952}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(pwrSig.y[1], nonCondensingTanklessHeater.pwrSig) annotation (Line(
-          points={{-57,-38},{-52,-38},{-52,-12.88},{-12.2,-12.88}},
+          points={{-59,6},{-52,6},{-52,-12.88},{-12.2,-12.88}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(TIn.y[1], Mains.T_in) annotation (Line(
-          points={{-79,18},{-72,18}},
+          points={{-79,-20},{-72,-20}},
           color={0,0,127},
           smooth=Smooth.None));
 
       connect(watFlo.y, floRed.desFlo) annotation (Line(
-          points={{-57,-64},{62,-64},{62,-58},{76,-58},{76,-57.4}},
+          points={{-59,-64},{62,-64},{62,-58},{76,-58},{76,-57.4}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(floRed.draFlo[1], KitchenSink.watFlo) annotation (Line(
@@ -262,19 +281,19 @@ package WaterHeatingLibrary "Library of water heating models and packages"
           color={0,0,127},
           smooth=Smooth.None));
       connect(floRed.draFlo[2], Dishwasher.watFlo) annotation (Line(
-          points={{99,-50.25},{170,-50.25},{170,-5},{178,-5}},
+          points={{99,-50.25},{170,-50.25},{170,-1},{178,-1}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(floRed.draFlo[3], Shower.watFlo) annotation (Line(
-          points={{99,-49.75},{170,-49.75},{170,35},{178,35}},
+          points={{99,-49.75},{170,-49.75},{170,39},{178,39}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(floRed.draFlo[4], Sink.watFlo) annotation (Line(
-          points={{99,-49.25},{170,-49.25},{170,65},{178,65}},
+          points={{99,-49.25},{170,-49.25},{170,81},{178,81}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(watFlo.y, totFlo.u) annotation (Line(
-          points={{-57,-64},{-42,-64},{-42,-48},{-30,-48}},
+          points={{-59,-64},{-42,-64},{-42,-48},{-30,-48}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(min1.y, floRed.conFlo) annotation (Line(
@@ -291,17 +310,74 @@ package WaterHeatingLibrary "Library of water heating models and packages"
           smooth=Smooth.None));
       connect(Mains.ports[1], nonCondensingTanklessHeater.colWatIn) annotation (
          Line(
-          points={{-50,14},{-28,14},{-28,-22},{-1.64,-22},{-1.64,-14}},
+          points={{-50,-24},{-1.64,-24},{-1.64,-14}},
           color={0,127,255},
           smooth=Smooth.None));
       connect(tru1.port_a, nonCondensingTanklessHeater.hotWatOut) annotation (
           Line(
-          points={{50,0},{18,0},{18,-26},{-5.6,-26},{-5.6,-14}},
+          points={{36,4},{18,4},{18,-26},{-5.6,-26},{-5.6,-14}},
           color={0,127,255},
           smooth=Smooth.None));
+      connect(TAmb.y[1], bra11.TAmb) annotation (Line(
+          points={{-59,106},{74,106},{74,51}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TAmb.y[1], tru1.TAmb) annotation (Line(
+          points={{-59,106},{40,106},{40,11}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TAmb.y[1], twi1.TAmb) annotation (Line(
+          points={{-59,106},{144,106},{144,93}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TAmb.y[1], tru2.TAmb) annotation (Line(
+          points={{-59,106},{98,106},{98,11}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TAmb.y[1], tru3.TAmb) annotation (Line(
+          points={{-59,106},{120,106},{120,16},{144,16},{144,11}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TAmb.y[1], bra2.TAmb) annotation (Line(
+          points={{-59,106},{120,106},{120,-22},{144,-22},{144,-25}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TRadMea.y[1], tru1.TRadMea) annotation (Line(
+          points={{-59,134},{52,134},{52,11}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TRadMea.y[1], twi1.TRadMea) annotation (Line(
+          points={{-59,134},{156,134},{156,93}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TRadMea.y[1], bra11.TRadMea) annotation (Line(
+          points={{-59,134},{86,134},{86,51}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TRadMea.y[1], tru2.TRadMea) annotation (Line(
+          points={{-59,134},{110,134},{110,11}},
+          color={0,0,127},
+          smooth=Smooth.None));
+
+      connect(TRadMea.y[1], bra12.TRadMea) annotation (Line(
+          points={{-59,134},{130,134},{130,64},{156,64},{156,51}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TRadMea.y[1], tru3.TRadMea) annotation (Line(
+          points={{-59,134},{130,134},{130,24},{156,24},{156,11}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TRadMea.y[1], bra2.TRadMea) annotation (Line(
+          points={{-59,134},{130,134},{130,-16},{156,-16},{156,-25}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TAmb.y[1], bra12.TAmb) annotation (Line(
+          points={{-59,106},{120,106},{120,58},{144,58},{144,51}},
+          color={0,0,127},
+          smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -75},{200,100}}),       graphics), Icon(coordinateSystem(
-              preserveAspectRatio=false, extent={{-100,-75},{200,100}})),
+                -75},{200,150}}),       graphics), Icon(coordinateSystem(
+              preserveAspectRatio=false, extent={{-100,-75},{200,150}})),
               Documentation(info="<html>
           <p>
           This example shows how several components can be combined to simulate a hot water distribution system in a house. The model starts at the left with text file inputs.
@@ -352,118 +428,534 @@ package WaterHeatingLibrary "Library of water heating models and packages"
     model HotAndColdDisWithTankless
       "Model of a distribution system containting both hot and cold plumbing served with a tankless heater"
       extends Modelica.Icons.Example;
-      HWDis.Components.EndUseLPSTwoBranch  Draw(
-        redeclare package Medium = Buildings.Media.ConstantPropertyLiquidWater,
-        PID_P=2,
-        PID_I=1,
-        PID_D=0.00000001,
-        T_start=293.15,
-        gain=1/13.25)
-        annotation (Placement(transformation(extent={{80,-12},{100,8}})));
+      package Water = Buildings.Media.ConstantPropertyLiquidWater
+        "Fluid in the system";
 
-      NonCondensingTankless.NonCondensingTanklessHeaterMediumModel
-        nonCondensingTanklessHeaterMediumModel(redeclare package Medium =
-            Buildings.Media.ConstantPropertyLiquidWater)
-        annotation (Placement(transformation(extent={{-62,-14},{-42,10}})));
+       parameter Modelica.SIunits.Temperature T_start_dis_hot = 273.15+20
+        "Initial temperature of the hot water pipes";
+
+       parameter Modelica.SIunits.Temperature T_start_dis_cold = 273.15+20
+        "Initial temperature of the cold water pipes";
+
+       parameter Integer nSegPip = 5 "Number of segments in each pipe";
+
+      NonCondensingTankless.NonCondensingTanklessHeaterMediumModel nonCon(
+          redeclare package Medium = Water, mdot_min_input=0.018)
+        annotation (Placement(transformation(extent={{-176,80},{-146,130}})));
       Buildings.Fluid.Sources.Boundary_pT Mains(
-        redeclare package Medium = Buildings.Media.ConstantPropertyLiquidWater,
-        p=150000,
-        T=288.15,
-        nPorts=2)
-        annotation (Placement(transformation(extent={{-110,26},{-90,46}})));
+        nPorts=2,
+        redeclare package Medium = Water,
+        use_T_in=true,
+        p=105000)
+        annotation (Placement(transformation(extent={{-192,34},{-172,54}})));
 
-      Modelica.Blocks.Sources.Constant TAmb(k=273.15 + 20)
-        annotation (Placement(transformation(extent={{-142,-6},{-122,14}})));
-      HWDis.Components.Pipe  Hot(
-        redeclare package Medium = Buildings.Media.ConstantPropertyLiquidWater,
-        m_flow_nominal=0.06,
-        dp_nominal=1,
-        thicknessIns=0.1,
-        lambdaIns=0.12,
-        MixCoef=0.6,
-        diameter=0.01,
-        length=0.1)
-        annotation (Placement(transformation(extent={{18,-36},{38,-16}})));
-
-      HWDis.Components.Pipe  Cold(
-        redeclare package Medium = Buildings.Media.ConstantPropertyLiquidWater,
-        m_flow_nominal=0.06,
-        dp_nominal=1,
-        thicknessIns=0.1,
-        lambdaIns=0.12,
-        diameter=0.2,
+      Modelica.Blocks.Sources.CombiTimeTable TAmb(
+        tableOnFile=true,
+        tableName="TAmb",
+        fileName=
+            "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchTAmb.txt")
+        annotation (Placement(transformation(extent={{-274,-22},{-254,-2}})));
+      Modelica.Blocks.Sources.CombiTimeTable pwrSig(
+        tableOnFile=true,
+        tableName="pwr",
+        fileName="/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchpwr.txt")
+        annotation (Placement(transformation(extent={{-236,72},{-216,92}})));
+      Buildings.Fluid.FixedResistances.Pipe
+                                     hTru1(
+        allowFlowReversal=false,
+        redeclare package Medium = Water,
+        m_flow_nominal=0.063,
+        dp_nominal=0,
+        nSeg=nSegPip,
+        thicknessIns=0.0127,
+        lambdaIns=0.04,
+        diameter=0.019939,
         length=10,
-        MixCoef=0.6)
-        annotation (Placement(transformation(extent={{18,28},{38,48}})));
+        roughness=0) "First section of the trunk pipe"
+        annotation (Placement(transformation(extent={{10,70},{30,50}})));
+      Buildings.Fluid.FixedResistances.Pipe
+                                     hBra11(
+        length=10,
+        redeclare package Medium = Water,
+        T_start=T_start_dis_hot,
+        allowFlowReversal=false,
+        nSeg=nSegPip,
+        dp_nominal=0,
+        m_flow_nominal=0.063,
+        thicknessIns=0.0127,
+        lambdaIns=0.04,
+        diameter=0.019939,
+        roughness=0)            annotation (Placement(transformation(
+            extent={{-10,10},{10,-10}},
+            rotation=0,
+            origin={54,100})));
+      Buildings.Fluid.FixedResistances.Pipe
+                                     hTwi1(
+        length=10,
+        redeclare package Medium = Water,
+        T_start=T_start_dis_hot,
+        allowFlowReversal=false,
+        nSeg=nSegPip,
+        dp_nominal=0,
+        m_flow_nominal=0.063,
+        thicknessIns=0.0127,
+        lambdaIns=0.04,
+        diameter=0.019939,
+        roughness=0)
+        annotation (Placement(transformation(extent={{126,152},{146,132}})));
+      Buildings.Fluid.FixedResistances.Pipe
+                                     hTru2(
+        redeclare package Medium = Buildings.Media.ConstantPropertyLiquidWater,
+        length=10,
+        T_start=T_start_dis_hot,
+        allowFlowReversal=false,
+        nSeg=nSegPip,
+        dp_nominal=0,
+        m_flow_nominal=0.063,
+        thicknessIns=0.0127,
+        lambdaIns=0.04,
+        diameter=0.019939,
+        roughness=0)
+        annotation (Placement(transformation(extent={{68,70},{88,50}})));
+      Buildings.Fluid.FixedResistances.Pipe
+                                     hBra12(
+        length=10,
+        redeclare package Medium = Water,
+        T_start=T_start_dis_hot,
+        allowFlowReversal=false,
+        nSeg=nSegPip,
+        dp_nominal=0,
+        m_flow_nominal=0.063,
+        thicknessIns=0.0127,
+        lambdaIns=0.04,
+        diameter=0.019939,
+        roughness=0)
+        annotation (Placement(transformation(extent={{126,110},{146,90}})));
+      Buildings.Fluid.FixedResistances.Pipe
+                                     hTru3(
+        length=10,
+        redeclare package Medium = Water,
+        T_start=T_start_dis_hot,
+        allowFlowReversal=false,
+        nSeg=nSegPip,
+        dp_nominal=0,
+        m_flow_nominal=0.063,
+        thicknessIns=0.0127,
+        lambdaIns=0.04,
+        diameter=0.019939,
+        roughness=0)
+        annotation (Placement(transformation(extent={{126,70},{146,50}})));
+      Buildings.Fluid.FixedResistances.Pipe
+                                     hBra2(
+        length=10,
+        redeclare package Medium = Water,
+        T_start=T_start_dis_hot,
+        allowFlowReversal=false,
+        nSeg=nSegPip,
+        dp_nominal=0,
+        m_flow_nominal=0.063,
+        thicknessIns=0.0127,
+        lambdaIns=0.04,
+        diameter=0.019939,
+        roughness=0)            annotation (Placement(transformation(
+            extent={{-10,10},{10,-10}},
+            rotation=0,
+            origin={136,22})));
+      Buildings.Fluid.FixedResistances.Pipe
+                                     cTru1(
+        redeclare package Medium = Water,
+        m_flow_nominal=0.063,
+        length=10,
+        T_start=T_start_dis_cold,
+        allowFlowReversal=false,
+        nSeg=nSegPip,
+        dp_nominal=0,
+        thicknessIns=0.0127,
+        lambdaIns=0.04,
+        diameter=0.019939,
+        roughness=0)
+        annotation (Placement(transformation(extent={{10,-136},{30,-116}})));
+      Buildings.Fluid.FixedResistances.Pipe
+                                     cBra11(
+        redeclare package Medium = Water,
+        m_flow_nominal=0.063,
+        length=10,
+        T_start=T_start_dis_cold,
+        allowFlowReversal=false,
+        nSeg=nSegPip,
+        dp_nominal=0,
+        thicknessIns=0.0127,
+        lambdaIns=0.04,
+        diameter=0.019939,
+        roughness=0)
+        annotation (Placement(transformation(extent={{44,-98},{64,-78}})));
+      Buildings.Fluid.FixedResistances.Pipe
+                                     cTru2(
+        redeclare package Medium = Water,
+        m_flow_nominal=0.063,
+        length=10,
+        T_start=T_start_dis_cold,
+        allowFlowReversal=false,
+        nSeg=nSegPip,
+        dp_nominal=0,
+        thicknessIns=0.0127,
+        lambdaIns=0.04,
+        diameter=0.019939,
+        roughness=0)
+        annotation (Placement(transformation(extent={{68,-136},{88,-116}})));
+      Buildings.Fluid.FixedResistances.Pipe
+                                     cBra12(
+        redeclare package Medium = Water,
+        m_flow_nominal=0.063,
+        length=10,
+        T_start=T_start_dis_cold,
+        allowFlowReversal=false,
+        nSeg=nSegPip,
+        dp_nominal=0,
+        thicknessIns=0.0127,
+        lambdaIns=0.04,
+        diameter=0.019939,
+        roughness=0)
+        annotation (Placement(transformation(extent={{126,-98},{146,-78}})));
+      Buildings.Fluid.FixedResistances.Pipe
+                                     cTru3(
+        redeclare package Medium = Water,
+        m_flow_nominal=0.063,
+        length=10,
+        T_start=T_start_dis_cold,
+        allowFlowReversal=false,
+        nSeg=nSegPip,
+        dp_nominal=0,
+        thicknessIns=0.0127,
+        lambdaIns=0.04,
+        diameter=0.019939,
+        roughness=0)
+        annotation (Placement(transformation(extent={{126,-136},{146,-116}})));
+      Buildings.Fluid.FixedResistances.Pipe
+                                     cTwi1(
+        redeclare package Medium = Water,
+        m_flow_nominal=0.063,
+        length=10,
+        T_start=T_start_dis_cold,
+        allowFlowReversal=false,
+        nSeg=nSegPip,
+        dp_nominal=0,
+        thicknessIns=0.0127,
+        lambdaIns=0.04,
+        diameter=0.019939,
+        roughness=0)
+        annotation (Placement(transformation(extent={{126,-62},{146,-42}})));
+      Buildings.Fluid.FixedResistances.Pipe
+                                     cBra2(
+        redeclare package Medium = Water,
+        m_flow_nominal=0.063,
+        length=10,
+        T_start=T_start_dis_cold,
+        allowFlowReversal=false,
+        nSeg=nSegPip,
+        dp_nominal=0,
+        thicknessIns=0.0127,
+        lambdaIns=0.04,
+        diameter=0.019939,
+        roughness=0)
+        annotation (Placement(transformation(extent={{126,-176},{146,-156}})));
+      HWDis.Components.EndUseTwoBranch       Sink(
+        redeclare package Medium = Water,
+        T_start=293.15,
+        PID_P_3=2,
+        PID_I_3=3,
+        PID_D_3=0.00000001,
+        PID_P_2=2,
+        PID_I_2=3,
+        PID_D_2=0.00000001)
+        annotation (Placement(transformation(extent={{254,100},{274,80}})));
+      HWDis.Components.EndUseTwoBranch       Shower(
+        redeclare package Medium = Water,
+        T_start=293.15,
+        PID_P_3=2,
+        PID_I_3=3,
+        PID_D_3=0.00000001,
+        PID_P_2=2,
+        PID_I_2=3,
+        PID_D_2=0.00000001)
+        annotation (Placement(transformation(extent={{254,40},{274,20}})));
+      HWDis.Components.EndUseTwoBranch       Dishwasher(
+        redeclare package Medium = Water,
+        T_start=293.15,
+        PID_P_3=2,
+        PID_I_3=3,
+        PID_D_3=0.00000001,
+        PID_P_2=2,
+        PID_I_2=3,
+        PID_D_2=0.00000001)
+        annotation (Placement(transformation(extent={{254,-20},{274,-40}})));
+      HWDis.Components.EndUseTwoBranch       KitchenSink(
+        redeclare package Medium = Water,
+        PID_P_3=2,
+        PID_I_3=3,
+        PID_D_3=0.00000001,
+        PID_P_2=2,
+        PID_I_2=3,
+        PID_D_2=0.00000001,
+        T_start=293.15)
+        annotation (Placement(transformation(extent={{254,-78},{274,-98}})));
+      Modelica.Blocks.Sources.CombiTimeTable TDra(
+        tableOnFile=true,
+        tableName="TOut",
+        fileName=
+            "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchTOut.txt",
+        columns=2:5)
+        "Desired temperature of the hot water draws (unit=K; KitchenSink, Dishwasher, Shower, Sink)"
+        annotation (Placement(transformation(extent={{-274,138},{-254,158}})));
 
-      Modelica.Thermal.HeatTransfer.Sources.PrescribedTemperature
+      Modelica.Blocks.Sources.CombiTimeTable watFlo(
+        tableOnFile=true,
+        fileName=
+            "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchFlow.txt",
+        tableName="Flow",
+        columns=2:5)
+        "Desired flow rate of the hot water draws (unit = kg/s; KitchenSink, Dishwasher, Shower, Sink)"
+        annotation (Placement(transformation(extent={{-274,166},{-254,186}})));
+
+      Modelica.Blocks.Sources.RealExpression shoT(y=TDra.y[3])
+        "Desired temperature at the shower (unit = K)"
+        annotation (Placement(transformation(extent={{204,34},{224,54}})));
+      Modelica.Blocks.Sources.RealExpression shoFlo(y=watFlo.y[3])
+        "Desired water flow at the shower (unit = kg/s)"
+        annotation (Placement(transformation(extent={{204,2},{224,22}})));
+      Modelica.Blocks.Sources.RealExpression sinT(y=TDra.y[4])
+        "Desired outlet temperature ate the sink (unit = K)"
+        annotation (Placement(transformation(extent={{204,96},{224,116}})));
+      Modelica.Blocks.Sources.RealExpression disT(y=TDra.y[2])
+        "Desired temperature at the dishwasher (unit = K)"
+        annotation (Placement(transformation(extent={{204,-26},{224,-6}})));
+      Modelica.Blocks.Sources.RealExpression disFlo(y=watFlo.y[2])
+        "Desired water flow at the dishwasher (unit = kg/s)"
+        annotation (Placement(transformation(extent={{204,-58},{224,-38}})));
+      Modelica.Blocks.Sources.RealExpression kitSinT(y=TDra.y[1])
+        "Desired temperature at the kitchen sink (unit = K)"
+        annotation (Placement(transformation(extent={{204,-82},{224,-62}})));
+      Modelica.Blocks.Sources.RealExpression kitSinFlo(y=watFlo.y[1])
+        "Desired water flow at the kitchen sink (unit = kg/s)"
+        annotation (Placement(transformation(extent={{204,-118},{224,-98}})));
+      Modelica.Blocks.Sources.RealExpression sinFlo(y=watFlo.y[4])
+        "Desired water flow rate at the sink (unit = kg/s)"
+        annotation (Placement(transformation(extent={{204,62},{224,82}})));
+      Modelica.Blocks.Sources.CombiTimeTable TIn(
+        tableOnFile=true,
+        fileName=
+            "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchTIn.txt",
+        tableName="Temp")
+        annotation (Placement(transformation(extent={{-236,38},{-216,58}})));
+
+      Buildings.HeatTransfer.Sources.PrescribedTemperature
         prescribedTemperature
-        annotation (Placement(transformation(extent={{-108,70},{-88,90}})));
-      Modelica.Blocks.Sources.Constant pwrSig(k=1)
-        annotation (Placement(transformation(extent={{-144,-60},{-124,-40}})));
-      Modelica.Blocks.Sources.Ramp ramp(
-        height=45,
-        duration=600,
-        offset=273.15 + 20)
-        annotation (Placement(transformation(extent={{28,-64},{48,-44}})));
-      Modelica.Blocks.Sources.Constant watFlow(k=0.063) "Unit = L/s"
-        annotation (Placement(transformation(extent={{46,48},{66,68}})));
+        annotation (Placement(transformation(extent={{-108,-22},{-88,-2}})));
     equation
-      connect(Mains.ports[1], Cold.port_a) annotation (Line(
-          points={{-90,38},{18,38}},
+      connect(hTru1.port_b, hBra11.port_a) annotation (Line(
+          points={{30,60},{36,60},{36,100},{44,100}},
           color={0,127,255},
           smooth=Smooth.None));
-      connect(Cold.port_b, Draw.colIn) annotation (Line(
-          points={{38,38},{44,38},{44,1.6},{80,1.6}},
+      connect(hBra11.port_b, hTwi1.port_a) annotation (Line(
+          points={{64,100},{94,100},{94,142},{126,142}},
           color={0,127,255},
           smooth=Smooth.None));
-      connect(TAmb.y, prescribedTemperature.T) annotation (Line(
-          points={{-121,4},{-118,4},{-118,80},{-110,80}},
-          color={0,0,127},
+      connect(hBra11.port_b, hBra12.port_a) annotation (Line(
+          points={{64,100},{126,100}},
+          color={0,127,255},
           smooth=Smooth.None));
-      connect(pwrSig.y, nonCondensingTanklessHeaterMediumModel.pwrSig)
+      connect(hTru1.port_b, hTru2.port_a) annotation (Line(
+          points={{30,60},{68,60}},
+          color={0,127,255},
+          smooth=Smooth.None));
+      connect(hTru2.port_b, hTru3.port_a) annotation (Line(
+          points={{88,60},{126,60}},
+          color={0,127,255},
+          smooth=Smooth.None));
+      connect(hTru2.port_b, hBra2.port_a) annotation (Line(
+          points={{88,60},{94,60},{94,22},{126,22}},
+          color={0,127,255},
+          smooth=Smooth.None));
+      connect(cTru1.port_b, cTru2.port_a) annotation (Line(
+          points={{30,-126},{68,-126}},
+          color={0,127,255},
+          smooth=Smooth.None));
+      connect(cTru1.port_b, cBra11.port_a) annotation (Line(
+          points={{30,-126},{36,-126},{36,-88},{44,-88}},
+          color={0,127,255},
+          smooth=Smooth.None));
+      connect(cBra11.port_b, cBra12.port_a) annotation (Line(
+          points={{64,-88},{126,-88}},
+          color={0,127,255},
+          smooth=Smooth.None));
+      connect(cBra11.port_b, cTwi1.port_a) annotation (Line(
+          points={{64,-88},{94,-88},{94,-52},{126,-52}},
+          color={0,127,255},
+          smooth=Smooth.None));
+      connect(cTru2.port_b, cTru3.port_a) annotation (Line(
+          points={{88,-126},{126,-126}},
+          color={0,127,255},
+          smooth=Smooth.None));
+      connect(cTru2.port_b, cBra2.port_a) annotation (Line(
+          points={{88,-126},{94,-126},{94,-166},{126,-166}},
+          color={0,127,255},
+          smooth=Smooth.None));
+      connect(pwrSig.y[1], nonCon.pwrSig)
         annotation (Line(
-          points={{-123,-50},{-72,-50},{-72,-13.04},{-64,-13.04}},
+          points={{-215,82},{-179,82}},
           color={0,0,127},
           smooth=Smooth.None));
-      connect(Mains.ports[2], nonCondensingTanklessHeaterMediumModel.colWatIn)
+      connect(TAmb.y[1], nonCon.AmbientTemperature)
         annotation (Line(
-          points={{-90,34},{-84,34},{-84,-22},{-54.4,-22},{-54.4,-14}},
+          points={{-253,-12},{-246,-12},{-246,119.2},{-179,119.2}},
+          color={0,0,127},
+          smooth=Smooth.None));
+
+      connect(sinFlo.y, Sink.WatFlowDes) annotation (Line(
+          points={{225,72},{238,72},{238,82},{252,82}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(sinT.y, Sink.TOutDes) annotation (Line(
+          points={{225,106},{238,106},{238,95},{252,95}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(shoFlo.y, Shower.WatFlowDes) annotation (Line(
+          points={{225,12},{238,12},{238,22},{252,22}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(shoT.y, Shower.TOutDes) annotation (Line(
+          points={{225,44},{238,44},{238,35},{252,35}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(disFlo.y, Dishwasher.WatFlowDes) annotation (Line(
+          points={{225,-48},{238,-48},{238,-38},{252,-38}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(disT.y, Dishwasher.TOutDes) annotation (Line(
+          points={{225,-16},{238,-16},{238,-25},{252,-25}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(kitSinFlo.y, KitchenSink.WatFlowDes) annotation (Line(
+          points={{225,-108},{238,-108},{238,-96},{252,-96}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(kitSinT.y, KitchenSink.TOutDes) annotation (Line(
+          points={{225,-72},{238,-72},{238,-83},{252,-83}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(Mains.ports[1], nonCon.colWatIn)
+        annotation (Line(
+          points={{-172,46},{-164.6,46},{-164.6,80}},
           color={0,127,255},
           smooth=Smooth.None));
-      connect(ramp.y, Draw.TOutDes) annotation (Line(
-          points={{49,-54},{62,-54},{62,-7},{78,-7}},
+      connect(TIn.y[1], Mains.T_in) annotation (Line(
+          points={{-215,48},{-194,48}},
           color={0,0,127},
           smooth=Smooth.None));
-      connect(watFlow.y, Draw.WatFlowDes) annotation (Line(
-          points={{67,58},{72,58},{72,5},{78,5}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(nonCondensingTanklessHeaterMediumModel.hotWatOut, Hot.port_a)
+      connect(nonCon.hotWatOut, hTru1.port_a)
         annotation (Line(
-          points={{-58,-14},{-58,-26},{18,-26}},
+          points={{-170,80},{-170,60},{10,60}},
           color={0,127,255},
           smooth=Smooth.None));
-      connect(TAmb.y, nonCondensingTanklessHeaterMediumModel.AmbientTemperature)
-        annotation (Line(
-          points={{-121,4},{-92.5,4},{-92.5,4.816},{-64,4.816}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(Hot.port_b, Draw.hotIn) annotation (Line(
-          points={{38,-26},{44,-26},{44,-2},{80,-2}},
+      connect(hTwi1.port_b, Sink.hotIn) annotation (Line(
+          points={{146,142},{160,142},{160,90},{254,90}},
           color={0,127,255},
           smooth=Smooth.None));
-      connect(prescribedTemperature.port, Cold.heatPort) annotation (Line(
-          points={{-88,80},{-20,80},{-20,60},{28,60},{28,43}},
+      connect(cTwi1.port_b, Sink.colIn) annotation (Line(
+          points={{146,-52},{160,-52},{160,86.4},{254,86.4}},
+          color={0,127,255},
+          smooth=Smooth.None));
+      connect(hBra12.port_b, Shower.hotIn) annotation (Line(
+          points={{146,100},{170,100},{170,30},{254,30}},
+          color={0,127,255},
+          smooth=Smooth.None));
+      connect(cBra12.port_b, Shower.colIn) annotation (Line(
+          points={{146,-88},{170,-88},{170,26.4},{254,26.4}},
+          color={0,127,255},
+          smooth=Smooth.None));
+      connect(hTru3.port_b, Dishwasher.hotIn) annotation (Line(
+          points={{146,60},{180,60},{180,-30},{254,-30}},
+          color={0,127,255},
+          smooth=Smooth.None));
+      connect(cTru3.port_b, Dishwasher.colIn) annotation (Line(
+          points={{146,-126},{180,-126},{180,-33.6},{254,-33.6}},
+          color={0,127,255},
+          smooth=Smooth.None));
+      connect(hBra2.port_b, KitchenSink.hotIn) annotation (Line(
+          points={{146,22},{190,22},{190,-88},{254,-88}},
+          color={0,127,255},
+          smooth=Smooth.None));
+      connect(cBra2.port_b, KitchenSink.colIn) annotation (Line(
+          points={{146,-166},{190,-166},{190,-91.6},{254,-91.6}},
+          color={0,127,255},
+          smooth=Smooth.None));
+      connect(Mains.ports[2], cTru1.port_a) annotation (Line(
+          points={{-172,42},{-164,42},{-164,-126},{10,-126}},
+          color={0,127,255},
+          smooth=Smooth.None));
+      connect(prescribedTemperature.port, hTru1.heatPort) annotation (Line(
+          points={{-88,-12},{20,-12},{20,55}},
           color={191,0,0},
           smooth=Smooth.None));
-      connect(prescribedTemperature.port, Hot.heatPort) annotation (Line(
-          points={{-88,80},{-20,80},{-20,0},{28,0},{28,-21}},
+      connect(prescribedTemperature.port, cTru1.heatPort) annotation (Line(
+          points={{-88,-12},{20,-12},{20,-121}},
           color={191,0,0},
           smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-150,
-                -100},{150,100}}),      graphics), Icon(coordinateSystem(
-              preserveAspectRatio=false, extent={{-150,-100},{150,100}})),
+      connect(prescribedTemperature.port, hBra11.heatPort) annotation (Line(
+          points={{-88,-12},{54,-12},{54,95}},
+          color={191,0,0},
+          smooth=Smooth.None));
+      connect(prescribedTemperature.port, cBra11.heatPort) annotation (Line(
+          points={{-88,-12},{54,-12},{54,-83}},
+          color={191,0,0},
+          smooth=Smooth.None));
+      connect(prescribedTemperature.port, hTru2.heatPort) annotation (Line(
+          points={{-88,-12},{78,-12},{78,55}},
+          color={191,0,0},
+          smooth=Smooth.None));
+      connect(prescribedTemperature.port, cTru2.heatPort) annotation (Line(
+          points={{-88,-12},{78,-12},{78,-121}},
+          color={191,0,0},
+          smooth=Smooth.None));
+      connect(prescribedTemperature.port, hTwi1.heatPort) annotation (Line(
+          points={{-88,-12},{110,-12},{110,132},{136,132},{136,137}},
+          color={191,0,0},
+          smooth=Smooth.None));
+      connect(prescribedTemperature.port, hBra12.heatPort) annotation (Line(
+          points={{-88,-12},{110,-12},{110,82},{136,82},{136,95}},
+          color={191,0,0},
+          smooth=Smooth.None));
+      connect(prescribedTemperature.port, hTru3.heatPort) annotation (Line(
+          points={{-88,-12},{110,-12},{110,44},{136,44},{136,55}},
+          color={191,0,0},
+          smooth=Smooth.None));
+      connect(prescribedTemperature.port, hBra2.heatPort) annotation (Line(
+          points={{-88,-12},{110,-12},{110,6},{136,6},{136,17}},
+          color={191,0,0},
+          smooth=Smooth.None));
+      connect(prescribedTemperature.port, cTwi1.heatPort) annotation (Line(
+          points={{-88,-12},{110,-12},{110,-34},{136,-34},{136,-47}},
+          color={191,0,0},
+          smooth=Smooth.None));
+      connect(prescribedTemperature.port, cBra12.heatPort) annotation (Line(
+          points={{-88,-12},{110,-12},{110,-74},{136,-74},{136,-83}},
+          color={191,0,0},
+          smooth=Smooth.None));
+      connect(prescribedTemperature.port, cTru3.heatPort) annotation (Line(
+          points={{-88,-12},{110,-12},{110,-110},{136,-110},{136,-121}},
+          color={191,0,0},
+          smooth=Smooth.None));
+      connect(prescribedTemperature.port, cBra2.heatPort) annotation (Line(
+          points={{-88,-12},{110,-12},{110,-150},{136,-150},{136,-161}},
+          color={191,0,0},
+          smooth=Smooth.None));
+      connect(TAmb.y[1], prescribedTemperature.T) annotation (Line(
+          points={{-253,-12},{-110,-12}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-275,
+                -200},{275,200}}),      graphics), Icon(coordinateSystem(
+              preserveAspectRatio=false, extent={{-275,-200},{275,200}})),
               Documentation(info="<html>
           <p>
           This example shows how the components can be combined to create a hot water distribution system where a tankless water heater serves a house. The distribution system
@@ -491,14 +983,21 @@ package WaterHeatingLibrary "Library of water heating models and packages"
     model TankWithTrunkAndBranch
       "Demonstrates how to simulate a trunk and branch distribution system with a non-condensing storage tank heater"
       extends Modelica.Icons.Example;
+
+      package Water = Buildings.Media.ConstantPropertyLiquidWater
+        "Fluid in the system";
+
+      parameter Modelica.SIunits.Temperature T_start_dis = 273.15+30
+        "Initial temperature in the distribution system";
+
       NonCondensingTank.SimplifiedStorageTankMediumModel tan(
-        redeclare package Medium = Buildings.Media.ConstantPropertyLiquidWater,
         nSeg=20,
         TStatHeight=16,
         RecircOutSeg=20,
         RecircInSeg=1,
         Deadband=16,
         UA=35,
+        redeclare package Medium = Water,
         T_Initial={293.15,293.15,293.15,293.15,293.15,293.15,293.15,293.15,293.15,293.15,
             293.15,293.15,293.15,293.15,293.15,293.15,293.15,293.15,293.15,293.15})
         annotation (Placement(transformation(extent={{-14,-24},{14,8}})));
@@ -509,140 +1008,182 @@ package WaterHeatingLibrary "Library of water heating models and packages"
             "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchFlow.txt",
         columns=2:5)
         "Reads a data file describing the desired water flow rate at each fixture[KitchenSink, Dishwasher, Shower, Sink]"
-        annotation (Placement(transformation(extent={{-78,-72},{-58,-52}})));
+        annotation (Placement(transformation(extent={{-100,-72},{-80,-52}})));
 
-      HWDis.Components.Pipe  tru1(
-        thicknessIns=0.1,
+      HWDis.Components.PipeLumpedCap
+                             tru1(
         length=10,
         m_flow_nominal=0.1,
-        redeclare package Medium = Buildings.Media.ConstantPropertyLiquidWater,
         dp_nominal=1,
-        diameter=0.0205994,
         allowFlowReversal=false,
         nSeg=20,
         MixCoef=0.6,
-        lambdaIns=0.1208142396) "First section of the trunk pipe"
-        annotation (Placement(transformation(extent={{50,-10},{70,10}})));
+        diameter_i=0.019939,
+        c_p_pip=390,
+        rho_pip=8960,
+        diameter_o=0.022225,
+        til=0,
+        ePipe=0.95,
+        redeclare package Medium = Water,
+        thicknessIns=0.0127,
+        lambdaIns=0.04,
+        T_start=T_start_dis) "First section of the trunk pipe"
+        annotation (Placement(transformation(extent={{24,-2},{44,18}})));
 
-      HWDis.Components.Pipe  bra11(
+      HWDis.Components.PipeLumpedCap
+                             bra11(
         m_flow_nominal=0.1,
-        thicknessIns=0.1,
         length=10,
-        redeclare package Medium = Buildings.Media.ConstantPropertyLiquidWater,
         dp_nominal=1,
         nSeg=20,
-        diameter=0.0205994,
         MixCoef=0.6,
-        lambdaIns=0.1208142396) annotation (Placement(transformation(
+        diameter_i=0.019939,
+        c_p_pip=390,
+        rho_pip=8960,
+        diameter_o=0.022225,
+        til=0,
+        ePipe=0.95,
+        redeclare package Medium = Water,
+        thicknessIns=0.0127,
+        lambdaIns=0.04,
+        T_start=T_start_dis)    annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=0,
-            origin={90,40})));
+            origin={66,44})));
 
-      HWDis.Components.Pipe  bra2(
-        redeclare package Medium = Buildings.Media.ConstantPropertyLiquidWater,
+      HWDis.Components.PipeLumpedCap
+                             bra2(
         m_flow_nominal=0.1,
         dp_nominal=1,
         nSeg=20,
-        thicknessIns=0.1,
         length=10,
-        diameter=0.0205994,
         MixCoef=0.6,
-        lambdaIns=0.1208142396) annotation (Placement(transformation(
+        diameter_i=0.019939,
+        c_p_pip=390,
+        rho_pip=8960,
+        diameter_o=0.022225,
+        til=0,
+        ePipe=0.95,
+        redeclare package Medium = Water,
+        thicknessIns=0.0127,
+        lambdaIns=0.04,
+        T_start=T_start_dis)    annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=0,
-            origin={148,-32})));
+            origin={150,-28})));
 
-      HWDis.Components.Pipe  twi1(
-        redeclare package Medium = Buildings.Media.ConstantPropertyLiquidWater,
+      HWDis.Components.PipeLumpedCap
+                             twi1(
         m_flow_nominal=0.1,
         dp_nominal=1,
         nSeg=20,
-        thicknessIns=0.1,
         length=10,
-        diameter=0.0205994,
         MixCoef=0.6,
-        lambdaIns=0.1208142396)
-        annotation (Placement(transformation(extent={{140,60},{160,80}})));
+        diameter_i=0.019939,
+        c_p_pip=390,
+        rho_pip=8960,
+        diameter_o=0.022225,
+        til=0,
+        ePipe=0.95,
+        redeclare package Medium = Water,
+        thicknessIns=0.0127,
+        lambdaIns=0.04,
+        T_start=T_start_dis)
+        annotation (Placement(transformation(extent={{140,68},{160,88}})));
 
-      HWDis.Components.Pipe  bra12(
-        redeclare package Medium = Buildings.Media.ConstantPropertyLiquidWater,
+      HWDis.Components.PipeLumpedCap
+                             bra12(
         m_flow_nominal=0.1,
         dp_nominal=1,
         nSeg=20,
-        thicknessIns=0.1,
         length=10,
-        diameter=0.0205994,
         MixCoef=0.6,
-        lambdaIns=0.1208142396)
-        annotation (Placement(transformation(extent={{140,30},{160,50}})));
+        diameter_i=0.019939,
+        c_p_pip=390,
+        rho_pip=8960,
+        diameter_o=0.022225,
+        til=0,
+        ePipe=0.95,
+        redeclare package Medium = Water,
+        thicknessIns=0.0127,
+        lambdaIns=0.04,
+        T_start=T_start_dis)
+        annotation (Placement(transformation(extent={{140,34},{160,54}})));
 
-      HWDis.Components.Pipe  tru2(
-        redeclare package Medium = Buildings.Media.ConstantPropertyLiquidWater,
+      HWDis.Components.PipeLumpedCap
+                             tru2(
         m_flow_nominal=0.1,
         dp_nominal=1,
         nSeg=20,
-        thicknessIns=0.1,
         length=10,
-        diameter=0.0205994,
         MixCoef=0.6,
-        lambdaIns=0.1208142396)
-        annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+        diameter_i=0.019939,
+        c_p_pip=390,
+        rho_pip=8960,
+        diameter_o=0.022225,
+        til=0,
+        ePipe=0.95,
+        redeclare package Medium = Water,
+        thicknessIns=0.0127,
+        lambdaIns=0.04,
+        T_start=T_start_dis)
+        annotation (Placement(transformation(extent={{84,-2},{104,18}})));
 
-      HWDis.Components.Pipe  tru3(
-        redeclare package Medium = Buildings.Media.ConstantPropertyLiquidWater,
+      HWDis.Components.PipeLumpedCap
+                             tru3(
         m_flow_nominal=0.1,
         dp_nominal=1,
         nSeg=20,
-        thicknessIns=0.1,
         length=10,
-        diameter=0.0205994,
         MixCoef=0.6,
-        lambdaIns=0.1208142396)
-        annotation (Placement(transformation(extent={{140,-10},{160,10}})));
+        diameter_i=0.019939,
+        c_p_pip=390,
+        rho_pip=8960,
+        diameter_o=0.022225,
+        til=0,
+        ePipe=0.95,
+        redeclare package Medium = Water,
+        thicknessIns=0.0127,
+        lambdaIns=0.04,
+        T_start=T_start_dis)
+        annotation (Placement(transformation(extent={{140,-2},{160,18}})));
 
-      HWDis.Components.EndUseLPS  Sink(redeclare package Medium =
-            Buildings.Media.ConstantPropertyLiquidWater, gain=valCon)
-        "Models the draw at a sink"
-        annotation (Placement(transformation(extent={{180,60},{200,80}})));
-      HWDis.Components.EndUseLPS  Shower(redeclare package Medium =
-            Buildings.Media.ConstantPropertyLiquidWater, gain=valCon)
-        "Models the draw at a shower"
-        annotation (Placement(transformation(extent={{180,30},{200,50}})));
-      HWDis.Components.EndUseLPS  Dishwasher(redeclare package Medium =
-            Buildings.Media.ConstantPropertyLiquidWater, gain=valCon)
-        "Models the draw at a dishwasher"
-        annotation (Placement(transformation(extent={{180,-10},{200,10}})));
-      HWDis.Components.EndUseLPS  KitchenSink(redeclare package Medium =
-            Buildings.Media.ConstantPropertyLiquidWater, gain=valCon)
-        "Models the draw at a kitchen sink"
-        annotation (Placement(transformation(extent={{180,-42},{200,-22}})));
-      Buildings.HeatTransfer.Sources.PrescribedTemperature
-        prescribedTemperature
-        annotation (Placement(transformation(extent={{26,52},{46,72}})));
+      HWDis.Components.EndUse     Sink(                  gain=valCon, redeclare
+          package Medium = Water) "Models the draw at a sink"
+        annotation (Placement(transformation(extent={{180,68},{200,88}})));
+      HWDis.Components.EndUse     Shower(                gain=valCon, redeclare
+          package Medium = Water) "Models the draw at a shower"
+        annotation (Placement(transformation(extent={{180,34},{200,54}})));
+      HWDis.Components.EndUse     Dishwasher(            gain=valCon, redeclare
+          package Medium = Water) "Models the draw at a dishwasher"
+        annotation (Placement(transformation(extent={{180,-2},{200,18}})));
+      HWDis.Components.EndUse     KitchenSink(           gain=valCon, redeclare
+          package Medium = Water) "Models the draw at a kitchen sink"
+        annotation (Placement(transformation(extent={{180,-38},{200,-18}})));
       Modelica.Blocks.Sources.CombiTimeTable TAmb(
         tableOnFile=true,
         tableName="Temp",
         fileName=
             "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchTAmb.txt")
         "Temperature surrounding the system(unit = K)"
-        annotation (Placement(transformation(extent={{-78,52},{-58,72}})));
+        annotation (Placement(transformation(extent={{-100,86},{-80,106}})));
       Modelica.Blocks.Sources.CombiTimeTable TIn(
         tableOnFile=true,
         tableName="Temp",
         fileName=
             "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchTIn.txt")
         "Inlet temperature (unit = K)"
-        annotation (Placement(transformation(extent={{-100,8},{-80,28}})));
+        annotation (Placement(transformation(extent={{-100,2},{-80,22}})));
       Buildings.Fluid.Sources.Boundary_pT Mains(
-        redeclare package Medium = Buildings.Media.ConstantPropertyLiquidWater,
         use_T_in=true,
-        p=150000,
-        nPorts=1) "Connects to the mains water system"
-        annotation (Placement(transformation(extent={{-70,4},{-50,24}})));
+        nPorts=1,
+        redeclare package Medium = Water,
+        p=150000) "Connects to the mains water system"
+        annotation (Placement(transformation(extent={{-70,-2},{-50,18}})));
       parameter Real valCon = 1/13.25 "Gain value for the EndUse models";
 
       Modelica.Blocks.Sources.Constant const(k=0)
-        annotation (Placement(transformation(extent={{-30,-18},{-24,-12}})));
+        annotation (Placement(transformation(extent={{-30,-20},{-24,-14}})));
       Modelica.Blocks.Sources.Constant effTan(k=0.75)
         annotation (Placement(transformation(extent={{-30,-8},{-24,-2}})));
       Modelica.Blocks.Math.Product product annotation (Placement(transformation(
@@ -668,104 +1209,62 @@ package WaterHeatingLibrary "Library of water heating models and packages"
             extent={{-3,-3},{3,3}},
             rotation=180,
             origin={-7,-31})));
+      Modelica.Blocks.Sources.CombiTimeTable TRadMea(tableOnFile=true, tableName="TRadMea",
+        fileName="/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchTRadMea.txt")
+        "Mean radiant temperature surrounding the pipes(unit = K)"
+        annotation (Placement(transformation(extent={{-100,120},{-80,140}})));
     equation
       connect(tru1.port_b, tru2.port_a) annotation (Line(
-          points={{70,0},{100,0}},
-          color={0,127,255},
-          smooth=Smooth.None));
-      connect(tru1.port_b, bra11.port_a) annotation (Line(
-          points={{70,4.44089e-16},{76,4.44089e-16},{76,40},{80,40}},
+          points={{44,8},{84,8}},
           color={0,127,255},
           smooth=Smooth.None));
       connect(bra11.port_b, bra12.port_a) annotation (Line(
-          points={{100,40},{140,40}},
+          points={{76,44},{140,44}},
           color={0,127,255},
           smooth=Smooth.None));
       connect(bra11.port_b, twi1.port_a) annotation (Line(
-          points={{100,40},{120,40},{120,70},{140,70}},
+          points={{76,44},{110,44},{110,78},{140,78}},
           color={0,127,255},
           smooth=Smooth.None));
       connect(tru2.port_b, bra2.port_a) annotation (Line(
-          points={{120,0},{130,0},{130,-32},{138,-32}},
+          points={{104,8},{110,8},{110,-28},{140,-28}},
           color={0,127,255},
           smooth=Smooth.None));
       connect(tru2.port_b, tru3.port_a) annotation (Line(
-          points={{120,0},{140,0}},
+          points={{104,8},{140,8}},
           color={0,127,255},
           smooth=Smooth.None));
       connect(twi1.port_b, Sink.Inlet) annotation (Line(
-          points={{160,70},{180,70}},
+          points={{160,78},{180,78}},
           color={0,127,255},
           smooth=Smooth.None));
       connect(bra12.port_b, Shower.Inlet) annotation (Line(
-          points={{160,40},{180,40}},
+          points={{160,44},{180,44}},
           color={0,127,255},
           smooth=Smooth.None));
       connect(tru3.port_b, Dishwasher.Inlet) annotation (Line(
-          points={{160,0},{170,0},{170,8.88178e-16},{180,8.88178e-16}},
+          points={{160,8},{180,8}},
           color={0,127,255},
           smooth=Smooth.None));
       connect(bra2.port_b, KitchenSink.Inlet) annotation (Line(
-          points={{158,-32},{180,-32}},
+          points={{160,-28},{180,-28}},
           color={0,127,255},
-          smooth=Smooth.None));
-
-      connect(prescribedTemperature.port, tru1.heatPort) annotation (Line(
-          points={{46,62},{60,62},{60,5}},
-          color={191,0,0},
-          smooth=Smooth.None));
-      connect(prescribedTemperature.port, bra11.heatPort) annotation (Line(
-          points={{46,62},{90,62},{90,45}},
-          color={191,0,0},
-          smooth=Smooth.None));
-      connect(prescribedTemperature.port, tru2.heatPort) annotation (Line(
-          points={{46,62},{110,62},{110,5}},
-          color={191,0,0},
-          smooth=Smooth.None));
-      connect(prescribedTemperature.port, bra12.heatPort) annotation (Line(
-          points={{46,62},{110,62},{110,50},{150,50},{150,45}},
-          color={191,0,0},
-          smooth=Smooth.None));
-      connect(prescribedTemperature.port, tru3.heatPort) annotation (Line(
-          points={{46,62},{110,62},{110,20},{150,20},{150,5}},
-          color={191,0,0},
-          smooth=Smooth.None));
-      connect(prescribedTemperature.port, twi1.heatPort) annotation (Line(
-          points={{46,62},{110,62},{110,84},{150,84},{150,75}},
-          color={191,0,0},
-          smooth=Smooth.None));
-      connect(prescribedTemperature.port, bra2.heatPort) annotation (Line(
-          points={{46,62},{110,62},{110,20},{134,20},{134,-20},{148,-20},{148,
-              -27}},
-          color={191,0,0},
-          smooth=Smooth.None));
-      connect(TAmb.y[1], prescribedTemperature.T) annotation (Line(
-          points={{-57,62},{24,62}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(TIn.y[1], Mains.T_in) annotation (Line(
-          points={{-79,18},{-72,18}},
-          color={0,0,127},
           smooth=Smooth.None));
 
       connect(Mains.ports[1], tan.port_a) annotation (Line(
-          points={{-50,14},{-2.8,14},{-2.8,8.64}},
-          color={0,127,255},
-          smooth=Smooth.None));
-      connect(tan.port_b, tru1.port_a) annotation (Line(
-          points={{4.2,8.64},{4.2,14},{32,14},{32,0},{50,0}},
+          points={{-50,8},{-2.8,8},{-2.8,8.64}},
           color={0,127,255},
           smooth=Smooth.None));
       connect(const.y, tan.mFloRec) annotation (Line(
-          points={{-23.7,-15},{-14,-15},{-14,-10.72},{-9.66,-10.72}},
+          points={{-23.7,-17},{-14,-17},{-14,-10.72},{-9.66,-10.72}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(const.y, tan.TInRec) annotation (Line(
-          points={{-23.7,-15},{-14,-15},{-14,-17.12},{-9.66,-17.12}},
+          points={{-23.7,-17},{-14,-17},{-14,-17.12},{-9.66,-17.12}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(TAmb.y[1], tan.TAmb) annotation (Line(
-          points={{-57,62},{-20,62},{-20,-0.16},{-9.66,-0.16}},
+          points={{-79,96},{-20,96},{-20,-0.16},{-9.66,-0.16}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(effTan.y, tan.EffTan) annotation (Line(
@@ -797,24 +1296,92 @@ package WaterHeatingLibrary "Library of water heating models and packages"
           color={0,0,127},
           smooth=Smooth.None));
       connect(watFlo.y[1], KitchenSink.watFlo) annotation (Line(
-          points={{-57,-62},{170,-62},{170,-37},{178,-37}},
+          points={{-79,-62},{170,-62},{170,-33},{178,-33}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(watFlo.y[2], Dishwasher.watFlo) annotation (Line(
-          points={{-57,-62},{170,-62},{170,-5},{178,-5}},
+          points={{-79,-62},{170,-62},{170,3},{178,3}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(watFlo.y[3], Shower.watFlo) annotation (Line(
-          points={{-57,-62},{170,-62},{170,35},{178,35}},
+          points={{-79,-62},{170,-62},{170,39},{178,39}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(watFlo.y[4], Sink.watFlo) annotation (Line(
-          points={{-57,-62},{170,-62},{170,65},{178,65}},
+          points={{-79,-62},{170,-62},{170,73},{178,73}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TAmb.y[1], tru1.TAmb) annotation (Line(
+          points={{-79,96},{28,96},{28,15}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TAmb.y[1], bra11.TAmb) annotation (Line(
+          points={{-79,96},{60,96},{60,51}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TAmb.y[1], twi1.TAmb) annotation (Line(
+          points={{-79,96},{144,96},{144,85}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TAmb.y[1], tru2.TAmb) annotation (Line(
+          points={{-79,96},{88,96},{88,15}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TAmb.y[1], bra12.TAmb) annotation (Line(
+          points={{-79,96},{114,96},{114,54},{144,54},{144,51}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TAmb.y[1], tru3.TAmb) annotation (Line(
+          points={{-79,96},{114,96},{114,18},{144,18},{144,15}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TAmb.y[1], bra2.TAmb) annotation (Line(
+          points={{-79,96},{114,96},{114,-16},{144,-16},{144,-21}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TRadMea.y[1], tru1.TRadMea) annotation (Line(
+          points={{-79,130},{40,130},{40,15}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TRadMea.y[1], bra11.TRadMea) annotation (Line(
+          points={{-79,130},{72,130},{72,51}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TRadMea.y[1], twi1.TRadMea) annotation (Line(
+          points={{-79,130},{156,130},{156,85}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TRadMea.y[1], tru2.TRadMea) annotation (Line(
+          points={{-79,130},{100,130},{100,15}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TRadMea.y[1], bra12.TRadMea) annotation (Line(
+          points={{-79,130},{126,130},{126,62},{156,62},{156,51}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TRadMea.y[1], tru3.TRadMea) annotation (Line(
+          points={{-79,130},{126,130},{126,26},{156,26},{156,15}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TRadMea.y[1], bra2.TRadMea) annotation (Line(
+          points={{-79,130},{126,130},{126,-8},{156,-8},{156,-21}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(tan.port_b, tru1.port_a) annotation (Line(
+          points={{4.2,8.64},{25.1,8.64},{25.1,8},{24,8}},
+          color={0,127,255},
+          smooth=Smooth.None));
+      connect(bra11.port_a, tru1.port_b) annotation (Line(
+          points={{56,44},{50,44},{50,8},{44,8}},
+          color={0,127,255},
+          smooth=Smooth.None));
+      connect(TIn.y[1], Mains.T_in) annotation (Line(
+          points={{-79,12},{-72,12}},
           color={0,0,127},
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -75},{200,100}}),       graphics), Icon(coordinateSystem(
-              preserveAspectRatio=false, extent={{-100,-75},{200,100}})),
+                -75},{200,150}}),       graphics), Icon(coordinateSystem(
+              preserveAspectRatio=false, extent={{-100,-75},{200,150}})),
               Documentation(info="<html>
           <p>
           This example shows how several components can be combined to simulate a hot water distribution system in a house. The model starts at the left with text file inputs.
@@ -859,17 +1426,24 @@ package WaterHeatingLibrary "Library of water heating models and packages"
     model HotAndColdDisWithTank
       "Model of a distribution system containting both hot and cold plumbing served with a tankless heater"
       extends Modelica.Icons.Example;
-      HWDis.Components.EndUseLPSTwoBranch  Draw(
-        redeclare package Medium = Buildings.Media.ConstantPropertyLiquidWater,
+
+      package Water = Buildings.Media.ConstantPropertyLiquidWater
+        "Fluid in the system";
+
+      parameter Modelica.SIunits.Temperature T_start_dis = 273.15 + 30
+        "Initial temperature in the dustribution system";
+
+      HWDis.Components.Obsolete.EndUseLPSTwoBranch
+                                           Draw(
         PID_P=2,
         PID_I=1,
         PID_D=0.00000001,
-        T_start=293.15,
-        gain=1/13.25)
+        gain=1/13.25,
+        redeclare package Medium = Water,
+        T_start=T_start_dis)
         annotation (Placement(transformation(extent={{80,-12},{100,8}})));
 
       NonCondensingTank.SimplifiedStorageTankMediumModel tan(
-        redeclare package Medium = Buildings.Media.ConstantPropertyLiquidWater,
         RecircOutSeg=8,
         RecircInSeg=1,
         Deadband=16,
@@ -880,42 +1454,56 @@ package WaterHeatingLibrary "Library of water heating models and packages"
         timDelA={0,0,0,0,0,0,0,0},
         timDelB={0,0,0,0,0,0,0,0},
         timDelC={0,0,0,0,0,0,0,0},
+        redeclare package Medium = Water,
         T_Initial={333.15,333.15,333.15,333.15,333.15,333.15,333.15,333.15})
         annotation (Placement(transformation(extent={{-66,-18},{-38,14}})));
       Buildings.Fluid.Sources.Boundary_pT Mains(
-        redeclare package Medium = Buildings.Media.ConstantPropertyLiquidWater,
+        nPorts=2,
+        redeclare package Medium = Water,
         p=150000,
-        T=288.15,
-        nPorts=2)
+        T=288.15)
         annotation (Placement(transformation(extent={{-110,26},{-90,46}})));
 
       Modelica.Blocks.Sources.Constant TAmb(k=273.15 + 20)
-        annotation (Placement(transformation(extent={{-142,0},{-122,20}})));
-      HWDis.Components.Pipe  Hot(
-        redeclare package Medium = Buildings.Media.ConstantPropertyLiquidWater,
+        annotation (Placement(transformation(extent={{-146,0},{-126,20}})));
+      HWDis.Components.PipeLumpedCap
+                             Hot(
         m_flow_nominal=0.06,
         dp_nominal=1,
-        thicknessIns=0.1,
-        lambdaIns=0.12,
         MixCoef=0.6,
-        diameter=0.01,
-        length=0.1)
+        length=0.1,
+        nSeg=20,
+        diameter_i=0.019939,
+        c_p_pip=390,
+        rho_pip=8960,
+        diameter_o=0.022225,
+        til=0,
+        ePipe=0.95,
+        redeclare package Medium = Water,
+        thicknessIns=0.0127,
+        lambdaIns=0.04,
+        T_start=T_start_dis)
         annotation (Placement(transformation(extent={{18,-36},{38,-16}})));
 
-      HWDis.Components.Pipe  Cold(
-        redeclare package Medium = Buildings.Media.ConstantPropertyLiquidWater,
+      HWDis.Components.PipeLumpedCap
+                             Cold(
         m_flow_nominal=0.06,
         dp_nominal=1,
-        thicknessIns=0.1,
-        lambdaIns=0.12,
-        diameter=0.2,
         length=10,
-        MixCoef=0.6)
+        MixCoef=0.6,
+        nSeg=20,
+        diameter_i=0.019939,
+        c_p_pip=390,
+        rho_pip=8960,
+        diameter_o=0.022225,
+        til=0,
+        ePipe=0.95,
+        redeclare package Medium = Water,
+        thicknessIns=0.0127,
+        lambdaIns=0.04,
+        T_start=T_start_dis)
         annotation (Placement(transformation(extent={{18,28},{38,48}})));
 
-      Modelica.Thermal.HeatTransfer.Sources.PrescribedTemperature
-        prescribedTemperature
-        annotation (Placement(transformation(extent={{-108,70},{-88,90}})));
       Modelica.Blocks.Sources.Ramp ramp(
         height=45,
         offset=273.15 + 20,
@@ -950,6 +1538,8 @@ package WaterHeatingLibrary "Library of water heating models and packages"
             extent={{-3,-3},{3,3}},
             rotation=180,
             origin={-39,-41})));
+      Modelica.Blocks.Sources.Constant TRadMea(k=273.15 + 20)
+        annotation (Placement(transformation(extent={{-146,70},{-126,90}})));
     equation
       connect(Mains.ports[1], Cold.port_a) annotation (Line(
           points={{-90,38},{18,38}},
@@ -958,10 +1548,6 @@ package WaterHeatingLibrary "Library of water heating models and packages"
       connect(Cold.port_b, Draw.colIn) annotation (Line(
           points={{38,38},{44,38},{44,1.6},{80,1.6}},
           color={0,127,255},
-          smooth=Smooth.None));
-      connect(TAmb.y, prescribedTemperature.T) annotation (Line(
-          points={{-121,10},{-118,10},{-118,80},{-110,80}},
-          color={0,0,127},
           smooth=Smooth.None));
       connect(ramp.y, Draw.TOutDes) annotation (Line(
           points={{49,-54},{62,-54},{62,-7},{78,-7}},
@@ -974,14 +1560,6 @@ package WaterHeatingLibrary "Library of water heating models and packages"
       connect(Hot.port_b, Draw.hotIn) annotation (Line(
           points={{38,-26},{44,-26},{44,-2},{80,-2}},
           color={0,127,255},
-          smooth=Smooth.None));
-      connect(prescribedTemperature.port, Cold.heatPort) annotation (Line(
-          points={{-88,80},{-20,80},{-20,60},{28,60},{28,43}},
-          color={191,0,0},
-          smooth=Smooth.None));
-      connect(prescribedTemperature.port, Hot.heatPort) annotation (Line(
-          points={{-88,80},{-20,80},{-20,0},{28,0},{28,-21}},
-          color={191,0,0},
           smooth=Smooth.None));
       connect(Mains.ports[2], tan.port_a) annotation (Line(
           points={{-90,34},{-54.8,34},{-54.8,14.64}},
@@ -1024,11 +1602,27 @@ package WaterHeatingLibrary "Library of water heating models and packages"
           color={0,0,127},
           smooth=Smooth.None));
       connect(TAmb.y, tan.TAmb) annotation (Line(
-          points={{-121,10},{-70,10},{-70,5.84},{-61.66,5.84}},
+          points={{-125,10},{-70,10},{-70,5.84},{-61.66,5.84}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(add.y, tan.QDotIn) annotation (Line(
           points={{-70.3,-31},{-84,-31},{-84,11.76},{-61.8,11.76}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TAmb.y, Cold.TAmb) annotation (Line(
+          points={{-125,10},{-116,10},{-116,52},{22,52},{22,45}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TAmb.y, Hot.TAmb) annotation (Line(
+          points={{-125,10},{-116,10},{-116,52},{4,52},{4,-6},{22,-6},{22,-19}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TRadMea.y, Cold.TRadMea) annotation (Line(
+          points={{-125,80},{34,80},{34,45}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TRadMea.y, Hot.TRadMea) annotation (Line(
+          points={{-125,80},{12,80},{12,6},{34,6},{34,-19}},
           color={0,0,127},
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-150,
@@ -1057,43 +1651,57 @@ package WaterHeatingLibrary "Library of water heating models and packages"
           </ul>
           </html>"));
     end HotAndColdDisWithTank;
-    annotation ();
+
     model TanklessWithPIDDraw
       extends Modelica.Icons.Example;
 
       package Water = Buildings.Media.ConstantPropertyLiquidWater "Water model";
 
-      HWDis.Components.EndUseLPSPID endUseLPSPID(
+      parameter Modelica.SIunits.Temperature T_start_dis = 273.15 + 30
+        "Initial temperature in the distribution system";
+
+      HWDis.Components.Obsolete.EndUseLPSPID
+                                    endUseLPSPID(
         redeclare package Medium = Water,
         PID_P=2,
         PID_I=3,
         PID_D=0.1)
-        annotation (Placement(transformation(extent={{58,-4},{78,16}})));
+        annotation (Placement(transformation(extent={{58,-12},{78,8}})));
       NonCondensingTankless.NonCondensingTanklessHeaterMediumModel
         nonCondensingTanklessHeaterMediumModel(redeclare package Medium = Water)
         annotation (Placement(transformation(extent={{-40,2},{-14,48}})));
-      HWDis.Components.Pipe pip(
+      HWDis.Components.PipeLumpedCap
+                            pip(
         redeclare package Medium = Water,
         m_flow_nominal=0.063,
         dp_nominal=1,
-        thicknessIns=0.1,
-        lambdaIns=0.1,
         length=10,
         MixCoef=0.6,
-        diameter=0.02)
+        nSeg=20,
+        diameter_i=0.019939,
+        c_p_pip=390,
+        rho_pip=8960,
+        diameter_o=0.022225,
+        til=0,
+        ePipe=0.95,
+        thicknessIns=0.0127,
+        lambdaIns=0.04,
+        T_start=T_start_dis)
         annotation (Placement(transformation(extent={{-2,-14},{18,6}})));
       Buildings.Fluid.Sources.Boundary_pT boundary(
         nPorts=1,
         redeclare package Medium = Water,
         p=150000,
         T=288.15)
-        annotation (Placement(transformation(extent={{-86,-36},{-66,-16}})));
-      Modelica.Blocks.Sources.Constant const(k=1)
-        annotation (Placement(transformation(extent={{-90,-2},{-70,18}})));
-      Modelica.Blocks.Sources.Constant const1(k=273.15 + 20)
-        annotation (Placement(transformation(extent={{-86,50},{-66,70}})));
+        annotation (Placement(transformation(extent={{-96,-38},{-76,-18}})));
+      Modelica.Blocks.Sources.Constant pwrSig(k=1)
+        annotation (Placement(transformation(extent={{-96,-6},{-76,14}})));
+      Modelica.Blocks.Sources.Constant TAmb(k=273.15 + 20)
+        annotation (Placement(transformation(extent={{-96,36},{-76,56}})));
       Modelica.Blocks.Sources.Constant const2(k=0.063)
         annotation (Placement(transformation(extent={{16,-48},{36,-28}})));
+      Modelica.Blocks.Sources.Constant TRadMea(k=273.15 + 20)
+        annotation (Placement(transformation(extent={{-96,74},{-76,94}})));
     equation
       connect(nonCondensingTanklessHeaterMediumModel.hotWatOut, pip.port_a)
         annotation (Line(
@@ -1101,26 +1709,35 @@ package WaterHeatingLibrary "Library of water heating models and packages"
           color={0,127,255},
           smooth=Smooth.None));
       connect(pip.port_b, endUseLPSPID.Inlet) annotation (Line(
-          points={{18,-4},{34,-4},{34,11.4},{58,11.4}},
+          points={{18,-4},{34,-4},{34,3.4},{58,3.4}},
           color={0,127,255},
           smooth=Smooth.None));
       connect(nonCondensingTanklessHeaterMediumModel.colWatIn, boundary.ports[1])
         annotation (Line(
-          points={{-30.12,2},{-30,2},{-30,-26},{-66,-26}},
+          points={{-30.12,2},{-30,2},{-30,-28},{-76,-28}},
           color={0,127,255},
           smooth=Smooth.None));
-      connect(const.y, nonCondensingTanklessHeaterMediumModel.pwrSig) annotation (
+      connect(pwrSig.y, nonCondensingTanklessHeaterMediumModel.pwrSig)
+                                                                      annotation (
           Line(
-          points={{-69,8},{-60,8},{-60,3.84},{-42.6,3.84}},
+          points={{-75,4},{-60,4},{-60,3.84},{-42.6,3.84}},
           color={0,0,127},
           smooth=Smooth.None));
-      connect(const1.y, nonCondensingTanklessHeaterMediumModel.AmbientTemperature)
+      connect(TAmb.y, nonCondensingTanklessHeaterMediumModel.AmbientTemperature)
         annotation (Line(
-          points={{-65,60},{-60,60},{-60,38.064},{-42.6,38.064}},
+          points={{-75,46},{-60,46},{-60,38.064},{-42.6,38.064}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(const2.y, endUseLPSPID.watFlo) annotation (Line(
-          points={{37,-38},{46,-38},{46,1},{56,1}},
+          points={{37,-38},{46,-38},{46,-7},{56,-7}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TAmb.y, pip.TAmb) annotation (Line(
+          points={{-75,46},{2,46},{2,3}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TRadMea.y, pip.TRadMea) annotation (Line(
+          points={{-75,84},{14,84},{14,3}},
           color={0,0,127},
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
@@ -1147,75 +1764,95 @@ package WaterHeatingLibrary "Library of water heating models and packages"
     model HotAndColdDisWithTanklessPID
       "Model of a distribution system containting both hot and cold plumbing served with a tankless heater"
       extends Modelica.Icons.Example;
-      HWDis.Components.EndUseLPSTwoBranchPID
-                                           Draw(
-        redeclare package Medium = Buildings.Media.ConstantPropertyLiquidWater,
-        T_start=293.15,
+
+      package Water = Buildings.Media.ConstantPropertyLiquidWater
+        "Fluid in the system";
+
+      parameter Modelica.SIunits.Temperature T_start_dis = 273.15 + 30
+        "Initial temperature in the distribution system";
+
+      HWDis.Components.EndUseTwoBranch     Draw(
         PID_P_3=2,
         PID_I_3=3,
         PID_D_3=0.1,
         PID_P_2=2,
         PID_I_2=3,
-        PID_D_2=0.1)
+        PID_D_2=0.1,
+        redeclare package Medium = Water,
+        T_start=T_start_dis)
         annotation (Placement(transformation(extent={{80,-12},{100,8}})));
 
       NonCondensingTankless.NonCondensingTanklessHeaterMediumModel
-        nonCondensingTanklessHeaterMediumModel(redeclare package Medium =
-            Buildings.Media.ConstantPropertyLiquidWater)
+        nonCondensingTanklessHeaterMediumModel(redeclare package Medium = Water)
         annotation (Placement(transformation(extent={{-70,-14},{-50,10}})));
       Buildings.Fluid.Sources.Boundary_pT Mains(
-        redeclare package Medium = Buildings.Media.ConstantPropertyLiquidWater,
+        nPorts=2,
+        redeclare package Medium = Water,
         p=150000,
-        T=288.15,
-        nPorts=2)
+        T=288.15)
         annotation (Placement(transformation(extent={{-110,26},{-90,46}})));
 
       Modelica.Blocks.Sources.Constant TAmb(k=273.15 + 20)
-        annotation (Placement(transformation(extent={{-142,-6},{-122,14}})));
-      HWDis.Components.Pipe  Hot(
-        redeclare package Medium = Buildings.Media.ConstantPropertyLiquidWater,
+        annotation (Placement(transformation(extent={{-146,-6},{-126,14}})));
+      HWDis.Components.PipeLumpedCap
+                             Hot(
         m_flow_nominal=0.06,
         dp_nominal=1,
-        thicknessIns=0.1,
-        lambdaIns=0.12,
         MixCoef=0.6,
-        diameter=0.01,
-        length=0.1)
+        nSeg=20,
+        diameter_i=0.019939,
+        length=10,
+        c_p_pip=390,
+        rho_pip=8960,
+        diameter_o=0.022225,
+        til=0,
+        ePipe=0.95,
+        redeclare package Medium = Water,
+        thicknessIns=0.0127,
+        lambdaIns=0.04,
+        T_start=T_start_dis)
         annotation (Placement(transformation(extent={{18,-36},{38,-16}})));
 
-      HWDis.Components.Pipe  Cold(
-        redeclare package Medium = Buildings.Media.ConstantPropertyLiquidWater,
+      HWDis.Components.PipeLumpedCap
+                             Cold(
         m_flow_nominal=0.06,
         dp_nominal=1,
-        thicknessIns=0.1,
-        lambdaIns=0.12,
-        diameter=0.2,
         length=10,
-        MixCoef=0.6)
+        MixCoef=0.6,
+        nSeg=20,
+        diameter_i=0.019939,
+        c_p_pip=390,
+        rho_pip=8960,
+        diameter_o=0.022225,
+        til=0,
+        ePipe=0.95,
+        redeclare package Medium = Water,
+        thicknessIns=0.0127,
+        lambdaIns=0.04,
+        T_start=T_start_dis)
         annotation (Placement(transformation(extent={{18,28},{38,48}})));
 
-      Modelica.Thermal.HeatTransfer.Sources.PrescribedTemperature
-        prescribedTemperature
-        annotation (Placement(transformation(extent={{-108,52},{-88,72}})));
       Modelica.Blocks.Sources.Constant pwrSig(k=1)
-        annotation (Placement(transformation(extent={{-144,-60},{-124,-40}})));
+        annotation (Placement(transformation(extent={{-146,-60},{-126,-40}})));
       Modelica.Blocks.Sources.Ramp ramp(
         duration=600,
         offset=273.15 + 20,
         height=40)
         annotation (Placement(transformation(extent={{28,-64},{48,-44}})));
       HWDis.Components.FlowReduction floRed
-        annotation (Placement(transformation(extent={{-10,-90},{10,-70}})));
+        annotation (Placement(transformation(extent={{-8,-94},{12,-74}})));
       Buildings.Utilities.Math.Min min(nin=2)
-        annotation (Placement(transformation(extent={{-36,-82},{-16,-62}})));
+        annotation (Placement(transformation(extent={{-38,-86},{-18,-66}})));
       Modelica.Blocks.Sources.Ramp ramp1(
         height=0.378,
         duration=600,
         offset=0.063,
         startTime=660)
-        annotation (Placement(transformation(extent={{-112,-94},{-92,-74}})));
+        annotation (Placement(transformation(extent={{-146,-94},{-126,-74}})));
       Modelica.Blocks.Sources.RealExpression realExpression(y=floRed.draFlo[1])
         annotation (Placement(transformation(extent={{48,12},{60,26}})));
+      Modelica.Blocks.Sources.Constant TRadMea(k=273.15 + 20)
+        annotation (Placement(transformation(extent={{-128,74},{-108,94}})));
     equation
       connect(Mains.ports[1], Cold.port_a) annotation (Line(
           points={{-90,38},{18,38}},
@@ -1225,13 +1862,9 @@ package WaterHeatingLibrary "Library of water heating models and packages"
           points={{38,38},{44,38},{44,1.6},{80,1.6}},
           color={0,127,255},
           smooth=Smooth.None));
-      connect(TAmb.y, prescribedTemperature.T) annotation (Line(
-          points={{-121,4},{-118,4},{-118,62},{-110,62}},
-          color={0,0,127},
-          smooth=Smooth.None));
       connect(pwrSig.y, nonCondensingTanklessHeaterMediumModel.pwrSig)
         annotation (Line(
-          points={{-123,-50},{-76,-50},{-76,-13.04},{-72,-13.04}},
+          points={{-125,-50},{-76,-50},{-76,-13.04},{-72,-13.04}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(Mains.ports[2], nonCondensingTanklessHeaterMediumModel.colWatIn)
@@ -1250,40 +1883,49 @@ package WaterHeatingLibrary "Library of water heating models and packages"
           smooth=Smooth.None));
       connect(TAmb.y, nonCondensingTanklessHeaterMediumModel.AmbientTemperature)
         annotation (Line(
-          points={{-121,4},{-92.5,4},{-92.5,4.816},{-72,4.816}},
+          points={{-125,4},{-92.5,4},{-92.5,4.816},{-72,4.816}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(Hot.port_b, Draw.hotIn) annotation (Line(
           points={{38,-26},{44,-26},{44,-2},{80,-2}},
           color={0,127,255},
           smooth=Smooth.None));
-      connect(prescribedTemperature.port, Cold.heatPort) annotation (Line(
-          points={{-88,62},{28,62},{28,43}},
-          color={191,0,0},
-          smooth=Smooth.None));
-      connect(prescribedTemperature.port, Hot.heatPort) annotation (Line(
-          points={{-88,62},{-20,62},{-20,0},{28,0},{28,-21}},
-          color={191,0,0},
-          smooth=Smooth.None));
       connect(ramp1.y, min.u[1]) annotation (Line(
-          points={{-91,-84},{-82,-84},{-82,-73},{-38,-73}},
+          points={{-125,-84},{-82,-84},{-82,-77},{-40,-77}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(min.y, floRed.conFlo) annotation (Line(
-          points={{-15,-72},{-12,-72}},
+          points={{-17,-76},{-10,-76}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(ramp1.y, floRed.desFlo[1]) annotation (Line(
-          points={{-91,-84},{-82,-84},{-82,-87.4},{-12,-87.4}},
+          points={{-125,-84},{-82,-84},{-82,-91.4},{-10,-91.4}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(nonCondensingTanklessHeaterMediumModel.maxMasFlo, min.u[2])
         annotation (Line(
-          points={{-49,-5.36},{-46,-5.36},{-46,-71},{-38,-71}},
+          points={{-49,-5.36},{-46,-5.36},{-46,-75},{-40,-75}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(realExpression.y, Draw.WatFlowDes) annotation (Line(
           points={{60.6,19},{66,19},{66,6},{78,6}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TAmb.y, Cold.TAmb) annotation (Line(
+          points={{-125,4},{-116,4},{-116,60},{22,60},{22,45}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TAmb.y, Hot.TAmb) annotation (Line(
+          points={{-125,4},{-116,4},{-116,60},{-16,60},{-16,-14},{22,-14},{22,-19}},
+          color={0,0,127},
+          smooth=Smooth.None));
+
+      connect(TRadMea.y, Cold.TRadMea) annotation (Line(
+          points={{-107,84},{34,84},{34,45}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TRadMea.y, Hot.TRadMea) annotation (Line(
+          points={{-107,84},{-4,84},{-4,-2},{34,-2},{34,-19}},
           color={0,0,127},
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-150,
@@ -1312,6 +1954,8 @@ package WaterHeatingLibrary "Library of water heating models and packages"
           </ul>
           </html>"));
     end HotAndColdDisWithTanklessPID;
+
+    annotation ();
   end CombinedExamples;
 
   package CondensingTank
@@ -5616,10 +6260,10 @@ First implementation.
 
     package Components
       model FlowReduction
-        "Reduces the flow rate at fixtures when the demand flow is too high for the tankless heater"
         extends Modelica.Blocks.Interfaces.BlockIcon;
 
         parameter Integer nDra(min=1) = 1 "Number of hot water draws";
+
         Modelica.Blocks.Interfaces.RealInput conFlo
           "Controlled flow rate leaving heater"
           annotation (Placement(transformation(extent={{-140,60},{-100,100}})));
@@ -5629,184 +6273,187 @@ First implementation.
         Modelica.Blocks.Interfaces.RealOutput draFlo[nDra]
           "Controlled water flow rate at each fixture"
           annotation (Placement(transformation(extent={{100,-10},{120,10}})));
-        Modelica.Blocks.Math.Sum totDesFlo(nin=nDra) "Total desired water flow"
-          annotation (Placement(transformation(extent={{-84,20},{-64,40}})));
+        Modelica.Blocks.Math.Sum sum(nin=nDra)
+          annotation (Placement(transformation(extent={{-90,-68},{-70,-48}})));
         Modelica.Blocks.Math.Division division
-          annotation (Placement(transformation(extent={{0,2},{20,22}})));
+          annotation (Placement(transformation(extent={{-52,64},{-32,84}})));
+        Modelica.Blocks.Math.Min min1
+          annotation (Placement(transformation(extent={{-6,4},{14,24}})));
         Modelica.Blocks.Routing.Replicator replicator(nout=nDra)
-          annotation (Placement(transformation(extent={{32,2},{52,22}})));
+          annotation (Placement(transformation(extent={{28,4},{48,24}})));
+        Modelica.Blocks.Sources.Constant const(k=1)
+          annotation (Placement(transformation(extent={{-44,-2},{-24,18}})));
+        Modelica.Blocks.Math.Add add annotation (Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=90,
+              origin={-66,14})));
+        Modelica.Blocks.Sources.Constant const1(k=1e-6) annotation (Placement(
+              transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=90,
+              origin={-80,-28})));
         Modelica.Blocks.Math.Product product[nDra]
-          annotation (Placement(transformation(extent={{70,-10},{90,10}})));
-        Modelica.Blocks.Math.Add add
-          annotation (Placement(transformation(extent={{-32,-8},{-12,12}})));
-        Modelica.Blocks.Sources.Constant const(k=1e-6)
-          annotation (Placement(transformation(extent={{-84,-28},{-64,-8}})));
+          annotation (Placement(transformation(extent={{66,-10},{86,10}})));
       equation
-        connect(desFlo, totDesFlo.u) annotation (Line(
-            points={{-120,-74},{-94,-74},{-94,30},{-86,30}},
-            color={0,0,127},
-            smooth=Smooth.None));
         connect(conFlo, division.u1) annotation (Line(
-            points={{-120,80},{-6,80},{-6,18},{-2,18}},
+            points={{-120,80},{-54,80}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(division.y, replicator.u) annotation (Line(
-            points={{21,12},{30,12}},
+        connect(division.y, min1.u1) annotation (Line(
+            points={{-31,74},{-20,74},{-20,20},{-8,20}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(const.y, min1.u2) annotation (Line(
+            points={{-23,8},{-8,8}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(min1.y, replicator.u) annotation (Line(
+            points={{15,14},{26,14}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(replicator.y, product.u1) annotation (Line(
-            points={{53,12},{58,12},{58,6},{68,6}},
+            points={{49,14},{56,14},{56,6},{64,6}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(desFlo, sum.u) annotation (Line(
+            points={{-120,-74},{-96,-74},{-96,-58},{-92,-58}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(desFlo, product.u2) annotation (Line(
-            points={{-120,-74},{58,-74},{58,-6},{68,-6}},
+            points={{-120,-74},{40,-74},{40,-6},{64,-6}},
             color={0,0,127},
             smooth=Smooth.None));
-
         connect(product.y, draFlo) annotation (Line(
-            points={{91,4.44089e-16},{110,4.44089e-16}},
+            points={{87,0},{110,0}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(sum.y, add.u2) annotation (Line(
+            points={{-69,-58},{-60,-58},{-60,2}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(const1.y, add.u1) annotation (Line(
+            points={{-80,-17},{-80,-8},{-72,-8},{-72,2}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(add.y, division.u2) annotation (Line(
-            points={{-11,2},{-8,2},{-8,6},{-2,6}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(totDesFlo.y, add.u1) annotation (Line(
-            points={{-63,30},{-48,30},{-48,8},{-34,8}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(const.y, add.u2) annotation (Line(
-            points={{-63,-18},{-44,-18},{-44,-4},{-34,-4}},
+            points={{-66,25},{-66,68},{-54,68}},
             color={0,0,127},
             smooth=Smooth.None));
         annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                   -100},{100,100}}), graphics),
                   Documentation(info="<html>
             <p>
-            This model can be used to reduce the flow rate at a draw fixture as needed. It reads in all of the draw flow rates at each draw point as well as the maximum allowable
-            flow rate. In situations where the total of the draw flow rates exceeds the maximum allowable flow rate it reduces the flow rate to the fixtures to match the
-            maximum allowable flow rate. The equation is:
-            </p>
+            This model can be used to reduce draw flow rate at fixtures. The user inputs the draw flow rate of each draw as well as a maximum flow rate. The model then
+            times when the desired draw flow rate exceeds the maximum and scales down the flow such that the total flow matches the maximum. The equation is:<br>
             <p align=\"center\" style=\"font-style:italic;\">
-            m<sub>flow,draw</sub>[i] = m<sub>red,draw</sub> * m<sub>flow,max</sub> / sum(m<sub>flow,draw</sub>)
+            m<sub>flo,red</sub>[i] = m<sub>flow,des</sub>[i]*sum(m<sub>flow,des</sub>)/m<sub>flow,max</sub>
+            </p>
+            In the above equation all terms are mass flow rates. The subscript <sub>red</sub> implies that the term is a reduced flow rate, output from the model. The subscript
+            <sub>des</sub> implies that it is the desired flow rate input to the model. The subscript <sub>max</sub> implies that it is the maximum flow rate input by the user. [i]
+            is an index value representing which draw in the draw flow rate array is being calculated.
             </p>
             <p>
-            Where:<br>
-            m<sub>flow,draw</sub>[i] is the mass flow rate for a specific draw<br>
-            m<sub>red,draw</sub> is the maximum allowable mass flow rate<br>
-            sum(m<sub>flow,draw</sub>) is the sum of all of the specified flow rates
-            </p>
-            <p>
-            This calculation is performed for each draw in the simulation, but only if the total of the draw flows is greater than the maximum allowable flow rate.
-            </p>
-            <p>
-            Specific units are not required in this model so long as they are consistent.<br>
+            An example of when this model would be used is modeling a hot water distribution system served by a tankless water heater. Many tankless water heaters have
+            flow limiters which, in cases with very high hot water demand, reduce the flow rate of water such that the heater can't meet set temperature at full capacity.
+            In this case, the user would input a maximum flow rate signal from the water heater to the input for conFlo.<br>
             </p>
             </html>",
                   revisions="<html>
             <ul>
             <li>
-            Mar 28, 2013 by Peter Grant:<br>
+            Apr 2, 2013 by Peter Grant:<br>
             First implementation
             </li>
             </ul>
             </html>"));
-
       end FlowReduction;
 
-      model EndUseGPM
-        "Model of a pipe in a hot water distribution system. Assumes input flow units are gal/min"
+      model EndUse
+        "Model of a pipe in a hot water distribution system. Assumes input flow units are L/s"
         extends Modelica.Blocks.Interfaces.BlockIcon;
 
         replaceable package Medium = Modelica.Media.Interfaces.PartialMedium
           "Fluid in the system";
 
-        parameter Real gain = 1/225
-          "Coefficient for converting desired flow rate to valve position";
-
         Modelica.Fluid.Interfaces.FluidPort_a Inlet(redeclare package Medium = Medium)
           "Inlet for water coming from the branch"
           annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
-         Buildings.Fluid.Actuators.Valves.TwoWayLinear val(riseTime=0.00000001,
-             y_start=0,
-           redeclare package Medium = Medium,
-           m_flow_nominal=0.06,
-           dpValve_nominal=1,
-           l=1e-10)
-           annotation (Placement(transformation(extent={{-10,10},{10,-10}})));
-        Buildings.Fluid.Sources.Boundary_pT PAmb(          redeclare package
-            Medium =
-              Medium,
-          p=101325,
-          nPorts=1) "Describes the ambient pressure at the outlet"
-                                                         annotation (Placement(
+        Buildings.Fluid.Sources.MassFlowSource_T draFlo(
+          redeclare package Medium = Medium,
+          nPorts=1,
+          use_m_flow_in=true) "Sets the water flow rate" annotation (Placement(
               transformation(
               extent={{-10,-10},{10,10}},
               rotation=180,
               origin={60,0})));
          Modelica.Blocks.Interfaces.RealInput watFlo "Water flow rate in gpm"
            annotation (Placement(transformation(extent={{-140,-70},{-100,-30}})));
-         Modelica.Blocks.Math.Gain valPosId(k=gain)
+         Modelica.Blocks.Math.Gain valPosId(k=-1)
           "Identifies the position of the valve needed for the desired flow rate"
            annotation (Placement(transformation(extent={{-88,-60},{-68,-40}})));
-         Modelica.Blocks.Sources.Constant Max(k=1)
-          "States that the valve cannot open beyond 100%"
-           annotation (Placement(transformation(extent={{-72,-30},{-52,-10}})));
-         Modelica.Blocks.Math.Min valCon "Controls the valve position"
-           annotation (Placement(transformation(extent={{-38,-54},{-18,-34}})));
-        Buildings.Fluid.Sensors.Temperature senTem(redeclare package Medium = Medium)
-          annotation (Placement(transformation(extent={{20,16},{40,36}})));
+        Buildings.Fluid.Sensors.TemperatureTwoPort
+                                            senTem(redeclare package Medium = Medium,
+          m_flow_nominal=0.063,
+          tau=0.00001)
+          annotation (Placement(transformation(extent={{20,-10},{40,10}})));
         Modelica.Blocks.Interfaces.RealOutput TOut( unit = "K")
           "Temperature of fluid exiting the fixture"
           annotation (Placement(transformation(extent={{100,16},{120,36}})));
-        Modelica.Blocks.Sources.RealExpression realExpression(y=val.m_flow)
-          annotation (Placement(transformation(extent={{24,-70},{44,-50}})));
-        Modelica.Blocks.Interfaces.RealOutput actFlo "Simulated output flow"
-          annotation (Placement(transformation(extent={{100,-70},{120,-50}})));
-        Modelica.Blocks.Math.Gain gain1(k=1/0.063)
-          annotation (Placement(transformation(extent={{62,-70},{82,-50}})));
       equation
         connect(watFlo, valPosId.u)  annotation (Line(
             points={{-120,-50},{-90,-50}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(valPosId.y, valCon.u2) annotation (Line(
-            points={{-67,-50},{-40,-50}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(Max.y, valCon.u1) annotation (Line(
-            points={{-51,-20},{-46,-20},{-46,-38},{-40,-38}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(valCon.y, val.y) annotation (Line(
-            points={{-17,-44},{0,-44},{0,-12}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(Inlet, val.port_a) annotation (Line(
-            points={{-100,0},{-10,0}},
-            color={0,127,255},
-            smooth=Smooth.None));
-        connect(val.port_b, PAmb.ports[1]) annotation (Line(
-            points={{10,0},{50,0}},
-            color={0,127,255},
-            smooth=Smooth.None));
-        connect(val.port_b, senTem.port) annotation (Line(
-            points={{10,0},{30,0},{30,16}},
-            color={0,127,255},
-            smooth=Smooth.None));
         connect(senTem.T, TOut) annotation (Line(
-            points={{37,26},{110,26}},
+            points={{30,11},{30,26},{110,26}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(realExpression.y, gain1.u) annotation (Line(
-            points={{45,-60},{60,-60}},
-            color={0,0,127},
+        connect(senTem.port_b, draFlo.ports[1])
+                                              annotation (Line(
+            points={{40,0},{50,0}},
+            color={0,127,255},
             smooth=Smooth.None));
-        connect(gain1.y, actFlo) annotation (Line(
-            points={{83,-60},{110,-60}},
+        connect(senTem.port_a, Inlet) annotation (Line(
+            points={{20,0},{-100,0}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(valPosId.y, draFlo.m_flow_in) annotation (Line(
+            points={{-67,-50},{80,-50},{80,-8},{70,-8}},
             color={0,0,127},
             smooth=Smooth.None));
         annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                  -100},{100,100}}), graphics),
+                  Documentation(info="<html>
+            <p>
+            This model can be used to control a fluid flow rate to the user-specified flow rate. The inputs are a connection to the hot water system and a hot water draw flow rate.
+            This version of the model is intended to be used with water flow rate in L/s used as the input. Because the valve model works in kg/s no unit conversions are
+            performed to make the output flow rate read in L/s (Assumption: The density of water is constantly 1 kg/L).
+            </p>
+            <p>
+            The water flow rate is controlled by opening/closing the valve such that the water flow rate in the fluid line matches the flow rate specified by the user. The intent
+            is that the user can specify a flow rate in a text input file and the valve controls the fluid path to match that flow rate. When using this component to create models
+            the gain value must be adjusted until the system flow matches the intended flow.<br>
+            </p>
+            </html>",
+                  revisions="<html>
+            <ul>
+            <li>
+            Mar 28, 2013 by Peter Grant:<br>
+            First implementation            
+            </ul>
+            </li>
+            </html>"));
+      end EndUse;
+
+      model EndUseGPM
+        "Model of a pipe in a hot water distribution system. Assumes input flow units are gal/min"
+        extends WaterHeatingLibrary.HWDis.Components.EndUse(valPosId(k=-0.063));
+
+        replaceable package Medium = Modelica.Media.Interfaces.PartialMedium
+          "Fluid in the system";
+
+       annotation (Placement(transformation(extent={{62,-70},{82,-50}})),
+                    Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                   -100},{100,100}}), graphics),
                   Documentation(info="<html>
             <p>
@@ -5830,753 +6477,7 @@ First implementation.
             </html>"));
       end EndUseGPM;
 
-      model EndUseLPS
-        "Model of a pipe in a hot water distribution system. Assumes input flow units are L/s"
-        extends Modelica.Blocks.Interfaces.BlockIcon;
-
-        replaceable package Medium = Modelica.Media.Interfaces.PartialMedium
-          "Fluid in the system";
-
-        parameter Real gain = 1/225
-          "Coefficient for converting desired flow rate to valve position";
-
-        Modelica.Fluid.Interfaces.FluidPort_a Inlet(redeclare package Medium = Medium)
-          "Inlet for water coming from the branch"
-          annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
-         Buildings.Fluid.Actuators.Valves.TwoWayLinear val(riseTime=0.00000001,
-             y_start=0,
-           redeclare package Medium = Medium,
-           m_flow_nominal=0.06,
-           dpValve_nominal=1,
-           l=1e-10)
-           annotation (Placement(transformation(extent={{-10,10},{10,-10}})));
-        Buildings.Fluid.Sources.Boundary_pT PAmb(          redeclare package
-            Medium =
-              Medium,
-          p=101325,
-          nPorts=1) "Describes the ambient pressure at the outlet"
-                                                         annotation (Placement(
-              transformation(
-              extent={{-10,-10},{10,10}},
-              rotation=180,
-              origin={60,0})));
-         Modelica.Blocks.Interfaces.RealInput watFlo "Water flow rate in gpm"
-           annotation (Placement(transformation(extent={{-140,-70},{-100,-30}})));
-         Modelica.Blocks.Math.Gain valPosId(k=gain)
-          "Identifies the position of the valve needed for the desired flow rate"
-           annotation (Placement(transformation(extent={{-88,-60},{-68,-40}})));
-         Modelica.Blocks.Sources.Constant Max(k=1)
-          "States that the valve cannot open beyond 100%"
-           annotation (Placement(transformation(extent={{-72,-30},{-52,-10}})));
-         Modelica.Blocks.Math.Min valCon "Controls the valve position"
-           annotation (Placement(transformation(extent={{-38,-54},{-18,-34}})));
-        Buildings.Fluid.Sensors.Temperature senTem(redeclare package Medium = Medium)
-          annotation (Placement(transformation(extent={{20,16},{40,36}})));
-        Modelica.Blocks.Interfaces.RealOutput TOut( unit = "K")
-          "Temperature of fluid exiting the fixture"
-          annotation (Placement(transformation(extent={{100,16},{120,36}})));
-        Modelica.Blocks.Sources.RealExpression realExpression(y=val.m_flow)
-          annotation (Placement(transformation(extent={{22,-72},{42,-52}})));
-        Modelica.Blocks.Interfaces.RealOutput floOut
-          annotation (Placement(transformation(extent={{100,-72},{120,-52}})));
-      equation
-        connect(watFlo, valPosId.u)  annotation (Line(
-            points={{-120,-50},{-90,-50}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(valPosId.y, valCon.u2) annotation (Line(
-            points={{-67,-50},{-40,-50}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(Max.y, valCon.u1) annotation (Line(
-            points={{-51,-20},{-46,-20},{-46,-38},{-40,-38}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(valCon.y, val.y) annotation (Line(
-            points={{-17,-44},{0,-44},{0,-12}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(Inlet, val.port_a) annotation (Line(
-            points={{-100,0},{-10,0}},
-            color={0,127,255},
-            smooth=Smooth.None));
-        connect(val.port_b, PAmb.ports[1]) annotation (Line(
-            points={{10,0},{50,0}},
-            color={0,127,255},
-            smooth=Smooth.None));
-        connect(val.port_b, senTem.port) annotation (Line(
-            points={{10,0},{30,0},{30,16}},
-            color={0,127,255},
-            smooth=Smooth.None));
-        connect(senTem.T, TOut) annotation (Line(
-            points={{37,26},{110,26}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(realExpression.y, floOut) annotation (Line(
-            points={{43,-62},{110,-62}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                  -100},{100,100}}), graphics),
-                  Documentation(info="<html>
-            <p>
-            This model can be used to control a fluid flow rate to the user-specified flow rate. The inputs are a connection to the hot water system and a hot water draw flow rate.
-            This version of the model is intended to be used with water flow rate in L/s used as the input. Because the valve model works in kg/s no unit conversions are
-            performed to make the output flow rate read in L/s (Assumption: The density of water is constantly 1 kg/L).
-            </p>
-            <p>
-            The water flow rate is controlled by opening/closing the valve such that the water flow rate in the fluid line matches the flow rate specified by the user. The intent
-            is that the user can specify a flow rate in a text input file and the valve controls the fluid path to match that flow rate. When using this component to create models
-            the gain value must be adjusted until the system flow matches the intended flow.<br>
-            </p>
-            </html>",
-                  revisions="<html>
-            <ul>
-            <li>
-            Mar 28, 2013 by Peter Grant:<br>
-            First implementation            
-            </ul>
-            </li>
-            </html>"));
-      end EndUseLPS;
-
-      model EndUseLPSPID
-        "Model of a pipe in a hot water distribution system. Assumes input flow units are L/s"
-        extends Modelica.Blocks.Interfaces.BlockIcon;
-
-        replaceable package Medium = Modelica.Media.Interfaces.PartialMedium
-          "Fluid in the system";
-
-        parameter Real PID_P = 1 "Proportional term in PID controller";
-        parameter Modelica.SIunits.Time PID_I = 1
-          "Integral term in PID controller";
-        parameter Modelica.SIunits.Time PID_D = 1
-          "Derivative term in PID controller";
-
-        Modelica.Fluid.Interfaces.FluidPort_a Inlet(redeclare package Medium = Medium)
-          "Inlet for water coming from the branch"
-          annotation (Placement(transformation(extent={{-110,44},{-90,64}})));
-         Buildings.Fluid.Actuators.Valves.TwoWayLinear val(riseTime=0.00000001,
-             y_start=0,
-           redeclare package Medium = Medium,
-           m_flow_nominal=0.06,
-           dpValve_nominal=1,
-           l=1e-10)
-           annotation (Placement(transformation(extent={{-10,64},{10,44}})));
-        Buildings.Fluid.Sources.Boundary_pT PAmb(          redeclare package
-            Medium =
-              Medium,
-          p=101325,
-          nPorts=1) "Describes the ambient pressure at the outlet"
-                                                         annotation (Placement(
-              transformation(
-              extent={{-10,-10},{10,10}},
-              rotation=180,
-              origin={60,54})));
-         Modelica.Blocks.Interfaces.RealInput watFlo "Water flow rate in gpm"
-           annotation (Placement(transformation(extent={{-140,-70},{-100,-30}})));
-        Buildings.Fluid.Sensors.Temperature senTem(redeclare package Medium = Medium)
-          annotation (Placement(transformation(extent={{20,70},{40,90}})));
-        Modelica.Blocks.Interfaces.RealOutput TOut( unit = "K")
-          "Temperature of fluid exiting the fixture"
-          annotation (Placement(transformation(extent={{100,70},{120,90}})));
-        Modelica.Blocks.Sources.RealExpression realExpression(y=val.m_flow)
-          annotation (Placement(transformation(extent={{-92,-94},{-72,-74}})));
-        Modelica.Blocks.Interfaces.RealOutput floOut
-          annotation (Placement(transformation(extent={{100,-94},{120,-74}})));
-        Buildings.Controls.Continuous.LimPID conPID(
-          controllerType=Modelica.Blocks.Types.SimpleController.PID,
-          k=PID_P,
-          Ti=PID_I,
-          Td=PID_D)
-                annotation (Placement(transformation(extent={{-68,-60},{-48,-40}})));
-        Modelica.Blocks.Logical.GreaterThreshold greaterThreshold(threshold=0)
-          annotation (Placement(transformation(extent={{-86,-24},{-66,-4}})));
-        Modelica.Blocks.Math.BooleanToReal booleanToReal
-          annotation (Placement(transformation(extent={{-54,-24},{-34,-4}})));
-        Modelica.Blocks.Math.Product product1 annotation (Placement(
-              transformation(
-              extent={{-10,-10},{10,10}},
-              rotation=90,
-              origin={0,16})));
-      equation
-        connect(Inlet, val.port_a) annotation (Line(
-            points={{-100,54},{-10,54}},
-            color={0,127,255},
-            smooth=Smooth.None));
-        connect(val.port_b, PAmb.ports[1]) annotation (Line(
-            points={{10,54},{50,54}},
-            color={0,127,255},
-            smooth=Smooth.None));
-        connect(val.port_b, senTem.port) annotation (Line(
-            points={{10,54},{30,54},{30,70}},
-            color={0,127,255},
-            smooth=Smooth.None));
-        connect(senTem.T, TOut) annotation (Line(
-            points={{37,80},{110,80}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(realExpression.y, floOut) annotation (Line(
-            points={{-71,-84},{110,-84}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(watFlo, conPID.u_s) annotation (Line(
-            points={{-120,-50},{-70,-50}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(realExpression.y, conPID.u_m) annotation (Line(
-            points={{-71,-84},{-58,-84},{-58,-62}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(greaterThreshold.y, booleanToReal.u) annotation (Line(
-            points={{-65,-14},{-56,-14}},
-            color={255,0,255},
-            smooth=Smooth.None));
-        connect(watFlo, greaterThreshold.u) annotation (Line(
-            points={{-120,-50},{-96,-50},{-96,-14},{-88,-14}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(booleanToReal.y, product1.u1) annotation (Line(
-            points={{-33,-14},{-6,-14},{-6,4}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(conPID.y, product1.u2) annotation (Line(
-            points={{-47,-50},{6,-50},{6,4}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(product1.y, val.y) annotation (Line(
-            points={{0,27},{0,42}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                  -100},{100,100}}), graphics),
-                  Documentation(info="<html>
-            <p>
-            This model can be used to control a fluid flow rate to the user-specified flow rate. The inputs are a connection to the hot water system and a hot water draw flow rate.
-            This version of the model is intended to be used with water flow rate in L/s used as the input. Because the valve model works in kg/s no unit conversions are
-            performed to make the output flow rate read in L/s (Assumption: The density of water is constantly 1 kg/L).
-            </p>
-            <p>
-            This model uses a PId controller to modulate the water flow rate instead of the constant gain controller. The advantage of this model is that it does not require the
-             user to adjust the gain value until the simulated flow rate matches the desired flow rate. The disadvantage is that the PID controller will not be able to react
-             and adjust the valve to the desired flow rate instantly.<br>
-            </p>
-            <p>
-            In the original design the valve would not respond well to a desired flow rate of 0 L/s. Situations where draw flow rates instantly dropped to 0 would simulate extremely
-            slowly. The models comparing the flow rate to 0 and setting the valve position to 0 when there is no flow were added to resolve this issue.<br>
-            </p> 
-            </html>",
-                  revisions="<html>
-            <ul>
-            <li>
-            Mar 28, 2013 by Peter Grant:<br>
-            First implementation            
-            </ul>
-            </li>
-            </html>"));
-      end EndUseLPSPID;
-
-      model EndUseGPMPID
-        "Model of a pipe in a hot water distribution system. Assumes input flow units are GPM"
-        extends Modelica.Blocks.Interfaces.BlockIcon;
-
-        replaceable package Medium = Modelica.Media.Interfaces.PartialMedium
-          "Fluid in the system";
-
-        parameter Real PID_P = 1 "Proportional term in PID controller";
-        parameter Modelica.SIunits.Time PID_I = 1
-          "Integral term in PID controller";
-        parameter Modelica.SIunits.Time PID_D = 1
-          "Derivative term in PID controller";
-
-        Modelica.Fluid.Interfaces.FluidPort_a Inlet(redeclare package Medium = Medium)
-          "Inlet for water coming from the branch"
-          annotation (Placement(transformation(extent={{-110,44},{-90,64}})));
-         Buildings.Fluid.Actuators.Valves.TwoWayLinear val(riseTime=0.00000001,
-             y_start=0,
-           redeclare package Medium = Medium,
-           m_flow_nominal=0.06,
-           dpValve_nominal=1,
-           l=1e-10)
-           annotation (Placement(transformation(extent={{-10,64},{10,44}})));
-        Buildings.Fluid.Sources.Boundary_pT PAmb(          redeclare package
-            Medium =
-              Medium,
-          p=101325,
-          nPorts=1) "Describes the ambient pressure at the outlet"
-                                                         annotation (Placement(
-              transformation(
-              extent={{-10,-10},{10,10}},
-              rotation=180,
-              origin={60,54})));
-         Modelica.Blocks.Interfaces.RealInput watFlo "Water flow rate in gpm"
-           annotation (Placement(transformation(extent={{-140,-70},{-100,-30}})));
-        Buildings.Fluid.Sensors.Temperature senTem(redeclare package Medium = Medium)
-          annotation (Placement(transformation(extent={{20,70},{40,90}})));
-        Modelica.Blocks.Interfaces.RealOutput TOut( unit = "K")
-          "Temperature of fluid exiting the fixture"
-          annotation (Placement(transformation(extent={{100,70},{120,90}})));
-        Modelica.Blocks.Sources.RealExpression realExpression(y=val.m_flow)
-          annotation (Placement(transformation(extent={{-92,-94},{-72,-74}})));
-        Modelica.Blocks.Interfaces.RealOutput floOut
-          annotation (Placement(transformation(extent={{100,-94},{120,-74}})));
-        Buildings.Controls.Continuous.LimPID conPID(
-          controllerType=Modelica.Blocks.Types.SimpleController.PID,
-          k=PID_P,
-          Ti=PID_I,
-          Td=PID_D)
-                annotation (Placement(transformation(extent={{-68,-60},{-48,-40}})));
-        Modelica.Blocks.Logical.GreaterThreshold greaterThreshold(threshold=0)
-          annotation (Placement(transformation(extent={{-86,-24},{-66,-4}})));
-        Modelica.Blocks.Math.BooleanToReal booleanToReal
-          annotation (Placement(transformation(extent={{-54,-24},{-34,-4}})));
-        Modelica.Blocks.Math.Product product1 annotation (Placement(
-              transformation(
-              extent={{-10,-10},{10,10}},
-              rotation=90,
-              origin={0,16})));
-        Modelica.Blocks.Math.Gain gain(k=1/0.063)
-          annotation (Placement(transformation(extent={{46,-94},{66,-74}})));
-      equation
-        connect(Inlet, val.port_a) annotation (Line(
-            points={{-100,54},{-10,54}},
-            color={0,127,255},
-            smooth=Smooth.None));
-        connect(val.port_b, PAmb.ports[1]) annotation (Line(
-            points={{10,54},{50,54}},
-            color={0,127,255},
-            smooth=Smooth.None));
-        connect(val.port_b, senTem.port) annotation (Line(
-            points={{10,54},{30,54},{30,70}},
-            color={0,127,255},
-            smooth=Smooth.None));
-        connect(senTem.T, TOut) annotation (Line(
-            points={{37,80},{110,80}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(watFlo, conPID.u_s) annotation (Line(
-            points={{-120,-50},{-70,-50}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(realExpression.y, conPID.u_m) annotation (Line(
-            points={{-71,-84},{-58,-84},{-58,-62}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(greaterThreshold.y, booleanToReal.u) annotation (Line(
-            points={{-65,-14},{-56,-14}},
-            color={255,0,255},
-            smooth=Smooth.None));
-        connect(watFlo, greaterThreshold.u) annotation (Line(
-            points={{-120,-50},{-96,-50},{-96,-14},{-88,-14}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(booleanToReal.y, product1.u1) annotation (Line(
-            points={{-33,-14},{-6,-14},{-6,4}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(conPID.y, product1.u2) annotation (Line(
-            points={{-47,-50},{6,-50},{6,4}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(product1.y, val.y) annotation (Line(
-            points={{0,27},{0,42}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(realExpression.y, gain.u) annotation (Line(
-            points={{-71,-84},{44,-84}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(gain.y, floOut) annotation (Line(
-            points={{67,-84},{110,-84}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                  -100},{100,100}}), graphics),
-                  Documentation(info="<html>
-            <p>
-            This model can be used to control a fluid flow rate to the user-specified flow rate. The inputs are a connection to the hot water system and a hot water draw flow rate.
-            This version of the model is intended to be used with water flow rate in gal/min used as the input. Because the valve model works in kg/s unit conversions are
-            performed to make the output flow rate read in gal (Assumption: The density of water is constantly 1 kg/L).
-            </p>
-            <p>
-            This model uses a PId controller to modulate the water flow rate instead of the constant gain controller. The advantage of this model is that it does not require the
-             user to adjust the gain value until the simulated flow rate matches the desired flow rate. The disadvantage is that the PID controller will not be able to react
-             and adjust the valve to the desired flow rate instantly.<br>
-            </p>
-            <p>
-            In the original design the valve would not respond well to a desired flow rate of 0 L/s. Situations where draw flow rates instantly dropped to 0 would simulate extremely
-            slowly. The models comparing the flow rate to 0 and setting the valve position to 0 when there is no flow were added to resolve this issue.<br>
-            </p> 
-            </html>",
-                  revisions="<html>
-            <ul>
-            <li>
-            Mar 28, 2013 by Peter Grant:<br>
-            First implementation            
-            </ul>
-            </li>
-            </html>"));
-      end EndUseGPMPID;
-
-      model EndUseLPSTwoBranch
-        "Model of a pipe in a water distribution system. Assumes input flow units are L/s. Includes pipes for both hot and cold water"
-        extends Modelica.Blocks.Interfaces.BlockIcon;
-
-        replaceable package Medium = Modelica.Media.Interfaces.PartialMedium
-          "Fluid in the system";
-
-        parameter Modelica.SIunits.Temperature T_start
-          "Initial temperature in the valve";
-
-        parameter Real PID_P "Proportional term for the PID controller";
-        parameter Modelica.SIunits.Time PID_I
-          "Integral term for the PID controller";
-        parameter Modelica.SIunits.Time PID_D
-          "Derivative term for the PID controller";
-
-        parameter Real gain=1/13.25 "Gain for controlling the flow valve";
-
-        Modelica.Fluid.Interfaces.FluidPort_a hotIn(redeclare package Medium = Medium)
-          "Inlet for hot water coming from the branch"
-          annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
-         Buildings.Fluid.Actuators.Valves.ThreeWayLinear
-                                                       val(riseTime=0.00000001,
-             y_start=0,
-           redeclare package Medium = Medium,
-           m_flow_nominal=0.06,
-           dpValve_nominal=1,
-          l={1e-10,1e-10},
-          T_start=T_start,
-          tau=0.0000001)
-           annotation (Placement(transformation(extent={{-72,10},{-52,-10}})));
-        Buildings.Fluid.Sources.Boundary_pT PAmb(          redeclare package
-            Medium =
-              Medium,
-          p=101325,
-          nPorts=1) "Describes the ambient pressure at the outlet"
-                                                         annotation (Placement(
-              transformation(
-              extent={{-10,-10},{10,10}},
-              rotation=180,
-              origin={74,0})));
-         Modelica.Blocks.Interfaces.RealInput TOutDes
-          "Desired outlet water temperature"
-           annotation (Placement(transformation(extent={{-140,-70},{-100,-30}})));
-        Buildings.Fluid.Sensors.Temperature senTem(redeclare package Medium = Medium)
-          annotation (Placement(transformation(extent={{-54,-42},{-34,-62}})));
-        Modelica.Blocks.Interfaces.RealOutput TOut( unit = "K")
-          "Temperature of fluid exiting the fixture"
-          annotation (Placement(transformation(extent={{100,-44},{120,-24}})));
-        Modelica.Fluid.Interfaces.FluidPort_a colIn(redeclare package Medium = Medium)
-          "Inlet connected to the cold water branch"
-          annotation (Placement(transformation(extent={{-110,26},{-90,46}})));
-        Buildings.Controls.Continuous.LimPID conPID(
-          controllerType=Modelica.Blocks.Types.SimpleController.PID,
-          k=PID_P,
-          Ti=PID_I,
-          Td=PID_D)
-          annotation (Placement(transformation(extent={{-92,-60},{-72,-40}})));
-        Buildings.Fluid.Actuators.Valves.TwoWayLinear val1(
-          redeclare package Medium = Medium,
-          m_flow_nominal=0.06,
-          dpValve_nominal=1,
-          l=1e-8,
-          riseTime=0.0000001,
-          y_start=0)
-          annotation (Placement(transformation(extent={{22,-10},{42,10}})));
-        Modelica.Blocks.Interfaces.RealInput WatFlowDes
-          annotation (Placement(transformation(extent={{-140,50},{-100,90}})));
-        Modelica.Blocks.Interfaces.RealOutput WatFloAct
-          annotation (Placement(transformation(extent={{100,50},{120,70}})));
-         Modelica.Blocks.Math.Gain valPosId(k=gain)
-          "Identifies the position of the valve needed for the desired flow rate"
-           annotation (Placement(transformation(extent={{-74,60},{-54,80}})));
-         Modelica.Blocks.Math.Min valCon "Controls the valve position"
-           annotation (Placement(transformation(extent={{-8,54},{12,74}})));
-         Modelica.Blocks.Sources.Constant Max(k=1)
-          "States that the valve cannot open beyond 100%"
-           annotation (Placement(transformation(extent={{-54,28},{-34,48}})));
-        Modelica.Blocks.Sources.RealExpression realExpression(y=val1.m_flow)
-          annotation (Placement(transformation(extent={{56,50},{76,70}})));
-        Buildings.Fluid.Sensors.Temperature senTem1(
-                                                   redeclare package Medium = Medium)
-          annotation (Placement(transformation(extent={{-92,10},{-72,30}})));
-      equation
-        connect(senTem.T, TOut) annotation (Line(
-            points={{-37,-52},{36,-52},{36,-34},{110,-34}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(hotIn, val.port_1) annotation (Line(
-            points={{-100,4.44089e-16},{-86,4.44089e-16},{-86,0},{-72,0}},
-            color={0,127,255},
-            smooth=Smooth.None));
-        connect(val.port_3, colIn) annotation (Line(
-            points={{-62,10},{-62,36},{-100,36}},
-            color={0,127,255},
-            smooth=Smooth.None));
-        connect(val.port_2, senTem.port) annotation (Line(
-            points={{-52,0},{-44,0},{-44,-42}},
-            color={0,127,255},
-            smooth=Smooth.None));
-        connect(TOutDes, conPID.u_s) annotation (Line(
-            points={{-120,-50},{-94,-50}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(conPID.y, val.y) annotation (Line(
-            points={{-71,-50},{-62,-50},{-62,-12}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(senTem.T, conPID.u_m) annotation (Line(
-            points={{-37,-52},{90,-52},{90,-80},{-82,-80},{-82,-62}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(val.port_2, val1.port_a) annotation (Line(
-            points={{-52,0},{22,0}},
-            color={0,127,255},
-            smooth=Smooth.None));
-        connect(val1.port_b, PAmb.ports[1]) annotation (Line(
-            points={{42,0},{64,0}},
-            color={0,127,255},
-            smooth=Smooth.None));
-        connect(WatFlowDes, valPosId.u) annotation (Line(
-            points={{-120,70},{-76,70}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(valPosId.y, valCon.u1) annotation (Line(
-            points={{-53,70},{-10,70}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(Max.y, valCon.u2) annotation (Line(
-            points={{-33,38},{-24,38},{-24,58},{-10,58}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(valCon.y, val1.y) annotation (Line(
-            points={{13,64},{32,64},{32,12}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(realExpression.y, WatFloAct) annotation (Line(
-            points={{77,60},{110,60}},
-            color={0,0,127},
-            smooth=Smooth.None));
-
-        connect(hotIn, senTem1.port) annotation (Line(
-            points={{-100,0},{-82,0},{-82,10}},
-            color={0,127,255},
-            smooth=Smooth.None));
-        annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                  -100},{100,100}}), graphics),
-                  Documentation(info="<html>
-            <p>
-            This model allows the user to describe a hot water draw in terms of the conditions leaving the fixutre. The model then uses two separate valves to control the system
-            (system referring to water heater combined with distribution system) such that the desired water flow leaves the fixture. Progressing from the draw to the water
-            heater the two valves are:<br>
-            A two-way valve using the gain method (see WaterHeatingLibrary.HWDis.Components.EndUseLPS) to control the flow rate out of the draw.<br>
-            A three-way valve using a PID controller to determine the mixture of hot and cold water. The PID controller adjusts the three-way valve position until the outlet
-            temperature matches the input from the user.
-            </p>
-            <p>
-            The water flow rate is controlled by opening/closing the valve such that the water flow rate in the fluid line matches the flow rate specified by the user. The intent
-            is that the user can specify a flow rate in a text input file and the valve controls the fluid path to match that flow rate. When using this component to create models
-            the gain value must be adjusted until the system flow matches the intended flow.
-            </p>     
-            <p>   
-            This version of the model is intended to be used with water flow rate in L/s used as the input. Because the valve model works in kg/s no unit conversions are
-            performed to make the output flow rate read in L/s (Assumption: The density of water is constantly 1 kg/L).<br>
-            </p>    
-            </html>",
-                  revisions="<html>
-            <ul>
-            <li>
-            Mar 28, by Peter Grant:<br>
-            First implementation
-            </ul>
-            </li>
-            </html>"));
-      end EndUseLPSTwoBranch;
-
-      model EndUseGPMTwoBranch
-        "Model of a pipe in a water distribution system. Assumes input flow units are GPM. Includes pipes for both hot and cold water"
-        extends Modelica.Blocks.Interfaces.BlockIcon;
-
-        replaceable package Medium = Modelica.Media.Interfaces.PartialMedium
-          "Fluid in the system";
-
-        parameter Modelica.SIunits.Temperature T_start
-          "Initial temperature in the valve";
-
-        parameter Real PID_P "Proportional term for the PID controller";
-        parameter Modelica.SIunits.Time PID_I
-          "Integral term for the PID controller";
-        parameter Modelica.SIunits.Time PID_D
-          "Derivative term for the PID controller";
-
-        parameter Real gain=1/13.25 "Gain for controlling the flow valve";
-
-        Modelica.Fluid.Interfaces.FluidPort_a hotIn(redeclare package Medium = Medium)
-          "Inlet for hot water coming from the branch"
-          annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
-         Buildings.Fluid.Actuators.Valves.ThreeWayLinear
-                                                       val(riseTime=0.00000001,
-             y_start=0,
-           redeclare package Medium = Medium,
-           m_flow_nominal=0.06,
-           dpValve_nominal=1,
-          l={1e-10,1e-10},
-          T_start=T_start,
-          tau=0.0000001)
-           annotation (Placement(transformation(extent={{-72,10},{-52,-10}})));
-        Buildings.Fluid.Sources.Boundary_pT PAmb(          redeclare package
-            Medium =
-              Medium,
-          p=101325,
-          nPorts=1) "Describes the ambient pressure at the outlet"
-                                                         annotation (Placement(
-              transformation(
-              extent={{-10,-10},{10,10}},
-              rotation=180,
-              origin={74,0})));
-         Modelica.Blocks.Interfaces.RealInput TOutDes
-          "Desired outlet water temperature"
-           annotation (Placement(transformation(extent={{-140,-70},{-100,-30}})));
-        Buildings.Fluid.Sensors.Temperature senTem(redeclare package Medium = Medium)
-          annotation (Placement(transformation(extent={{-54,-42},{-34,-62}})));
-        Modelica.Blocks.Interfaces.RealOutput TOut( unit = "K")
-          "Temperature of fluid exiting the fixture"
-          annotation (Placement(transformation(extent={{100,-44},{120,-24}})));
-        Modelica.Fluid.Interfaces.FluidPort_a colIn(redeclare package Medium = Medium)
-          "Inlet connected to the cold water branch"
-          annotation (Placement(transformation(extent={{-110,26},{-90,46}})));
-        Buildings.Controls.Continuous.LimPID conPID(
-          controllerType=Modelica.Blocks.Types.SimpleController.PID,
-          k=PID_P,
-          Ti=PID_I,
-          Td=PID_D)
-          annotation (Placement(transformation(extent={{-92,-60},{-72,-40}})));
-        Buildings.Fluid.Actuators.Valves.TwoWayLinear val1(
-          redeclare package Medium = Medium,
-          m_flow_nominal=0.06,
-          dpValve_nominal=1,
-          l=1e-8,
-          riseTime=0.0000001,
-          y_start=0)
-          annotation (Placement(transformation(extent={{22,-10},{42,10}})));
-        Modelica.Blocks.Interfaces.RealInput WatFlowDes
-          annotation (Placement(transformation(extent={{-140,50},{-100,90}})));
-        Modelica.Blocks.Interfaces.RealOutput WatFloAct
-          annotation (Placement(transformation(extent={{100,50},{120,70}})));
-         Modelica.Blocks.Math.Gain valPosId(k=gain)
-          "Identifies the position of the valve needed for the desired flow rate"
-           annotation (Placement(transformation(extent={{-74,60},{-54,80}})));
-         Modelica.Blocks.Math.Min valCon "Controls the valve position"
-           annotation (Placement(transformation(extent={{-8,54},{12,74}})));
-         Modelica.Blocks.Sources.Constant Max(k=1)
-          "States that the valve cannot open beyond 100%"
-           annotation (Placement(transformation(extent={{-54,28},{-34,48}})));
-        Modelica.Blocks.Sources.RealExpression realExpression(y=val1.m_flow)
-          annotation (Placement(transformation(extent={{40,50},{60,70}})));
-        Buildings.Fluid.Sensors.Temperature senTem1(
-                                                   redeclare package Medium = Medium)
-          annotation (Placement(transformation(extent={{-92,10},{-72,30}})));
-        Modelica.Blocks.Math.Gain gain1(k=1/0.063)
-          annotation (Placement(transformation(extent={{74,54},{86,66}})));
-      equation
-        connect(senTem.T, TOut) annotation (Line(
-            points={{-37,-52},{36,-52},{36,-34},{110,-34}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(hotIn, val.port_1) annotation (Line(
-            points={{-100,4.44089e-16},{-86,4.44089e-16},{-86,0},{-72,0}},
-            color={0,127,255},
-            smooth=Smooth.None));
-        connect(val.port_3, colIn) annotation (Line(
-            points={{-62,10},{-62,36},{-100,36}},
-            color={0,127,255},
-            smooth=Smooth.None));
-        connect(val.port_2, senTem.port) annotation (Line(
-            points={{-52,0},{-44,0},{-44,-42}},
-            color={0,127,255},
-            smooth=Smooth.None));
-        connect(TOutDes, conPID.u_s) annotation (Line(
-            points={{-120,-50},{-94,-50}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(conPID.y, val.y) annotation (Line(
-            points={{-71,-50},{-62,-50},{-62,-12}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(senTem.T, conPID.u_m) annotation (Line(
-            points={{-37,-52},{90,-52},{90,-80},{-82,-80},{-82,-62}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(val.port_2, val1.port_a) annotation (Line(
-            points={{-52,0},{22,0}},
-            color={0,127,255},
-            smooth=Smooth.None));
-        connect(val1.port_b, PAmb.ports[1]) annotation (Line(
-            points={{42,0},{64,0}},
-            color={0,127,255},
-            smooth=Smooth.None));
-        connect(WatFlowDes, valPosId.u) annotation (Line(
-            points={{-120,70},{-76,70}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(valPosId.y, valCon.u1) annotation (Line(
-            points={{-53,70},{-10,70}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(Max.y, valCon.u2) annotation (Line(
-            points={{-33,38},{-24,38},{-24,58},{-10,58}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(valCon.y, val1.y) annotation (Line(
-            points={{13,64},{32,64},{32,12}},
-            color={0,0,127},
-            smooth=Smooth.None));
-
-        connect(hotIn, senTem1.port) annotation (Line(
-            points={{-100,0},{-82,0},{-82,10}},
-            color={0,127,255},
-            smooth=Smooth.None));
-        connect(realExpression.y, gain1.u) annotation (Line(
-            points={{61,60},{72.8,60}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(gain1.y, WatFloAct) annotation (Line(
-            points={{86.6,60},{110,60}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                  -100},{100,100}}), graphics),
-                  Documentation(info="<html>
-            <p>
-            This model allows the user to describe a hot water draw in terms of the conditions leaving the fixutre. The model then uses two separate valves to control the system
-            (system referring to water heater combined with distribution system) such that the desired water flow leaves the fixture. Progressing from the draw to the water
-            heater the two valves are:<br>
-            A two-way valve using the gain method (see WaterHeatingLibrary.HWDis.Components.EndUseLPS) to control the flow rate out of the draw.<br>
-            A three-way valve using a PID controller to determine the mixture of hot and cold water. The PID controller adjusts the three-way valve position until the outlet
-            temperature matches the input from the user.
-            </p>
-            <p>
-            The water flow rate is controlled by opening/closing the valve such that the water flow rate in the fluid line matches the flow rate specified by the user. The intent
-            is that the user can specify a flow rate in a text input file and the valve controls the fluid path to match that flow rate. When using this component to create models
-            the gain value must be adjusted until the system flow matches the intended flow.
-            </p>     
-            <p>   
-            This version of the model is intended to be used with water flow rate in gal/min used as the input. Because the valve model works in kg/s unit conversions are
-            performed to make the output flow rate read in gal/min (Assumption: The density of water is constantly 1 kg/L).<br>
-            </p>    
-            </html>",
-                  revisions="<html>
-            <ul>
-            <li>
-            Mar 28, by Peter Grant:<br>
-            First implementation
-            </ul>
-            </li>
-            </html>"));
-      end EndUseGPMTwoBranch;
-
-      model EndUseLPSTwoBranchPID
+      model EndUseTwoBranch
         "Model of a pipe in a water distribution system. Assumes input flow units are L/s. Includes pipes for both hot and cold water"
         extends Modelica.Blocks.Interfaces.BlockIcon;
 
@@ -6603,143 +6504,107 @@ First implementation.
           "Inlet for hot water coming from the branch"
           annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
          Buildings.Fluid.Actuators.Valves.ThreeWayLinear
-                                                       val(riseTime=0.00000001,
+                                                       val(
              y_start=0,
            redeclare package Medium = Medium,
            m_flow_nominal=0.06,
            dpValve_nominal=1,
           l={1e-10,1e-10},
           T_start=T_start,
-          tau=0.0000001)
-           annotation (Placement(transformation(extent={{-72,10},{-52,-10}})));
-        Buildings.Fluid.Sources.Boundary_pT PAmb(          redeclare package
-            Medium =
-              Medium,
-          p=101325,
-          nPorts=1) "Describes the ambient pressure at the outlet"
-                                                         annotation (Placement(
-              transformation(
-              extent={{-10,-10},{10,10}},
-              rotation=180,
-              origin={74,0})));
+          tau=0.00001,
+          riseTime=0.00001,
+          fraK=1)
+           annotation (Placement(transformation(extent={{-38,10},{-18,-10}})));
          Modelica.Blocks.Interfaces.RealInput TOutDes
           "Desired outlet water temperature"
            annotation (Placement(transformation(extent={{-140,-70},{-100,-30}})));
-        Buildings.Fluid.Sensors.Temperature senTem(redeclare package Medium = Medium)
-          annotation (Placement(transformation(extent={{-54,-42},{-34,-62}})));
+        Buildings.Fluid.Sensors.TemperatureTwoPort
+                                            senTem(redeclare package Medium = Medium,
+          m_flow_nominal=0.063,
+          tau=0.000001,
+          T_start=T_start)
+          annotation (Placement(transformation(extent={{0,10},{20,-10}})));
         Modelica.Blocks.Interfaces.RealOutput TOut( unit = "K")
           "Temperature of fluid exiting the fixture"
           annotation (Placement(transformation(extent={{100,-44},{120,-24}})));
         Modelica.Fluid.Interfaces.FluidPort_a colIn(redeclare package Medium = Medium)
           "Inlet connected to the cold water branch"
           annotation (Placement(transformation(extent={{-110,26},{-90,46}})));
-        Buildings.Controls.Continuous.LimPID conPID(
-          controllerType=Modelica.Blocks.Types.SimpleController.PID,
-          k=PID_P_3,
-          Ti=PID_I_3,
-          Td=PID_D_3)
-          annotation (Placement(transformation(extent={{-92,-60},{-72,-40}})));
-        Buildings.Fluid.Actuators.Valves.TwoWayLinear val1(
-          redeclare package Medium = Medium,
-          m_flow_nominal=0.06,
-          dpValve_nominal=1,
-          l=1e-8,
-          riseTime=0.0000001,
-          y_start=0)
-          annotation (Placement(transformation(extent={{22,-10},{42,10}})));
+        BaseClasses.FeedForwardController    conPID(redeclare package Medium =
+              Medium)
+          annotation (Placement(transformation(extent={{-58,-54},{-38,-34}})));
         Modelica.Blocks.Interfaces.RealInput WatFlowDes
           annotation (Placement(transformation(extent={{-140,60},{-100,100}})));
-        Modelica.Blocks.Interfaces.RealOutput WatFloAct
-          annotation (Placement(transformation(extent={{100,50},{120,70}})));
-        Modelica.Blocks.Sources.RealExpression realExpression(y=val1.m_flow)
-          annotation (Placement(transformation(extent={{56,50},{76,70}})));
-        Buildings.Fluid.Sensors.Temperature senTem1(
-                                                   redeclare package Medium = Medium)
-          annotation (Placement(transformation(extent={{-92,10},{-72,30}})));
-        Buildings.Controls.Continuous.LimPID conPID1(
-          controllerType=Modelica.Blocks.Types.SimpleController.PID,
-          k=PID_P_2,
-          Ti=PID_I_2,
-          Td=PID_D_2)
-          annotation (Placement(transformation(extent={{-64,90},{-44,70}})));
-        Modelica.Blocks.Logical.GreaterThreshold greaterThreshold
-          annotation (Placement(transformation(extent={{-72,44},{-52,64}})));
-        Modelica.Blocks.Math.BooleanToReal booleanToReal
-          annotation (Placement(transformation(extent={{-42,44},{-22,64}})));
-        Modelica.Blocks.Math.Product product1
-          annotation (Placement(transformation(extent={{-8,50},{12,70}})));
+        Buildings.Fluid.Sources.MassFlowSource_T boundary(
+          nPorts=1,
+          redeclare package Medium = Medium,
+          use_m_flow_in=true)
+          annotation (Placement(transformation(extent={{80,10},{60,-10}})));
+        Modelica.Blocks.Math.Gain gain(k=-1)
+          annotation (Placement(transformation(extent={{-40,70},{-20,90}})));
+        Buildings.Fluid.Sensors.SpecificEnthalpyTwoPort colEnt(
+          redeclare package Medium = Medium,
+          m_flow_nominal=0.063,
+          tau=0.00001)
+          annotation (Placement(transformation(extent={{-92,46},{-72,26}})));
+        Buildings.Fluid.Sensors.SpecificEnthalpyTwoPort hotEnt(
+          redeclare package Medium = Medium,
+          m_flow_nominal=0.063,
+          tau=0.00001)
+          annotation (Placement(transformation(extent={{-76,10},{-56,-10}})));
       equation
         connect(senTem.T, TOut) annotation (Line(
-            points={{-37,-52},{36,-52},{36,-34},{110,-34}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(hotIn, val.port_1) annotation (Line(
-            points={{-100,4.44089e-16},{-86,4.44089e-16},{-86,0},{-72,0}},
-            color={0,127,255},
-            smooth=Smooth.None));
-        connect(val.port_3, colIn) annotation (Line(
-            points={{-62,10},{-62,36},{-100,36}},
-            color={0,127,255},
-            smooth=Smooth.None));
-        connect(val.port_2, senTem.port) annotation (Line(
-            points={{-52,0},{-44,0},{-44,-42}},
-            color={0,127,255},
-            smooth=Smooth.None));
-        connect(TOutDes, conPID.u_s) annotation (Line(
-            points={{-120,-50},{-94,-50}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(conPID.y, val.y) annotation (Line(
-            points={{-71,-50},{-62,-50},{-62,-12}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(senTem.T, conPID.u_m) annotation (Line(
-            points={{-37,-52},{90,-52},{90,-80},{-82,-80},{-82,-62}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(val.port_2, val1.port_a) annotation (Line(
-            points={{-52,0},{22,0}},
-            color={0,127,255},
-            smooth=Smooth.None));
-        connect(val1.port_b, PAmb.ports[1]) annotation (Line(
-            points={{42,0},{64,0}},
-            color={0,127,255},
-            smooth=Smooth.None));
-        connect(realExpression.y, WatFloAct) annotation (Line(
-            points={{77,60},{110,60}},
+            points={{10,-11},{10,-34},{110,-34}},
             color={0,0,127},
             smooth=Smooth.None));
 
-        connect(hotIn, senTem1.port) annotation (Line(
-            points={{-100,0},{-82,0},{-82,10}},
+        connect(conPID.y, val.y) annotation (Line(
+            points={{-37,-44},{-28,-44},{-28,-12}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(val.port_2, senTem.port_a) annotation (Line(
+            points={{-18,0},{0,0}},
             color={0,127,255},
             smooth=Smooth.None));
-        connect(WatFlowDes, conPID1.u_s) annotation (Line(
-            points={{-120,80},{-66,80}},
+        connect(senTem.port_b, boundary.ports[1]) annotation (Line(
+            points={{20,0},{60,0}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(WatFlowDes, gain.u) annotation (Line(
+            points={{-120,80},{-42,80}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(conPID1.u_m, realExpression.y) annotation (Line(
-            points={{-54,92},{-54,96},{80,96},{80,60},{77,60}},
+        connect(gain.y, boundary.m_flow_in) annotation (Line(
+            points={{-19,80},{0,80},{0,20},{94,20},{94,-8},{80,-8}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(WatFlowDes, greaterThreshold.u) annotation (Line(
-            points={{-120,80},{-88,80},{-88,54},{-74,54}},
+        connect(colIn, colEnt.port_a) annotation (Line(
+            points={{-100,36},{-92,36}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(colEnt.port_b, val.port_3) annotation (Line(
+            points={{-72,36},{-28,36},{-28,10}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(hotIn, hotEnt.port_a) annotation (Line(
+            points={{-100,4.44089e-16},{-98,4.44089e-16},{-98,-6.66134e-16},{
+                -76,-6.66134e-16}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(hotEnt.port_b, val.port_1) annotation (Line(
+            points={{-56,0},{-38,0}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(TOutDes, conPID.TOutDes) annotation (Line(
+            points={{-120,-50},{-60,-50}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(greaterThreshold.y, booleanToReal.u) annotation (Line(
-            points={{-51,54},{-44,54}},
-            color={255,0,255},
-            smooth=Smooth.None));
-        connect(conPID1.y, product1.u1) annotation (Line(
-            points={{-43,80},{-16,80},{-16,66},{-10,66}},
+        connect(colEnt.h_out, conPID.colEnt) annotation (Line(
+            points={{-82,25},{-82,-44},{-60,-44}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(booleanToReal.y, product1.u2) annotation (Line(
-            points={{-21,54},{-10,54}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(product1.y, val1.y) annotation (Line(
-            points={{13,60},{32,60},{32,12}},
+        connect(hotEnt.h_out, conPID.hotEnt) annotation (Line(
+            points={{-66,-11},{-66,-38},{-60,-38}},
             color={0,0,127},
             smooth=Smooth.None));
         annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
@@ -6771,14 +6636,49 @@ First implementation.
             </ul>
             </li>
             </html>"));
-      end EndUseLPSTwoBranchPID;
+      end EndUseTwoBranch;
 
-      model Pipe "Pipe with finite volume discretization along flow path"
+      model EndUseGPMTwoBranch
+        "Model of a pipe in a water distribution system. Assumes input flow units are L/s. Includes pipes for both hot and cold water"
+        extends WaterHeatingLibrary.HWDis.Components.EndUseTwoBranch;
+
+        annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                  -100},{100,100}}), graphics),
+                  Documentation(info="<html>
+            <p>
+            This model allows the user to describe a hot water draw in terms of the conditions leaving the fixutre. The model then uses two separate valves to control the system
+            (system referring to water heater combined with distribution system) such that the desired water flow leaves the fixture. Progressing from the draw to the water
+            heater the two valves are:<br>
+            A two-way valve using a PID controller to control the flow rate out of the fixture. The PID controller adjusts the two-way valvue position until the flow rate matches
+            the input from the user.<br>
+            A three-way valve using a PID controller to determine the mixture of hot and cold water. The PID controller adjusts the three-way valve position until the outlet
+            temperature matches the input from the user.
+            </p>
+            <p>
+            The water flow rate is controlled by opening/closing the valve such that the water flow rate in the fluid line matches the flow rate specified by the user. The intent
+            is that the user can specify a flow rate in a text input file and the valve controls the fluid path to match that flow rate.
+            </p>     
+            <p>   
+            This version of the model is intended to be used with water flow rate in L/s used as the input. Because the valve model works in kg/s no unit conversions are
+            performed to make the output flow rate read in L/s (Assumption: The density of water is constantly 1 kg/L).<br>
+            </p>    
+            </html>",
+                  revisions="<html>
+            <ul>
+            <li>
+            Mar 28, by Peter Grant:<br>
+            First implementation
+            </ul>
+            </li>
+            </html>"));
+      end EndUseGPMTwoBranch;
+
+      model PipeLumpedCap
+        "Pipe model with capacitance of the pipe and water lumped together"
         extends WaterHeatingLibrary.HWDis.Components.BaseClasses.PartialPipe(
-          diameter=sqrt(4*m_flow_nominal/rho_nominal/v_nominal/Modelica.Constants.pi),
-          dp_nominal=2*dpStraightPipe_nominal,
+          dp_nominal=0,
           res(dp(nominal=length*10)),
-          vol(MixCoef=MixCoef));
+          vol(each MixCoef=MixCoef));
 
         // Because dp_nominal is a non-literal value, we set
         // dp.nominal=100 instead of the default dp.nominal=dp_nominal,
@@ -6789,94 +6689,118 @@ First implementation.
         parameter Real MixCoef "1 = perfect mixing, 0 = plug flow";
         parameter Modelica.SIunits.Length roughness(min=0) = 2.5e-5
           "Absolute roughness of pipe, with a default for a smooth steel pipe (dummy if use_roughness = false)";
-        final parameter Modelica.SIunits.Pressure dpStraightPipe_nominal=
-            Modelica.Fluid.Pipes.BaseClasses.WallFriction.Detailed.pressureLoss_m_flow(
-            m_flow=m_flow_nominal,
-            rho_a=rho_nominal,
-            rho_b=rho_nominal,
-            mu_a=mu_nominal,
-            mu_b=mu_nominal,
-            length=length,
-            diameter=diameter,
-            roughness=roughness,
-            m_flow_small=m_flow_small)
-          "Pressure loss of a straight pipe at m_flow_nominal";
+        parameter Modelica.SIunits.Length thicknessIns
+          "Thickness of insulation"
+          annotation(Dialog(group="Insulation"));
+        parameter Modelica.SIunits.ThermalConductivity lambdaIns
+          "Heat conductivity of insulation"
+          annotation(Dialog(group="Insulation"));
 
         parameter Boolean useMultipleHeatPorts=false
           "= true to use one heat port for each segment of the pipe, false to use a single heat port for the entire pipe";
 
-        Modelica.Thermal.HeatTransfer.Components.ThermalConductor conPipWal[nSeg](
-            each G=2*Modelica.Constants.pi*lambdaIns*length/nSeg/Modelica.Math.log((
-              diameter/2.0 + thicknessIns)/(diameter/2.0)))
-          "Thermal conductance through pipe wall"
+        Modelica.Thermal.HeatTransfer.Components.ThermalConductor conInsul[nSeg](
+            each G=lambdaIns/thicknessIns*Modelica.Constants.pi*(diameter_o +
+              thicknessIns)*length/nSeg) "Conductivity through the insulation"
           annotation (Placement(transformation(extent={{-46,-38},{-26,-18}})));
-        Modelica.Thermal.HeatTransfer.Components.ThermalCollector colAllToOne(m=nSeg) if
-             not useMultipleHeatPorts
-          "Connector to assign multiple heat ports to one heat port" annotation (
+
+        Buildings.HeatTransfer.Convection.Interior con[nSeg](
+          each til=til,
+          each conMod=Buildings.HeatTransfer.Types.InteriorConvection.Fixed,
+          each hFixed=6,
+          each A=Modelica.Constants.pi*(diameter_o + thicknessIns)*length/nSeg)
+                                                       annotation (Placement(
+              transformation(
+              extent={{-8,-8},{8,8}},
+              rotation=90,
+              origin={-50,26})));
+        NonCondensingTank.BaseClasses.LongWaveRadiationExchange rad[nSeg](each A=Modelica.Constants.pi
+              *(diameter_o + thicknessIns)*length/nSeg)
+                                    annotation (Placement(transformation(
+              extent={{-8,-8},{8,8}},
+              rotation=270,
+              origin={4,26})));
+        Modelica.Blocks.Interfaces.RealInput TAmb
+          "Ambient temperature surrounding the pipe (K)" annotation (Placement(
+              transformation(
+              extent={{-20,-20},{20,20}},
+              rotation=270,
+              origin={-50,120}), iconTransformation(
+              extent={{-10,-10},{10,10}},
+              rotation=270,
+              origin={-60,70})));
+        Modelica.Blocks.Interfaces.RealInput TRadMea
+          "Mean radiant temperature (K)"
+          annotation (Placement(transformation(
+              extent={{-20,-20},{20,20}},
+              rotation=270,
+              origin={30,120}), iconTransformation(
+              extent={{-10,-10},{10,10}},
+              rotation=270,
+              origin={60,70})));
+
+      protected
+        Buildings.HeatTransfer.Sources.PrescribedTemperature preTem[nSeg]
+                                                                    annotation (
             Placement(transformation(
-              extent={{-6,-6},{6,6}},
-              rotation=180,
-              origin={-50,10})));
+              extent={{-10,-10},{10,10}},
+              rotation=270,
+              origin={-50,48})));
 
-        Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort if not
-          useMultipleHeatPorts
-          "Single heat port that connects to outside of pipe wall (default, enabled when useMultipleHeatPorts=false)"
-          annotation (Placement(transformation(extent={{-10,40},{10,20}}),
-              iconTransformation(extent={{-10,60},{10,40}})));
-        Modelica.Fluid.Interfaces.HeatPorts_a heatPorts[nSeg] if
-             useMultipleHeatPorts
-          "Multiple heat ports that connect to outside of pipe wall (enabled if useMultipleHeatPorts=true)"
-          annotation (Placement(transformation(extent={{-10,-70},{11,-50}}),
-              iconTransformation(extent={{-30,-60},{30,-40}})));
-        Modelica.Blocks.Logical.Greater greater[nSeg]
-          annotation (Placement(transformation(extent={{-70,-20},{-62,-12}})));
-        Modelica.Blocks.Sources.Constant const[nSeg](k=0.0015)
-          annotation (Placement(transformation(extent={{-100,-40},{-90,-30}})));
-        Modelica.Blocks.Routing.Replicator replicator(nout=nSeg)
-          annotation (Placement(transformation(extent={{-82,-18},{-76,-12}})));
+        Modelica.Blocks.Sources.RealExpression u[nSeg](each y=ePipe) annotation (Placement(
+              transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=270,
+              origin={4,68})));
+        Modelica.Blocks.Routing.Replicator TRadMeaRep(nout=nSeg)  annotation (
+            Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=270,
+              origin={30,64})));
       equation
-
-        connect(conPipWal.port_b, vol.heatPort) annotation (Line(
-            points={{-26,-28},{-1,-28}},
-            color={191,0,0},
-            smooth=Smooth.None));
         if useMultipleHeatPorts then
-          connect(heatPorts, conPipWal.port_a) annotation (Line(
-              points={{0.5,-60},{-46,-60},{-46,-28}},
-              color={191,0,0},
-              smooth=Smooth.None));
         else
-          connect(colAllToOne.port_a, conPipWal.port_a) annotation (Line(
-              points={{-50,4},{-50,-28},{-46,-28}},
-              color={191,0,0},
-              smooth=Smooth.None));
-          connect(colAllToOne.port_b, heatPort) annotation (Line(
-              points={{-50,16},{-50,30},{5.55112e-16,30}},
-              color={191,0,0},
-              smooth=Smooth.None));
 
         end if;
-        connect(greater.y, vol.u) annotation (Line(
-            points={{-61.6,-16},{-26,-16},{-26,-24},{-3,-24}},
-            color={255,0,255},
+
+        connect(con.fluid, preTem.port) annotation (Line(
+            points={{-50,34},{-50,38}},
+            color={191,0,0},
             smooth=Smooth.None));
-        connect(const.y, greater.u2) annotation (Line(
-            points={{-89.5,-35},{-86,-35},{-86,-19.2},{-70.8,-19.2}},
+        connect(conInsul.port_a, con.solid) annotation (Line(
+            points={{-46,-28},{-50,-28},{-50,18}},
+            color={191,0,0},
+            smooth=Smooth.None));
+        connect(conInsul.port_a, rad.port) annotation (Line(
+            points={{-46,-28},{-50,-28},{-50,14},{4.16,14},{4.16,17.68}},
+            color={191,0,0},
+            smooth=Smooth.None));
+        connect(u.y, rad.u) annotation (Line(
+            points={{4,57},{4,35.6}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(replicator.y, greater.u1) annotation (Line(
-            points={{-75.7,-15},{-73.85,-15},{-73.85,-16},{-70.8,-16}},
+        connect(TRadMea, TRadMeaRep.u)  annotation (Line(
+            points={{30,120},{30,76}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(senMasFlo.m_flow, replicator.u) annotation (Line(
-            points={{-84,-11},{-84,-13},{-84,-15},{-82.6,-15}},
+        connect(TRadMeaRep.y, rad.T_In)  annotation (Line(
+            points={{30,53},{30,26},{13.6,26}},
             color={0,0,127},
+            smooth=Smooth.None));
+        connect(TAmbRep.y, preTem.T) annotation (Line(
+            points={{-50,67},{-50,60}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(conInsul.port_b, heaCap.port) annotation (Line(
+            points={{-26,-28},{-20,-28},{-20,-42}},
+            color={191,0,0},
             smooth=Smooth.None));
         annotation (
           Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                   -100},{100,100}}),
                   graphics),
-          Icon(graphics),
+          Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
+               graphics),
           defaultComponentName="pip",
           Documentation(info="<html>
 <p>
@@ -6916,7 +6840,19 @@ This model has been modified from the pipe model in the Buildings library. The b
 imitate the flow characteristics observed in experimental data a mixing parameter was added. The mixing parameter adjusts the enthalpy of water leaving a segment of the pipe
 to change the energy balance and allow for simualtion of different amounts of mixing.
 </p>
+<p>
+Other modifications from the Buildings library version include:<br>
+Added a capacitance model to to into account the thermal mass of the pipe.<br>
+Split the connection with the environment to use a separate temperature for convective and radiative heat transfer.
+</p>
 </html>",       revisions="<html>
+<ul>
+<li>
+Apr 3, 2013 by Peter Grant:<br>
+Added a capacitance model to include thermal mass of the pipe<br>
+Split heat transfer with ambient to include models for both convection and radiation
+</li>
+</ul>
 <ul>
 <li>
 Mar 28, 2013 by Peter Grant:<br>
@@ -6938,16 +6874,672 @@ First implementation.
 </li>
 </ul>
 </html>"));
-      end Pipe;
+      end PipeLumpedCap;
+
+      model PipeLumpedCapNoInsul
+        "Pipe model with capacitance of the pipe and water lumped together (No insulation)"
+        extends WaterHeatingLibrary.HWDis.Components.BaseClasses.PartialPipe(
+          diameter_i=sqrt(4*m_flow_nominal/rho_nominal/v_nominal/Modelica.Constants.pi),
+
+          dp_nominal=2*dpStraightPipe_nominal,
+          res(dp(nominal=length*10)),
+          vol(each MixCoef=MixCoef));
+
+        // Because dp_nominal is a non-literal value, we set
+        // dp.nominal=100 instead of the default dp.nominal=dp_nominal,
+        // because the latter is ignored by Dymola 2012 FD 01.
+
+        parameter Modelica.SIunits.Velocity v_nominal = 0.15
+          "Velocity at m_flow_nominal (used to compute default diameter)";
+        parameter Real MixCoef "1 = perfect mixing, 0 = plug flow";
+        parameter Modelica.SIunits.Length roughness(min=0) = 2.5e-5
+          "Absolute roughness of pipe, with a default for a smooth steel pipe (dummy if use_roughness = false)";
+        final parameter Modelica.SIunits.Pressure dpStraightPipe_nominal=
+            Modelica.Fluid.Pipes.BaseClasses.WallFriction.Detailed.pressureLoss_m_flow(
+            m_flow=m_flow_nominal,
+            rho_a=rho_nominal,
+            rho_b=rho_nominal,
+            mu_a=mu_nominal,
+            mu_b=mu_nominal,
+            length=length,
+            diameter=diameter_i,
+            roughness=roughness,
+            m_flow_small=m_flow_small)
+          "Pressure loss of a straight pipe at m_flow_nominal";
+
+        parameter Boolean useMultipleHeatPorts=false
+          "= true to use one heat port for each segment of the pipe, false to use a single heat port for the entire pipe";
+
+        parameter Modelica.SIunits.SpecificHeatCapacity c_p_pip
+          "Specific heat of the material used in the pipe";
+        parameter Modelica.SIunits.Density rho_pip
+          "Density of the material used in the pipe";
+        parameter Modelica.SIunits.Length diameter_o
+          "Outer diameter of the pipe";
+        parameter Modelica.SIunits.Angle til
+          "Tilt angle of the pipe (0= horizontal)";
+
+        Buildings.HeatTransfer.Convection.Interior con[nSeg](
+          each til=til,
+          each A=Modelica.Constants.pi*diameter_o*length/nSeg,
+          each conMod=Buildings.HeatTransfer.Types.InteriorConvection.Fixed,
+          each hFixed=6)                                    annotation (Placement(
+              transformation(
+              extent={{-8,-8},{8,8}},
+              rotation=90,
+              origin={-50,26})));
+        NonCondensingTank.BaseClasses.LongWaveRadiationExchange rad[nSeg](each A=Modelica.Constants.pi
+              *diameter_o*length/nSeg)
+                                    annotation (Placement(transformation(
+              extent={{-8,-8},{8,8}},
+              rotation=270,
+              origin={4,26})));
+        Modelica.Blocks.Interfaces.RealInput TAmb[nSeg]
+          "Ambient temperature surrounding the pipe (K)" annotation (Placement(
+              transformation(
+              extent={{-20,-20},{20,20}},
+              rotation=270,
+              origin={-50,120}), iconTransformation(
+              extent={{-10,-10},{10,10}},
+              rotation=270,
+              origin={-60,70})));
+        Modelica.Blocks.Interfaces.RealInput TRadMea
+          "Mean radiant temperature (K)"
+          annotation (Placement(transformation(
+              extent={{-20,-20},{20,20}},
+              rotation=270,
+              origin={46,120}), iconTransformation(
+              extent={{-10,-10},{10,10}},
+              rotation=270,
+              origin={60,70})));
+
+      protected
+        Buildings.HeatTransfer.Sources.PrescribedTemperature preTem[nSeg]
+                                                                    annotation (
+            Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=270,
+              origin={-50,48})));
+
+        Modelica.Blocks.Sources.RealExpression u[nSeg](each y=ePipe)
+          annotation (Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=270,
+              origin={4,60})));
+        Modelica.Blocks.Routing.Replicator TMeaRadRep(nout=nSeg) annotation (
+            Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=270,
+              origin={46,62})));
+      equation
+        if useMultipleHeatPorts then
+        else
+
+        end if;
+
+        connect(con.fluid, preTem.port) annotation (Line(
+            points={{-50,34},{-50,38}},
+            color={191,0,0},
+            smooth=Smooth.None));
+        connect(vol.heatPort, con.solid) annotation (Line(
+            points={{-1,-32},{-50,-32},{-50,18}},
+            color={191,0,0},
+            smooth=Smooth.None));
+        connect(vol.heatPort, rad.port) annotation (Line(
+            points={{-1,-32},{-50,-32},{-50,14},{4.16,14},{4.16,17.68}},
+            color={191,0,0},
+            smooth=Smooth.None));
+        connect(TAmbRep.y, preTem.T) annotation (Line(
+            points={{-50,67},{-50,60}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(u.y, rad.u)              annotation (Line(
+            points={{4,49},{4,35.6}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(rad.T_In, TMeaRadRep.y) annotation (Line(
+            points={{13.6,26},{46,26},{46,51}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(TRadMea, TMeaRadRep.u) annotation (Line(
+            points={{46,120},{46,74}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        annotation (
+          Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                  100}}),
+                  graphics),
+          Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
+               graphics),
+          defaultComponentName="pip",
+          Documentation(info="<html>
+<p>
+Model of a pipe with flow resistance and optional heat exchange with environment.
+</p>
+<p>
+If <code>useMultipleHeatPorts=false</code> (default option), the pipe uses a single heat port 
+for the heat exchange with the environment.
+If <code>useMultipleHeatPorts=true</code>, then one heat port for each segment of the pipe is
+used for the heat exchange with the environment.
+If the heat port is unconnected, then the pipe has no heat loss.
+</p>
+<p>
+The default value for the parameter <code>diameter</code> is computed such that the flow velocity
+is equal to <code>v_nominal=0.15</code> for a mass flow rate of <code>m_flow_nominal</code>.
+Both parameters, <code>diameter</code> and <code>v_nominal</code>, can be overwritten
+by the user.
+The default value for <code>dp_nominal</code> is two times the pressure drop that the pipe
+would have if it were straight with no fittings.
+The factor of two that takes into account the pressure loss of fittings can be overwritten.
+These fittings could also be explicitely modeled outside of this component using models from
+the package
+<a href=\"modelica://Modelica.Fluid.Fittings\">
+Modelica.Fluid.Fittings</a>.
+For mass flow rates other than <code>m_flow_nominal</code>, the model 
+<a href=\"modelica://Buildings.Fluid.FixedResistances.FixedResistanceDpM\">
+Buildings.Fluid.FixedResistances.FixedResistanceDpM</a> is used to
+compute the pressure drop.
+</p>
+<p>
+For a steady-state model of a flow resistance, use
+<a href=\"modelica://Buildings.Fluid.FixedResistances.FixedResistanceDpM\">
+Buildings.Fluid.FixedResistances.FixedResistanceDpM</a> instead of this model.
+</p>
+<p>
+This model has been modified from the pipe model in the Buildings library. The buildings library model assumes perfect mixing in each segment of the pipe. To more accurately
+imitate the flow characteristics observed in experimental data a mixing parameter was added. The mixing parameter adjusts the enthalpy of water leaving a segment of the pipe
+to change the energy balance and allow for simualtion of different amounts of mixing.
+</p>
+<p>
+Other modifications from the Buildings library version include:<br>
+Added a capacitance model to to into account the thermal mass of the pipe.<br>
+Split the connection with the environment to use a separate temperature for convective and radiative heat transfer.<br>
+Removed the component for insulation. This model can be used to simulate pipes without insulation (an error is generated if using 
+<a href=\"modelica://WaterHeatingLibrary.HWDis.Components.PipeLumpedCap\">WaterHeatingLibrary.HWDis.Components.PipeLumpedCap</a> instead of this model).<br>
+</p>
+
+</html>",       revisions="<html>
+<ul>
+<li>
+Apr 3, 2013 by Peter Grant:<br>
+Added a capacitance model to include thermal mass of the pipe<br>
+Split heat transfer with ambient to include models for both convection and radiation
+</li>
+</ul>
+<ul>
+<li>
+Mar 28, 2013 by Peter Grant:<br>
+Added mixing coefficient to ConservationEquation to model different amounts of mixing during draws<br>
+Included code to identify the start of a draw (used in ConservationEquation)
+</li>
+<li>
+February 22, 2012 by Michael Wetter:<br>
+Renamed <code>useMultipleHeatPort</code> to <code>useMultipleHeatPorts</code> and 
+used heat port connector from <code>Modelica.Fluid</code> package for vector of heat ports.
+</li>
+<li>
+February 15, 2012 by Michael Wetter:<br>
+Revised implementation and added default values.
+</li>
+<li>
+February 12, 2012 by Wangda Zuo:<br>
+First implementation.
+</li>
+</ul>
+</html>"));
+      end PipeLumpedCapNoInsul;
+
+      model PipeR "Pipe model with insulation specified using an R value"
+        extends WaterHeatingLibrary.HWDis.Components.BaseClasses.PartialPipe(
+          diameter_i=sqrt(4*m_flow_nominal/rho_nominal/v_nominal/Modelica.Constants.pi),
+
+          dp_nominal=2*dpStraightPipe_nominal,
+          res(dp(nominal=length*10)),
+          vol(each MixCoef=MixCoef));
+
+        // Because dp_nominal is a non-literal value, we set
+        // dp.nominal=100 instead of the default dp.nominal=dp_nominal,
+        // because the latter is ignored by Dymola 2012 FD 01.
+
+        parameter Modelica.SIunits.Velocity v_nominal = 0.15
+          "Velocity at m_flow_nominal (used to compute default diameter)";
+        parameter Real MixCoef "1 = perfect mixing, 0 = plug flow";
+        parameter Modelica.SIunits.Length roughness(min=0) = 2.5e-5
+          "Absolute roughness of pipe, with a default for a smooth steel pipe (dummy if use_roughness = false)";
+        parameter Modelica.SIunits.ThermalInsulance InsR
+          "R value of the insulation";
+        final parameter Modelica.SIunits.Pressure dpStraightPipe_nominal=
+            Modelica.Fluid.Pipes.BaseClasses.WallFriction.Detailed.pressureLoss_m_flow(
+            m_flow=m_flow_nominal,
+            rho_a=rho_nominal,
+            rho_b=rho_nominal,
+            mu_a=mu_nominal,
+            mu_b=mu_nominal,
+            length=length,
+            diameter=diameter_i,
+            roughness=roughness,
+            m_flow_small=m_flow_small)
+          "Pressure loss of a straight pipe at m_flow_nominal";
+
+        parameter Boolean useMultipleHeatPorts=false
+          "= true to use one heat port for each segment of the pipe, false to use a single heat port for the entire pipe";
+
+        parameter Modelica.SIunits.SpecificHeatCapacity c_p_pip
+          "Specific heat of the material used in the pipe";
+        parameter Modelica.SIunits.Density rho_pip
+          "Density of the material used in the pipe";
+        parameter Modelica.SIunits.Length diameter_o
+          "Outer diameter of the pipe";
+        parameter Modelica.SIunits.Angle til
+          "Tilt angle of the pipe (0= horizontal)";
+
+        Modelica.Thermal.HeatTransfer.Components.ThermalConductor conInsul[nSeg](each G=
+              Modelica.Constants.pi*(diameter_o)*length/nSeg*1/InsR)
+          "Conductivity through the insulation"
+          annotation (Placement(transformation(extent={{-50,-42},{-30,-22}})));
+
+        Modelica.Blocks.Interfaces.RealInput TAmb[nSeg]
+          "Ambient temperature surrounding the pipe (K)" annotation (Placement(
+              transformation(
+              extent={{-20,-20},{20,20}},
+              rotation=270,
+              origin={-50,120}), iconTransformation(
+              extent={{-10,-10},{10,10}},
+              rotation=270,
+              origin={-60,70})));
+        Buildings.HeatTransfer.Sources.PrescribedTemperature preTem[nSeg]
+                                                                    annotation (
+            Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=270,
+              origin={-50,42})));
+
+      equation
+        if useMultipleHeatPorts then
+        else
+
+        end if;
+
+        connect(preTem.port, conInsul.port_a) annotation (Line(
+            points={{-50,32},{-50,-32}},
+            color={191,0,0},
+            smooth=Smooth.None));
+        connect(conInsul.port_b, vol.heatPort) annotation (Line(
+            points={{-30,-32},{-1,-32}},
+            color={191,0,0},
+            smooth=Smooth.None));
+        connect(TAmbRep.y, preTem.T) annotation (Line(
+            points={{-50,67},{-50,54}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        annotation (
+          Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                  -100},{100,100}}),
+                  graphics),
+          Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}}),
+               graphics),
+          defaultComponentName="pip",
+          Documentation(info="<html>
+<p>
+Model of a pipe with flow resistance and optional heat exchange with environment.
+</p>
+<p>
+If <code>useMultipleHeatPorts=false</code> (default option), the pipe uses a single heat port 
+for the heat exchange with the environment.
+If <code>useMultipleHeatPorts=true</code>, then one heat port for each segment of the pipe is
+used for the heat exchange with the environment.
+If the heat port is unconnected, then the pipe has no heat loss.
+</p>
+<p>
+The default value for the parameter <code>diameter</code> is computed such that the flow velocity
+is equal to <code>v_nominal=0.15</code> for a mass flow rate of <code>m_flow_nominal</code>.
+Both parameters, <code>diameter</code> and <code>v_nominal</code>, can be overwritten
+by the user.
+The default value for <code>dp_nominal</code> is two times the pressure drop that the pipe
+would have if it were straight with no fittings.
+The factor of two that takes into account the pressure loss of fittings can be overwritten.
+These fittings could also be explicitely modeled outside of this component using models from
+the package
+<a href=\"modelica://Modelica.Fluid.Fittings\">
+Modelica.Fluid.Fittings</a>.
+For mass flow rates other than <code>m_flow_nominal</code>, the model 
+<a href=\"modelica://Buildings.Fluid.FixedResistances.FixedResistanceDpM\">
+Buildings.Fluid.FixedResistances.FixedResistanceDpM</a> is used to
+compute the pressure drop.
+</p>
+<p>
+For a steady-state model of a flow resistance, use
+<a href=\"modelica://Buildings.Fluid.FixedResistances.FixedResistanceDpM\">
+Buildings.Fluid.FixedResistances.FixedResistanceDpM</a> instead of this model.
+</p>
+<p>
+This model has been modified from the pipe model in the Buildings library. The buildings library model assumes perfect mixing in each segment of the pipe. To more accurately
+imitate the flow characteristics observed in experimental data a mixing parameter was added. The mixing parameter adjusts the enthalpy of water leaving a segment of the pipe
+to change the energy balance and allow for simualtion of different amounts of mixing.
+</p>
+<p>
+Other modifications from the Buildings library version include:<br>
+Added a capacitance model to to into account the thermal mass of the pipe.<br>
+</p>
+</html>",       revisions="<html>
+<ul>
+<li>
+Apr 3, 2013 by Peter Grant:<br>
+Added a capacitance model to include thermal mass of the pipe<br>
+Split heat transfer with ambient to include models for both convection and radiation
+</li>
+</ul>
+<ul>
+<li>
+Mar 28, 2013 by Peter Grant:<br>
+Added mixing coefficient to ConservationEquation to model different amounts of mixing during draws<br>
+Included code to identify the start of a draw (used in ConservationEquation)
+</li>
+<li>
+February 22, 2012 by Michael Wetter:<br>
+Renamed <code>useMultipleHeatPort</code> to <code>useMultipleHeatPorts</code> and 
+used heat port connector from <code>Modelica.Fluid</code> package for vector of heat ports.
+</li>
+<li>
+February 15, 2012 by Michael Wetter:<br>
+Revised implementation and added default values.
+</li>
+<li>
+February 12, 2012 by Wangda Zuo:<br>
+First implementation.
+</li>
+</ul>
+</html>"));
+      end PipeR;
+
+      model BasePipe "Pipe with finite volume discretization along flow path"
+        extends Buildings.Fluid.FixedResistances.BaseClasses.Pipe(
+         diameter=sqrt(4*m_flow_nominal/rho_nominal/v_nominal/Modelica.Constants.pi),
+         dp_nominal=2*dpStraightPipe_nominal,
+         res(dp(nominal=length*10)));
+        // Because dp_nominal is a non-literal value, we set
+        // dp.nominal=100 instead of the default dp.nominal=dp_nominal,
+        // because the latter is ignored by Dymola 2012 FD 01.
+
+        parameter Modelica.SIunits.Velocity v_nominal = 0.15
+          "Velocity at m_flow_nominal (used to compute default diameter)";
+        parameter Modelica.SIunits.Length roughness(min=0) = 2.5e-5
+          "Absolute roughness of pipe, with a default for a smooth steel pipe (dummy if use_roughness = false)";
+        final parameter Modelica.SIunits.Pressure dpStraightPipe_nominal=
+            Modelica.Fluid.Pipes.BaseClasses.WallFriction.Detailed.pressureLoss_m_flow(
+            m_flow=m_flow_nominal,
+            rho_a=rho_nominal,
+            rho_b=rho_nominal,
+            mu_a=mu_nominal,
+            mu_b=mu_nominal,
+            length=length,
+            diameter=diameter,
+            roughness=roughness,
+            m_flow_small=m_flow_small)
+          "Pressure loss of a straight pipe at m_flow_nominal";
+
+        parameter Boolean useMultipleHeatPorts=false
+          "= true to use one heat port for each segment of the pipe, false to use a single heat port for the entire pipe";
+
+        Modelica.Thermal.HeatTransfer.Components.ThermalConductor conPipWal[nSeg](
+            each G=2*Modelica.Constants.pi*lambdaIns*length/nSeg/Modelica.Math.log((
+              diameter/2.0 + thicknessIns)/(diameter/2.0)))
+          "Thermal conductance through pipe wall"
+          annotation (Placement(transformation(extent={{-28,-38},{-8,-18}})));
+        Modelica.Thermal.HeatTransfer.Components.ThermalCollector colAllToOne(m=nSeg) if
+             not useMultipleHeatPorts
+          "Connector to assign multiple heat ports to one heat port" annotation (
+            Placement(transformation(
+              extent={{-6,-6},{6,6}},
+              rotation=180,
+              origin={-50,10})));
+
+        Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort if not
+          useMultipleHeatPorts
+          "Single heat port that connects to outside of pipe wall (default, enabled when useMultipleHeatPorts=false)"
+          annotation (Placement(transformation(extent={{-10,40},{10,20}}),
+              iconTransformation(extent={{-10,60},{10,40}})));
+        Modelica.Fluid.Interfaces.HeatPorts_a heatPorts[nSeg] if
+             useMultipleHeatPorts
+          "Multiple heat ports that connect to outside of pipe wall (enabled if useMultipleHeatPorts=true)"
+          annotation (Placement(transformation(extent={{-10,-70},{11,-50}}),
+              iconTransformation(extent={{-30,-60},{30,-40}})));
+      equation
+
+        connect(conPipWal.port_b, vol.heatPort) annotation (Line(
+            points={{-8,-28},{-1,-28}},
+            color={191,0,0},
+            smooth=Smooth.None));
+        if useMultipleHeatPorts then
+          connect(heatPorts, conPipWal.port_a) annotation (Line(
+              points={{0.5,-60},{-50,-60},{-50,-28},{-28,-28}},
+              color={191,0,0},
+              smooth=Smooth.None));
+        else
+          connect(colAllToOne.port_a, conPipWal.port_a) annotation (Line(
+              points={{-50,4},{-50,-28},{-28,-28}},
+              color={191,0,0},
+              smooth=Smooth.None));
+          connect(colAllToOne.port_b, heatPort) annotation (Line(
+              points={{-50,16},{-50,30},{5.55112e-16,30}},
+              color={191,0,0},
+              smooth=Smooth.None));
+
+        end if;
+        annotation (
+          Diagram(graphics),
+          Icon(graphics),
+          defaultComponentName="pip",
+          Documentation(info="<html>
+<p>
+Model of a pipe with flow resistance and optional heat exchange with environment.
+</p>
+<p>
+If <code>useMultipleHeatPorts=false</code> (default option), the pipe uses a single heat port 
+for the heat exchange with the environment.
+If <code>useMultipleHeatPorts=true</code>, then one heat port for each segment of the pipe is
+used for the heat exchange with the environment.
+If the heat port is unconnected, then the pipe has no heat loss.
+</p>
+<p>
+The default value for the parameter <code>diameter</code> is computed such that the flow velocity
+is equal to <code>v_nominal=0.15</code> for a mass flow rate of <code>m_flow_nominal</code>.
+Both parameters, <code>diameter</code> and <code>v_nominal</code>, can be overwritten
+by the user.
+The default value for <code>dp_nominal</code> is two times the pressure drop that the pipe
+would have if it were straight with no fittings.
+The factor of two that takes into account the pressure loss of fittings can be overwritten.
+These fittings could also be explicitely modeled outside of this component using models from
+the package
+<a href=\"modelica://Modelica.Fluid.Fittings\">
+Modelica.Fluid.Fittings</a>.
+For mass flow rates other than <code>m_flow_nominal</code>, the model 
+<a href=\"modelica://Buildings.Fluid.FixedResistances.FixedResistanceDpM\">
+Buildings.Fluid.FixedResistances.FixedResistanceDpM</a> is used to
+compute the pressure drop.
+</p>
+<p>
+For a steady-state model of a flow resistance, use
+<a href=\"modelica://Buildings.Fluid.FixedResistances.FixedResistanceDpM\">
+Buildings.Fluid.FixedResistances.FixedResistanceDpM</a> instead of this model.
+</p>
+</html>",       revisions="<html>
+<ul>
+<li>
+February 22, 2012 by Michael Wetter:<br>
+Renamed <code>useMultipleHeatPort</code> to <code>useMultipleHeatPorts</code> and 
+used heat port connector from <code>Modelica.Fluid</code> package for vector of heat ports.
+</li>
+<li>
+February 15, 2012 by Michael Wetter:<br>
+Revised implementation and added default values.
+</li>
+<li>
+February 12, 2012 by Wangda Zuo:<br>
+First implementation.
+</li>
+</ul>
+</html>"));
+      end BasePipe;
 
       package Examples
+        model FlowReduction
+          import WaterHeatingLibrary;
+          extends Modelica.Icons.Example;
+          WaterHeatingLibrary.HWDis.Components.FlowReduction floRed(
+            nDra=1)
+            annotation (Placement(transformation(extent={{-8,-52},{12,-32}})));
+          WaterHeatingLibrary.HWDis.Components.PipeLumpedCap
+                                                     pip(
+            redeclare package Medium =
+                Buildings.Media.ConstantPropertyLiquidWater,
+            m_flow_nominal=0.1,
+            nSeg=46,
+            length=10,
+            dp_nominal=1,
+            T_start=293.15,
+            diameter_i=0.019939,
+            diameter_o=0.022225,
+            c_p_pip=390,
+            rho_pip=8960,
+            til=0,
+            MixCoef=1,
+            ePipe=0.95,
+            thicknessIns=0.0127,
+            lambdaIns=0.04)
+            annotation (Placement(transformation(extent={{40,-6},{60,14}})));
+          WaterHeatingLibrary.HWDis.Components.EndUseGPM
+                                                       endUse(redeclare package
+              Medium = Buildings.Media.ConstantPropertyLiquidWater)
+            annotation (Placement(transformation(extent={{72,-6},{92,14}})));
+          Modelica.Blocks.Sources.Constant TAmb(k=273.15 + 20)
+            annotation (Placement(transformation(extent={{-16,46},{4,66}})));
+          Modelica.Thermal.FluidHeatFlow.Examples.Utilities.DoubleRamp
+                                           watFlo(
+            offset=0,
+            startTime=30,
+            interval=30,
+            duration_1=60,
+            duration_2=60,
+            height_1=0.63,
+            height_2=-0.504) "Water flow rate (unit = gpm)"
+            annotation (Placement(transformation(extent={{-90,-68},{-70,-48}})));
+          Buildings.Fluid.Sensors.Temperature senTem(redeclare package Medium
+              = Buildings.Media.ConstantPropertyLiquidWater)
+            annotation (Placement(transformation(extent={{18,14},{38,34}})));
+          Buildings.Fluid.Sources.Boundary_pT boundary(nPorts=2,
+            redeclare package Medium =
+                Buildings.Media.ConstantPropertyLiquidWater,
+            p=150000,
+            T=333.15)
+            annotation (Placement(transformation(extent={{-56,-4},{-36,16}})));
+          Modelica.Blocks.Sources.Constant maxFlo(k=0.315)
+            annotation (Placement(transformation(extent={{-90,-36},{-70,-16}})));
+        equation
+          connect(pip.port_b, endUse.Inlet) annotation (Line(
+              points={{60,4},{72,4}},
+              color={0,127,255},
+              smooth=Smooth.None));
+          connect(watFlo.y, floRed.desFlo[1])           annotation (Line(
+              points={{-69,-58},{-26,-58},{-26,-49.4},{-10,-49.4}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(floRed.draFlo[1], endUse.watFlo)           annotation (Line(
+              points={{13,-42},{64,-42},{64,-1},{70,-1}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(boundary.ports[2], pip.port_a) annotation (Line(
+              points={{-36,4},{40,4}},
+              color={0,127,255},
+              smooth=Smooth.None));
+          connect(senTem.port, boundary.ports[1]) annotation (Line(
+              points={{28,14},{28,8},{-36,8}},
+              color={0,127,255},
+              smooth=Smooth.None));
+          connect(maxFlo.y, floRed.conFlo) annotation (Line(
+              points={{-69,-26},{-26,-26},{-26,-34},{-10,-34}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(TAmb.y, pip.TAmb) annotation (Line(
+              points={{5,56},{44,56},{44,11}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(TAmb.y, pip.TRadMea) annotation (Line(
+              points={{5,56},{56,56},{56,11}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          annotation (Diagram(coordinateSystem(preserveAspectRatio=false,
+                  extent={{-100,-100},{100,100}}), graphics),
+                  Documentation(info="<html>
+          <p>
+          This model provides an example of how the <a href=\"modelica://WaterHeatingLibrary.HWDis.Components.FlowReduction\">WaterHeatingLibrary.HWDis.Components.FlowReduction</a>
+           model is used. In it a single draw of varying flow rate is modeled through the <a href=\"modelica://WaterHeatingLibrary.HWDis.Components.FlowReduction\">WaterHeatingLibrary.HWDis.Components.EndUseGPM model</a>.
+          The draw at times exceeds the known maximum flow rate of the system, and is reduced by the FlowReduction model.<br>                  
+          </p>
+          </html>",
+                  revisions="<html>
+          <ul>
+          <li>
+          Apr 2, 2013 by Peter Grant:<br>
+          First implementation
+          </li>
+          </ul>
+          </html>"));
+        end FlowReduction;
 
-        model EndUse
+        model EndUseLPS
+          import WaterHeatingLibrary;
+          extends Modelica.Icons.Example;
+          WaterHeatingLibrary.HWDis.Components.EndUse  endUse(redeclare package
+              Medium = Buildings.Media.ConstantPropertyLiquidWater)
+            annotation (Placement(transformation(extent={{20,10},{40,-10}})));
+          Buildings.Fluid.Sources.Boundary_pT floSou(
+            nPorts=1,
+            redeclare package Medium =
+                Buildings.Media.ConstantPropertyLiquidWater,
+            p=150000,
+            T=323.15)
+            "High pressure point of flow origination (Example: Mains system)"
+            annotation (Placement(transformation(extent={{-46,-10},{-26,10}})));
+          Modelica.Blocks.Sources.Ramp     watFlo(
+            height=0.126,
+            duration=630,
+            offset=0,
+            startTime=30) "Water flow rate (unit = gpm)"
+            annotation (Placement(transformation(extent={{-90,14},{-70,34}})));
+        equation
+          connect(floSou.ports[1], endUse.Inlet) annotation (Line(
+              points={{-26,0},{20,0}},
+              color={0,127,255},
+              smooth=Smooth.None));
+          connect(watFlo.y, endUse.watFlo) annotation (Line(
+              points={{-69,24},{0,24},{0,5},{18,5}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                    -100},{100,100}}), graphics),
+                    Documentation(info="<html>
+            <p>
+            This model provides an example of how <a href=\"modelica://WaterHeatingLibrary.HWDis.Components.EndUseLPS\">WaterHeatingLibrary.HWDis.Components.EndUseLPS</a>
+            is used. <br>
+            </p>
+            </html>",
+                    revisions="<html>
+            <ul>
+            <li>
+            Apr 2, 2013 by Peter Grant:<br>
+            First implementation
+            </li>
+            </ul>
+            </html>"));
+        end EndUseLPS;
+
+        model EndUseGPM
           import WaterHeatingLibrary;
           extends Modelica.Icons.Example;
           WaterHeatingLibrary.HWDis.Components.EndUseGPM
                                                        endUse(redeclare package
-              Medium = Buildings.Media.ConstantPropertyLiquidWater, gain=1/210)
+              Medium = Buildings.Media.ConstantPropertyLiquidWater)
             annotation (Placement(transformation(extent={{20,10},{40,-10}})));
           Buildings.Fluid.Sources.Boundary_pT floSou(
             nPorts=1,
@@ -6970,13 +7562,187 @@ First implementation.
               color={0,0,127},
               smooth=Smooth.None));
           annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                    -100},{100,100}}), graphics));
-        end EndUse;
+                    -100},{100,100}}), graphics),
+                    Documentation(info="<html>
+            <p>
+            This model provides an example of how <a href=\"modelica://WaterHeatingLibrary.HWDis.Components.EndUseGPM\">WaterHeatingLibrary.HWDis.Components.EndUseGPM</a>
+            is used. <br>
+            </p>
+            </html>",
+                    revisions="<html>
+            <ul>
+            <li>
+            Apr 2, 2013 by Peter Grant:<br>
+            First implementation
+            </li>
+            </ul>
+            </html>"));
+        end EndUseGPM;
 
-        model Pipe
+        model EndUseLPSTwoBranch
           import WaterHeatingLibrary;
           extends Modelica.Icons.Example;
-          WaterHeatingLibrary.HWDis.Components.Pipe  pip(
+
+          Real perHot = endUseLPSTwoBranchPID.hotIn.m_flow / (endUseLPSTwoBranchPID.hotIn.m_flow+endUseLPSTwoBranchPID.colIn.m_flow)
+            "Percentage of flow coming from the hot branch";
+          WaterHeatingLibrary.HWDis.Components.EndUseTwoBranch       endUseLPSTwoBranchPID(
+            redeclare package Medium =
+                Buildings.Media.ConstantPropertyLiquidWater,
+            PID_P_3=2,
+            PID_I_3=3,
+            PID_D_3=0.1,
+            PID_P_2=2,
+            PID_I_2=3,
+            PID_D_2=0.1,
+            T_start=283.15)
+            annotation (Placement(transformation(extent={{30,-10},{50,10}})));
+          Buildings.Fluid.Sources.Boundary_pT Mains(
+            redeclare package Medium =
+                Buildings.Media.ConstantPropertyLiquidWater,
+            p=104000,
+            T=288.15,
+            nPorts=1)
+            annotation (Placement(transformation(extent={{-96,44},{-76,64}})));
+          Modelica.Blocks.Sources.Ramp ramp(
+            duration=600,
+            startTime=660,
+            height=-35,
+            offset=273.15 + 50) annotation (Placement(transformation(extent={{-80,-94},
+                    {-60,-74}})));
+          Modelica.Blocks.Sources.Ramp ramp1(
+            startTime=30,
+            duration=600,
+            offset=0.063,
+            height=0.063)
+            annotation (Placement(transformation(extent={{-80,74},{-60,94}})));
+          Buildings.Fluid.Sources.Boundary_pT Hot(
+            redeclare package Medium =
+                Buildings.Media.ConstantPropertyLiquidWater,
+            p=104000,
+            T=333.15,
+            nPorts=1)
+            annotation (Placement(transformation(extent={{-96,-68},{-76,-48}})));
+        equation
+          connect(ramp.y, endUseLPSTwoBranchPID.TOutDes)
+                                                      annotation (Line(
+              points={{-59,-84},{20,-84},{20,-5},{28,-5}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(ramp1.y, endUseLPSTwoBranchPID.WatFlowDes)
+                                                          annotation (Line(
+              points={{-59,84},{20,84},{20,8},{28,8}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(Mains.ports[1], endUseLPSTwoBranchPID.colIn) annotation (Line(
+              points={{-76,54},{0,54},{0,3.6},{30,3.6}},
+              color={0,127,255},
+              smooth=Smooth.None));
+          connect(Hot.ports[1], endUseLPSTwoBranchPID.hotIn) annotation (Line(
+              points={{-76,-58},{0,-58},{0,0},{30,0}},
+              color={0,127,255},
+              smooth=Smooth.None));
+          annotation (Diagram(coordinateSystem(preserveAspectRatio=false,
+                  extent={{-100,-100},{100,100}}), graphics),
+                    Documentation(info="<html>
+            <p>
+            This model provides an example of how <a href=\"modelica://WaterHeatingLibrary.HWDis.Components.EndUseLPSTwoBranchPID\">WaterHeatingLibrary.HWDis.Components.EndUseLPSTwoBranchPID</a>
+            is used. <br>
+            </p>
+            </html>",
+                    revisions="<html>
+            <ul>
+            <li>
+            Apr 2, 2013 by Peter Grant:<br>
+            First implementation
+            </li>
+            </ul>
+            </html>"));
+        end EndUseLPSTwoBranch;
+
+        model EndUseGPMTwoBranch
+          import WaterHeatingLibrary;
+          extends Modelica.Icons.Example;
+          WaterHeatingLibrary.HWDis.Components.EndUseGPMTwoBranch    endUseGPMTwoBranchPID(
+            redeclare package Medium =
+                Buildings.Media.ConstantPropertyLiquidWater,
+            PID_P_3=2,
+            PID_I_3=3,
+            PID_D_3=0.1,
+            PID_P_2=2,
+            PID_I_2=3,
+            PID_D_2=0.1,
+            T_start=283.15)
+            annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
+          Buildings.Fluid.Sources.Boundary_pT Mains(
+            nPorts=1,
+            redeclare package Medium =
+                Buildings.Media.ConstantPropertyLiquidWater,
+            p=110000,
+            T=288.15)
+            annotation (Placement(transformation(extent={{-80,14},{-60,34}})));
+          Buildings.Fluid.Sources.Boundary_pT Hot(
+            redeclare package Medium =
+                Buildings.Media.ConstantPropertyLiquidWater,
+            nPorts=1,
+            p=110000,
+            T=333.15) annotation (Placement(transformation(extent={{-80,-30},{
+                    -60,-10}})));
+          Modelica.Blocks.Sources.Ramp ramp(
+            height=45,
+            duration=600,
+            startTime=30,
+            offset=273.15 + 15) annotation (Placement(transformation(extent={{-80,-60},
+                    {-60,-40}})));
+          Modelica.Blocks.Sources.Ramp ramp1(
+            duration=600,
+            startTime=660,
+            height=1,
+            offset=1)
+            annotation (Placement(transformation(extent={{-80,48},{-60,68}})));
+        equation
+          connect(Mains.ports[1],endUseGPMTwoBranchPID. colIn)
+                                                            annotation (Line(
+              points={{-60,24},{-40,24},{-40,3.6},{-10,3.6}},
+              color={0,127,255},
+              smooth=Smooth.None));
+          connect(Hot.ports[1],endUseGPMTwoBranchPID. hotIn)
+                                                          annotation (Line(
+              points={{-60,-20},{-40,-20},{-40,0},{-10,0}},
+              color={0,127,255},
+              smooth=Smooth.None));
+          connect(ramp.y,endUseGPMTwoBranchPID. TOutDes)
+                                                      annotation (Line(
+              points={{-59,-50},{-20,-50},{-20,-5},{-12,-5}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(ramp1.y,endUseGPMTwoBranchPID. WatFlowDes)
+                                                          annotation (Line(
+              points={{-59,58},{-20,58},{-20,8},{-12,8}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          annotation (Diagram(coordinateSystem(preserveAspectRatio=false,
+                  extent={{-100,-100},{100,100}}), graphics),
+                    Documentation(info="<html>
+            <p>
+            This model provides an example of how <a href=\"modelica://WaterHeatingLibrary.HWDis.Components.EndUseGPMTwoBranchPID\">WaterHeatingLibrary.HWDis.Components.EndUseGPMTwoBranchPID</a>
+            is used. <br>
+            </p>
+            </html>",
+                    revisions="<html>
+            <ul>
+            <li>
+            Apr 2, 2013 by Peter Grant:<br>
+            First implementation
+            </li>
+            </ul>
+            </html>"));
+        end EndUseGPMTwoBranch;
+
+        model PipeLumpedCap
+          import WaterHeatingLibrary;
+          extends Modelica.Icons.Example;
+          WaterHeatingLibrary.HWDis.Components.PipeLumpedCap
+                                                     pip(
             redeclare package Medium =
                 Buildings.Media.ConstantPropertyLiquidWater,
             m_flow_nominal=0.1,
@@ -6984,13 +7750,19 @@ First implementation.
             nSeg=45,
             length=10,
             MixCoef=0.6,
-            thicknessIns=0.1,
-            lambdaIns=0.1208142396)
-            annotation (Placement(transformation(extent={{-22,10},{-2,-10}})));
+            c_p_pip=390,
+            rho_pip=8960,
+            diameter_i=0.019939,
+            diameter_o=0.022225,
+            til=0,
+            ePipe=0.9,
+            thicknessIns=0.0127,
+            lambdaIns=0.04)
+            annotation (Placement(transformation(extent={{-20,34},{0,14}})));
           WaterHeatingLibrary.HWDis.Components.EndUseGPM
                                                        endUse(redeclare package
               Medium = Buildings.Media.ConstantPropertyLiquidWater, gain=1/210)
-            annotation (Placement(transformation(extent={{40,10},{60,-10}})));
+            annotation (Placement(transformation(extent={{40,34},{60,14}})));
           Buildings.Fluid.Sources.Boundary_pT floSou(
             nPorts=1,
             redeclare package Medium =
@@ -6998,676 +7770,601 @@ First implementation.
             p=150000,
             T=323.15)
             "High pressure point of flow origination (Example: Mains system)"
-            annotation (Placement(transformation(extent={{-74,-10},{-54,10}})));
+            annotation (Placement(transformation(extent={{-74,14},{-54,34}})));
           Modelica.Blocks.Sources.Constant watFlo(k=1)
             "Water flow rate (unit = gpm)"
-            annotation (Placement(transformation(extent={{-50,30},{-30,50}})));
-          Modelica.Blocks.Sources.Constant TAmb(k=27.15 + 20)
-            annotation (Placement(transformation(extent={{-76,-56},{-56,-36}})));
-          Buildings.HeatTransfer.Sources.PrescribedTemperature prescribedTemperature
-            annotation (Placement(transformation(extent={{-40,-56},{-20,-36}})));
+            annotation (Placement(transformation(extent={{-50,54},{-30,74}})));
+          Modelica.Blocks.Sources.Constant TAmb(k=273.15 + 20)
+            annotation (Placement(transformation(extent={{-76,-14},{-56,6}})));
+          Modelica.Blocks.Sources.Constant TRadMea(k=273.15 + 20) annotation (
+              Placement(transformation(extent={{-78,-76},{-58,-56}})));
         equation
           connect(pip.port_b, endUse.Inlet) annotation (Line(
-              points={{-2,0},{40,0}},
+              points={{4.44089e-16,24},{40,24}},
               color={0,127,255},
               smooth=Smooth.None));
           connect(floSou.ports[1], pip.port_a) annotation (Line(
-              points={{-54,0},{-22,0}},
+              points={{-54,24},{-20,24}},
               color={0,127,255},
               smooth=Smooth.None));
-          connect(prescribedTemperature.port, pip.heatPort) annotation (Line(
-              points={{-20,-46},{-12,-46},{-12,-5}},
-              color={191,0,0},
-              smooth=Smooth.None));
-          connect(TAmb.y, prescribedTemperature.T) annotation (Line(
-              points={{-55,-46},{-42,-46}},
+          connect(watFlo.y, endUse.watFlo) annotation (Line(
+              points={{-29,64},{14,64},{14,29},{38,29}},
               color={0,0,127},
               smooth=Smooth.None));
+          connect(TAmb.y, pip.TAmb) annotation (Line(
+              points={{-55,-4},{-16,-4},{-16,17}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(TRadMea.y, pip.TRadMea) annotation (Line(
+              points={{-57,-66},{-4,-66},{-4,17}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          annotation (Diagram(coordinateSystem(preserveAspectRatio=false,
+                  extent={{-100,-100},{100,100}}), graphics),
+                    Documentation(info="<html>
+            <p>
+            This model provides an example of how <a href=\"modelica://WaterHeatingLibrary.HWDis.Components.Pipe\">WaterHeatingLibrary.HWDis.Components.Pipe</a>
+            is used. <br>
+            </p>
+            </html>",
+                    revisions="<html>
+            <ul>
+            <li>
+            Apr 2, 2013 by Peter Grant:<br>
+            First implementation
+            </li>
+            </ul>
+            </html>"),
+            Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                    {100,100}})));
+        end PipeLumpedCap;
+
+        model PipeLumpedCapNoInsul
+          import WaterHeatingLibrary;
+          extends Modelica.Icons.Example;
+          WaterHeatingLibrary.HWDis.Components.PipeLumpedCapNoInsul
+                                                     pip(
+            redeclare package Medium =
+                Buildings.Media.ConstantPropertyLiquidWater,
+            m_flow_nominal=0.1,
+            dp_nominal=1,
+            nSeg=45,
+            length=10,
+            MixCoef=0.6,
+            c_p_pip=390,
+            rho_pip=8960,
+            diameter_i=0.019939,
+            diameter_o=0.022225,
+            til=0,
+            ePipe=0.9)
+            annotation (Placement(transformation(extent={{-20,34},{0,14}})));
+          WaterHeatingLibrary.HWDis.Components.EndUseGPM
+                                                       endUse(redeclare package
+              Medium = Buildings.Media.ConstantPropertyLiquidWater, gain=1/210)
+            annotation (Placement(transformation(extent={{40,34},{60,14}})));
+          Buildings.Fluid.Sources.Boundary_pT floSou(
+            nPorts=1,
+            redeclare package Medium =
+                Buildings.Media.ConstantPropertyLiquidWater,
+            p=150000,
+            T=323.15)
+            "High pressure point of flow origination (Example: Mains system)"
+            annotation (Placement(transformation(extent={{-74,14},{-54,34}})));
+          Modelica.Blocks.Sources.Constant watFlo(k=1)
+            "Water flow rate (unit = gpm)"
+            annotation (Placement(transformation(extent={{-50,54},{-30,74}})));
+          Modelica.Blocks.Sources.Constant TAmb(k=273.15 + 20)
+            annotation (Placement(transformation(extent={{-76,-14},{-56,6}})));
+          Modelica.Blocks.Sources.Constant TRadMea(k=273.15 + 20) annotation (
+              Placement(transformation(extent={{-78,-76},{-58,-56}})));
+        equation
+          connect(pip.port_b, endUse.Inlet) annotation (Line(
+              points={{4.44089e-16,24},{40,24}},
+              color={0,127,255},
+              smooth=Smooth.None));
+          connect(floSou.ports[1], pip.port_a) annotation (Line(
+              points={{-54,24},{-20,24}},
+              color={0,127,255},
+              smooth=Smooth.None));
+          connect(watFlo.y, endUse.watFlo) annotation (Line(
+              points={{-29,64},{14,64},{14,29},{38,29}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(TAmb.y, pip.TAmb) annotation (Line(
+              points={{-55,-4},{-16,-4},{-16,17}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(TRadMea.y, pip.TRadMea) annotation (Line(
+              points={{-57,-66},{-4,-66},{-4,17}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          annotation (Diagram(coordinateSystem(preserveAspectRatio=false,
+                  extent={{-100,-100},{100,100}}), graphics),
+                    Documentation(info="<html>
+            <p>
+            This model provides an example of how <a href=\"modelica://WaterHeatingLibrary.HWDis.Components.Pipe\">WaterHeatingLibrary.HWDis.Components.Pipe</a>
+            is used. <br>
+            </p>
+            </html>",
+                    revisions="<html>
+            <ul>
+            <li>
+            Apr 2, 2013 by Peter Grant:<br>
+            First implementation
+            </li>
+            </ul>
+            </html>"),
+            Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},
+                    {100,100}})));
+        end PipeLumpedCapNoInsul;
+
+        model PipeR
+          import WaterHeatingLibrary;
+          extends Modelica.Icons.Example;
+
+          package Water = Buildings.Media.ConstantPropertyLiquidWater
+            "Fluid in the system";
+
+          WaterHeatingLibrary.HWDis.Components.EndUseGPM
+                                                       endUse(      gain=1/210,
+              redeclare package Medium = Water)
+            annotation (Placement(transformation(extent={{40,10},{60,-10}})));
+          Buildings.Fluid.Sources.MassFlowSource_T
+                                              floSou(
+            nPorts=1,
+            redeclare package Medium = Water,
+            use_m_flow_in=true,
+            T=323.15)
+            "High pressure point of flow origination (Example: Mains system)"
+            annotation (Placement(transformation(extent={{-68,-10},{-48,10}})));
+          Modelica.Blocks.Sources.Constant watFlo(k=1)
+            "Water flow rate (unit = gpm)"
+            annotation (Placement(transformation(extent={{-50,30},{-30,50}})));
+          Modelica.Blocks.Sources.Constant TAmb(k=273.15 + 20)
+            annotation (Placement(transformation(extent={{-76,-56},{-56,-36}})));
+          WaterHeatingLibrary.HWDis.Components.PipeR pip(
+            redeclare package Medium = Water,
+            m_flow_nominal=0.063,
+            length=10,
+            MixCoef=0.6,
+            InsR=0.827717,
+            c_p_pip=390,
+            rho_pip=8960,
+            til=0,
+            diameter_i=0.019939,
+            diameter_o=0.022225,
+            nSeg=45,
+            ePipe=0.95)
+            annotation (Placement(transformation(extent={{-20,10},{0,-10}})));
+          Modelica.Blocks.Sources.Step step(
+            height=0.063,
+            offset=0,
+            startTime=30)
+            annotation (Placement(transformation(extent={{-104,-2},{-84,18}})));
+        equation
           connect(watFlo.y, endUse.watFlo) annotation (Line(
               points={{-29,40},{14,40},{14,5},{38,5}},
               color={0,0,127},
               smooth=Smooth.None));
-          annotation (Diagram(coordinateSystem(preserveAspectRatio=false,
-                  extent={{-100,-100},{100,100}}), graphics));
-        end Pipe;
-
-        model FlowReduction
-          import WaterHeatingLibrary;
-          extends Modelica.Icons.Example;
-          WaterHeatingLibrary.HWDis.Components.FlowReduction floRed(
-            redeclare package Medium =
-                Buildings.Media.ConstantPropertyLiquidWater,
-            PMai=150000,
-            nDra=1)
-            annotation (Placement(transformation(extent={{-6,-6},{14,14}})));
-          WaterHeatingLibrary.HWDis.Components.Pipe  pip(
-            redeclare package Medium =
-                Buildings.Media.ConstantPropertyLiquidWater,
-            m_flow_nominal=0.1,
-            nSeg=46,
-            thicknessIns=0.1,
-            length=10,
-            dp_nominal=1,
-            lambdaIns=0.1208142396,
-            MixCoef=0,
-            T_start=293.15)
-            annotation (Placement(transformation(extent={{40,-6},{60,14}})));
-          WaterHeatingLibrary.HWDis.Components.EndUseGPM
-                                                       endUse(redeclare package
-              Medium = Buildings.Media.ConstantPropertyLiquidWater, gain=1/210)
-            annotation (Placement(transformation(extent={{72,-6},{92,14}})));
-          Modelica.Blocks.Sources.Constant TOutHeater(k=273.15 + 10)
-            annotation (Placement(transformation(extent={{-88,-6},{-68,14}})));
-          Modelica.Blocks.Sources.Constant TAmb(k=273.15 + 20)
-            annotation (Placement(transformation(extent={{-88,26},{-68,46}})));
-          Buildings.HeatTransfer.Sources.PrescribedTemperature
-            prescribedTemperature
-            annotation (Placement(transformation(extent={{-58,26},{-38,46}})));
-          Modelica.Blocks.Sources.Ramp     watFlo(
-            height=4,
-            startTime=2000,
-            duration=30,
-            offset=0) "Water flow rate (unit = gpm)"
-            annotation (Placement(transformation(extent={{-88,56},{-68,76}})));
-          Buildings.Fluid.Sensors.Temperature senTem(redeclare package Medium
-              = Buildings.Media.ConstantPropertyLiquidWater)
-            annotation (Placement(transformation(extent={{18,14},{38,34}})));
-        equation
+          connect(floSou.ports[1], pip.port_a) annotation (Line(
+              points={{-48,0},{-20,0}},
+              color={0,127,255},
+              smooth=Smooth.None));
           connect(pip.port_b, endUse.Inlet) annotation (Line(
-              points={{60,4},{72,4}},
+              points={{4.44089e-16,0},{40,0}},
               color={0,127,255},
               smooth=Smooth.None));
-          connect(floRed.port_b, pip.port_a)           annotation (Line(
-              points={{14,4},{40,4}},
-              color={0,127,255},
-              smooth=Smooth.None));
-          connect(TOutHeater.y, floRed.watT)           annotation (Line(
-              points={{-67,4},{-8,4}},
+          connect(TAmb.y, pip.TAmb) annotation (Line(
+              points={{-55,-46},{-16,-46},{-16,-7}},
               color={0,0,127},
               smooth=Smooth.None));
-          connect(TAmb.y, prescribedTemperature.T) annotation (Line(
-              points={{-67,36},{-60,36}},
+          connect(step.y, floSou.m_flow_in) annotation (Line(
+              points={{-83,8},{-68,8}},
               color={0,0,127},
-              smooth=Smooth.None));
-          connect(prescribedTemperature.port, pip.heatPort) annotation (Line(
-              points={{-38,36},{50,36},{50,9}},
-              color={191,0,0},
-              smooth=Smooth.None));
-          connect(watFlo.y, floRed.conFlo)           annotation (Line(
-              points={{-67,66},{-24,66},{-24,12},{-8,12}},
-              color={0,0,127},
-              smooth=Smooth.None));
-          connect(watFlo.y, floRed.desFlo[1])           annotation (Line(
-              points={{-67,66},{-24,66},{-24,-3.4},{-8,-3.4}},
-              color={0,0,127},
-              smooth=Smooth.None));
-          connect(floRed.draFlo[1], endUse.watFlo)           annotation (Line(
-              points={{15,4},{32,4},{32,-16},{64,-16},{64,-1},{70,-1}},
-              color={0,0,127},
-              smooth=Smooth.None));
-          connect(floRed.port_b, senTem.port)           annotation (Line(
-              points={{14,4},{28,4},{28,14}},
-              color={0,127,255},
               smooth=Smooth.None));
           annotation (Diagram(coordinateSystem(preserveAspectRatio=false,
-                  extent={{-100,-100},{100,100}}), graphics));
-        end FlowReduction;
+                  extent={{-100,-100},{100,100}}), graphics),
+                    Documentation(info="<html>
+            <p>
+            This model provides an example of how <a href=\"modelica://WaterHeatingLibrary.HWDis.Components.Pipe\">WaterHeatingLibrary.HWDis.Components.Pipe</a>
+            is used. <br>
+            </p>
+            </html>",
+                    revisions="<html>
+            <ul>
+            <li>
+            Apr 2, 2013 by Peter Grant:<br>
+            First implementation
+            </li>
+            </ul>
+            </html>"));
+        end PipeR;
 
-        model EndUseLPSPID
+        model Test
           import WaterHeatingLibrary;
           extends Modelica.Icons.Example;
-          WaterHeatingLibrary.HWDis.Components.EndUseLPSPID
-                                                       endUse(redeclare package
-              Medium = Buildings.Media.ConstantPropertyLiquidWater,
-            PID_D=0.1,
-            PID_P=2,
-            PID_I=3)
-            annotation (Placement(transformation(extent={{30,20},{50,0}})));
-          Buildings.Fluid.Sources.Boundary_pT floSou(
-            nPorts=1,
+          WaterHeatingLibrary.HWDis.Components.EndUseTwoBranch       endUseLPSTwoBranchPID(
             redeclare package Medium =
                 Buildings.Media.ConstantPropertyLiquidWater,
-            p=150000,
-            T=323.15)
-            "High pressure point of flow origination (Example: Mains system)"
-            annotation (Placement(transformation(extent={{-36,0},{-16,20}})));
-          Modelica.Blocks.Sources.Step     watFlo(
-            height=-1,
-            offset=1,
-            startTime=45) "Water flow rate (unit = gpm)"
-            annotation (Placement(transformation(extent={{-80,24},{-60,44}})));
-        equation
-          connect(floSou.ports[1],endUse. Inlet) annotation (Line(
-              points={{-16,10},{7,10},{7,4.6},{30,4.6}},
-              color={0,127,255},
-              smooth=Smooth.None));
-          connect(watFlo.y,endUse. watFlo) annotation (Line(
-              points={{-59,34},{10,34},{10,15},{28,15}},
-              color={0,0,127},
-              smooth=Smooth.None));
-        end EndUseLPSPID;
-
-        model EndUseTwoBranch
-          extends Modelica.Icons.Example;
-          EndUseLPSTwoBranch endUseLPSTwoBranch(
-            redeclare package Medium =
-                Buildings.Media.ConstantPropertyLiquidWater,
-            PID_I=1,
-            PID_P=2,
-            PID_D=0.0001,
+            PID_P_3=2,
+            PID_I_3=3,
+            PID_D_3=0.1,
+            PID_P_2=2,
+            PID_I_2=3,
+            PID_D_2=0.1,
             T_start=283.15)
-            annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
+            annotation (Placement(transformation(extent={{30,-10},{50,10}})));
+          Modelica.Blocks.Sources.Ramp ramp(
+            duration=600,
+            startTime=660,
+            height=-35,
+            offset=273.15 + 50) annotation (Placement(transformation(extent={{-80,-94},
+                    {-60,-74}})));
+          Modelica.Blocks.Sources.Ramp ramp1(
+            startTime=30,
+            duration=600,
+            height=0,
+            offset=0.063)
+            annotation (Placement(transformation(extent={{-80,74},{-60,94}})));
           Buildings.Fluid.Sources.Boundary_pT Mains(
-            nPorts=1,
             redeclare package Medium =
                 Buildings.Media.ConstantPropertyLiquidWater,
-            p=150000,
-            T=288.15)
-            annotation (Placement(transformation(extent={{-76,14},{-56,34}})));
+            p=104000,
+            T=288.15,
+            nPorts=1)
+            annotation (Placement(transformation(extent={{-96,48},{-76,68}})));
           Buildings.Fluid.Sources.Boundary_pT Hot(
             redeclare package Medium =
                 Buildings.Media.ConstantPropertyLiquidWater,
-            p=150000,
+            p=104000,
             T=333.15,
-            nPorts=1) annotation (Placement(transformation(extent={{-74,-30},{
-                    -54,-10}})));
-          Modelica.Blocks.Sources.Ramp ramp(
-            height=45,
-            duration=600,
-            startTime=30,
-            offset=273.15 + 15) annotation (Placement(transformation(extent={{
-                    -72,-60},{-52,-40}})));
+            nPorts=1)
+            annotation (Placement(transformation(extent={{-96,-64},{-76,-44}})));
+          WaterHeatingLibrary.HWDis.Components.PipeLumpedCap pip(
+            redeclare package Medium =
+                Buildings.Media.ConstantPropertyLiquidWater,
+            m_flow_nominal=0.063,
+            diameter_i=0.019939,
+            diameter_o=0.022225,
+            c_p_pip=390,
+            rho_pip=8960,
+            til=0,
+            length=5,
+            MixCoef=0.6,
+            ePipe=0.95,
+            thicknessIns=0.0127,
+            lambdaIns=0.04)
+            annotation (Placement(transformation(extent={{-48,68},{-28,48}})));
+          WaterHeatingLibrary.HWDis.Components.PipeLumpedCap pip1(
+            redeclare package Medium =
+                Buildings.Media.ConstantPropertyLiquidWater,
+            m_flow_nominal=0.063,
+            diameter_i=0.019939,
+            diameter_o=0.022225,
+            c_p_pip=390,
+            rho_pip=8960,
+            til=0,
+            length=5,
+            MixCoef=0.6,
+            ePipe=0.95,
+            thicknessIns=0.0127,
+            lambdaIns=0.04) annotation (Placement(transformation(extent={{-48,
+                    -64},{-28,-44}})));
+          Modelica.Blocks.Sources.Constant TRadMea(k=273.15 + 20)
+            annotation (Placement(transformation(extent={{-100,-18},{-80,2}})));
+          Modelica.Blocks.Sources.Constant TAmb(k=273.15 + 20)
+            annotation (Placement(transformation(extent={{-100,12},{-80,32}})));
         equation
-          connect(Mains.ports[1], endUseLPSTwoBranch.colIn) annotation (Line(
-              points={{-56,24},{-40,24},{-40,6},{-10,6}},
+          connect(ramp.y, endUseLPSTwoBranchPID.TOutDes)
+                                                      annotation (Line(
+              points={{-59,-84},{20,-84},{20,-5},{28,-5}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(ramp1.y, endUseLPSTwoBranchPID.WatFlowDes)
+                                                          annotation (Line(
+              points={{-59,84},{20,84},{20,8},{28,8}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(Mains.ports[1], pip.port_a) annotation (Line(
+              points={{-76,58},{-48,58}},
               color={0,127,255},
               smooth=Smooth.None));
-          connect(Hot.ports[1], endUseLPSTwoBranch.hotIn) annotation (Line(
-              points={{-54,-20},{-40,-20},{-40,0},{-10,0}},
+          connect(pip.port_b, endUseLPSTwoBranchPID.colIn) annotation (Line(
+              points={{-28,58},{14,58},{14,3.6},{30,3.6}},
               color={0,127,255},
               smooth=Smooth.None));
-          connect(ramp.y, endUseLPSTwoBranch.TOutDes) annotation (Line(
-              points={{-51,-50},{-20,-50},{-20,-5},{-12,-5}},
+          connect(Hot.ports[1], pip1.port_a) annotation (Line(
+              points={{-76,-54},{-48,-54}},
+              color={0,127,255},
+              smooth=Smooth.None));
+          connect(pip1.port_b, endUseLPSTwoBranchPID.hotIn) annotation (Line(
+              points={{-28,-54},{14,-54},{14,4.44089e-16},{30,4.44089e-16}},
+              color={0,127,255},
+              smooth=Smooth.None));
+          connect(TAmb.y, pip.TAmb) annotation (Line(
+              points={{-79,22},{-44,22},{-44,51}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(TAmb.y, pip1.TAmb) annotation (Line(
+              points={{-79,22},{-44,22},{-44,-47}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(TRadMea.y, pip.TRadMea) annotation (Line(
+              points={{-79,-8},{-32,-8},{-32,51}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(TRadMea.y, pip1.TRadMea) annotation (Line(
+              points={{-79,-8},{-32,-8},{-32,-47}},
               color={0,0,127},
               smooth=Smooth.None));
           annotation (Diagram(coordinateSystem(preserveAspectRatio=false,
-                  extent={{-100,-100},{100,100}}), graphics));
-        end EndUseTwoBranch;
+                  extent={{-100,-100},{100,100}}), graphics),
+                    Documentation(info="<html>
+            <p>
+            This model provides an example of how <a href=\"modelica://WaterHeatingLibrary.HWDis.Components.EndUseLPSTwoBranchPID\">WaterHeatingLibrary.HWDis.Components.EndUseLPSTwoBranchPID</a>
+            is used. <br>
+            </p>
+            </html>",
+                    revisions="<html>
+            <ul>
+            <li>
+            Apr 2, 2013 by Peter Grant:<br>
+            First implementation
+            </li>
+            </ul>
+            </html>"));
+        end Test;
+
+        package Obsolete "Examples for the models in the obsolete folder"
+          extends Modelica.Icons.Package;
+          model EndUseLPSPID
+            import WaterHeatingLibrary;
+            extends Modelica.Icons.Example;
+            WaterHeatingLibrary.HWDis.Components.Obsolete.EndUseLPSPID
+                                                         endUse(redeclare
+                package Medium =
+                         Buildings.Media.ConstantPropertyLiquidWater,
+              PID_D=0.1,
+              PID_P=2,
+              PID_I=3)
+              annotation (Placement(transformation(extent={{30,20},{50,0}})));
+            Buildings.Fluid.Sources.Boundary_pT floSou(
+              nPorts=1,
+              redeclare package Medium =
+                  Buildings.Media.ConstantPropertyLiquidWater,
+              p=150000,
+              T=323.15)
+              "High pressure point of flow origination (Example: Mains system)"
+              annotation (Placement(transformation(extent={{-36,0},{-16,20}})));
+            Modelica.Blocks.Sources.Step     watFlo(
+              height=-1,
+              offset=1,
+              startTime=45) "Water flow rate (unit = gpm)"
+              annotation (Placement(transformation(extent={{-80,24},{-60,44}})));
+          equation
+            connect(floSou.ports[1],endUse. Inlet) annotation (Line(
+                points={{-16,10},{7,10},{7,4.6},{30,4.6}},
+                color={0,127,255},
+                smooth=Smooth.None));
+            connect(watFlo.y,endUse. watFlo) annotation (Line(
+                points={{-59,34},{10,34},{10,15},{28,15}},
+                color={0,0,127},
+                smooth=Smooth.None));
+            annotation (Diagram(coordinateSystem(preserveAspectRatio=false,
+                    extent={{-100,-100},{100,100}}), graphics),
+                      Documentation(info="<html>
+            <p>
+            This model provides an example of how <a href=\"modelica://WaterHeatingLibrary.HWDis.Components.EndUseLPSPID\">WaterHeatingLibrary.HWDis.Components.EndUseLPSPID</a>
+            is used. <br>
+            </p>
+            </html>", revisions="<html>
+            <ul>
+            <li>
+            Apr 2, 2013 by Peter Grant:<br>
+            First implementation
+            </li>
+            </ul>
+            </html>"));
+          end EndUseLPSPID;
+
+          model EndUseGPMPID
+            import WaterHeatingLibrary;
+            extends Modelica.Icons.Example;
+            WaterHeatingLibrary.HWDis.Components.Obsolete.EndUseGPMPID
+                                                         endUse(redeclare
+                package Medium =
+                         Buildings.Media.ConstantPropertyLiquidWater,
+              PID_D=0.1,
+              PID_P=2,
+              PID_I=3)
+              annotation (Placement(transformation(extent={{30,20},{50,0}})));
+            Buildings.Fluid.Sources.Boundary_pT floSou(
+              nPorts=1,
+              redeclare package Medium =
+                  Buildings.Media.ConstantPropertyLiquidWater,
+              p=150000,
+              T=323.15)
+              "High pressure point of flow origination (Example: Mains system)"
+              annotation (Placement(transformation(extent={{-36,-4},{-16,16}})));
+            Modelica.Blocks.Sources.Step     watFlo(
+              height=-1,
+              offset=1,
+              startTime=45) "Water flow rate (unit = gpm)"
+              annotation (Placement(transformation(extent={{-80,24},{-60,44}})));
+          equation
+            connect(floSou.ports[1],endUse. Inlet) annotation (Line(
+                points={{-16,6},{7,6},{7,4.6},{30,4.6}},
+                color={0,127,255},
+                smooth=Smooth.None));
+            connect(watFlo.y,endUse. watFlo) annotation (Line(
+                points={{-59,34},{10,34},{10,15},{28,15}},
+                color={0,0,127},
+                smooth=Smooth.None));
+            annotation (Diagram(coordinateSystem(preserveAspectRatio=false,
+                    extent={{-100,-100},{100,100}}), graphics),
+                      Documentation(info="<html>
+            <p>
+            This model provides an example of how <a href=\"modelica://WaterHeatingLibrary.HWDis.Components.EndUseGPMPID\">WaterHeatingLibrary.HWDis.Components.EndUseGPMPID</a>
+            is used. <br>
+            </p>
+            </html>", revisions="<html>
+            <ul>
+            <li>
+            Apr 2, 2013 by Peter Grant:<br>
+            First implementation
+            </li>
+            </ul>
+            </html>"));
+          end EndUseGPMPID;
+
+          model EndUseLPSTwoBranch
+            import WaterHeatingLibrary;
+            extends Modelica.Icons.Example;
+            WaterHeatingLibrary.HWDis.Components.Obsolete.EndUseLPSTwoBranch
+                               endUseLPSTwoBranch(
+              redeclare package Medium =
+                  Buildings.Media.ConstantPropertyLiquidWater,
+              PID_I=1,
+              PID_P=2,
+              PID_D=0.0001,
+              T_start=283.15)
+              annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
+            Buildings.Fluid.Sources.Boundary_pT Mains(
+              nPorts=1,
+              redeclare package Medium =
+                  Buildings.Media.ConstantPropertyLiquidWater,
+              p=150000,
+              T=288.15)
+              annotation (Placement(transformation(extent={{-80,14},{-60,34}})));
+            Buildings.Fluid.Sources.Boundary_pT Hot(
+              redeclare package Medium =
+                  Buildings.Media.ConstantPropertyLiquidWater,
+              nPorts=1,
+              p=150000,
+              T=323.15) annotation (Placement(transformation(extent={{-80,-30},{
+                      -60,-10}})));
+            Modelica.Blocks.Sources.Ramp ramp(
+              height=45,
+              duration=600,
+              startTime=30,
+              offset=273.15 + 15) annotation (Placement(transformation(extent={{-80,-60},
+                      {-60,-40}})));
+            Modelica.Blocks.Sources.Ramp ramp1(
+              height=0.063,
+              duration=600,
+              offset=0.063,
+              startTime=660)
+              annotation (Placement(transformation(extent={{-80,48},{-60,68}})));
+          equation
+            connect(Mains.ports[1], endUseLPSTwoBranch.colIn) annotation (Line(
+                points={{-60,24},{-40,24},{-40,3.6},{-10,3.6}},
+                color={0,127,255},
+                smooth=Smooth.None));
+            connect(Hot.ports[1], endUseLPSTwoBranch.hotIn) annotation (Line(
+                points={{-60,-20},{-40,-20},{-40,0},{-10,0}},
+                color={0,127,255},
+                smooth=Smooth.None));
+            connect(ramp.y, endUseLPSTwoBranch.TOutDes) annotation (Line(
+                points={{-59,-50},{-20,-50},{-20,-5},{-12,-5}},
+                color={0,0,127},
+                smooth=Smooth.None));
+            connect(ramp1.y, endUseLPSTwoBranch.WatFlowDes) annotation (Line(
+                points={{-59,58},{-20,58},{-20,7},{-12,7}},
+                color={0,0,127},
+                smooth=Smooth.None));
+            annotation (Diagram(coordinateSystem(preserveAspectRatio=false,
+                    extent={{-100,-100},{100,100}}), graphics),
+                      Documentation(info="<html>
+            <p>
+            This model provides an example of how <a href=\"modelica://WaterHeatingLibrary.HWDis.Components.EndUseLPSTwoBranch\">WaterHeatingLibrary.HWDis.Components.EndUseLPSTwoBranch</a>
+            is used. <br>
+            </p>
+            </html>", revisions="<html>
+            <ul>
+            <li>
+            Apr 2, 2013 by Peter Grant:<br>
+            First implementation
+            </li>
+            </ul>
+            </html>"));
+          end EndUseLPSTwoBranch;
+
+          model EndUseGPMTwoBranch
+            import WaterHeatingLibrary;
+            extends Modelica.Icons.Example;
+            WaterHeatingLibrary.HWDis.Components.Obsolete.EndUseGPMTwoBranch
+                               endUseGPMTwoBranch(
+              redeclare package Medium =
+                  Buildings.Media.ConstantPropertyLiquidWater,
+              PID_I=1,
+              PID_P=2,
+              PID_D=0.0001,
+              T_start=283.15,
+              gain=1/210)
+              annotation (Placement(transformation(extent={{-10,-10},{10,10}})));
+            Buildings.Fluid.Sources.Boundary_pT Mains(
+              nPorts=1,
+              redeclare package Medium =
+                  Buildings.Media.ConstantPropertyLiquidWater,
+              p=150000,
+              T=288.15)
+              annotation (Placement(transformation(extent={{-80,14},{-60,34}})));
+            Buildings.Fluid.Sources.Boundary_pT Hot(
+              redeclare package Medium =
+                  Buildings.Media.ConstantPropertyLiquidWater,
+              nPorts=1,
+              p=150000,
+              T=333.15) annotation (Placement(transformation(extent={{-80,-30},{
+                      -60,-10}})));
+            Modelica.Blocks.Sources.Ramp ramp(
+              height=45,
+              duration=600,
+              startTime=30,
+              offset=273.15 + 15) annotation (Placement(transformation(extent={{-80,-60},
+                      {-60,-40}})));
+            Modelica.Blocks.Sources.Ramp ramp1(
+              height=0.063,
+              duration=600,
+              offset=0.063,
+              startTime=660)
+              annotation (Placement(transformation(extent={{-80,48},{-60,68}})));
+          equation
+            connect(Mains.ports[1],endUseGPMTwoBranch. colIn) annotation (Line(
+                points={{-60,24},{-40,24},{-40,3.6},{-10,3.6}},
+                color={0,127,255},
+                smooth=Smooth.None));
+            connect(Hot.ports[1],endUseGPMTwoBranch. hotIn) annotation (Line(
+                points={{-60,-20},{-40,-20},{-40,0},{-10,0}},
+                color={0,127,255},
+                smooth=Smooth.None));
+            connect(ramp.y,endUseGPMTwoBranch. TOutDes) annotation (Line(
+                points={{-59,-50},{-20,-50},{-20,-5},{-12,-5}},
+                color={0,0,127},
+                smooth=Smooth.None));
+            connect(ramp1.y,endUseGPMTwoBranch. WatFlowDes) annotation (Line(
+                points={{-59,58},{-20,58},{-20,7},{-12,7}},
+                color={0,0,127},
+                smooth=Smooth.None));
+            annotation (Diagram(coordinateSystem(preserveAspectRatio=false,
+                    extent={{-100,-100},{100,100}}), graphics),
+                      Documentation(info="<html>
+            <p>
+            This model provides an example of how <a href=\"modelica://WaterHeatingLibrary.HWDis.Components.EndUseGPMTwoBranch\">WaterHeatingLibrary.HWDis.Components.EndUseGPMTwoBranch</a>
+            is used. <br>
+            </p>
+            </html>", revisions="<html>
+            <ul>
+            <li>
+            Apr 2, 2013 by Peter Grant:<br>
+            First implementation
+            </li>
+            </ul>
+            </html>"));
+          end EndUseGPMTwoBranch;
+        end Obsolete;
       end Examples;
 
       package BaseClasses
-        model MixingVolume
-          "Mixing volume with inlet and outlet ports (flow reversal is allowed)"
-          extends
-            WaterHeatingLibrary.HWDis.Components.BaseClasses.PartialMixingVolume(
-              dynBal(MixCoef=MixCoef));
-
-          parameter Real MixCoef=1;
-
-        protected
-          Modelica.Blocks.Sources.Constant       masExc[Medium.nXi](k=zeros(Medium.nXi)) if
-               Medium.nXi > 0 "Block to set mass exchange in volume"
-            annotation (Placement(transformation(extent={{-80,60},{-60,80}})));
-          Modelica.Blocks.Sources.RealExpression heaInp(y=heatPort.Q_flow)
-            "Block to set heat input into volume"
-            annotation (Placement(transformation(extent={{-80,80},{-60,100}})));
-        public
-          Modelica.Blocks.Interfaces.BooleanInput u annotation (Placement(
-                transformation(extent={{-140,-60},{-100,-20}})));
-        equation
-          connect(heaInp.y, steBal.Q_flow) annotation (Line(
-              points={{-59,90},{-30,90},{-30,18},{-22,18}},
-              color={0,0,127},
-              smooth=Smooth.None));
-          connect(heaInp.y, dynBal.Q_flow) annotation (Line(
-              points={{-59,90},{28,90},{28,16},{38,16}},
-              color={0,0,127},
-              smooth=Smooth.None));
-          connect(masExc.y, steBal.mXi_flow) annotation (Line(
-              points={{-59,70},{-42,70},{-42,14},{-22,14}},
-              color={0,0,127},
-              smooth=Smooth.None));
-          connect(masExc.y, dynBal.mXi_flow) annotation (Line(
-              points={{-59,70},{20,70},{20,12},{38,12}},
-              color={0,0,127},
-              smooth=Smooth.None));
-          connect(dynBal.draSta, u) annotation (Line(
-              points={{38,6},{22,6},{22,-40},{-120,-40}},
-              color={255,0,255},
-              smooth=Smooth.None));
-          annotation (
-        defaultComponentName="vol",
-        Documentation(info="<html>
-This model represents an instantaneously mixed volume. 
-Potential and kinetic energy at the port are neglected,
-and there is no pressure drop at the ports.
-The volume can exchange heat through its <code>heatPort</code>.
-</p>
-<p>
-The volume can be parameterized as a steady-state model or as
-dynamic model.
-</p>
-<p>
-To increase the numerical robustness of the model, the parameter
-<code>prescribedHeatFlowRate</code> can be set by the user. 
-This parameter only has an effect if the model has exactly two fluid ports connected,
-and if it is used as a steady-state model.
-Use the following settings:
-<ul>
-<li>Set <code>prescribedHeatFlowRate=true</code> if there is a model connected to <code>heatPort</code>
-that computes the heat flow rate <i>not</i> as a function of the temperature difference
-between the medium and an ambient temperature. Examples include an ideal electrical heater,
-a pump that rejects heat into the fluid stream, or a chiller that removes heat based on a performance curve.
-</li>
-<li>Set <code>prescribedHeatFlowRate=true</code> if the only means of heat flow at the <code>heatPort</code>
-is computed as <i>K * (T-heatPort.T)</i>, for some temperature <i>T</i> and some conductance <i>K</i>,
-which may itself be a function of temperature or mass flow rate.
-</li>
-</ul>
-</p>
-<h4>Implementation</h4>
-<p>
-If the model is operated in steady-state and has two fluid ports connected,
-then the same energy and mass balance implementation is used as in
-steady-state component models, i.e., the use of <code>actualStream</code>
-is not used for the properties at the port.
-</p>
-<p>
-The implementation of these balance equations is done in the instances
-<code>dynBal</code> for the dynamic balance and <code>steBal</code>
-for the steady-state balance. Both models use the same input variables:
-<ul>
-<li>
-The variable <code>Q_flow</code> is used to add sensible <i>and</i> latent heat to the fluid.
-For example, <code>Q_flow</code> participates in the steady-state energy balance<pre>
-    port_b.h_outflow = inStream(port_a.h_outflow) + Q_flow * m_flowInv;
-</pre>
-where <code>m_flowInv</code> approximates the expression <code>1/m_flow</code>.
-</li>
-<li>
-The variable <code>mXi_flow</code> is used to add a species mass flow rate to the fluid.
-</li>
-</ul>
-</p>
-<p>
-For simple models that uses this model, see
-<a href=\"modelica://Buildings.Fluid.HeatExchangers.HeaterCoolerPrescribed\">
-Buildings.Fluid.HeatExchangers.HeaterCoolerPrescribed</a> and
-<a href=\"modelica://Buildings.Fluid.MassExchangers.HumidifierPrescribed\">
-Buildings.Fluid.MassExchangers.HumidifierPrescribed</a>.
-</p>
-<p>
-This model has been modified from the pipe model in the Buildings library. The buildings library model assumes perfect mixing in each segment of the pipe. To more accurately
-imitate the flow characteristics observed in experimental data a mixing parameter was added. The mixing parameter adjusts the enthalpy of water leaving a segment of the pipe
-to change the energy balance and allow for simualtion of different amounts of mixing.
-</p>
-</html>",         revisions="<html>
-<ul>
-<li>
-Mar 28, 2013 by Peter Grant:<br>
-Added mixing coefficient to ConservationEquation to model different amounts of mixing during draws<br>
-Added code to transfer draw status information from the larger pipe model to ConservationEquation
-</li>
-<li>
-February 7, 2012 by Michael Wetter:<br>
-Revised base classes for conservation equations in <code>Buildings.Fluid.Interfaces</code>.
-</li>
-<li>
-September 17, 2011 by Michael Wetter:<br>
-Removed instance <code>medium</code> as this is already used in <code>dynBal</code>.
-Removing the base properties led to 30% faster computing time for a solar thermal system
-that contains many fluid volumes. 
-</li>
-<li>
-September 13, 2011 by Michael Wetter:<br>
-Changed in declaration of <code>medium</code> the parameter assignment
-<code>preferredMediumStates=true</code> to
-<code>preferredMediumStates= not (energyDynamics == Modelica.Fluid.Types.Dynamics.SteadyState)</code>.
-Otherwise, for a steady-state model, Dymola 2012 may differentiate the model to obtain <code>T</code>
-as a state. See ticket Dynasim #13596.
-</li>
-<li>
-July 26, 2011 by Michael Wetter:<br>
-Revised model to use new declarations from
-<a href=\"Buildings.Fluid.Interfaces.LumpedVolumeDeclarations\">
-Buildings.Fluid.Interfaces.LumpedVolumeDeclarations</a>.
-</li>
-<li>
-July 14, 2011 by Michael Wetter:<br>
-Added start values for mass and internal energy of dynamic balance
-model.
-</li>
-<li>
-May 25, 2011 by Michael Wetter:<br>
-<ul>
-<li>
-Changed implementation of balance equation. The new implementation uses a different model if 
-exactly two fluid ports are connected, and in addition, the model is used as a steady-state
-component. For this model configuration, the same balance equations are used as were used
-for steady-state component models, i.e., instead of <code>actualStream(...)</code>, the
-<code>inStream(...)</code> formulation is used.
-This changed required the introduction of a new parameter <code>m_flow_nominal</code> which
-is used for smoothing in the steady-state balance equations of the model with two fluid ports.
-This implementation also simplifies the implementation of 
-<a href=\"modelica://Buildings.Fluid.MixingVolumes.BaseClasses.PartialMixingVolumeWaterPort\">
-Buildings.Fluid.MixingVolumes.BaseClasses.PartialMixingVolumeWaterPort</a>,
-which now uses the same equations as this model.
-</li>
-<li>
-Another revision was the removal of the parameter <code>use_HeatTransfer</code> as there is
-no noticable overhead in always having the <code>heatPort</code> connector present.
-</li>
-</ul>
-</li>
-<li>
-July 30, 2010 by Michael Wetter:<br>
-Added nominal value for <code>mC</code> to avoid wrong trajectory 
-when concentration is around 1E-7.
-See also <a href=\"https://trac.modelica.org/Modelica/ticket/393\">
-https://trac.modelica.org/Modelica/ticket/393</a>.
-</li>
-<li>
-February 7, 2010 by Michael Wetter:<br>
-Simplified model and its base classes by removing the port data
-and the vessel area.
-Eliminated the base class <code>PartialLumpedVessel</code>.
-</li>
-<li>
-October 12, 2009 by Michael Wetter:<br>
-Changed base class to
-<a href=\"modelica://Buildings.Fluid.MixingVolumes.BaseClasses.ClosedVolume\">
-Buildings.Fluid.MixingVolumes.BaseClasses.ClosedVolume</a>.
-</li>
-</ul>
-</html>"),         Diagram(coordinateSystem(preserveAspectRatio=false, extent={{
-                    -100,-100},{100,100}}),
-                           graphics),
-            Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                    100}}), graphics={Ellipse(
-                  extent={{-100,98},{100,-102}},
-                  lineColor={0,0,0},
-                  fillPattern=FillPattern.Sphere,
-                  fillColor={170,213,255}), Text(
-                  extent={{-58,14},{58,-18}},
-                  lineColor={0,0,0},
-                  textString="V=%V"),         Text(
-                  extent={{-152,100},{148,140}},
-                  textString="%name",
-                  lineColor={0,0,255})}));
-        end MixingVolume;
-
-        partial model PartialMixingVolume
-          "Partial mixing volume with inlet and outlet ports (flow reversal is allowed)"
-          outer Modelica.Fluid.System system "System properties";
-          extends Buildings.Fluid.Interfaces.LumpedVolumeDeclarations;
-          parameter Modelica.SIunits.MassFlowRate m_flow_nominal(min=0)
-            "Nominal mass flow rate"
-            annotation(Dialog(group = "Nominal condition"));
-          // Port definitions
-          parameter Integer nPorts=0 "Number of ports"
-            annotation(Evaluate=true, Dialog(connectorSizing=true, tab="General",group="Ports"));
-          parameter Medium.MassFlowRate m_flow_small(min=0) = 1E-4*abs(m_flow_nominal)
-            "Small mass flow rate for regularization of zero flow"
-            annotation(Dialog(tab = "Advanced"));
-          parameter Boolean homotopyInitialization = true
-            "= true, use homotopy method"
-            annotation(Evaluate=true, Dialog(tab="Advanced"));
-          parameter Boolean allowFlowReversal = system.allowFlowReversal
-            "= true to allow flow reversal in medium, false restricts to design direction (ports[1] -> ports[2]). Used only if model has two ports."
-            annotation(Dialog(tab="Assumptions"), Evaluate=true);
-          parameter Modelica.SIunits.Volume V "Volume";
-          parameter Boolean prescribedHeatFlowRate=false
-            "Set to true if the model has a prescribed heat flow at its heatPort"
-           annotation(Evaluate=true, Dialog(tab="Assumptions",
-              enable=use_HeatTransfer,
-              group="Heat transfer"));
-          Modelica.Fluid.Vessels.BaseClasses.VesselFluidPorts_b ports[nPorts](
-              redeclare each package Medium = Medium)
-            "Fluid inlets and outlets"
-            annotation (Placement(transformation(extent={{-40,-10},{40,10}},
-              origin={0,-100})));
-          Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort
-            "Heat port connected to outflowing medium"
-            annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
-          Modelica.SIunits.Temperature T "Temperature of the fluid";
-          Modelica.SIunits.Pressure p "Pressure of the fluid";
-          Modelica.SIunits.MassFraction Xi[Medium.nXi]
-            "Species concentration of the fluid";
-          Medium.ExtraProperty C[Medium.nC](nominal=C_nominal)
-            "Trace substance mixture content";
-           // Models for the steady-state and dynamic energy balance.
-        //protected
-          Buildings.Fluid.Interfaces.StaticTwoPortConservationEquation steBal(
-            sensibleOnly = true,
-            redeclare final package Medium=Medium,
-            final m_flow_nominal = m_flow_nominal,
-            final allowFlowReversal = allowFlowReversal,
-            final m_flow_small = m_flow_small,
-            final homotopyInitialization = homotopyInitialization,
-            final show_V_flow = false) if
-                useSteadyStateTwoPort
-            "Model for steady-state balance if nPorts=2"
-                annotation (Placement(transformation(extent={{-20,0},{0,20}})));
-          WaterHeatingLibrary.HWDis.Components.BaseClasses.ConservationEquation
-            dynBal(
-            redeclare final package Medium = Medium,
-            final energyDynamics=energyDynamics,
-            final massDynamics=massDynamics,
-            final p_start=p_start,
-            final T_start=T_start,
-            final X_start=X_start,
-            final C_start=C_start,
-            final C_nominal=C_nominal,
-            final fluidVolume=V,
-            m(start=V*rho_nominal),
-            U(start=V*rho_nominal*Medium.specificInternalEnergy(state_start)),
-            nPorts=nPorts) if not useSteadyStateTwoPort
-            "Model for dynamic energy balance"
-            annotation (Placement(transformation(extent={{40,0},{60,20}})));
-          parameter Medium.ThermodynamicState state_start = Medium.setState_pTX(
-              T=T_start,
-              p=p_start,
-              X=X_start[1:Medium.nXi]) "Start state";
-          parameter Modelica.SIunits.Density rho_nominal=Medium.density(
-           Medium.setState_pTX(
-             T=T_start,
-             p=p_start,
-             X=X_start[1:Medium.nXi])) "Density, used to compute fluid mass"
-          annotation (Evaluate=true);
-          ////////////////////////////////////////////////////
-          final parameter Boolean useSteadyStateTwoPort=(nPorts == 2) and
-              prescribedHeatFlowRate and (
-              energyDynamics == Modelica.Fluid.Types.Dynamics.SteadyState) and (
-              massDynamics == Modelica.Fluid.Types.Dynamics.SteadyState) and (
-              substanceDynamics == Modelica.Fluid.Types.Dynamics.SteadyState) and (
-              traceDynamics == Modelica.Fluid.Types.Dynamics.SteadyState)
-            "Flag, true if the model has two ports only and uses a steady state balance"
-            annotation (Evaluate=true);
-          Modelica.SIunits.HeatFlowRate Q_flow
-            "Heat flow across boundaries or energy source/sink";
-          // Outputs that are needed to assign the medium properties
-          Modelica.Blocks.Interfaces.RealOutput hOut_internal(unit="J/kg")
-            "Internal connector for leaving temperature of the component";
-          Modelica.Blocks.Interfaces.RealOutput XiOut_internal[Medium.nXi](unit="1")
-            "Internal connector for leaving species concentration of the component";
-          Modelica.Blocks.Interfaces.RealOutput COut_internal[Medium.nC](unit="1")
-            "Internal connector for leaving trace substances of the component";
-
-        equation
-          ///////////////////////////////////////////////////////////////////////////
-          // asserts
-          if not allowFlowReversal then
-            assert(ports[1].m_flow > -m_flow_small,
-        "Model has flow reversal, but the parameter allowFlowReversal is set to false.
-  m_flow_small    = "         + String(m_flow_small) + "
-  ports[1].m_flow = "         + String(ports[1].m_flow) + "
-");
-          end if;
-        // Only one connection allowed to a port to avoid unwanted ideal mixing
-          if not useSteadyStateTwoPort then
-            for i in 1:nPorts loop
-            assert(cardinality(ports[i]) == 2 or cardinality(ports[i]) == 0,"
-each ports[i] of volume can at most be connected to one component.
-If two or more connections are present, ideal mixing takes
-place with these connections, which is usually not the intention
-of the modeller. Increase nPorts to add an additional port.
-");          end for;
-          end if;
-          // actual definition of port variables
-          // If the model computes the energy and mass balances as steady-state,
-          // and if it has only two ports,
-          // then we use the same base class as for all other steady state models.
-          if useSteadyStateTwoPort then
-          connect(steBal.port_a, ports[1]) annotation (Line(
-              points={{-20,10},{-22,10},{-22,-60},{0,-60},{0,-100}},
-              color={0,127,255},
-              smooth=Smooth.None));
-
-          connect(steBal.port_b, ports[2]) annotation (Line(
-              points={{5.55112e-16,10},{8,10},{8,10},{8,-88},{0,-88},{0,-100}},
-              color={0,127,255},
-              smooth=Smooth.None));
-
-            connect(hOut_internal,  steBal.hOut);
-            connect(XiOut_internal, steBal.XiOut);
-            connect(COut_internal,  steBal.COut);
-          else
-              connect(dynBal.ports, ports) annotation (Line(
-              points={{50,-5.55112e-16},{50,-34},{2.22045e-15,-34},{2.22045e-15,-100}},
-              color={0,127,255},
-              smooth=Smooth.None));
-
-            connect(hOut_internal,  dynBal.hOut);
-            connect(XiOut_internal, dynBal.XiOut);
-            connect(COut_internal,  dynBal.COut);
-          end if;
-          // Medium properties
-          p = if nPorts > 0 then ports[1].p else p_start;
-          T = Medium.temperature_phX(p=p, h=hOut_internal, X=cat(1,Xi,{1-sum(Xi)}));
-          Xi = XiOut_internal;
-          C = COut_internal;
-          // Port properties
-          heatPort.T = T;
-          heatPort.Q_flow = Q_flow;
-
-          annotation (
-        defaultComponentName="vol",
-        Documentation(info="<html>
-This is a partial model of an instantaneously mixed volume.
-It is used as the base class for all fluid volumes of the package
-<a href=\"modelica://Buildings.Fluid.MixingVolumes\">
-Buildings.Fluid.MixingVolumes</a>.
-</p>
-</p>
-<h4>Implementation</h4>
-<p>
-If the model is operated in steady-state and has two fluid ports connected,
-then the same energy and mass balance implementation is used as in
-steady-state component models, i.e., the use of <code>actualStream</code>
-is not used for the properties at the port.
-</p>
-<p>
-For simple models that uses this model, see
-<a href=\"modelica://Buildings.Fluid.MixingVolumes\">
-Buildings.Fluid.MixingVolumes</a>.
-</p>
-<p>
-This model has been modified from the pipe model in the Buildings library. The buildings library model assumes perfect mixing in each segment of the pipe. To more accurately
-imitate the flow characteristics observed in experimental data a mixing parameter was added. The mixing parameter adjusts the enthalpy of water leaving a segment of the pipe
-to change the energy balance and allow for simualtion of different amounts of mixing.
-</p>
-</html>",         revisions="<html>
-<ul>
-<li>
-Mar 28, 2013 by Peter Grant:<br>
-Added mixing coefficient to ConservationEquation to model different amounts of mixing during draws
-</li>
-<li>
-February 7, 2012 by Michael Wetter:<br>
-Revised base classes for conservation equations in <code>Buildings.Fluid.Interfaces</code>.
-</li>
-<li>
-September 17, 2011 by Michael Wetter:<br>
-Removed instance <code>medium</code> as this is already used in <code>dynBal</code>.
-Removing the base properties led to 30% faster computing time for a solar thermal system
-that contains many fluid volumes. 
-</li>
-<li>
-September 13, 2011 by Michael Wetter:<br>
-Changed in declaration of <code>medium</code> the parameter assignment
-<code>preferredMediumStates=true</code> to
-<code>preferredMediumStates= not (energyDynamics == Modelica.Fluid.Types.Dynamics.SteadyState)</code>.
-Otherwise, for a steady-state model, Dymola 2012 may differentiate the model to obtain <code>T</code>
-as a state. See ticket Dynasim #13596.
-</li>
-<li>
-July 26, 2011 by Michael Wetter:<br>
-Revised model to use new declarations from
-<a href=\"Buildings.Fluid.Interfaces.LumpedVolumeDeclarations\">
-Buildings.Fluid.Interfaces.LumpedVolumeDeclarations</a>.
-</li>
-<li>
-July 14, 2011 by Michael Wetter:<br>
-Added start values for mass and internal energy of dynamic balance
-model.
-</li>
-<li>
-May 25, 2011 by Michael Wetter:<br>
-<ul>
-<li>
-Changed implementation of balance equation. The new implementation uses a different model if 
-exactly two fluid ports are connected, and in addition, the model is used as a steady-state
-component. For this model configuration, the same balance equations are used as were used
-for steady-state component models, i.e., instead of <code>actualStream(...)</code>, the
-<code>inStream(...)</code> formulation is used.
-This changed required the introduction of a new parameter <code>m_flow_nominal</code> which
-is used for smoothing in the steady-state balance equations of the model with two fluid ports.
-This implementation also simplifies the implementation of 
-<a href=\"modelica://Buildings.Fluid.MixingVolumes.BaseClasses.PartialMixingVolumeWaterPort\">
-Buildings.Fluid.MixingVolumes.BaseClasses.PartialMixingVolumeWaterPort</a>,
-which now uses the same equations as this model.
-</li>
-<li>
-Another revision was the removal of the parameter <code>use_HeatTransfer</code> as there is
-no noticable overhead in always having the <code>heatPort</code> connector present.
-</li>
-</ul>
-</li>
-<li>
-July 30, 2010 by Michael Wetter:<br>
-Added nominal value for <code>mC</code> to avoid wrong trajectory 
-when concentration is around 1E-7.
-See also <a href=\"https://trac.modelica.org/Modelica/ticket/393\">
-https://trac.modelica.org/Modelica/ticket/393</a>.
-</li>
-<li>
-February 7, 2010 by Michael Wetter:<br>
-Simplified model and its base classes by removing the port data
-and the vessel area.
-Eliminated the base class <code>PartialLumpedVessel</code>.
-</li>
-<li>
-October 12, 2009 by Michael Wetter:<br>
-Changed base class to
-<a href=\"modelica://Buildings.Fluid.MixingVolumes.BaseClasses.ClosedVolume\">
-Buildings.Fluid.MixingVolumes.BaseClasses.ClosedVolume</a>.
-</li>
-</ul>
-</html>"),         Diagram(graphics),
-            Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
-                    100}}), graphics={Ellipse(
-                  extent={{-100,98},{100,-102}},
-                  lineColor={0,0,0},
-                  fillPattern=FillPattern.Sphere,
-                  fillColor={170,213,255}), Text(
-                  extent={{-58,14},{58,-18}},
-                  lineColor={0,0,0},
-                  textString="V=%V"),         Text(
-                  extent={{-152,100},{148,140}},
-                  textString="%name",
-                  lineColor={0,0,255})}));
-        end PartialMixingVolume;
-
         model ConservationEquation "Lumped volume with mass and energy balance"
 
         //  outer Modelica.Fluid.System system "System properties";
@@ -7768,13 +8465,9 @@ Buildings.Fluid.MixingVolumes.BaseClasses.ClosedVolume</a>.
              p=p_start,
              X=X_start[1:Medium.nXi])) "Density, used to compute fluid mass"
           annotation (Evaluate=true);
-        public
-          Modelica.Blocks.Interfaces.BooleanInput draSta
-            "True/false stating whether or not there is currently a draw"
-            annotation (Placement(transformation(extent={{-140,-60},{-100,-20}})));
         equation
 
-          when draSta then
+          when ports[1].m_flow > 0 then
             InitialEnthalpy = medium.h;
           end when;
 
@@ -8010,8 +8703,8 @@ Implemented first version in <code>Buildings</code> library, based on model from
 <code>Modelica.Fluid 1.0</code>.
 </li>
 </ul>
-</html>"),  Diagram(coordinateSystem(preserveAspectRatio=true,  extent={{-100,-100},{
-                    100,100}}),
+</html>"),  Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                    100}}),
                     graphics),
             Icon(graphics={            Rectangle(
                   extent={{-100,100},{100,-100}},
@@ -8048,44 +8741,542 @@ Implemented first version in <code>Buildings</code> library, based on model from
                   textString="%name")}));
         end ConservationEquation;
 
+        model FeedForwardController
+          "Uses feedforward controls to control a mixing valve"
+          extends Modelica.Blocks.Interfaces.BlockIcon;
+
+          replaceable package Medium = Modelica.Media.Interfaces.PartialMedium
+            "Medium in the component";
+
+          parameter Real small = 1e-6;
+
+          Modelica.SIunits.SpecificHeatCapacity c_p = Medium.specificHeatCapacityCp(
+            Medium.setState_pTX(
+              p=Medium.p_default,
+              T=TOutDes,
+              X=Medium.X_default));
+
+          Modelica.SIunits.SpecificEnthalpy hOutDes=(TOutDes-273.105)*c_p
+            "Desired outlet enthalpy";
+
+          Modelica.Blocks.Interfaces.RealInput TOutDes(unit = "K")
+            annotation (Placement(transformation(extent={{-140,-80},{-100,-40}})));
+          Modelica.Blocks.Interfaces.RealInput colEnt(unit = "J/kg")
+            "Enthalpy of the cold fluid"
+            annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
+          Modelica.Blocks.Interfaces.RealInput hotEnt(unit = "J/kg")
+            "Enthalpy of the hot fluid"
+            annotation (Placement(transformation(extent={{-140,40},{-100,80}})));
+          Modelica.Blocks.Interfaces.RealOutput y = Buildings.Utilities.Math.Functions.smoothMax(0,Buildings.Utilities.Math.Functions.smoothMin(1, (hOutDes - colEnt)/Buildings.Utilities.Math.Functions.smoothMax(hotEnt - colEnt, small, 0.01), 0.01),0.01)
+            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+          annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                    -100},{100,100}}), graphics));
+
+        end FeedForwardController;
+
+        model MixingVolume
+          "Mixing volume with inlet and outlet ports (flow reversal is allowed)"
+          extends
+            WaterHeatingLibrary.HWDis.Components.BaseClasses.PartialMixingVolume(
+              dynBal(MixCoef=MixCoef));
+
+          parameter Real MixCoef=1;
+
+        protected
+          Modelica.Blocks.Sources.Constant       masExc[Medium.nXi](k=zeros(Medium.nXi)) if
+               Medium.nXi > 0 "Block to set mass exchange in volume"
+            annotation (Placement(transformation(extent={{-80,60},{-60,80}})));
+          Modelica.Blocks.Sources.RealExpression heaInp(y=heatPort.Q_flow)
+            "Block to set heat input into volume"
+            annotation (Placement(transformation(extent={{-80,80},{-60,100}})));
+        equation
+          connect(heaInp.y, steBal.Q_flow) annotation (Line(
+              points={{-59,90},{-30,90},{-30,18},{-22,18}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(heaInp.y, dynBal.Q_flow) annotation (Line(
+              points={{-59,90},{28,90},{28,16},{38,16}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(masExc.y, steBal.mXi_flow) annotation (Line(
+              points={{-59,70},{-42,70},{-42,14},{-22,14}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(masExc.y, dynBal.mXi_flow) annotation (Line(
+              points={{-59,70},{20,70},{20,12},{38,12}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          annotation (
+        defaultComponentName="vol",
+        Documentation(info="<html>
+This model represents an instantaneously mixed volume. 
+Potential and kinetic energy at the port are neglected,
+and there is no pressure drop at the ports.
+The volume can exchange heat through its <code>heatPort</code>.
+</p>
+<p>
+The volume can be parameterized as a steady-state model or as
+dynamic model.
+</p>
+<p>
+To increase the numerical robustness of the model, the parameter
+<code>prescribedHeatFlowRate</code> can be set by the user. 
+This parameter only has an effect if the model has exactly two fluid ports connected,
+and if it is used as a steady-state model.
+Use the following settings:
+<ul>
+<li>Set <code>prescribedHeatFlowRate=true</code> if there is a model connected to <code>heatPort</code>
+that computes the heat flow rate <i>not</i> as a function of the temperature difference
+between the medium and an ambient temperature. Examples include an ideal electrical heater,
+a pump that rejects heat into the fluid stream, or a chiller that removes heat based on a performance curve.
+</li>
+<li>Set <code>prescribedHeatFlowRate=true</code> if the only means of heat flow at the <code>heatPort</code>
+is computed as <i>K * (T-heatPort.T)</i>, for some temperature <i>T</i> and some conductance <i>K</i>,
+which may itself be a function of temperature or mass flow rate.
+</li>
+</ul>
+</p>
+<h4>Implementation</h4>
+<p>
+If the model is operated in steady-state and has two fluid ports connected,
+then the same energy and mass balance implementation is used as in
+steady-state component models, i.e., the use of <code>actualStream</code>
+is not used for the properties at the port.
+</p>
+<p>
+The implementation of these balance equations is done in the instances
+<code>dynBal</code> for the dynamic balance and <code>steBal</code>
+for the steady-state balance. Both models use the same input variables:
+<ul>
+<li>
+The variable <code>Q_flow</code> is used to add sensible <i>and</i> latent heat to the fluid.
+For example, <code>Q_flow</code> participates in the steady-state energy balance<pre>
+    port_b.h_outflow = inStream(port_a.h_outflow) + Q_flow * m_flowInv;
+</pre>
+where <code>m_flowInv</code> approximates the expression <code>1/m_flow</code>.
+</li>
+<li>
+The variable <code>mXi_flow</code> is used to add a species mass flow rate to the fluid.
+</li>
+</ul>
+</p>
+<p>
+For simple models that uses this model, see
+<a href=\"modelica://Buildings.Fluid.HeatExchangers.HeaterCoolerPrescribed\">
+Buildings.Fluid.HeatExchangers.HeaterCoolerPrescribed</a> and
+<a href=\"modelica://Buildings.Fluid.MassExchangers.HumidifierPrescribed\">
+Buildings.Fluid.MassExchangers.HumidifierPrescribed</a>.
+</p>
+<p>
+This model has been modified from the pipe model in the Buildings library. The buildings library model assumes perfect mixing in each segment of the pipe. To more accurately
+imitate the flow characteristics observed in experimental data a mixing parameter was added. The mixing parameter adjusts the enthalpy of water leaving a segment of the pipe
+to change the energy balance and allow for simualtion of different amounts of mixing.
+</p>
+</html>",         revisions="<html>
+<ul>
+<li>
+Mar 28, 2013 by Peter Grant:<br>
+Added mixing coefficient to ConservationEquation to model different amounts of mixing during draws<br>
+Added code to transfer draw status information from the larger pipe model to ConservationEquation
+</li>
+<li>
+February 7, 2012 by Michael Wetter:<br>
+Revised base classes for conservation equations in <code>Buildings.Fluid.Interfaces</code>.
+</li>
+<li>
+September 17, 2011 by Michael Wetter:<br>
+Removed instance <code>medium</code> as this is already used in <code>dynBal</code>.
+Removing the base properties led to 30% faster computing time for a solar thermal system
+that contains many fluid volumes. 
+</li>
+<li>
+September 13, 2011 by Michael Wetter:<br>
+Changed in declaration of <code>medium</code> the parameter assignment
+<code>preferredMediumStates=true</code> to
+<code>preferredMediumStates= not (energyDynamics == Modelica.Fluid.Types.Dynamics.SteadyState)</code>.
+Otherwise, for a steady-state model, Dymola 2012 may differentiate the model to obtain <code>T</code>
+as a state. See ticket Dynasim #13596.
+</li>
+<li>
+July 26, 2011 by Michael Wetter:<br>
+Revised model to use new declarations from
+<a href=\"Buildings.Fluid.Interfaces.LumpedVolumeDeclarations\">
+Buildings.Fluid.Interfaces.LumpedVolumeDeclarations</a>.
+</li>
+<li>
+July 14, 2011 by Michael Wetter:<br>
+Added start values for mass and internal energy of dynamic balance
+model.
+</li>
+<li>
+May 25, 2011 by Michael Wetter:<br>
+<ul>
+<li>
+Changed implementation of balance equation. The new implementation uses a different model if 
+exactly two fluid ports are connected, and in addition, the model is used as a steady-state
+component. For this model configuration, the same balance equations are used as were used
+for steady-state component models, i.e., instead of <code>actualStream(...)</code>, the
+<code>inStream(...)</code> formulation is used.
+This changed required the introduction of a new parameter <code>m_flow_nominal</code> which
+is used for smoothing in the steady-state balance equations of the model with two fluid ports.
+This implementation also simplifies the implementation of 
+<a href=\"modelica://Buildings.Fluid.MixingVolumes.BaseClasses.PartialMixingVolumeWaterPort\">
+Buildings.Fluid.MixingVolumes.BaseClasses.PartialMixingVolumeWaterPort</a>,
+which now uses the same equations as this model.
+</li>
+<li>
+Another revision was the removal of the parameter <code>use_HeatTransfer</code> as there is
+no noticable overhead in always having the <code>heatPort</code> connector present.
+</li>
+</ul>
+</li>
+<li>
+July 30, 2010 by Michael Wetter:<br>
+Added nominal value for <code>mC</code> to avoid wrong trajectory 
+when concentration is around 1E-7.
+See also <a href=\"https://trac.modelica.org/Modelica/ticket/393\">
+https://trac.modelica.org/Modelica/ticket/393</a>.
+</li>
+<li>
+February 7, 2010 by Michael Wetter:<br>
+Simplified model and its base classes by removing the port data
+and the vessel area.
+Eliminated the base class <code>PartialLumpedVessel</code>.
+</li>
+<li>
+October 12, 2009 by Michael Wetter:<br>
+Changed base class to
+<a href=\"modelica://Buildings.Fluid.MixingVolumes.BaseClasses.ClosedVolume\">
+Buildings.Fluid.MixingVolumes.BaseClasses.ClosedVolume</a>.
+</li>
+</ul>
+</html>"),         Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                    -100},{100,100}}),
+                           graphics),
+            Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                    100}}), graphics={Ellipse(
+                  extent={{-100,98},{100,-102}},
+                  lineColor={0,0,0},
+                  fillPattern=FillPattern.Sphere,
+                  fillColor={170,213,255}), Text(
+                  extent={{-58,14},{58,-18}},
+                  lineColor={0,0,0},
+                  textString="V=%V"),         Text(
+                  extent={{-152,100},{148,140}},
+                  textString="%name",
+                  lineColor={0,0,255})}));
+        end MixingVolume;
+
+        partial model PartialMixingVolume
+          "Partial mixing volume with inlet and outlet ports (flow reversal is allowed)"
+          outer Modelica.Fluid.System system "System properties";
+          extends Buildings.Fluid.Interfaces.LumpedVolumeDeclarations;
+          parameter Modelica.SIunits.MassFlowRate m_flow_nominal(min=0)
+            "Nominal mass flow rate"
+            annotation(Dialog(group = "Nominal condition"));
+          // Port definitions
+          parameter Integer nPorts=0 "Number of ports"
+            annotation(Evaluate=true, Dialog(connectorSizing=true, tab="General",group="Ports"));
+          parameter Medium.MassFlowRate m_flow_small(min=0) = 1E-4*abs(m_flow_nominal)
+            "Small mass flow rate for regularization of zero flow"
+            annotation(Dialog(tab = "Advanced"));
+          parameter Boolean homotopyInitialization = true
+            "= true, use homotopy method"
+            annotation(Evaluate=true, Dialog(tab="Advanced"));
+          parameter Boolean allowFlowReversal = system.allowFlowReversal
+            "= true to allow flow reversal in medium, false restricts to design direction (ports[1] -> ports[2]). Used only if model has two ports."
+            annotation(Dialog(tab="Assumptions"), Evaluate=true);
+          parameter Modelica.SIunits.Volume V "Volume";
+          parameter Boolean prescribedHeatFlowRate=false
+            "Set to true if the model has a prescribed heat flow at its heatPort"
+           annotation(Evaluate=true, Dialog(tab="Assumptions",
+              enable=use_HeatTransfer,
+              group="Heat transfer"));
+          Modelica.Fluid.Vessels.BaseClasses.VesselFluidPorts_b ports[nPorts](
+              redeclare each package Medium = Medium)
+            "Fluid inlets and outlets"
+            annotation (Placement(transformation(extent={{-40,-10},{40,10}},
+              origin={0,-100})));
+          Modelica.Thermal.HeatTransfer.Interfaces.HeatPort_a heatPort
+            "Heat port connected to outflowing medium"
+            annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
+          Modelica.SIunits.Temperature T "Temperature of the fluid";
+          Modelica.SIunits.Pressure p "Pressure of the fluid";
+          Modelica.SIunits.MassFraction Xi[Medium.nXi]
+            "Species concentration of the fluid";
+          Medium.ExtraProperty C[Medium.nC](nominal=C_nominal)
+            "Trace substance mixture content";
+           // Models for the steady-state and dynamic energy balance.
+        //protected
+          Buildings.Fluid.Interfaces.StaticTwoPortConservationEquation steBal(
+            sensibleOnly = true,
+            redeclare final package Medium=Medium,
+            final m_flow_nominal = m_flow_nominal,
+            final allowFlowReversal = allowFlowReversal,
+            final m_flow_small = m_flow_small,
+            final homotopyInitialization = homotopyInitialization,
+            final show_V_flow = false) if
+                useSteadyStateTwoPort
+            "Model for steady-state balance if nPorts=2"
+                annotation (Placement(transformation(extent={{-20,0},{0,20}})));
+          WaterHeatingLibrary.HWDis.Components.BaseClasses.ConservationEquation
+            dynBal(
+            redeclare final package Medium = Medium,
+            final energyDynamics=energyDynamics,
+            final massDynamics=massDynamics,
+            final p_start=p_start,
+            final T_start=T_start,
+            final X_start=X_start,
+            final C_start=C_start,
+            final C_nominal=C_nominal,
+            final fluidVolume=V,
+            m(start=V*rho_nominal),
+            U(start=V*rho_nominal*Medium.specificInternalEnergy(state_start)),
+            nPorts=nPorts) if not useSteadyStateTwoPort
+            "Model for dynamic energy balance"
+            annotation (Placement(transformation(extent={{40,0},{60,20}})));
+          parameter Medium.ThermodynamicState state_start = Medium.setState_pTX(
+              T=T_start,
+              p=p_start,
+              X=X_start[1:Medium.nXi]) "Start state";
+          parameter Modelica.SIunits.Density rho_nominal=Medium.density(
+           Medium.setState_pTX(
+             T=T_start,
+             p=p_start,
+             X=X_start[1:Medium.nXi])) "Density, used to compute fluid mass"
+          annotation (Evaluate=true);
+          ////////////////////////////////////////////////////
+          final parameter Boolean useSteadyStateTwoPort=(nPorts == 2) and
+              prescribedHeatFlowRate and (
+              energyDynamics == Modelica.Fluid.Types.Dynamics.SteadyState) and (
+              massDynamics == Modelica.Fluid.Types.Dynamics.SteadyState) and (
+              substanceDynamics == Modelica.Fluid.Types.Dynamics.SteadyState) and (
+              traceDynamics == Modelica.Fluid.Types.Dynamics.SteadyState)
+            "Flag, true if the model has two ports only and uses a steady state balance"
+            annotation (Evaluate=true);
+          Modelica.SIunits.HeatFlowRate Q_flow
+            "Heat flow across boundaries or energy source/sink";
+          // Outputs that are needed to assign the medium properties
+          Modelica.Blocks.Interfaces.RealOutput hOut_internal(unit="J/kg")
+            "Internal connector for leaving temperature of the component";
+          Modelica.Blocks.Interfaces.RealOutput XiOut_internal[Medium.nXi](unit="1")
+            "Internal connector for leaving species concentration of the component";
+          Modelica.Blocks.Interfaces.RealOutput COut_internal[Medium.nC](unit="1")
+            "Internal connector for leaving trace substances of the component";
+
+        equation
+          ///////////////////////////////////////////////////////////////////////////
+          // asserts
+          if not allowFlowReversal then
+            assert(ports[1].m_flow > -m_flow_small,
+        "Model has flow reversal, but the parameter allowFlowReversal is set to false.
+  m_flow_small    = "         + String(m_flow_small) + "
+  ports[1].m_flow = "         + String(ports[1].m_flow) + "
+");       end if;
+        // Only one connection allowed to a port to avoid unwanted ideal mixing
+          if not useSteadyStateTwoPort then
+            for i in 1:nPorts loop
+            assert(cardinality(ports[i]) == 2 or cardinality(ports[i]) == 0,"
+each ports[i] of volume can at most be connected to one component.
+If two or more connections are present, ideal mixing takes
+place with these connections, which is usually not the intention
+of the modeller. Increase nPorts to add an additional port.
+");          end for;
+          end if;
+          // actual definition of port variables
+          // If the model computes the energy and mass balances as steady-state,
+          // and if it has only two ports,
+          // then we use the same base class as for all other steady state models.
+          if useSteadyStateTwoPort then
+          connect(steBal.port_a, ports[1]) annotation (Line(
+              points={{-20,10},{-22,10},{-22,-60},{0,-60},{0,-100}},
+              color={0,127,255},
+              smooth=Smooth.None));
+
+          connect(steBal.port_b, ports[2]) annotation (Line(
+              points={{5.55112e-16,10},{8,10},{8,10},{8,-88},{0,-88},{0,-100}},
+              color={0,127,255},
+              smooth=Smooth.None));
+
+            connect(hOut_internal,  steBal.hOut);
+            connect(XiOut_internal, steBal.XiOut);
+            connect(COut_internal,  steBal.COut);
+          else
+              connect(dynBal.ports, ports) annotation (Line(
+              points={{50,-5.55112e-16},{50,-34},{2.22045e-15,-34},{2.22045e-15,-100}},
+              color={0,127,255},
+              smooth=Smooth.None));
+
+            connect(hOut_internal,  dynBal.hOut);
+            connect(XiOut_internal, dynBal.XiOut);
+            connect(COut_internal,  dynBal.COut);
+          end if;
+          // Medium properties
+          p = if nPorts > 0 then ports[1].p else p_start;
+          T = Medium.temperature_phX(p=p, h=hOut_internal, X=cat(1,Xi,{1-sum(Xi)}));
+          Xi = XiOut_internal;
+          C = COut_internal;
+          // Port properties
+          heatPort.T = T;
+          heatPort.Q_flow = Q_flow;
+
+          annotation (
+        defaultComponentName="vol",
+        Documentation(info="<html>
+This is a partial model of an instantaneously mixed volume.
+It is used as the base class for all fluid volumes of the package
+<a href=\"modelica://Buildings.Fluid.MixingVolumes\">
+Buildings.Fluid.MixingVolumes</a>.
+</p>
+</p>
+<h4>Implementation</h4>
+<p>
+If the model is operated in steady-state and has two fluid ports connected,
+then the same energy and mass balance implementation is used as in
+steady-state component models, i.e., the use of <code>actualStream</code>
+is not used for the properties at the port.
+</p>
+<p>
+For simple models that uses this model, see
+<a href=\"modelica://Buildings.Fluid.MixingVolumes\">
+Buildings.Fluid.MixingVolumes</a>.
+</p>
+<p>
+This model has been modified from the pipe model in the Buildings library. The buildings library model assumes perfect mixing in each segment of the pipe. To more accurately
+imitate the flow characteristics observed in experimental data a mixing parameter was added. The mixing parameter adjusts the enthalpy of water leaving a segment of the pipe
+to change the energy balance and allow for simualtion of different amounts of mixing.
+</p>
+</html>",         revisions="<html>
+<ul>
+<li>
+Mar 28, 2013 by Peter Grant:<br>
+Added mixing coefficient to ConservationEquation to model different amounts of mixing during draws
+</li>
+<li>
+February 7, 2012 by Michael Wetter:<br>
+Revised base classes for conservation equations in <code>Buildings.Fluid.Interfaces</code>.
+</li>
+<li>
+September 17, 2011 by Michael Wetter:<br>
+Removed instance <code>medium</code> as this is already used in <code>dynBal</code>.
+Removing the base properties led to 30% faster computing time for a solar thermal system
+that contains many fluid volumes. 
+</li>
+<li>
+September 13, 2011 by Michael Wetter:<br>
+Changed in declaration of <code>medium</code> the parameter assignment
+<code>preferredMediumStates=true</code> to
+<code>preferredMediumStates= not (energyDynamics == Modelica.Fluid.Types.Dynamics.SteadyState)</code>.
+Otherwise, for a steady-state model, Dymola 2012 may differentiate the model to obtain <code>T</code>
+as a state. See ticket Dynasim #13596.
+</li>
+<li>
+July 26, 2011 by Michael Wetter:<br>
+Revised model to use new declarations from
+<a href=\"Buildings.Fluid.Interfaces.LumpedVolumeDeclarations\">
+Buildings.Fluid.Interfaces.LumpedVolumeDeclarations</a>.
+</li>
+<li>
+July 14, 2011 by Michael Wetter:<br>
+Added start values for mass and internal energy of dynamic balance
+model.
+</li>
+<li>
+May 25, 2011 by Michael Wetter:<br>
+<ul>
+<li>
+Changed implementation of balance equation. The new implementation uses a different model if 
+exactly two fluid ports are connected, and in addition, the model is used as a steady-state
+component. For this model configuration, the same balance equations are used as were used
+for steady-state component models, i.e., instead of <code>actualStream(...)</code>, the
+<code>inStream(...)</code> formulation is used.
+This changed required the introduction of a new parameter <code>m_flow_nominal</code> which
+is used for smoothing in the steady-state balance equations of the model with two fluid ports.
+This implementation also simplifies the implementation of 
+<a href=\"modelica://Buildings.Fluid.MixingVolumes.BaseClasses.PartialMixingVolumeWaterPort\">
+Buildings.Fluid.MixingVolumes.BaseClasses.PartialMixingVolumeWaterPort</a>,
+which now uses the same equations as this model.
+</li>
+<li>
+Another revision was the removal of the parameter <code>use_HeatTransfer</code> as there is
+no noticable overhead in always having the <code>heatPort</code> connector present.
+</li>
+</ul>
+</li>
+<li>
+July 30, 2010 by Michael Wetter:<br>
+Added nominal value for <code>mC</code> to avoid wrong trajectory 
+when concentration is around 1E-7.
+See also <a href=\"https://trac.modelica.org/Modelica/ticket/393\">
+https://trac.modelica.org/Modelica/ticket/393</a>.
+</li>
+<li>
+February 7, 2010 by Michael Wetter:<br>
+Simplified model and its base classes by removing the port data
+and the vessel area.
+Eliminated the base class <code>PartialLumpedVessel</code>.
+</li>
+<li>
+October 12, 2009 by Michael Wetter:<br>
+Changed base class to
+<a href=\"modelica://Buildings.Fluid.MixingVolumes.BaseClasses.ClosedVolume\">
+Buildings.Fluid.MixingVolumes.BaseClasses.ClosedVolume</a>.
+</li>
+</ul>
+</html>"),         Diagram(graphics),
+            Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,
+                    100}}), graphics={Ellipse(
+                  extent={{-100,98},{100,-102}},
+                  lineColor={0,0,0},
+                  fillPattern=FillPattern.Sphere,
+                  fillColor={170,213,255}), Text(
+                  extent={{-58,14},{58,-18}},
+                  lineColor={0,0,0},
+                  textString="V=%V"),         Text(
+                  extent={{-152,100},{148,140}},
+                  textString="%name",
+                  lineColor={0,0,255})}));
+        end PartialMixingVolume;
 
         model PartialPipe
           "Model of a pipe with finite volume discretization along the flow path"
-          extends Buildings.Fluid.Interfaces.LumpedVolumeDeclarations;
+          extends
+            WaterHeatingLibrary.HWDis.Components.BaseClasses.LumpedVolumeDeclarations;
           extends Buildings.Fluid.Interfaces.PartialTwoPortInterface(
           showDesignFlowDirection = false,
           final show_T=true);
           extends Buildings.Fluid.Interfaces.TwoPortFlowResistanceParameters(
             final computeFlowResistance=(abs(dp_nominal) > Modelica.Constants.eps));
 
-          parameter Integer nSeg(min=2) = 10 "Number of volume segments";
-          parameter Modelica.SIunits.Length thicknessIns
-            "Thickness of insulation";
-          parameter Modelica.SIunits.ThermalConductivity lambdaIns
-            "Heat conductivity of insulation";
-          parameter Modelica.SIunits.Length diameter
-            "Pipe diameter (without insulation)";
+          parameter Integer nSeg(min=2) = 2 "Number of volume segments";
 
-          parameter Modelica.SIunits.Length length "Length of the pipe";
+          parameter Modelica.SIunits.Length diameter_i "Inner pipe diameter"
+            annotation(Dialog(group="Pipe geometry"));
+          parameter Modelica.SIunits.Length diameter_o "Outer pipe diameter"
+            annotation(Dialog(group="Pipe geometry"));
+
+          parameter Modelica.SIunits.SpecificHeatCapacity c_p_pip
+            "Specific heat of the pipe material"
+            annotation(Dialog(group="Pipe material"));
+          parameter Modelica.SIunits.Density rho_pip
+            "Density of the material used in the pipe"
+            annotation(Dialog(group="Pipe material"));
+          parameter Modelica.SIunits.Angle til
+            "Tilt angle of the pipe(0 = horizontal)"
+            annotation(Dialog(group = "Pipe geometry"));
+
+          parameter Modelica.SIunits.Length length "Length of the pipe"
+            annotation(Dialog(group="Pipe geometry"));
           parameter Real ReC=4000
             "Reynolds number where transition to turbulent starts"
             annotation (Dialog(tab="Flow resistance"));
-          parameter Real MixCoef;
-          Buildings.Fluid.FixedResistances.FixedResistanceDpM res(
-            redeclare final package Medium = Medium,
-            final from_dp=from_dp,
-            use_dh=true,
-            dh=diameter,
-            final show_T=show_T,
-            final m_flow_nominal=m_flow_nominal,
-            final dp_nominal=dp_nominal,
-            final allowFlowReversal=allowFlowReversal,
-            final show_V_flow=show_V_flow,
-            final linearized=linearizeFlowResistance,
-            final ReC=ReC,
-            final homotopyInitialization=homotopyInitialization)
-            "Flow resistance"            annotation (Placement(transformation(extent={{-30,-10},
-                    {-10,10}}, rotation=0)));
+          parameter Real MixCoef "1 = full mixing, 0 = plug flow";
+          parameter Real ePipe "Emissivity of the pipe";
+
+          parameter Medium.Temperature T_Initial[nSeg]={Medium.T_default,Medium.T_default}
+            "Start value of temperature"
+            annotation(Dialog(tab = "Initialization"));
+
           BaseClasses.MixingVolume[                  nSeg] vol(
             redeclare each final package Medium = Medium,
             each energyDynamics=energyDynamics,
@@ -8095,41 +9286,78 @@ Implemented first version in <code>Buildings</code> library, based on model from
             each final m_flow_nominal=m_flow_nominal,
             each prescribedHeatFlowRate=true,
             each p_start=p_start,
-            each T_start=T_start,
+            T_start=T_Initial,
             each X_start=X_start,
             each C_start=C_start,
             each C_nominal=C_nominal,
             each final m_flow_small=m_flow_small,
             each final homotopyInitialization=homotopyInitialization,
             each final allowFlowReversal=allowFlowReversal,
-            MixCoef=MixCoef) "Volume for pipe fluid"      annotation (Placement(
-                transformation(extent={{-1,-18},{19,-38}}, rotation=0)));
+            each MixCoef=MixCoef) "Volume for pipe fluid"      annotation (Placement(
+                transformation(extent={{-1,-22},{19,-42}}, rotation=0)));
 
         protected
-          parameter Modelica.SIunits.Volume VPipe=Modelica.Constants.pi*(diameter/2.0)^
+          parameter Modelica.SIunits.Volume VPipe=Modelica.Constants.pi*(diameter_i/2.0)^
               2*length "Pipe volume";
-          parameter Medium.ThermodynamicState state_start = Medium.setState_pTX(
-              T=T_start,
+          parameter Medium.ThermodynamicState[nSeg] state_start = Medium.setState_pTX(
+              T=T_Initial,
               p=p_start,
               X=X_start[1:Medium.nXi]) "Start state";
-          parameter Modelica.SIunits.Density rho_nominal = Medium.density(state_start);
-          parameter Modelica.SIunits.DynamicViscosity mu_nominal = Medium.dynamicViscosity(state_start)
+          parameter Modelica.SIunits.Density[nSeg] rho_nominal = Medium.density(state_start);
+          parameter Modelica.SIunits.DynamicViscosity[nSeg] mu_nominal = Medium.dynamicViscosity(state_start)
             "Dynamic viscosity at nominal condition";
-        public
+          Buildings.Fluid.FixedResistances.FixedResistanceDpM res(
+            redeclare final package Medium = Medium,
+            final from_dp=from_dp,
+            use_dh=true,
+            final show_T=show_T,
+            final m_flow_nominal=m_flow_nominal,
+            final dp_nominal=dp_nominal,
+            final allowFlowReversal=allowFlowReversal,
+            final show_V_flow=show_V_flow,
+            final linearized=linearizeFlowResistance,
+            final ReC=ReC,
+            final homotopyInitialization=homotopyInitialization,
+            dh=diameter_i) "Flow resistance"
+                                         annotation (Placement(transformation(extent={{-30,-10},
+                    {-10,10}}, rotation=0)));
+
           Buildings.Fluid.Sensors.MassFlowRate senMasFlo(redeclare package
               Medium =
                 Medium)
             annotation (Placement(transformation(extent={{-94,10},{-74,-10}})));
+
+          Modelica.Blocks.Routing.Replicator TAmbRep(nout=nSeg) annotation (Placement(
+                transformation(
+                extent={{-10,-10},{10,10}},
+                rotation=270,
+                origin={-50,78})));
+
+        public
+          Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heaCap[nSeg](each C=c_p_pip*
+                rho_pip*Modelica.Constants.pi/(4*nSeg)*(diameter_o^2 - diameter_i^2), T(
+                start=T_Initial))
+            annotation (Placement(transformation(extent={{-30,-42},{-10,-62}})));
+          Modelica.Blocks.Interfaces.RealInput TAmb
+            "Ambient temperature surrounding the pipe (K)" annotation (Placement(
+                transformation(
+                extent={{-20,-20},{20,20}},
+                rotation=270,
+                origin={-50,120}), iconTransformation(
+                extent={{-10,-10},{10,10}},
+                rotation=270,
+                origin={-60,70})));
+
         equation
           connect(res.port_b, vol[1].ports[1]) annotation (Line(
-              points={{-10,6.10623e-16},{7,6.10623e-16},{7,-18}},
+              points={{-10,6.10623e-16},{7,6.10623e-16},{7,-22}},
               color={0,127,255},
               smooth=Smooth.None));
           for i in 1:(nSeg - 1) loop
             connect(vol[i].ports[2], vol[i + 1].ports[1]);
           end for;
           connect(vol[nSeg].ports[2], port_b) annotation (Line(
-              points={{11,-18},{12,-18},{12,5.55112e-16},{100,5.55112e-16}},
+              points={{11,-22},{12,-22},{12,5.55112e-16},{100,5.55112e-16}},
               color={0,127,255},
               smooth=Smooth.None));
           connect(port_a, senMasFlo.port_a) annotation (Line(
@@ -8139,6 +9367,14 @@ Implemented first version in <code>Buildings</code> library, based on model from
           connect(senMasFlo.port_b, res.port_a) annotation (Line(
               points={{-74,0},{-30,0}},
               color={0,127,255},
+              smooth=Smooth.None));
+          connect(vol.heatPort, heaCap.port) annotation (Line(
+              points={{-1,-32},{-20,-32},{-20,-42}},
+              color={191,0,0},
+              smooth=Smooth.None));
+          connect(TAmb, TAmbRep.u) annotation (Line(
+              points={{-50,120},{-50,90}},
+              color={0,0,127},
               smooth=Smooth.None));
           annotation (
             Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
@@ -8193,73 +9429,539 @@ First implementation.
 </ul>
 </html>"));
         end PartialPipe;
+
+        package Examples
+          model FeedForwardController
+            import WaterHeatingLibrary;
+            extends Modelica.Icons.Example;
+            WaterHeatingLibrary.HWDis.Components.BaseClasses.FeedForwardController
+              feedForwardController(redeclare package Medium =
+                  Buildings.Media.ConstantPropertyLiquidWater)
+              annotation (Placement(transformation(extent={{-12,-10},{8,10}})));
+            Modelica.Blocks.Sources.Constant hotEnt(k=60*4184)
+              annotation (Placement(transformation(extent={{-88,22},{-68,42}})));
+            Modelica.Blocks.Sources.Constant colEnt(k=20*4184)
+              annotation (Placement(transformation(extent={{-88,-10},{-68,10}})));
+            Modelica.Blocks.Sources.Constant TOutDes(k=273.15 + 40) annotation (
+               Placement(transformation(extent={{-88,-42},{-68,-22}})));
+          equation
+            connect(hotEnt.y, feedForwardController.hotEnt) annotation (Line(
+                points={{-67,32},{-40,32},{-40,6},{-14,6}},
+                color={0,0,127},
+                smooth=Smooth.None));
+            connect(colEnt.y, feedForwardController.colEnt) annotation (Line(
+                points={{-67,0},{-14,0}},
+                color={0,0,127},
+                smooth=Smooth.None));
+            connect(TOutDes.y, feedForwardController.TOutDes) annotation (Line(
+                points={{-67,-32},{-40,-32},{-40,-6},{-14,-6}},
+                color={0,0,127},
+                smooth=Smooth.None));
+            annotation (Diagram(coordinateSystem(preserveAspectRatio=false,
+                    extent={{-100,-100},{100,100}}), graphics));
+          end FeedForwardController;
+        end Examples;
+
+        record LumpedVolumeDeclarations "Declarations for lumped volumes"
+          replaceable package Medium =
+            Modelica.Media.Interfaces.PartialMedium "Medium in the component"
+              annotation (choicesAllMatching = true);
+
+          // Assumptions
+          parameter Modelica.Fluid.Types.Dynamics energyDynamics=Modelica.Fluid.Types.Dynamics.DynamicFreeInitial
+            "Formulation of energy balance"
+            annotation(Evaluate=true, Dialog(tab = "Dynamics", group="Equations"));
+          parameter Modelica.Fluid.Types.Dynamics massDynamics=energyDynamics
+            "Formulation of mass balance"
+            annotation(Evaluate=true, Dialog(tab = "Dynamics", group="Equations"));
+          final parameter Modelica.Fluid.Types.Dynamics substanceDynamics=energyDynamics
+            "Formulation of substance balance"
+            annotation(Evaluate=true, Dialog(tab = "Dynamics", group="Equations"));
+          final parameter Modelica.Fluid.Types.Dynamics traceDynamics=energyDynamics
+            "Formulation of trace substance balance"
+            annotation(Evaluate=true, Dialog(tab = "Dynamics", group="Equations"));
+
+          // Initialization
+          parameter Medium.AbsolutePressure p_start = Medium.p_default
+            "Start value of pressure"
+            annotation(Dialog(tab = "Initialization"));
+        //  parameter Boolean use_T_start = true "= true, use T_start, otherwise h_start"
+         //   annotation(Dialog(tab = "Initialization"), Evaluate=true);
+        //  parameter Medium.SpecificEnthalpy h_start=
+        //    if use_T_start then Medium.specificEnthalpy_pTX(p_start, T_start, X_start) else Medium.h_default
+        //    "Start value of specific enthalpy"
+        //    annotation(Dialog(tab = "Initialization", enable = not use_T_start));
+          parameter Medium.MassFraction X_start[Medium.nX] = Medium.X_default
+            "Start value of mass fractions m_i/m"
+            annotation (Dialog(tab="Initialization", enable=Medium.nXi > 0));
+          parameter Medium.ExtraProperty C_start[Medium.nC](
+               quantity=Medium.extraPropertiesNames)=fill(0, Medium.nC)
+            "Start value of trace substances"
+            annotation (Dialog(tab="Initialization", enable=Medium.nC > 0));
+          parameter Medium.ExtraProperty C_nominal[Medium.nC](
+               quantity=Medium.extraPropertiesNames) = fill(1E-2, Medium.nC)
+            "Nominal value of trace substances. (Set to typical order of magnitude.)"
+           annotation (Dialog(tab="Initialization", enable=Medium.nC > 0));
+
+        annotation (preferredView="info",
+        Documentation(info="<html>
+<p>
+This class contains parameters and medium properties
+that are used in the lumped  volume model, and in models that extend the 
+lumped volume model.
+</p>
+<p>
+These parameters are used by
+<a href=\"modelica://Buildings.Fluid.Interfaces.ConservationEquation\">
+Buildings.Fluid.Interfaces.ConservationEquation</a>,
+<a href=\"modelica://Buildings.Fluid.MixingVolumes.MixingVolume\">
+Buildings.Fluid.MixingVolumes.MixingVolume</a>,
+<a href=\"modelica://Buildings.Rooms.MixedAir\">
+Buildings.Rooms.MixedAir</a>, and by
+<a href=\"modelica://Buildings.Rooms.BaseClasses.MixedAir\">
+Buildings.Rooms.BaseClasses.MixedAir</a>.
+</p>
+</html>",
+        revisions="<html>
+<ul>
+<li>
+August 2, 2011, by Michael Wetter:<br>
+Set <code>substanceDynamics</code> and <code>traceDynamics<code> to final
+and equal to <code>energyDynamics</code>, 
+as there is no need to make them different from <code>energyDynamics</code>.
+</li>
+<li>
+August 1, 2011, by Michael Wetter:<br>
+Changed default value for <code>energyDynamics</code> to
+<code>Modelica.Fluid.Types.Dynamics.DynamicFreeInitial</code> because
+<code>Modelica.Fluid.Types.Dynamics.SteadyStateInitial</code> leads
+to high order DAE that Dymola cannot reduce.
+</li>
+<li>
+July 31, 2011, by Michael Wetter:<br>
+Changed default value for <code>energyDynamics</code> to
+<code>Modelica.Fluid.Types.Dynamics.SteadyStateInitial</code>.
+</li>
+<li>
+April 13, 2009, by Michael Wetter:<br>
+First implementation.
+</li>
+</ul>
+</html>"));
+        end LumpedVolumeDeclarations;
       end BaseClasses;
+
+      package Obsolete
+        "These models are believed to be obsolete. Kept in storage in case I'm wrong"
+        extends Modelica.Icons.Package;
+        model EndUseLPSPID
+          "Model of a pipe in a hot water distribution system. Assumes input flow units are L/s"
+          extends Modelica.Blocks.Interfaces.BlockIcon;
+
+          replaceable package Medium = Modelica.Media.Interfaces.PartialMedium
+            "Fluid in the system";
+
+          parameter Real PID_P = 1 "Proportional term in PID controller";
+          parameter Modelica.SIunits.Time PID_I = 1
+            "Integral term in PID controller";
+          parameter Modelica.SIunits.Time PID_D = 1
+            "Derivative term in PID controller";
+
+          Modelica.Fluid.Interfaces.FluidPort_a Inlet(redeclare package Medium
+              =                                                                  Medium)
+            "Inlet for water coming from the branch"
+            annotation (Placement(transformation(extent={{-110,44},{-90,64}})));
+           Buildings.Fluid.Actuators.Valves.TwoWayLinear val(riseTime=0.00000001,
+               y_start=0,
+             redeclare package Medium = Medium,
+             m_flow_nominal=0.06,
+             dpValve_nominal=1,
+             l=1e-10)
+             annotation (Placement(transformation(extent={{-10,64},{10,44}})));
+          Buildings.Fluid.Sources.Boundary_pT PAmb(          redeclare package
+              Medium =
+                Medium,
+            p=101325,
+            nPorts=1) "Describes the ambient pressure at the outlet"
+                                                           annotation (Placement(
+                transformation(
+                extent={{-10,-10},{10,10}},
+                rotation=180,
+                origin={60,54})));
+           Modelica.Blocks.Interfaces.RealInput watFlo "Water flow rate in gpm"
+             annotation (Placement(transformation(extent={{-140,-70},{-100,-30}})));
+          Buildings.Fluid.Sensors.TemperatureTwoPort
+                                              senTem(redeclare package Medium
+              =                                                                 Medium,
+            m_flow_nominal=0.063,
+            tau=0.00001)
+            annotation (Placement(transformation(extent={{20,44},{40,64}})));
+          Modelica.Blocks.Interfaces.RealOutput TOut( unit = "K")
+            "Temperature of fluid exiting the fixture"
+            annotation (Placement(transformation(extent={{100,70},{120,90}})));
+          Modelica.Blocks.Sources.RealExpression realExpression(y=val.m_flow)
+            annotation (Placement(transformation(extent={{-92,-94},{-72,-74}})));
+          Modelica.Blocks.Interfaces.RealOutput floOut
+            annotation (Placement(transformation(extent={{100,-94},{120,-74}})));
+          Buildings.Controls.Continuous.LimPID conPID(
+            controllerType=Modelica.Blocks.Types.SimpleController.PID,
+            k=PID_P,
+            Ti=PID_I,
+            Td=PID_D)
+                  annotation (Placement(transformation(extent={{-68,-60},{-48,-40}})));
+          Modelica.Blocks.Logical.GreaterThreshold greaterThreshold(threshold=0)
+            annotation (Placement(transformation(extent={{-86,-24},{-66,-4}})));
+          Modelica.Blocks.Math.BooleanToReal booleanToReal
+            annotation (Placement(transformation(extent={{-54,-24},{-34,-4}})));
+          Modelica.Blocks.Math.Product product1 annotation (Placement(
+                transformation(
+                extent={{-10,-10},{10,10}},
+                rotation=90,
+                origin={0,16})));
+        equation
+          connect(Inlet, val.port_a) annotation (Line(
+              points={{-100,54},{-10,54}},
+              color={0,127,255},
+              smooth=Smooth.None));
+          connect(senTem.T, TOut) annotation (Line(
+              points={{30,65},{30,80},{110,80}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(realExpression.y, floOut) annotation (Line(
+              points={{-71,-84},{110,-84}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(watFlo, conPID.u_s) annotation (Line(
+              points={{-120,-50},{-70,-50}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(realExpression.y, conPID.u_m) annotation (Line(
+              points={{-71,-84},{-58,-84},{-58,-62}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(greaterThreshold.y, booleanToReal.u) annotation (Line(
+              points={{-65,-14},{-56,-14}},
+              color={255,0,255},
+              smooth=Smooth.None));
+          connect(watFlo, greaterThreshold.u) annotation (Line(
+              points={{-120,-50},{-96,-50},{-96,-14},{-88,-14}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(booleanToReal.y, product1.u1) annotation (Line(
+              points={{-33,-14},{-6,-14},{-6,4}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(conPID.y, product1.u2) annotation (Line(
+              points={{-47,-50},{6,-50},{6,4}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(product1.y, val.y) annotation (Line(
+              points={{0,27},{0,42}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(val.port_b, senTem.port_a) annotation (Line(
+              points={{10,54},{20,54}},
+              color={0,127,255},
+              smooth=Smooth.None));
+          connect(senTem.port_b, PAmb.ports[1]) annotation (Line(
+              points={{40,54},{50,54}},
+              color={0,127,255},
+              smooth=Smooth.None));
+          annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                    -100},{100,100}}), graphics),
+                    Documentation(info="<html>
+            <p>
+            This model can be used to control a fluid flow rate to the user-specified flow rate. The inputs are a connection to the hot water system and a hot water draw flow rate.
+            This version of the model is intended to be used with water flow rate in L/s used as the input. Because the valve model works in kg/s no unit conversions are
+            performed to make the output flow rate read in L/s (Assumption: The density of water is constantly 1 kg/L).
+            </p>
+            <p>
+            This model uses a PId controller to modulate the water flow rate instead of the constant gain controller. The advantage of this model is that it does not require the
+             user to adjust the gain value until the simulated flow rate matches the desired flow rate. The disadvantage is that the PID controller will not be able to react
+             and adjust the valve to the desired flow rate instantly.<br>
+            </p>
+            <p>
+            In the original design the valve would not respond well to a desired flow rate of 0 L/s. Situations where draw flow rates instantly dropped to 0 would simulate extremely
+            slowly. The models comparing the flow rate to 0 and setting the valve position to 0 when there is no flow were added to resolve this issue.<br>
+            </p> 
+            </html>",
+                    revisions="<html>
+            <ul>
+            <li>
+            Mar 28, 2013 by Peter Grant:<br>
+            First implementation            
+            </ul>
+            </li>
+            </html>"));
+        end EndUseLPSPID;
+
+        model EndUseGPMPID
+          "Model of a pipe in a hot water distribution system. Assumes input flow units are GPM"
+          extends WaterHeatingLibrary.HWDis.Components.Obsolete.EndUseLPSPID(
+              realExpression(y=val.m_flow/0.063));
+
+         annotation (Placement(transformation(extent={{46,-94},{66,-74}})),
+                      Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                    -100},{100,100}}), graphics),
+                    Documentation(info="<html>
+            <p>
+            This model can be used to control a fluid flow rate to the user-specified flow rate. The inputs are a connection to the hot water system and a hot water draw flow rate.
+            This version of the model is intended to be used with water flow rate in gal/min used as the input. Because the valve model works in kg/s unit conversions are
+            performed to make the output flow rate read in gal (Assumption: The density of water is constantly 1 kg/L).
+            </p>
+            <p>
+            This model uses a PId controller to modulate the water flow rate instead of the constant gain controller. The advantage of this model is that it does not require the
+             user to adjust the gain value until the simulated flow rate matches the desired flow rate. The disadvantage is that the PID controller will not be able to react
+             and adjust the valve to the desired flow rate instantly.<br>
+            </p>
+            <p>
+            In the original design the valve would not respond well to a desired flow rate of 0 L/s. Situations where draw flow rates instantly dropped to 0 would simulate extremely
+            slowly. The models comparing the flow rate to 0 and setting the valve position to 0 when there is no flow were added to resolve this issue.<br>
+            </p> 
+            </html>",
+                    revisions="<html>
+            <ul>
+            <li>
+            Mar 28, 2013 by Peter Grant:<br>
+            First implementation            
+            </ul>
+            </li>
+            </html>"));
+        end EndUseGPMPID;
+
+        model EndUseLPSTwoBranch
+          "Model of a pipe in a water distribution system. Assumes input flow units are L/s. Includes pipes for both hot and cold water"
+          extends Modelica.Blocks.Interfaces.BlockIcon;
+
+          replaceable package Medium = Modelica.Media.Interfaces.PartialMedium
+            "Fluid in the system";
+
+          parameter Modelica.SIunits.Temperature T_start
+            "Initial temperature in the valve";
+
+          parameter Real PID_P "Proportional term for the PID controller";
+          parameter Modelica.SIunits.Time PID_I
+            "Integral term for the PID controller";
+          parameter Modelica.SIunits.Time PID_D
+            "Derivative term for the PID controller";
+
+          parameter Real gain=1/13.25 "Gain for controlling the flow valve";
+
+          Modelica.Fluid.Interfaces.FluidPort_a hotIn(redeclare package Medium
+              =                                                                  Medium)
+            "Inlet for hot water coming from the branch"
+            annotation (Placement(transformation(extent={{-110,-10},{-90,10}})));
+           Buildings.Fluid.Actuators.Valves.ThreeWayLinear
+                                                         val(riseTime=0.00000001,
+               y_start=0,
+             redeclare package Medium = Medium,
+             m_flow_nominal=0.06,
+             dpValve_nominal=1,
+            l={1e-10,1e-10},
+            T_start=T_start,
+            tau=0.0000001)
+             annotation (Placement(transformation(extent={{-30,10},{-10,-10}})));
+          Buildings.Fluid.Sources.Boundary_pT PAmb(          redeclare package
+              Medium =
+                Medium,
+            p=101325,
+            nPorts=1) "Describes the ambient pressure at the outlet"
+                                                           annotation (Placement(
+                transformation(
+                extent={{-10,-10},{10,10}},
+                rotation=180,
+                origin={74,0})));
+           Modelica.Blocks.Interfaces.RealInput TOutDes
+            "Desired outlet water temperature"
+             annotation (Placement(transformation(extent={{-140,-76},{-100,-36}})));
+          Buildings.Fluid.Sensors.TemperatureTwoPort
+                                              senTem(redeclare package Medium
+              =                                                                 Medium,
+            m_flow_nominal=0.063,
+            tau=0.00001)
+            annotation (Placement(transformation(extent={{-4,10},{16,-10}})));
+          Modelica.Blocks.Interfaces.RealOutput TOut( unit = "K")
+            "Temperature of fluid exiting the fixture"
+            annotation (Placement(transformation(extent={{100,-44},{120,-24}})));
+          Modelica.Fluid.Interfaces.FluidPort_a colIn(redeclare package Medium
+              =                                                                  Medium)
+            "Inlet connected to the cold water branch"
+            annotation (Placement(transformation(extent={{-110,26},{-90,46}})));
+          BaseClasses.FeedForwardController    conPID(redeclare package Medium
+              = Medium)
+            annotation (Placement(transformation(extent={{-46,-60},{-26,-40}})));
+          Buildings.Fluid.Actuators.Valves.TwoWayLinear val1(
+            redeclare package Medium = Medium,
+            m_flow_nominal=0.06,
+            dpValve_nominal=1,
+            l=1e-8,
+            riseTime=0.0000001,
+            y_start=0)
+            annotation (Placement(transformation(extent={{22,-10},{42,10}})));
+          Modelica.Blocks.Interfaces.RealInput WatFlowDes
+            annotation (Placement(transformation(extent={{-140,50},{-100,90}})));
+          Modelica.Blocks.Interfaces.RealOutput WatFloAct
+            annotation (Placement(transformation(extent={{100,50},{120,70}})));
+           Modelica.Blocks.Math.Gain valPosId(k=gain)
+            "Identifies the position of the valve needed for the desired flow rate"
+             annotation (Placement(transformation(extent={{-74,60},{-54,80}})));
+           Modelica.Blocks.Math.Min valCon "Controls the valve position"
+             annotation (Placement(transformation(extent={{-8,54},{12,74}})));
+           Modelica.Blocks.Sources.Constant Max(k=1)
+            "States that the valve cannot open beyond 100%"
+             annotation (Placement(transformation(extent={{-52,44},{-32,64}})));
+          Modelica.Blocks.Sources.RealExpression realExpression(y=val1.m_flow)
+            annotation (Placement(transformation(extent={{56,50},{76,70}})));
+          Buildings.Fluid.Sensors.SpecificEnthalpyTwoPort colEnt(redeclare
+              package Medium = Medium, m_flow_nominal=0.063)
+            "Enthalpy of the cold water flow"
+            annotation (Placement(transformation(extent={{-92,46},{-72,26}})));
+          Buildings.Fluid.Sensors.SpecificEnthalpyTwoPort hotEnt(redeclare
+              package Medium = Medium, m_flow_nominal=0.063)
+            "Enthalpy of the hot water flow"
+            annotation (Placement(transformation(extent={{-70,10},{-50,-10}})));
+        equation
+          connect(conPID.y, val.y) annotation (Line(
+              points={{-25,-50},{-20,-50},{-20,-12}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(val1.port_b, PAmb.ports[1]) annotation (Line(
+              points={{42,0},{64,0}},
+              color={0,127,255},
+              smooth=Smooth.None));
+          connect(WatFlowDes, valPosId.u) annotation (Line(
+              points={{-120,70},{-76,70}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(valPosId.y, valCon.u1) annotation (Line(
+              points={{-53,70},{-10,70}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(Max.y, valCon.u2) annotation (Line(
+              points={{-31,54},{-24,54},{-24,58},{-10,58}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(valCon.y, val1.y) annotation (Line(
+              points={{13,64},{32,64},{32,12}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(realExpression.y, WatFloAct) annotation (Line(
+              points={{77,60},{110,60}},
+              color={0,0,127},
+              smooth=Smooth.None));
+
+          connect(val.port_2, senTem.port_a) annotation (Line(
+              points={{-10,0},{-4,0}},
+              color={0,127,255},
+              smooth=Smooth.None));
+          connect(senTem.port_b, val1.port_a) annotation (Line(
+              points={{16,0},{22,0}},
+              color={0,127,255},
+              smooth=Smooth.None));
+          connect(senTem.T, TOut) annotation (Line(
+              points={{6,-11},{6,-34},{110,-34}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(TOutDes, conPID.TOutDes) annotation (Line(
+              points={{-120,-56},{-48,-56}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(colIn, colEnt.port_a) annotation (Line(
+              points={{-100,36},{-92,36}},
+              color={0,127,255},
+              smooth=Smooth.None));
+          connect(colEnt.port_b, val.port_3) annotation (Line(
+              points={{-72,36},{-20,36},{-20,10}},
+              color={0,127,255},
+              smooth=Smooth.None));
+          connect(hotIn, hotEnt.port_a) annotation (Line(
+              points={{-100,4.44089e-16},{-86,4.44089e-16},{-86,0},{-70,0}},
+              color={0,127,255},
+              smooth=Smooth.None));
+          connect(hotEnt.port_b, val.port_1) annotation (Line(
+              points={{-50,0},{-30,0}},
+              color={0,127,255},
+              smooth=Smooth.None));
+          connect(conPID.hotEnt, hotEnt.h_out) annotation (Line(
+              points={{-48,-44},{-60,-44},{-60,-11}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(conPID.colEnt, colEnt.h_out) annotation (Line(
+              points={{-48,-50},{-82,-50},{-82,25}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                    -100},{100,100}}), graphics),
+                    Documentation(info="<html>
+            <p>
+            This model allows the user to describe a hot water draw in terms of the conditions leaving the fixutre. The model then uses two separate valves to control the system
+            (system referring to water heater combined with distribution system) such that the desired water flow leaves the fixture. Progressing from the draw to the water
+            heater the two valves are:<br>
+            A two-way valve using the gain method (see WaterHeatingLibrary.HWDis.Components.EndUseLPS) to control the flow rate out of the draw.<br>
+            A three-way valve using a PID controller to determine the mixture of hot and cold water. The PID controller adjusts the three-way valve position until the outlet
+            temperature matches the input from the user.
+            </p>
+            <p>
+            The water flow rate is controlled by opening/closing the valve such that the water flow rate in the fluid line matches the flow rate specified by the user. The intent
+            is that the user can specify a flow rate in a text input file and the valve controls the fluid path to match that flow rate. When using this component to create models
+            the gain value must be adjusted until the system flow matches the intended flow.
+            </p>     
+            <p>   
+            This version of the model is intended to be used with water flow rate in L/s used as the input. Because the valve model works in kg/s no unit conversions are
+            performed to make the output flow rate read in L/s (Assumption: The density of water is constantly 1 kg/L).<br>
+            </p>    
+            </html>",
+                    revisions="<html>
+            <ul>
+            <li>
+            Mar 28, by Peter Grant:<br>
+            First implementation
+            </ul>
+            </li>
+            </html>"));
+        end EndUseLPSTwoBranch;
+
+        model EndUseGPMTwoBranch
+          "Model of a pipe in a water distribution system. Assumes input flow units are GPM. Includes pipes for both hot and cold water"
+          extends
+            WaterHeatingLibrary.HWDis.Components.Obsolete.EndUseLPSTwoBranch(
+              realExpression(y=val1.m_flow/0.063));
+
+          annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                    -100},{100,100}}), graphics),
+                    Documentation(info="<html>
+            <p>
+            This model allows the user to describe a hot water draw in terms of the conditions leaving the fixutre. The model then uses two separate valves to control the system
+            (system referring to water heater combined with distribution system) such that the desired water flow leaves the fixture. Progressing from the draw to the water
+            heater the two valves are:<br>
+            A two-way valve using the gain method (see WaterHeatingLibrary.HWDis.Components.EndUseLPS) to control the flow rate out of the draw.<br>
+            A three-way valve using a PID controller to determine the mixture of hot and cold water. The PID controller adjusts the three-way valve position until the outlet
+            temperature matches the input from the user.
+            </p>
+            <p>
+            The water flow rate is controlled by opening/closing the valve such that the water flow rate in the fluid line matches the flow rate specified by the user. The intent
+            is that the user can specify a flow rate in a text input file and the valve controls the fluid path to match that flow rate. When using this component to create models
+            the gain value must be adjusted until the system flow matches the intended flow.
+            </p>     
+            <p>   
+            This version of the model is intended to be used with water flow rate in gal/min used as the input. Because the valve model works in kg/s unit conversions are
+            performed to make the output flow rate read in gal/min (Assumption: The density of water is constantly 1 kg/L).<br>
+            </p>    
+            </html>",
+                    revisions="<html>
+            <ul>
+            <li>
+            Mar 28, by Peter Grant:<br>
+            First implementation
+            </ul>
+            </li>
+            </html>"));
+        end EndUseGPMTwoBranch;
+      end Obsolete;
     end Components;
 
     package ValidationModels
       "Models designed to be the same as Carl Hillers lab setup, for use in validating the model"
-      model oneHalInc
-        "Model emulating Carl Hillers 1/2 in dia pipe experiments"
-        extends Modelica.Icons.Example;
-        package Water = Buildings.Media.ConstantPropertyLiquidWater;
-        Modelica.Blocks.Tables.CombiTable1Ds InletConditions(
-          tableOnFile=true,
-          tableName="Flow",
-          columns=2:3,
-          fileName="HWDisExampleDemandFlowPattern.txt")
-          "Provides the hot water draw mass flow rate (Col 2) and inlet water temperature (Col 3)"
-          annotation (Placement(transformation(extent={{-38,2},{-18,22}})));
-        Modelica.Blocks.Sources.RealExpression realExpression(y=time)
-          annotation (Placement(transformation(extent={{-68,2},{-48,22}})));
-        inner Modelica.Fluid.System system
-          annotation (Placement(transformation(extent={{-60,-62},{-40,-42}})));
-        Components.SinglePipeDistributionSystem  singlePipeDistributionSystem(
-            redeclare package Water = Water,
-          pipDia=0.0127,
-          T_Amb=273.105 + 20,
-          pipSeg=6,
-          pipLen=39.0144,
-          insK=0.036,
-          insX=0.0127)
-          annotation (Placement(transformation(extent={{18,0},{38,20}})));
-      equation
-        connect(realExpression.y,InletConditions. u)
-                                                   annotation (Line(
-            points={{-47,12},{-40,12}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(InletConditions.y[1],singlePipeDistributionSystem. mDotDra)
-                                                                          annotation (
-           Line(
-            points={{-17,12},{0,12},{0,14},{16,14}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(InletConditions.y[2],singlePipeDistributionSystem. TIn)
-                                                                      annotation (
-            Line(
-            points={{-17,12},{0,12},{0,8},{16,8}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        annotation (
-        Documentation(info="<html>
-  <p>
-  This model presents a single pipe model intended to match Carl Hiller's lab tests. It is intended to match the 1/2 in dia pipe tests.
-  </p>
-  <p>
-  Useful numbers and facts:
-  </p>
-  <ul>
-  <li> The one half inch pipe test has six straight sections of 20 ft, with elbows and shorties creating U-bends in between. Total length is 128 ft (39.0144 m).
-  </li>
-  <li>
-  There are two options for insulation - 1/2 in and 3/4 in. 1/2 in = 0.0127 m. 3/4 in = 0.01905 m.
-  </li>
-  <li>
-  The insulation used in Carl Hiller's test lab has a conductivity of 0.02 Btu/hr-Ft-F (0.036 W/hr-m-K).
-  </li>
-  </ul>
-  </html>"));
-      end oneHalInc;
 
       model thrQuaInR0Validation
         "A model designed to replicate Carl Hiller's test lab. Parameters entered are intended to match the 3/4 in dia test"
@@ -8267,43 +9969,9 @@ First implementation.
 
         package Water = Buildings.Media.ConstantPropertyLiquidWater;
 
-        Modelica.Blocks.Tables.CombiTable1Ds Inlet1GPMTest2(
-          tableOnFile=true,
-          columns=2:3,
-          tableName="Data",
-          fileName=
-              "/home/peter/WaterHeaterModeling/modeling/ExperimentalData/DistributionSystem/34CuBare1GPMTest2.txt")
-          "Provides the hot water draw mass flow rate (Col 2) and inlet water temperature (Col 3)"
-          annotation (Placement(transformation(extent={{-42,-2},{-22,18}})));
-        Modelica.Blocks.Sources.RealExpression realExpression(y=time)
-          annotation (Placement(transformation(extent={{-72,-2},{-52,18}})));
         inner Modelica.Fluid.System system
-          annotation (Placement(transformation(extent={{70,158},{90,178}})));
-        Components.SinglePipeDistributionSystemReducedMixingPipe  GPM1Test2(
-          redeclare package Water = Water,
-          insK=0.35,
-          T_Amb=273.105 + 20,
-          MixCoef=0.6,
-          pipDia=0.0205994,
-          insX=0.17,
-          pipLen=27.87758,
-          pipSeg=46,
-          T_Start=306.8167)
-          annotation (Placement(transformation(extent={{40,-4},{60,16}})));
-        Modelica.Blocks.Math.Add add
-          annotation (Placement(transformation(extent={{4,-28},{24,-8}})));
-        Modelica.Blocks.Sources.Constant const(k=273.15)
-          annotation (Placement(transformation(extent={{-58,-34},{-38,-14}})));
-        Modelica.Blocks.Tables.CombiTable1Ds Val1GPMTest2(
-          tableOnFile=true,
-          tableName="Data",
-          columns=2:10,
-          fileName=
-              "/home/peter/WaterHeaterModeling/modeling/ExperimentalData/DistributionSystem/34CuR0GPM1ValidationData2.txt")
-          annotation (Placement(transformation(extent={{-42,28},{-22,48}})));
+          annotation (Placement(transformation(extent={{72,70},{92,90}})));
 
-        Modelica.Blocks.Math.Gain gain(k=0.063090197)
-          annotation (Placement(transformation(extent={{12,24},{24,36}})));
         Modelica.Blocks.Tables.CombiTable1Ds Inlet1GPMTest1(
           tableOnFile=true,
           columns=2:3,
@@ -8311,267 +9979,97 @@ First implementation.
           fileName=
               "/home/peter/WaterHeaterModeling/modeling/ExperimentalData/DistributionSystem/34CuBare1GPMTest1.txt")
           "Provides the hot water draw mass flow rate (Col 2) and inlet water temperature (Col 3)"
-          annotation (Placement(transformation(extent={{-32,114},{-12,134}})));
+          annotation (Placement(transformation(extent={{-64,-34},{-44,-14}})));
         Modelica.Blocks.Sources.RealExpression realExpression1(
                                                               y=time)
-          annotation (Placement(transformation(extent={{-62,114},{-42,134}})));
-        Components.SinglePipeDistributionSystemReducedMixingPipe  GPM1Test1(
-          redeclare package Water = Water,
-          insK=0.35,
-          T_Amb=273.105 + 20,
-          MixCoef=0.6,
-          pipDia=0.0205994,
-          insX=0.17,
-          pipLen=27.87758,
-          pipSeg=46,
-          T_Start=284.7056)
-          annotation (Placement(transformation(extent={{50,112},{70,132}})));
+          annotation (Placement(transformation(extent={{-94,-34},{-74,-14}})));
         Modelica.Blocks.Math.Add add1
-          annotation (Placement(transformation(extent={{14,88},{34,108}})));
+          annotation (Placement(transformation(extent={{-20,22},{0,2}})));
         Modelica.Blocks.Sources.Constant const1(
                                                k=273.15)
-          annotation (Placement(transformation(extent={{-48,82},{-28,102}})));
+          annotation (Placement(transformation(extent={{-62,8},{-42,28}})));
         Modelica.Blocks.Tables.CombiTable1Ds Val1GPMTest1(
           tableOnFile=true,
           tableName="Data",
           columns=2:10,
           fileName=
               "/home/peter/WaterHeaterModeling/modeling/ExperimentalData/DistributionSystem/34CuR0GPM1ValidationData.txt")
-          annotation (Placement(transformation(extent={{-32,144},{-12,164}})));
+          annotation (Placement(transformation(extent={{-64,-64},{-44,-44}})));
         Modelica.Blocks.Math.Gain gain1(
                                        k=0.063090197)
-          annotation (Placement(transformation(extent={{22,140},{34,152}})));
-        Modelica.Blocks.Tables.CombiTable1Ds Inlet2GPMTest1(
-          tableOnFile=true,
-          columns=2:3,
-          tableName="Data",
-          fileName=
-              "/home/peter/WaterHeaterModeling/modeling/ExperimentalData/DistributionSystem/34CuBare2GPMTest1.txt")
-          "Provides the hot water draw mass flow rate (Col 2) and inlet water temperature (Col 3)"
-          annotation (Placement(transformation(extent={{-50,-142},{-30,-122}})));
-        Modelica.Blocks.Sources.RealExpression realExpression2(
-                                                              y=time)
-          annotation (Placement(transformation(extent={{-80,-142},{-60,-122}})));
-        Components.SinglePipeDistributionSystemReducedMixingPipe  GPM2Test1(
-          redeclare package Water = Water,
-          insK=0.35,
-          T_Amb=273.105 + 20,
-          MixCoef=0.6,
-          pipDia=0.0205994,
-          insX=0.17,
-          pipLen=27.87758,
-          pipSeg=46,
-          T_Start=286.6)
-          annotation (Placement(transformation(extent={{32,-144},{52,-124}})));
-        Modelica.Blocks.Math.Add add2
-          annotation (Placement(transformation(extent={{-4,-168},{16,-148}})));
-        Modelica.Blocks.Sources.Constant const2(
-                                               k=273.15)
-          annotation (Placement(transformation(extent={{-66,-174},{-46,-154}})));
-        Modelica.Blocks.Tables.CombiTable1Ds Val2GPMTest1(
-          tableOnFile=true,
-          tableName="Data",
-          columns=2:10,
-          fileName=
-              "/home/peter/WaterHeaterModeling/modeling/ExperimentalData/DistributionSystem/34CuBare2GPMValidationData1.txt")
-          annotation (Placement(transformation(extent={{-50,-112},{-30,-92}})));
-        Modelica.Blocks.Math.Gain gain2(
-                                       k=0.063090197)
-          annotation (Placement(transformation(extent={{4,-116},{16,-104}})));
+          annotation (Placement(transformation(extent={{-10,-48},{2,-36}})));
+        Components.EndUseGPM endUseGPM(redeclare package Medium = Water)
+          annotation (Placement(transformation(extent={{72,-38},{92,-18}})));
+        Buildings.Fluid.Sources.Boundary_pT boundary(use_T_in=true,
+          nPorts=1,
+          redeclare package Medium = Water,
+          p=150000)
+          annotation (Placement(transformation(extent={{12,-24},{32,-4}})));
+        Components.PipeLumpedCapNoInsul
+                        pip(
+          redeclare package Medium = Water,
+          c_p_pip=390,
+          rho_pip=8960,
+          diameter_o=0.022225,
+          til=0,
+          length=27.87758,
+          m_flow_nominal=0.063,
+          dp_nominal=1,
+          MixCoef=1,
+          diameter_i=0.018923,
+          ePipe=0.95,
+          T_start=284.7236,
+          nSeg=46)
+          annotation (Placement(transformation(extent={{38,-24},{58,-4}})));
+        Modelica.Blocks.Sources.Constant TRadMea(k=273.15 + 15)
+          annotation (Placement(transformation(extent={{20,70},{40,90}})));
+        Modelica.Blocks.Sources.Constant TAmb(k=273.15 + 15)
+          annotation (Placement(transformation(extent={{-20,32},{0,52}})));
       equation
-        connect(realExpression.y, Inlet1GPMTest2.u)
-                                                   annotation (Line(
-            points={{-51,8},{-44,8}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(Inlet1GPMTest2.y[1], GPM1Test2.mDotDra)                   annotation (
-           Line(
-            points={{-21,8},{-4,8},{-4,8.8},{38,8.8}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(Inlet1GPMTest2.y[2], add.u1)  annotation (Line(
-            points={{-21,8},{-4,8},{-4,-12},{2,-12}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(add.y, GPM1Test2.TIn)                    annotation (Line(
-            points={{25,-18},{30,-18},{30,4},{38,4}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(const.y, add.u2) annotation (Line(
-            points={{-37,-24},{2,-24}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(realExpression.y, Val1GPMTest2.u)   annotation (Line(
-            points={{-51,8},{-50,8},{-50,38},{-44,38}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(Inlet1GPMTest2.y[1], gain.u)  annotation (Line(
-            points={{-21,8},{-4,8},{-4,30},{10.8,30}},
-            color={0,0,127},
-            smooth=Smooth.None));
         connect(realExpression1.y, Inlet1GPMTest1.u)
                                                    annotation (Line(
-            points={{-41,124},{-34,124}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(Inlet1GPMTest1.y[1], GPM1Test1.mDotDra)                   annotation (
-           Line(
-            points={{-11,124},{6,124},{6,124.8},{48,124.8}},
+            points={{-73,-24},{-66,-24}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(Inlet1GPMTest1.y[2], add1.u1) annotation (Line(
-            points={{-11,124},{6,124},{6,104},{12,104}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(add1.y, GPM1Test1.TIn)                   annotation (Line(
-            points={{35,98},{40,98},{40,120},{48,120}},
+            points={{-43,-24},{-26,-24},{-26,6},{-22,6}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(const1.y, add1.u2)
                                  annotation (Line(
-            points={{-27,92},{12,92}},
+            points={{-41,18},{-22,18}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(realExpression1.y, Val1GPMTest1.u)  annotation (Line(
-            points={{-41,124},{-40,124},{-40,154},{-34,154}},
+            points={{-73,-24},{-72,-24},{-72,-54},{-66,-54}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(Inlet1GPMTest1.y[1], gain1.u) annotation (Line(
-            points={{-11,124},{6,124},{6,146},{20.8,146}},
+            points={{-43,-24},{-26,-24},{-26,-42},{-11.2,-42}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(realExpression2.y, Inlet2GPMTest1.u)
-                                                   annotation (Line(
-            points={{-59,-132},{-52,-132}},
+        connect(Inlet1GPMTest1.y[1], endUseGPM.watFlo) annotation (Line(
+            points={{-43,-24},{4,-24},{4,-33},{70,-33}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(Inlet2GPMTest1.y[1], GPM2Test1.mDotDra)                   annotation (
-           Line(
-            points={{-29,-132},{-12,-132},{-12,-131.2},{30,-131.2}},
+        connect(boundary.ports[1], pip.port_a) annotation (Line(
+            points={{32,-14},{38,-14}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(add1.y, boundary.T_in) annotation (Line(
+            points={{1,12},{4,12},{4,-10},{10,-10}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(Inlet2GPMTest1.y[2], add2.u1) annotation (Line(
-            points={{-29,-132},{-12,-132},{-12,-152},{-6,-152}},
+        connect(TRadMea.y, pip.TRadMea) annotation (Line(
+            points={{41,80},{54,80},{54,-7}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(add2.y, GPM2Test1.TIn)                   annotation (Line(
-            points={{17,-158},{22,-158},{22,-136},{30,-136}},
-            color={0,0,127},
+        connect(pip.port_b, endUseGPM.Inlet) annotation (Line(
+            points={{58,-14},{66,-14},{66,-28},{72,-28}},
+            color={0,127,255},
             smooth=Smooth.None));
-        connect(const2.y, add2.u2)
-                                 annotation (Line(
-            points={{-45,-164},{-6,-164}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(realExpression2.y, Val2GPMTest1.u)  annotation (Line(
-            points={{-59,-132},{-58,-132},{-58,-102},{-52,-102}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(Inlet2GPMTest1.y[1], gain2.u) annotation (Line(
-            points={{-29,-132},{-12,-132},{-12,-110},{2.8,-110}},
-            color={0,0,127},
-            smooth=Smooth.None));
-      annotation (
-      Documentation(info="<html>
-<p>
-This model is designed to match Carl Hiller's test lab. It is intended to be the same as the 3/4 in dia pipe setup.
-</p>
-<p>
-Some useful numbers and facts:
-</p>
-<ul>
-<li>
-The 3/4 in dia pipe test has four straight sections of 20 ft, with elbows and shorties creating U-bends in between. Total length is 86 ft (26.2128 m).
-</li>
-<li>
-There are two options for insulation - 1/2 in and 3/4 in. 1/2 in = 0.0127 m. 3/4 in = 0.01905 m.
-</li>
-<li>
-The insulation used in Carl Hiller's test lab has a conductivity of 0.02 Btu/hr-Ft-F (0.036 W/hr-m-K).
-</li>
-</ul>
-</html>"),   Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                  -200},{100,200}}), graphics),
-          Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-200},
-                  {100,200}})));
-      end thrQuaInR0Validation;
-
-      model thrQuaInR47Validation
-        "A model designed to replicate Carl Hiller's test lab. Parameters entered are intended to match the 3/4 in dia test"
-        extends Modelica.Icons.Example;
-
-        package Water = Buildings.Media.ConstantPropertyLiquidWater;
-
-        parameter Real pipLen = 27.87758;
-      //  parameter Real pipLen = 27.87758;
-
-        Modelica.Blocks.Tables.CombiTable1Ds InletConditions(
-          tableOnFile=true,
-          columns=2:3,
-          tableName="Data",
-          fileName="/home/peter/WaterHeaterModeling/modeling/ExperimentalData/DistributionSystem/34CuR47GPM1Test1.txt")
-          "Provides the hot water draw mass flow rate (Col 2) and inlet water temperature (Col 3)"
-          annotation (Placement(transformation(extent={{-36,6},{-16,26}})));
-        Modelica.Blocks.Sources.RealExpression realExpression(y=time)
-          annotation (Placement(transformation(extent={{-66,6},{-46,26}})));
-        inner Modelica.Fluid.System system
-          annotation (Placement(transformation(extent={{-58,-58},{-38,-38}})));
-        Modelica.Blocks.Math.Add add
-          annotation (Placement(transformation(extent={{10,-20},{30,0}})));
-        Modelica.Blocks.Sources.Constant const(k=273.15)
-          annotation (Placement(transformation(extent={{-52,-26},{-32,-6}})));
-        Modelica.Blocks.Tables.CombiTable1Ds ValidationData(
-          tableOnFile=true,
-          tableName="Data",
-          columns=2:10,
-          fileName=
-              "/home/peter/WaterHeaterModeling/modeling/ExperimentalData/DistributionSystem/34CuR47GPM1ValidationData.txt")
-          annotation (Placement(transformation(extent={{-36,36},{-16,56}})));
-
-        Modelica.Blocks.Math.Gain gain(k=0.063090197)
-          annotation (Placement(transformation(extent={{18,32},{30,44}})));
-        Components.SinglePipeDistributionSystemReducedMixingPipe  sinPipDis(
-          redeclare package Water = Water,
-          insX=0.1,
-          T_Amb=273.105 + 20,
-          pipSeg=46,
-          insK=0.1208142396,
-          pipDia=0.0205994,
-          MixCoef=0.6,
-          pipLen=pipLen,
-          T_Start=281.17)
-          "Model of a hot water distribution system with a single pipe"
-          annotation (Placement(transformation(extent={{46,0},{66,20}})));
-      equation
-        connect(realExpression.y,InletConditions. u)
-                                                   annotation (Line(
-            points={{-45,16},{-38,16}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(InletConditions.y[2], add.u1) annotation (Line(
-            points={{-15,16},{2,16},{2,-4},{8,-4}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(const.y, add.u2) annotation (Line(
-            points={{-31,-16},{8,-16}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(realExpression.y, ValidationData.u) annotation (Line(
-            points={{-45,16},{-44,16},{-44,46},{-38,46}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(InletConditions.y[1], gain.u) annotation (Line(
-            points={{-15,16},{2,16},{2,38},{16.8,38}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(InletConditions.y[1], sinPipDis.mDotDra)
-                                                      annotation (Line(
-            points={{-15,16},{38,16},{38,12.8},{44,12.8}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(add.y, sinPipDis.TIn)
-                                   annotation (Line(
-            points={{31,-10},{38,-10},{38,8},{44,8}},
+        connect(TAmb.y, pip.TAmb) annotation (Line(
+            points={{1,42},{42,42},{42,-7}},
             color={0,0,127},
             smooth=Smooth.None));
       annotation (
@@ -8594,7 +10092,1327 @@ The insulation used in Carl Hiller's test lab has a conductivity of 0.02 Btu/hr-
 </li>
 </ul>
 </html>"),   Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{
-                  100,100}}),        graphics));
+                  100,100}}),        graphics),
+          Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-100},{100,100}})));
+      end thrQuaInR0Validation;
+
+      model thrQuaInR47Validation
+        "A model designed to replicate Carl Hiller's test lab. Parameters entered are intended to match the 3/4 in dia test"
+        extends Modelica.Icons.Example;
+
+        package Water = Buildings.Media.ConstantPropertyLiquidWater;
+
+        Modelica.Blocks.Tables.CombiTable1Ds InletConditions(
+          tableOnFile=true,
+          columns=2:3,
+          tableName="Data",
+          fileName="/home/peter/WaterHeaterModeling/modeling/ExperimentalData/DistributionSystem/34CuR47GPM1Test1.txt")
+          "Provides the hot water draw mass flow rate (Col 2) and inlet water temperature (Col 3)"
+          annotation (Placement(transformation(extent={{-66,-34},{-46,-14}})));
+        Modelica.Blocks.Sources.RealExpression realExpression(y=time)
+          annotation (Placement(transformation(extent={{-96,-34},{-76,-14}})));
+        inner Modelica.Fluid.System system
+          annotation (Placement(transformation(extent={{72,124},{92,144}})));
+        Modelica.Blocks.Math.Add add
+          annotation (Placement(transformation(extent={{-24,40},{-4,20}})));
+        Modelica.Blocks.Sources.Constant const(k=273.15)
+          annotation (Placement(transformation(extent={{-92,26},{-72,46}})));
+        Modelica.Blocks.Tables.CombiTable1Ds ValidationData(
+          tableOnFile=true,
+          tableName="Data",
+          columns=2:10,
+          fileName=
+              "/home/peter/WaterHeaterModeling/modeling/ExperimentalData/DistributionSystem/34CuR47GPM1ValidationData.txt")
+          annotation (Placement(transformation(extent={{-66,-4},{-46,16}})));
+
+        Modelica.Blocks.Math.Gain gain(k=0.063090197)
+          annotation (Placement(transformation(extent={{-10,-62},{2,-50}})));
+        Modelica.Blocks.Sources.Constant TAmb(k=273.15 + 20)
+          annotation (Placement(transformation(extent={{-26,46},{-6,66}})));
+        Modelica.Blocks.Sources.Constant TRadMea(k=273.15 + 20)
+          annotation (Placement(transformation(extent={{20,86},{40,106}})));
+        Buildings.Fluid.Sources.Boundary_pT boundary(use_T_in=true,
+          nPorts=1,
+          redeclare package Medium = Water,
+          p=150000)
+          annotation (Placement(transformation(extent={{14,-14},{34,6}})));
+        Components.PipeLumpedCap Mix06(
+          redeclare package Medium = Water,
+          c_p_pip=390,
+          rho_pip=8960,
+          diameter_o=0.022225,
+          til=0,
+          m_flow_nominal=0.063,
+          ePipe=0.95,
+          nSeg=46,
+          diameter_i=0.0205994,
+          useMultipleHeatPorts=false,
+          thicknessIns=0.012,
+          lambdaIns=0.05,
+          MixCoef=0.6,
+          dp_nominal=0,
+          length=30,
+          T_Initial={281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17})
+          annotation (Placement(transformation(extent={{40,-14},{60,6}})));
+        Components.EndUseGPM endUseGPM(redeclare package Medium = Water)
+          annotation (Placement(transformation(extent={{78,-28},{94,-12}})));
+        Modelica.Blocks.Tables.CombiTable1Ds InletConditions1(
+          tableOnFile=true,
+          columns=2:3,
+          tableName="Data",
+          fileName="/home/peter/WaterHeaterModeling/modeling/ExperimentalData/DistributionSystem/34CuR47GPM1Test1.txt")
+          "Provides the hot water draw mass flow rate (Col 2) and inlet water temperature (Col 3)"
+          annotation (Placement(transformation(extent={{-68,150},{-48,170}})));
+        Modelica.Blocks.Sources.RealExpression realExpression1(
+                                                              y=time)
+          annotation (Placement(transformation(extent={{-98,150},{-78,170}})));
+        Modelica.Blocks.Math.Add add1
+          annotation (Placement(transformation(extent={{-26,224},{-6,204}})));
+        Modelica.Blocks.Sources.Constant const1(
+                                               k=273.15)
+          annotation (Placement(transformation(extent={{-94,210},{-74,230}})));
+        Modelica.Blocks.Tables.CombiTable1Ds ValidationData1(
+          tableOnFile=true,
+          tableName="Data",
+          columns=2:10,
+          fileName=
+              "/home/peter/WaterHeaterModeling/modeling/ExperimentalData/DistributionSystem/34CuR47GPM1ValidationData.txt")
+          annotation (Placement(transformation(extent={{-68,180},{-48,200}})));
+        Modelica.Blocks.Math.Gain gain1(
+                                       k=0.063090197)
+          annotation (Placement(transformation(extent={{-12,122},{0,134}})));
+        Buildings.Fluid.Sources.Boundary_pT boundary1(
+                                                     use_T_in=true,
+          nPorts=1,
+          redeclare package Medium = Water,
+          p=150000)
+          annotation (Placement(transformation(extent={{12,170},{32,190}})));
+        Components.PipeLumpedCap Mix05(
+          redeclare package Medium = Water,
+          c_p_pip=390,
+          rho_pip=8960,
+          diameter_o=0.022225,
+          til=0,
+          m_flow_nominal=0.063,
+          ePipe=0.95,
+          nSeg=46,
+          diameter_i=0.0205994,
+          useMultipleHeatPorts=false,
+          thicknessIns=0.012,
+          lambdaIns=0.05,
+          dp_nominal=0,
+          length=30,
+          MixCoef=0.5,
+          T_Initial={281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17})
+          annotation (Placement(transformation(extent={{38,170},{58,190}})));
+        Components.EndUseGPM endUseGPM1(
+                                       redeclare package Medium = Water)
+          annotation (Placement(transformation(extent={{76,156},{92,172}})));
+        Modelica.Blocks.Tables.CombiTable1Ds InletConditions2(
+          tableOnFile=true,
+          columns=2:3,
+          tableName="Data",
+          fileName="/home/peter/WaterHeaterModeling/modeling/ExperimentalData/DistributionSystem/34CuR47GPM1Test1.txt")
+          "Provides the hot water draw mass flow rate (Col 2) and inlet water temperature (Col 3)"
+          annotation (Placement(transformation(extent={{-66,326},{-46,346}})));
+        Modelica.Blocks.Sources.RealExpression realExpression2(
+                                                              y=time)
+          annotation (Placement(transformation(extent={{-96,326},{-76,346}})));
+        Modelica.Blocks.Math.Add add2
+          annotation (Placement(transformation(extent={{-24,400},{-4,380}})));
+        Modelica.Blocks.Sources.Constant const2(
+                                               k=273.15)
+          annotation (Placement(transformation(extent={{-92,386},{-72,406}})));
+        Modelica.Blocks.Tables.CombiTable1Ds ValidationData2(
+          tableOnFile=true,
+          tableName="Data",
+          columns=2:10,
+          fileName=
+              "/home/peter/WaterHeaterModeling/modeling/ExperimentalData/DistributionSystem/34CuR47GPM1ValidationData.txt")
+          annotation (Placement(transformation(extent={{-66,356},{-46,376}})));
+        Modelica.Blocks.Math.Gain gain2(
+                                       k=0.063090197)
+          annotation (Placement(transformation(extent={{-10,298},{2,310}})));
+        Modelica.Blocks.Sources.Constant TAmb2(
+                                              k=273.15 + 20)
+          annotation (Placement(transformation(extent={{-26,406},{-6,426}})));
+        Modelica.Blocks.Sources.Constant TRadMea2(
+                                                 k=273.15 + 20)
+          annotation (Placement(transformation(extent={{20,446},{40,466}})));
+        Buildings.Fluid.Sources.Boundary_pT boundary2(
+                                                     use_T_in=true,
+          nPorts=1,
+          redeclare package Medium = Water,
+          p=150000)
+          annotation (Placement(transformation(extent={{14,346},{34,366}})));
+        Components.PipeLumpedCap Mix04(
+          redeclare package Medium = Water,
+          c_p_pip=390,
+          rho_pip=8960,
+          diameter_o=0.022225,
+          til=0,
+          m_flow_nominal=0.063,
+          ePipe=0.95,
+          nSeg=46,
+          diameter_i=0.0205994,
+          useMultipleHeatPorts=false,
+          thicknessIns=0.012,
+          lambdaIns=0.05,
+          dp_nominal=0,
+          length=30,
+          MixCoef=0.4,
+          T_Initial={281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17})
+          annotation (Placement(transformation(extent={{40,346},{60,366}})));
+        Components.EndUseGPM endUseGPM2(
+                                       redeclare package Medium = Water)
+          annotation (Placement(transformation(extent={{78,332},{94,348}})));
+        Modelica.Blocks.Tables.CombiTable1Ds InletConditions3(
+          tableOnFile=true,
+          columns=2:3,
+          tableName="Data",
+          fileName="/home/peter/WaterHeaterModeling/modeling/ExperimentalData/DistributionSystem/34CuR47GPM1Test1.txt")
+          "Provides the hot water draw mass flow rate (Col 2) and inlet water temperature (Col 3)"
+          annotation (Placement(transformation(extent={{-70,-204},{-50,-184}})));
+        Modelica.Blocks.Sources.RealExpression realExpression3(
+                                                              y=time)
+          annotation (Placement(transformation(extent={{-100,-204},{-80,-184}})));
+        Modelica.Blocks.Math.Add add3
+          annotation (Placement(transformation(extent={{-28,-130},{-8,-150}})));
+        Modelica.Blocks.Sources.Constant const3(
+                                               k=273.15)
+          annotation (Placement(transformation(extent={{-96,-144},{-76,-124}})));
+        Modelica.Blocks.Tables.CombiTable1Ds ValidationData3(
+          tableOnFile=true,
+          tableName="Data",
+          columns=2:10,
+          fileName=
+              "/home/peter/WaterHeaterModeling/modeling/ExperimentalData/DistributionSystem/34CuR47GPM1ValidationData.txt")
+          annotation (Placement(transformation(extent={{-70,-174},{-50,-154}})));
+        Modelica.Blocks.Math.Gain gain3(
+                                       k=0.063090197)
+          annotation (Placement(transformation(extent={{-14,-232},{-2,-220}})));
+        Modelica.Blocks.Sources.Constant TAmb3(
+                                              k=273.15 + 20)
+          annotation (Placement(transformation(extent={{-30,-124},{-10,-104}})));
+        Modelica.Blocks.Sources.Constant TRadMea3(
+                                                 k=273.15 + 20)
+          annotation (Placement(transformation(extent={{16,-84},{36,-64}})));
+        Buildings.Fluid.Sources.Boundary_pT boundary3(
+                                                     use_T_in=true,
+          nPorts=1,
+          redeclare package Medium = Water,
+          p=150000)
+          annotation (Placement(transformation(extent={{10,-184},{30,-164}})));
+        Components.PipeLumpedCap Mix07(
+          redeclare package Medium = Water,
+          c_p_pip=390,
+          rho_pip=8960,
+          diameter_o=0.022225,
+          til=0,
+          m_flow_nominal=0.063,
+          ePipe=0.95,
+          nSeg=46,
+          diameter_i=0.0205994,
+          useMultipleHeatPorts=false,
+          thicknessIns=0.012,
+          lambdaIns=0.05,
+          dp_nominal=0,
+          length=30,
+          MixCoef=0.7,
+          T_Initial={281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17})
+          annotation (Placement(transformation(extent={{36,-184},{56,-164}})));
+        Components.EndUseGPM endUseGPM3(
+                                       redeclare package Medium = Water)
+          annotation (Placement(transformation(extent={{74,-198},{90,-182}})));
+        Modelica.Blocks.Tables.CombiTable1Ds InletConditions5(
+          tableOnFile=true,
+          columns=2:3,
+          tableName="Data",
+          fileName="/home/peter/WaterHeaterModeling/modeling/ExperimentalData/DistributionSystem/34CuR47GPM1Test1.txt")
+          "Provides the hot water draw mass flow rate (Col 2) and inlet water temperature (Col 3)"
+          annotation (Placement(transformation(extent={{-62,514},{-42,534}})));
+        Modelica.Blocks.Sources.RealExpression realExpression5(
+                                                              y=time)
+          annotation (Placement(transformation(extent={{-92,514},{-72,534}})));
+        Modelica.Blocks.Math.Add add5
+          annotation (Placement(transformation(extent={{-20,588},{0,568}})));
+        Modelica.Blocks.Sources.Constant const5(
+                                               k=273.15)
+          annotation (Placement(transformation(extent={{-88,574},{-68,594}})));
+        Modelica.Blocks.Tables.CombiTable1Ds ValidationData5(
+          tableOnFile=true,
+          tableName="Data",
+          columns=2:10,
+          fileName=
+              "/home/peter/WaterHeaterModeling/modeling/ExperimentalData/DistributionSystem/34CuR47GPM1ValidationData.txt")
+          annotation (Placement(transformation(extent={{-62,544},{-42,564}})));
+        Modelica.Blocks.Math.Gain gain5(
+                                       k=0.063090197)
+          annotation (Placement(transformation(extent={{-6,486},{6,498}})));
+        Modelica.Blocks.Sources.Constant TAmb5(
+                                              k=273.15 + 20)
+          annotation (Placement(transformation(extent={{-22,594},{-2,614}})));
+        Modelica.Blocks.Sources.Constant TRadMea5(
+                                                 k=273.15 + 20)
+          annotation (Placement(transformation(extent={{24,634},{44,654}})));
+        Buildings.Fluid.Sources.Boundary_pT boundary5(
+                                                     use_T_in=true,
+          nPorts=1,
+          redeclare package Medium = Water,
+          p=150000)
+          annotation (Placement(transformation(extent={{18,534},{38,554}})));
+        Components.PipeLumpedCap Mix03(
+          redeclare package Medium = Water,
+          c_p_pip=390,
+          rho_pip=8960,
+          diameter_o=0.022225,
+          til=0,
+          m_flow_nominal=0.063,
+          ePipe=0.95,
+          nSeg=46,
+          diameter_i=0.0205994,
+          useMultipleHeatPorts=false,
+          thicknessIns=0.012,
+          lambdaIns=0.05,
+          dp_nominal=0,
+          length=30,
+          MixCoef=0.3,
+          T_Initial={281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17})
+          annotation (Placement(transformation(extent={{44,534},{64,554}})));
+        Components.EndUseGPM endUseGPM5(
+                                       redeclare package Medium = Water)
+          annotation (Placement(transformation(extent={{82,520},{98,536}})));
+        Modelica.Blocks.Sources.Constant TAmb1(
+                                              k=273.15 + 20)
+          annotation (Placement(transformation(extent={{-24,234},{-4,254}})));
+        Modelica.Blocks.Sources.Constant TRadMea1(
+                                                 k=273.15 + 20)
+          annotation (Placement(transformation(extent={{22,274},{42,294}})));
+        Modelica.Blocks.Tables.CombiTable1Ds InletConditions4(
+          tableOnFile=true,
+          columns=2:3,
+          tableName="Data",
+          fileName="/home/peter/WaterHeaterModeling/modeling/ExperimentalData/DistributionSystem/34CuR47GPM1Test1.txt")
+          "Provides the hot water draw mass flow rate (Col 2) and inlet water temperature (Col 3)"
+          annotation (Placement(transformation(extent={{-74,670},{-54,690}})));
+        Modelica.Blocks.Sources.RealExpression realExpression4(
+                                                              y=time)
+          annotation (Placement(transformation(extent={{-104,670},{-84,690}})));
+        Modelica.Blocks.Math.Add add4
+          annotation (Placement(transformation(extent={{-32,744},{-12,724}})));
+        Modelica.Blocks.Sources.Constant const4(
+                                               k=273.15)
+          annotation (Placement(transformation(extent={{-100,730},{-80,750}})));
+        Modelica.Blocks.Tables.CombiTable1Ds ValidationData4(
+          tableOnFile=true,
+          tableName="Data",
+          columns=2:10,
+          fileName=
+              "/home/peter/WaterHeaterModeling/modeling/ExperimentalData/DistributionSystem/34CuR47GPM1ValidationData.txt")
+          annotation (Placement(transformation(extent={{-74,700},{-54,720}})));
+        Modelica.Blocks.Math.Gain gain4(
+                                       k=0.063090197)
+          annotation (Placement(transformation(extent={{-18,642},{-6,654}})));
+        Modelica.Blocks.Sources.Constant TAmb4(
+                                              k=273.15 + 20)
+          annotation (Placement(transformation(extent={{-34,750},{-14,770}})));
+        Modelica.Blocks.Sources.Constant TRadMea4(
+                                                 k=273.15 + 20)
+          annotation (Placement(transformation(extent={{12,790},{32,810}})));
+        Buildings.Fluid.Sources.Boundary_pT boundary4(
+                                                     use_T_in=true,
+          nPorts=1,
+          redeclare package Medium = Water,
+          p=150000)
+          annotation (Placement(transformation(extent={{6,690},{26,710}})));
+        Components.PipeLumpedCap Mix02(
+          redeclare package Medium = Water,
+          c_p_pip=390,
+          rho_pip=8960,
+          diameter_o=0.022225,
+          til=0,
+          m_flow_nominal=0.063,
+          ePipe=0.95,
+          nSeg=46,
+          diameter_i=0.0205994,
+          useMultipleHeatPorts=false,
+          thicknessIns=0.012,
+          lambdaIns=0.05,
+          dp_nominal=0,
+          length=30,
+          MixCoef=0.2,
+          T_Initial={281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17})
+          annotation (Placement(transformation(extent={{32,690},{52,710}})));
+        Components.EndUseGPM endUseGPM4(
+                                       redeclare package Medium = Water)
+          annotation (Placement(transformation(extent={{70,676},{86,692}})));
+        Modelica.Blocks.Tables.CombiTable1Ds InletConditions6(
+          tableOnFile=true,
+          columns=2:3,
+          tableName="Data",
+          fileName="/home/peter/WaterHeaterModeling/modeling/ExperimentalData/DistributionSystem/34CuR47GPM1Test1.txt")
+          "Provides the hot water draw mass flow rate (Col 2) and inlet water temperature (Col 3)"
+          annotation (Placement(transformation(extent={{-70,848},{-50,868}})));
+        Modelica.Blocks.Sources.RealExpression realExpression6(
+                                                              y=time)
+          annotation (Placement(transformation(extent={{-100,848},{-80,868}})));
+        Modelica.Blocks.Math.Add add6
+          annotation (Placement(transformation(extent={{-28,922},{-8,902}})));
+        Modelica.Blocks.Sources.Constant const6(
+                                               k=273.15)
+          annotation (Placement(transformation(extent={{-96,908},{-76,928}})));
+        Modelica.Blocks.Tables.CombiTable1Ds ValidationData6(
+          tableOnFile=true,
+          tableName="Data",
+          columns=2:10,
+          fileName=
+              "/home/peter/WaterHeaterModeling/modeling/ExperimentalData/DistributionSystem/34CuR47GPM1ValidationData.txt")
+          annotation (Placement(transformation(extent={{-70,878},{-50,898}})));
+        Modelica.Blocks.Math.Gain gain6(
+                                       k=0.063090197)
+          annotation (Placement(transformation(extent={{-14,820},{-2,832}})));
+        Modelica.Blocks.Sources.Constant TAmb6(
+                                              k=273.15 + 20)
+          annotation (Placement(transformation(extent={{-30,928},{-10,948}})));
+        Modelica.Blocks.Sources.Constant TRadMea6(
+                                                 k=273.15 + 20)
+          annotation (Placement(transformation(extent={{16,968},{36,988}})));
+        Buildings.Fluid.Sources.Boundary_pT boundary6(
+                                                     use_T_in=true,
+          nPorts=1,
+          redeclare package Medium = Water,
+          p=150000)
+          annotation (Placement(transformation(extent={{10,868},{30,888}})));
+        Components.PipeLumpedCap Mix01(
+          redeclare package Medium = Water,
+          c_p_pip=390,
+          rho_pip=8960,
+          diameter_o=0.022225,
+          til=0,
+          m_flow_nominal=0.063,
+          ePipe=0.95,
+          nSeg=46,
+          diameter_i=0.0205994,
+          useMultipleHeatPorts=false,
+          thicknessIns=0.012,
+          lambdaIns=0.05,
+          dp_nominal=0,
+          length=30,
+          MixCoef=0.1,
+          T_Initial={281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17})
+          annotation (Placement(transformation(extent={{36,868},{56,888}})));
+        Components.EndUseGPM endUseGPM6(
+                                       redeclare package Medium = Water)
+          annotation (Placement(transformation(extent={{74,854},{90,870}})));
+        Modelica.Blocks.Tables.CombiTable1Ds InletConditions7(
+          tableOnFile=true,
+          columns=2:3,
+          tableName="Data",
+          fileName="/home/peter/WaterHeaterModeling/modeling/ExperimentalData/DistributionSystem/34CuR47GPM1Test1.txt")
+          "Provides the hot water draw mass flow rate (Col 2) and inlet water temperature (Col 3)"
+          annotation (Placement(transformation(extent={{-64,1042},{-44,1062}})));
+        Modelica.Blocks.Sources.RealExpression realExpression7(
+                                                              y=time)
+          annotation (Placement(transformation(extent={{-94,1042},{-74,1062}})));
+        Modelica.Blocks.Math.Add add7
+          annotation (Placement(transformation(extent={{-22,1116},{-2,1096}})));
+        Modelica.Blocks.Sources.Constant const7(
+                                               k=273.15)
+          annotation (Placement(transformation(extent={{-90,1102},{-70,1122}})));
+        Modelica.Blocks.Tables.CombiTable1Ds ValidationData7(
+          tableOnFile=true,
+          tableName="Data",
+          columns=2:10,
+          fileName=
+              "/home/peter/WaterHeaterModeling/modeling/ExperimentalData/DistributionSystem/34CuR47GPM1ValidationData.txt")
+          annotation (Placement(transformation(extent={{-64,1072},{-44,1092}})));
+        Modelica.Blocks.Math.Gain gain7(
+                                       k=0.063090197)
+          annotation (Placement(transformation(extent={{-8,1014},{4,1026}})));
+        Modelica.Blocks.Sources.Constant TAmb7(
+                                              k=273.15 + 20)
+          annotation (Placement(transformation(extent={{-24,1122},{-4,1142}})));
+        Modelica.Blocks.Sources.Constant TRadMea7(
+                                                 k=273.15 + 20)
+          annotation (Placement(transformation(extent={{22,1162},{42,1182}})));
+        Buildings.Fluid.Sources.Boundary_pT boundary7(
+                                                     use_T_in=true,
+          nPorts=1,
+          redeclare package Medium = Water,
+          p=150000)
+          annotation (Placement(transformation(extent={{16,1062},{36,1082}})));
+        Components.PipeLumpedCap Mix0(
+          redeclare package Medium = Water,
+          c_p_pip=390,
+          rho_pip=8960,
+          diameter_o=0.022225,
+          til=0,
+          m_flow_nominal=0.063,
+          ePipe=0.95,
+          nSeg=46,
+          diameter_i=0.0205994,
+          useMultipleHeatPorts=false,
+          thicknessIns=0.012,
+          lambdaIns=0.05,
+          dp_nominal=0,
+          length=30,
+          MixCoef=0,
+          T_Initial={281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17})
+          annotation (Placement(transformation(extent={{42,1062},{62,1082}})));
+        Components.EndUseGPM endUseGPM7(
+                                       redeclare package Medium = Water)
+          annotation (Placement(transformation(extent={{80,1048},{96,1064}})));
+        Modelica.Blocks.Tables.CombiTable1Ds InletConditions8(
+          tableOnFile=true,
+          columns=2:3,
+          tableName="Data",
+          fileName="/home/peter/WaterHeaterModeling/modeling/ExperimentalData/DistributionSystem/34CuR47GPM1Test1.txt")
+          "Provides the hot water draw mass flow rate (Col 2) and inlet water temperature (Col 3)"
+          annotation (Placement(transformation(extent={{-70,-384},{-50,-364}})));
+        Modelica.Blocks.Sources.RealExpression realExpression8(
+                                                              y=time)
+          annotation (Placement(transformation(extent={{-100,-384},{-80,-364}})));
+        Modelica.Blocks.Math.Add add8
+          annotation (Placement(transformation(extent={{-28,-310},{-8,-330}})));
+        Modelica.Blocks.Sources.Constant const8(
+                                               k=273.15)
+          annotation (Placement(transformation(extent={{-96,-324},{-76,-304}})));
+        Modelica.Blocks.Tables.CombiTable1Ds ValidationData8(
+          tableOnFile=true,
+          tableName="Data",
+          columns=2:10,
+          fileName=
+              "/home/peter/WaterHeaterModeling/modeling/ExperimentalData/DistributionSystem/34CuR47GPM1ValidationData.txt")
+          annotation (Placement(transformation(extent={{-70,-354},{-50,-334}})));
+        Modelica.Blocks.Math.Gain gain8(
+                                       k=0.063090197)
+          annotation (Placement(transformation(extent={{-14,-412},{-2,-400}})));
+        Modelica.Blocks.Sources.Constant TAmb8(
+                                              k=273.15 + 20)
+          annotation (Placement(transformation(extent={{-30,-304},{-10,-284}})));
+        Modelica.Blocks.Sources.Constant TRadMea8(
+                                                 k=273.15 + 20)
+          annotation (Placement(transformation(extent={{16,-264},{36,-244}})));
+        Buildings.Fluid.Sources.Boundary_pT boundary8(
+                                                     use_T_in=true,
+          nPorts=1,
+          redeclare package Medium = Water,
+          p=150000)
+          annotation (Placement(transformation(extent={{10,-364},{30,-344}})));
+        Components.PipeLumpedCap Mix08(
+          redeclare package Medium = Water,
+          c_p_pip=390,
+          rho_pip=8960,
+          diameter_o=0.022225,
+          til=0,
+          m_flow_nominal=0.063,
+          ePipe=0.95,
+          nSeg=46,
+          diameter_i=0.0205994,
+          useMultipleHeatPorts=false,
+          thicknessIns=0.012,
+          lambdaIns=0.05,
+          dp_nominal=0,
+          length=30,
+          MixCoef=0.8,
+          T_Initial={281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17})
+          annotation (Placement(transformation(extent={{36,-364},{56,-344}})));
+        Components.EndUseGPM endUseGPM8(
+                                       redeclare package Medium = Water)
+          annotation (Placement(transformation(extent={{74,-378},{90,-362}})));
+        Modelica.Blocks.Tables.CombiTable1Ds InletConditions9(
+          tableOnFile=true,
+          columns=2:3,
+          tableName="Data",
+          fileName="/home/peter/WaterHeaterModeling/modeling/ExperimentalData/DistributionSystem/34CuR47GPM1Test1.txt")
+          "Provides the hot water draw mass flow rate (Col 2) and inlet water temperature (Col 3)"
+          annotation (Placement(transformation(extent={{-68,-564},{-48,-544}})));
+        Modelica.Blocks.Sources.RealExpression realExpression9(
+                                                              y=time)
+          annotation (Placement(transformation(extent={{-98,-564},{-78,-544}})));
+        Modelica.Blocks.Math.Add add9
+          annotation (Placement(transformation(extent={{-26,-490},{-6,-510}})));
+        Modelica.Blocks.Sources.Constant const9(
+                                               k=273.15)
+          annotation (Placement(transformation(extent={{-94,-504},{-74,-484}})));
+        Modelica.Blocks.Tables.CombiTable1Ds ValidationData9(
+          tableOnFile=true,
+          tableName="Data",
+          columns=2:10,
+          fileName=
+              "/home/peter/WaterHeaterModeling/modeling/ExperimentalData/DistributionSystem/34CuR47GPM1ValidationData.txt")
+          annotation (Placement(transformation(extent={{-68,-534},{-48,-514}})));
+        Modelica.Blocks.Math.Gain gain9(
+                                       k=0.063090197)
+          annotation (Placement(transformation(extent={{-12,-592},{0,-580}})));
+        Modelica.Blocks.Sources.Constant TAmb9(
+                                              k=273.15 + 20)
+          annotation (Placement(transformation(extent={{-28,-484},{-8,-464}})));
+        Modelica.Blocks.Sources.Constant TRadMea9(
+                                                 k=273.15 + 20)
+          annotation (Placement(transformation(extent={{18,-444},{38,-424}})));
+        Buildings.Fluid.Sources.Boundary_pT boundary9(
+                                                     use_T_in=true,
+          nPorts=1,
+          redeclare package Medium = Water,
+          p=150000)
+          annotation (Placement(transformation(extent={{12,-544},{32,-524}})));
+        Components.PipeLumpedCap Mix09(
+          redeclare package Medium = Water,
+          c_p_pip=390,
+          rho_pip=8960,
+          diameter_o=0.022225,
+          til=0,
+          m_flow_nominal=0.063,
+          ePipe=0.95,
+          nSeg=46,
+          diameter_i=0.0205994,
+          useMultipleHeatPorts=false,
+          thicknessIns=0.012,
+          lambdaIns=0.05,
+          dp_nominal=0,
+          length=30,
+          MixCoef=0.9,
+          T_Initial={281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17})
+          annotation (Placement(transformation(extent={{38,-544},{58,-524}})));
+        Components.EndUseGPM endUseGPM9(
+                                       redeclare package Medium = Water)
+          annotation (Placement(transformation(extent={{76,-558},{92,-542}})));
+        Modelica.Blocks.Tables.CombiTable1Ds InletConditions10(
+          tableOnFile=true,
+          columns=2:3,
+          tableName="Data",
+          fileName="/home/peter/WaterHeaterModeling/modeling/ExperimentalData/DistributionSystem/34CuR47GPM1Test1.txt")
+          "Provides the hot water draw mass flow rate (Col 2) and inlet water temperature (Col 3)"
+          annotation (Placement(transformation(extent={{-62,-750},{-42,-730}})));
+        Modelica.Blocks.Sources.RealExpression realExpression10(
+                                                              y=time)
+          annotation (Placement(transformation(extent={{-92,-750},{-72,-730}})));
+        Modelica.Blocks.Math.Add add10
+          annotation (Placement(transformation(extent={{-20,-676},{0,-696}})));
+        Modelica.Blocks.Sources.Constant const10(
+                                               k=273.15)
+          annotation (Placement(transformation(extent={{-88,-690},{-68,-670}})));
+        Modelica.Blocks.Tables.CombiTable1Ds ValidationData10(
+          tableOnFile=true,
+          tableName="Data",
+          columns=2:10,
+          fileName=
+              "/home/peter/WaterHeaterModeling/modeling/ExperimentalData/DistributionSystem/34CuR47GPM1ValidationData.txt")
+          annotation (Placement(transformation(extent={{-62,-720},{-42,-700}})));
+        Modelica.Blocks.Math.Gain gain10(
+                                       k=0.063090197)
+          annotation (Placement(transformation(extent={{-6,-778},{6,-766}})));
+        Modelica.Blocks.Sources.Constant TAmb10(
+                                              k=273.15 + 20)
+          annotation (Placement(transformation(extent={{-22,-670},{-2,-650}})));
+        Modelica.Blocks.Sources.Constant TRadMea10(
+                                                 k=273.15 + 20)
+          annotation (Placement(transformation(extent={{24,-630},{44,-610}})));
+        Buildings.Fluid.Sources.Boundary_pT boundary10(
+                                                     use_T_in=true,
+          nPorts=1,
+          redeclare package Medium = Water,
+          p=150000)
+          annotation (Placement(transformation(extent={{18,-730},{38,-710}})));
+        Components.PipeLumpedCap Mix1(
+          redeclare package Medium = Water,
+          c_p_pip=390,
+          rho_pip=8960,
+          diameter_o=0.022225,
+          til=0,
+          m_flow_nominal=0.063,
+          ePipe=0.95,
+          nSeg=46,
+          diameter_i=0.0205994,
+          useMultipleHeatPorts=false,
+          thicknessIns=0.012,
+          lambdaIns=0.05,
+          dp_nominal=0,
+          length=30,
+          MixCoef=1,
+          T_Initial={281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,281.17,
+              281.17,281.17})
+          annotation (Placement(transformation(extent={{44,-730},{64,-710}})));
+        Components.EndUseGPM endUseGPM10(
+                                       redeclare package Medium = Water)
+          annotation (Placement(transformation(extent={{82,-744},{98,-728}})));
+      equation
+        connect(realExpression.y,InletConditions. u)
+                                                   annotation (Line(
+            points={{-75,-24},{-68,-24}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(InletConditions.y[2], add.u1) annotation (Line(
+            points={{-45,-24},{-32,-24},{-32,24},{-26,24}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(const.y, add.u2) annotation (Line(
+            points={{-71,36},{-26,36}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(realExpression.y, ValidationData.u) annotation (Line(
+            points={{-75,-24},{-74,-24},{-74,6},{-68,6}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(InletConditions.y[1], gain.u) annotation (Line(
+            points={{-45,-24},{-32,-24},{-32,-56},{-11.2,-56}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(boundary.ports[1], Mix06.port_a)
+                                               annotation (Line(
+            points={{34,-4},{40,-4}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(add.y, boundary.T_in) annotation (Line(
+            points={{-3,30},{6,30},{6,0},{12,0}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(Mix06.port_b, endUseGPM.Inlet)
+                                             annotation (Line(
+            points={{60,-4},{70,-4},{70,-20},{78,-20}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(TAmb.y, Mix06.TAmb)
+                                  annotation (Line(
+            points={{-5,56},{44,56},{44,3}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(InletConditions.y[1], endUseGPM.watFlo) annotation (Line(
+            points={{-45,-24},{76.4,-24}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(TRadMea.y, Mix06.TRadMea)
+                                        annotation (Line(
+            points={{41,96},{56,96},{56,3}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(realExpression1.y, InletConditions1.u)
+                                                   annotation (Line(
+            points={{-77,160},{-70,160}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(InletConditions1.y[2], add1.u1)
+                                              annotation (Line(
+            points={{-47,160},{-34,160},{-34,208},{-28,208}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(const1.y, add1.u2)
+                                 annotation (Line(
+            points={{-73,220},{-28,220}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(realExpression1.y, ValidationData1.u)
+                                                    annotation (Line(
+            points={{-77,160},{-76,160},{-76,190},{-70,190}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(InletConditions1.y[1], gain1.u)
+                                              annotation (Line(
+            points={{-47,160},{-34,160},{-34,128},{-13.2,128}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(boundary1.ports[1], Mix05.port_a)
+                                               annotation (Line(
+            points={{32,180},{38,180}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(add1.y, boundary1.T_in)
+                                      annotation (Line(
+            points={{-5,214},{4,214},{4,184},{10,184}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(Mix05.port_b, endUseGPM1.Inlet)
+                                             annotation (Line(
+            points={{58,180},{68,180},{68,164},{76,164}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(InletConditions1.y[1], endUseGPM1.watFlo)
+                                                        annotation (Line(
+            points={{-47,160},{74.4,160}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(realExpression2.y, InletConditions2.u)
+                                                   annotation (Line(
+            points={{-75,336},{-68,336}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(InletConditions2.y[2], add2.u1)
+                                              annotation (Line(
+            points={{-45,336},{-32,336},{-32,384},{-26,384}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(const2.y, add2.u2)
+                                 annotation (Line(
+            points={{-71,396},{-26,396}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(realExpression2.y, ValidationData2.u)
+                                                    annotation (Line(
+            points={{-75,336},{-74,336},{-74,366},{-68,366}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(InletConditions2.y[1], gain2.u)
+                                              annotation (Line(
+            points={{-45,336},{-32,336},{-32,304},{-11.2,304}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(boundary2.ports[1], Mix04.port_a)
+                                               annotation (Line(
+            points={{34,356},{40,356}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(add2.y, boundary2.T_in)
+                                      annotation (Line(
+            points={{-3,390},{6,390},{6,360},{12,360}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(Mix04.port_b, endUseGPM2.Inlet)
+                                             annotation (Line(
+            points={{60,356},{70,356},{70,340},{78,340}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(TAmb2.y, Mix04.TAmb)
+                                  annotation (Line(
+            points={{-5,416},{44,416},{44,363}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(InletConditions2.y[1], endUseGPM2.watFlo)
+                                                        annotation (Line(
+            points={{-45,336},{76.4,336}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(TRadMea2.y, Mix04.TRadMea)
+                                        annotation (Line(
+            points={{41,456},{56,456},{56,363}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(realExpression3.y, InletConditions3.u)
+                                                   annotation (Line(
+            points={{-79,-194},{-72,-194}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(InletConditions3.y[2], add3.u1)
+                                              annotation (Line(
+            points={{-49,-194},{-36,-194},{-36,-146},{-30,-146}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(const3.y, add3.u2)
+                                 annotation (Line(
+            points={{-75,-134},{-30,-134}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(realExpression3.y, ValidationData3.u)
+                                                    annotation (Line(
+            points={{-79,-194},{-78,-194},{-78,-164},{-72,-164}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(InletConditions3.y[1], gain3.u)
+                                              annotation (Line(
+            points={{-49,-194},{-36,-194},{-36,-226},{-15.2,-226}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(boundary3.ports[1], Mix07.port_a)
+                                               annotation (Line(
+            points={{30,-174},{36,-174}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(add3.y, boundary3.T_in)
+                                      annotation (Line(
+            points={{-7,-140},{2,-140},{2,-170},{8,-170}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(Mix07.port_b, endUseGPM3.Inlet)
+                                             annotation (Line(
+            points={{56,-174},{66,-174},{66,-190},{74,-190}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(TAmb3.y, Mix07.TAmb)
+                                  annotation (Line(
+            points={{-9,-114},{40,-114},{40,-167}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(InletConditions3.y[1], endUseGPM3.watFlo)
+                                                        annotation (Line(
+            points={{-49,-194},{72.4,-194}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(TRadMea3.y, Mix07.TRadMea)
+                                        annotation (Line(
+            points={{37,-74},{52,-74},{52,-167}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(realExpression5.y, InletConditions5.u)
+                                                   annotation (Line(
+            points={{-71,524},{-64,524}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(InletConditions5.y[2], add5.u1)
+                                              annotation (Line(
+            points={{-41,524},{-28,524},{-28,572},{-22,572}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(const5.y, add5.u2)
+                                 annotation (Line(
+            points={{-67,584},{-22,584}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(realExpression5.y, ValidationData5.u)
+                                                    annotation (Line(
+            points={{-71,524},{-70,524},{-70,554},{-64,554}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(InletConditions5.y[1], gain5.u)
+                                              annotation (Line(
+            points={{-41,524},{-28,524},{-28,492},{-7.2,492}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(boundary5.ports[1], Mix03.port_a)
+                                               annotation (Line(
+            points={{38,544},{44,544}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(add5.y, boundary5.T_in)
+                                      annotation (Line(
+            points={{1,578},{10,578},{10,548},{16,548}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(Mix03.port_b, endUseGPM5.Inlet)
+                                             annotation (Line(
+            points={{64,544},{74,544},{74,528},{82,528}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(TAmb5.y, Mix03.TAmb)
+                                  annotation (Line(
+            points={{-1,604},{48,604},{48,551}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(InletConditions5.y[1], endUseGPM5.watFlo)
+                                                        annotation (Line(
+            points={{-41,524},{80.4,524}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(TRadMea5.y, Mix03.TRadMea)
+                                        annotation (Line(
+            points={{45,644},{60,644},{60,551}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(TAmb1.y, Mix05.TAmb) annotation (Line(
+            points={{-3,244},{42,244},{42,187}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(TRadMea1.y, Mix05.TRadMea) annotation (Line(
+            points={{43,284},{54,284},{54,187}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(realExpression4.y, InletConditions4.u)
+                                                   annotation (Line(
+            points={{-83,680},{-76,680}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(InletConditions4.y[2], add4.u1)
+                                              annotation (Line(
+            points={{-53,680},{-40,680},{-40,728},{-34,728}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(const4.y, add4.u2)
+                                 annotation (Line(
+            points={{-79,740},{-34,740}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(realExpression4.y, ValidationData4.u)
+                                                    annotation (Line(
+            points={{-83,680},{-82,680},{-82,710},{-76,710}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(InletConditions4.y[1], gain4.u)
+                                              annotation (Line(
+            points={{-53,680},{-40,680},{-40,648},{-19.2,648}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(boundary4.ports[1], Mix02.port_a)
+                                               annotation (Line(
+            points={{26,700},{32,700}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(add4.y, boundary4.T_in)
+                                      annotation (Line(
+            points={{-11,734},{-2,734},{-2,704},{4,704}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(Mix02.port_b, endUseGPM4.Inlet)
+                                             annotation (Line(
+            points={{52,700},{62,700},{62,684},{70,684}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(TAmb4.y, Mix02.TAmb)
+                                  annotation (Line(
+            points={{-13,760},{36,760},{36,707}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(InletConditions4.y[1], endUseGPM4.watFlo)
+                                                        annotation (Line(
+            points={{-53,680},{68.4,680}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(TRadMea4.y, Mix02.TRadMea)
+                                        annotation (Line(
+            points={{33,800},{48,800},{48,707}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(realExpression6.y, InletConditions6.u)
+                                                   annotation (Line(
+            points={{-79,858},{-72,858}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(InletConditions6.y[2], add6.u1)
+                                              annotation (Line(
+            points={{-49,858},{-36,858},{-36,906},{-30,906}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(const6.y, add6.u2)
+                                 annotation (Line(
+            points={{-75,918},{-30,918}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(realExpression6.y, ValidationData6.u)
+                                                    annotation (Line(
+            points={{-79,858},{-78,858},{-78,888},{-72,888}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(InletConditions6.y[1], gain6.u)
+                                              annotation (Line(
+            points={{-49,858},{-36,858},{-36,826},{-15.2,826}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(boundary6.ports[1], Mix01.port_a)
+                                               annotation (Line(
+            points={{30,878},{36,878}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(add6.y, boundary6.T_in)
+                                      annotation (Line(
+            points={{-7,912},{2,912},{2,882},{8,882}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(Mix01.port_b, endUseGPM6.Inlet)
+                                             annotation (Line(
+            points={{56,878},{66,878},{66,862},{74,862}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(TAmb6.y, Mix01.TAmb)
+                                  annotation (Line(
+            points={{-9,938},{40,938},{40,885}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(InletConditions6.y[1], endUseGPM6.watFlo)
+                                                        annotation (Line(
+            points={{-49,858},{72.4,858}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(TRadMea6.y, Mix01.TRadMea)
+                                        annotation (Line(
+            points={{37,978},{52,978},{52,885}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(realExpression7.y, InletConditions7.u)
+                                                   annotation (Line(
+            points={{-73,1052},{-66,1052}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(InletConditions7.y[2], add7.u1)
+                                              annotation (Line(
+            points={{-43,1052},{-30,1052},{-30,1100},{-24,1100}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(const7.y, add7.u2)
+                                 annotation (Line(
+            points={{-69,1112},{-24,1112}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(realExpression7.y, ValidationData7.u)
+                                                    annotation (Line(
+            points={{-73,1052},{-72,1052},{-72,1082},{-66,1082}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(InletConditions7.y[1], gain7.u)
+                                              annotation (Line(
+            points={{-43,1052},{-30,1052},{-30,1020},{-9.2,1020}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(boundary7.ports[1], Mix0.port_a)
+                                               annotation (Line(
+            points={{36,1072},{42,1072}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(add7.y, boundary7.T_in)
+                                      annotation (Line(
+            points={{-1,1106},{8,1106},{8,1076},{14,1076}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(Mix0.port_b, endUseGPM7.Inlet)
+                                             annotation (Line(
+            points={{62,1072},{72,1072},{72,1056},{80,1056}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(TAmb7.y, Mix0.TAmb)
+                                  annotation (Line(
+            points={{-3,1132},{46,1132},{46,1079}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(InletConditions7.y[1], endUseGPM7.watFlo)
+                                                        annotation (Line(
+            points={{-43,1052},{78.4,1052}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(TRadMea7.y, Mix0.TRadMea)
+                                        annotation (Line(
+            points={{43,1172},{58,1172},{58,1079}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(realExpression8.y, InletConditions8.u)
+                                                   annotation (Line(
+            points={{-79,-374},{-72,-374}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(InletConditions8.y[2], add8.u1)
+                                              annotation (Line(
+            points={{-49,-374},{-36,-374},{-36,-326},{-30,-326}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(const8.y, add8.u2)
+                                 annotation (Line(
+            points={{-75,-314},{-30,-314}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(realExpression8.y, ValidationData8.u)
+                                                    annotation (Line(
+            points={{-79,-374},{-78,-374},{-78,-344},{-72,-344}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(InletConditions8.y[1], gain8.u)
+                                              annotation (Line(
+            points={{-49,-374},{-36,-374},{-36,-406},{-15.2,-406}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(boundary8.ports[1], Mix08.port_a)
+                                               annotation (Line(
+            points={{30,-354},{36,-354}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(add8.y, boundary8.T_in)
+                                      annotation (Line(
+            points={{-7,-320},{2,-320},{2,-350},{8,-350}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(Mix08.port_b, endUseGPM8.Inlet)
+                                             annotation (Line(
+            points={{56,-354},{66,-354},{66,-370},{74,-370}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(TAmb8.y, Mix08.TAmb)
+                                  annotation (Line(
+            points={{-9,-294},{40,-294},{40,-347}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(InletConditions8.y[1], endUseGPM8.watFlo)
+                                                        annotation (Line(
+            points={{-49,-374},{72.4,-374}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(TRadMea8.y, Mix08.TRadMea)
+                                        annotation (Line(
+            points={{37,-254},{52,-254},{52,-347}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(realExpression9.y, InletConditions9.u)
+                                                   annotation (Line(
+            points={{-77,-554},{-70,-554}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(InletConditions9.y[2], add9.u1)
+                                              annotation (Line(
+            points={{-47,-554},{-34,-554},{-34,-506},{-28,-506}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(const9.y, add9.u2)
+                                 annotation (Line(
+            points={{-73,-494},{-28,-494}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(realExpression9.y, ValidationData9.u)
+                                                    annotation (Line(
+            points={{-77,-554},{-76,-554},{-76,-524},{-70,-524}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(InletConditions9.y[1], gain9.u)
+                                              annotation (Line(
+            points={{-47,-554},{-34,-554},{-34,-586},{-13.2,-586}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(boundary9.ports[1], Mix09.port_a)
+                                               annotation (Line(
+            points={{32,-534},{38,-534}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(add9.y, boundary9.T_in)
+                                      annotation (Line(
+            points={{-5,-500},{4,-500},{4,-530},{10,-530}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(Mix09.port_b, endUseGPM9.Inlet)
+                                             annotation (Line(
+            points={{58,-534},{68,-534},{68,-550},{76,-550}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(TAmb9.y, Mix09.TAmb)
+                                  annotation (Line(
+            points={{-7,-474},{42,-474},{42,-527}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(InletConditions9.y[1], endUseGPM9.watFlo)
+                                                        annotation (Line(
+            points={{-47,-554},{74.4,-554}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(TRadMea9.y, Mix09.TRadMea)
+                                        annotation (Line(
+            points={{39,-434},{54,-434},{54,-527}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(realExpression10.y, InletConditions10.u)
+                                                   annotation (Line(
+            points={{-71,-740},{-64,-740}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(InletConditions10.y[2], add10.u1)
+                                              annotation (Line(
+            points={{-41,-740},{-28,-740},{-28,-692},{-22,-692}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(const10.y, add10.u2)
+                                 annotation (Line(
+            points={{-67,-680},{-22,-680}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(realExpression10.y, ValidationData10.u)
+                                                    annotation (Line(
+            points={{-71,-740},{-70,-740},{-70,-710},{-64,-710}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(InletConditions10.y[1], gain10.u)
+                                              annotation (Line(
+            points={{-41,-740},{-28,-740},{-28,-772},{-7.2,-772}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(boundary10.ports[1], Mix1.port_a)
+                                               annotation (Line(
+            points={{38,-720},{44,-720}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(add10.y, boundary10.T_in)
+                                      annotation (Line(
+            points={{1,-686},{10,-686},{10,-716},{16,-716}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(Mix1.port_b, endUseGPM10.Inlet)
+                                             annotation (Line(
+            points={{64,-720},{74,-720},{74,-736},{82,-736}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(TAmb10.y, Mix1.TAmb)
+                                  annotation (Line(
+            points={{-1,-660},{48,-660},{48,-713}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(InletConditions10.y[1], endUseGPM10.watFlo)
+                                                        annotation (Line(
+            points={{-41,-740},{80.4,-740}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(TRadMea10.y, Mix1.TRadMea)
+                                        annotation (Line(
+            points={{45,-620},{60,-620},{60,-713}},
+            color={0,0,127},
+            smooth=Smooth.None));
+      annotation (
+      Documentation(info="<html>
+<p>
+This model is designed to match Carl Hiller's test lab. It is intended to be the same as the 3/4 in dia pipe setup.
+</p>
+<p>
+Some useful numbers and facts:
+</p>
+<ul>
+<li>
+The 3/4 in dia pipe test has four straight sections of 20 ft, with elbows and shorties creating U-bends in between. Total length is 86 ft (26.2128 m).
+</li>
+<li>
+There are two options for insulation - 1/2 in and 3/4 in. 1/2 in = 0.0127 m. 3/4 in = 0.01905 m.
+</li>
+<li>
+The insulation used in Carl Hiller's test lab has a conductivity of 0.02 Btu/hr-Ft-F (0.036 W/hr-m-K).
+</li>
+</ul>
+</html>"),   Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                  -1000},{100,1500}}),
+                                     graphics),
+          Icon(coordinateSystem(preserveAspectRatio=false, extent={{-100,-1000},
+                  {100,1500}})));
       end thrQuaInR47Validation;
     end ValidationModels;
     annotation ();
@@ -11585,7 +14403,6 @@ First implementation.
                 pattern=LinePattern.Dot)}),
         Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
                 100,100}}), graphics));
-
     end SimplifiedStorageTank;
 
     model SimplifiedStorageTankMediumModel
@@ -11614,9 +14431,6 @@ First implementation.
       // Initialization
       parameter Medium.AbsolutePressure p_start=Medium.p_default
         "Start value of pressure" annotation (Dialog(tab="Initialization"));
-    //    parameter Medium.Temperature T_start =60+273.15 "Start value of temperature"
-    //                                   annotation (Dialog(tab="Initialization"));
-    //  Modelica.SIunits.Temperature T_start;
       parameter Medium.MassFraction X_start[Medium.nX]=Medium.X_default
         "Start value of mass fractions m_i/m"
         annotation (Dialog(tab="Initialization", enable=Medium.nXi > 0));
@@ -11771,9 +14585,9 @@ First implementation.
             origin={-132,390})));
       Buildings.Fluid.MixingVolumes.MixingVolume vol[nSeg](
         redeclare package Medium = Medium,
-        m_flow_nominal=0.001,
-        V=VTan/nSeg,
-        nPorts=1,
+        each m_flow_nominal=0.001,
+        each V=VTan/nSeg,
+        each nPorts=1,
         T_start=T_Initial)
         annotation (Placement(transformation(extent={{72,78},{124,126}})));
       Buildings.Fluid.Sources.Boundary_pT boundary(
@@ -11800,7 +14614,7 @@ First implementation.
             extent={{-10,-10},{10,10}},
             rotation=90,
             origin={306,408})));
-      Buildings.Fluid.Sources.Boundary_pT boundary2[nSeg](nPorts=1, redeclare
+      Buildings.Fluid.Sources.Boundary_pT boundary2[nSeg](each nPorts=1, redeclare
           package Medium = Medium)
         annotation (Placement(transformation(extent={{228,50},{190,84}})));
       Buildings.Fluid.Sensors.MassFlowRate senMasFlo(redeclare package Medium
@@ -13461,11 +16275,16 @@ First implementation.
                 lineColor={0,0,127},
                 textString="QIR_flow")}),
           Documentation(info="<html>
+    <p>
 This model computes the infrared radiative heat flow 
 between exterior building surfaces and the ambient. The ambient consists
 of the sky black-body radiation and the outdoor temperature 
 (which is used as an approximation to the surface temperature of
 the ground and neighboring buildings).
+</p>
+<p>
+The input u is a user calculated value describing the view factor ane emmissitivity value used in calculations for radiation between opaque objects.
+</p>
 </html>",   revisions="<html>
 <ul>
 <li>
@@ -13953,13 +16772,7 @@ First implementation.
              Medium.p_default,
              Medium.T_default,
              Medium.X_default));
-      //  parameter Real TIn = 273.15 + 15;
         parameter Integer nSeg(min=2) = 8;
-      //   parameter Real topMix = 15;
-      //   parameter Real mDotMix = 0.3;
-      //   Real smoDel = 0.0001;
-      //   Real mixZon[nSeg];
-      //  Integer TotalSegs;
         Real SumBelow[nSeg];
         Real TotalFlow;
         Real small = 0.0001;
@@ -13975,7 +16788,7 @@ First implementation.
           annotation (Placement(transformation(extent={{-4,-60},{16,-40}})));
         Modelica.Blocks.Logical.Greater greater[nSeg]
           annotation (Placement(transformation(extent={{-38,-60},{-18,-40}})));
-        Modelica.Blocks.Sources.Constant const[nSeg](k=0.00001)
+        Modelica.Blocks.Sources.Constant const[nSeg](each k=0.00001)
           annotation (Placement(transformation(extent={{-74,-76},{-54,-56}})));
         timDel timDel1(
           nSeg=nSeg,
@@ -14006,23 +16819,12 @@ First implementation.
           annotation (Placement(transformation(extent={{-140,12},{-100,52}})));
       equation
         TotalFlow = sum(perFloIn1.perFlo[1:nSeg]);
-      //  TotalSegs = sum(booleanToInteger.y);
-      //  T_F_avg = sum(T_F[1:nSeg])/nSeg;
-      // for i in 1:nSeg loop
-      //   mixZon[i] = Buildings.Utilities.Math.Functions.smoothHeaviside(i - topMix + smoDel,smoDel);
-      // end for;
-      //
-      // draHeaTra[nSeg] = mixZon[nSeg] * 1/(nSeg-topMix+1) * mFloIn[nSeg] * c_p * (TIn - TWat[nSeg]) +  (1-mixZon[nSeg]) * mFloIn[nSeg] * c_p * (TIn - TWat[nSeg]);
-      //
-      //   for i in 1:(nSeg-1) loop
-      //     draHeaTra[i] = mixZon[i] * 1/(nSeg-topMix+1) * mFloIn[i] * c_p * (TIn - TWat[i]) + mFloIn[i] *c_p* (TWat[i+1] - TWat[i]) + mixZon[i] * mDotMix * c_p * (TWat[i+1] - TWat[i]);
-      //   end for;
-      for i in (1:nSeg-1) loop
+        for i in (1:nSeg-1) loop
           SumBelow[i] = sum(perFloIn1.perFlo[i:nSeg]) - perFloIn1.perFlo[i];
           draHeaTra[i] = (perFloIn1.perFlo[i] * mFloIn[i] * c_p * (TIn - TWat[i]) + SumBelow[i] * mFloIn[i] * c_p * (TWat[i+1] - TWat[i]))*1/(TotalFlow+small);
-      end for;
-      SumBelow[nSeg] = 0;
-      draHeaTra[nSeg] = perFloIn1.perFlo[nSeg] * mFloIn[nSeg] * c_p * (TIn - TWat[nSeg]);
+        end for;
+        SumBelow[nSeg] = 0;
+        draHeaTra[nSeg] = perFloIn1.perFlo[nSeg] * mFloIn[nSeg] * c_p * (TIn - TWat[nSeg]);
         connect(mFloIn, greater.u1) annotation (Line(
             points={{-120,-50},{-40,-50}},
             color={0,0,127},
@@ -16071,15 +18873,14 @@ function can be used as part of another scan operation.
       replaceable package Medium = Modelica.Media.Interfaces.PartialMedium
         "Fluid in the heater";
 
-      HeatExchangers.NonCondensingMediumModel
-                                   HeatExchanger(
+      HeatExchangers.NonCondensingMediumModel HX(
         Capacitance=Capacitance_input,
         SteadyStateEff=SteadyStateEff_input,
         UA=UA_input,
-        nNode = nNode_input,
-        EffPilot = EffPilot_input,
-        Qdot_Pilot = Qdot_Pilot_input,
-        Qdot_Rated = Qdot_Rated_input,
+        nNode=nNode_input,
+        EffPilot=EffPilot_input,
+        Qdot_Pilot=Qdot_Pilot_input,
+        Qdot_Rated=Qdot_Rated_input,
         redeclare package Medium = Medium)
         annotation (Placement(transformation(extent={{-2,24},{52,88}})));
       Modelica.Blocks.Interfaces.RealInput AmbientTemperature(unit = "K")
@@ -16123,6 +18924,8 @@ function can be used as part of another scan operation.
         "Electric power consumed when the fan is operating";
       parameter Real QIdl(unit = "W") = 15
         "Electric power consumed when the fan is not operating";
+      parameter Real mdot_min_deadband(unit = "kg/s") = 0.00416
+        "Deadband on the minimum flow rate check";
       Modelica.Blocks.Interfaces.RealOutput T_Out(unit = "K")
         annotation (Placement(transformation(extent={{100,-8},{120,12}})));
       Modelica.Fluid.Interfaces.FluidPort_a colWatIn(redeclare package Medium
@@ -16133,8 +18936,7 @@ function can be used as part of another scan operation.
           = Medium)
         annotation (Placement(transformation(extent={{-70,-160},{-50,-140}}),
             iconTransformation(extent={{-70,-160},{-50,-140}})));
-      Controllers.NonCondensingTanklessHXControllerMediumModel
-        nonCondensingTanklessHXControllerMediumModel(
+      Controllers.NonCondensingTanklessHXControllerMediumModel cont(
         redeclare package Medium = Medium,
         t_short=t_short,
         t_long=t_long,
@@ -16150,7 +18952,8 @@ function can be used as part of another scan operation.
         T_Set_cons=T_Set_input,
         SpecificHeat_cons=SpecificHeat_input,
         Qdot_Rated_cons=Qdot_Rated_input,
-        SteadyStateEff_cons=SteadyStateEff_input) annotation (Placement(
+        SteadyStateEff_cons=SteadyStateEff_input,
+        mdot_min_deadband=mdot_min_deadband)      annotation (Placement(
             transformation(
             extent={{-16,15},{16,-15}},
             rotation=0,
@@ -16158,52 +18961,51 @@ function can be used as part of another scan operation.
       Modelica.Blocks.Interfaces.RealOutput maxMasFlo
         annotation (Placement(transformation(extent={{100,-70},{120,-50}})));
     equation
-      connect(colWatIn, nonCondensingTanklessHXControllerMediumModel.port_a)
+      connect(colWatIn, cont.port_a)
         annotation (Line(
           points={{-24,-150},{-78,-150},{-78,87.44},{-50.4655,87.44}},
           color={0,127,255},
           smooth=Smooth.None));
-      connect(nonCondensingTanklessHXControllerMediumModel.port_b,
-        HeatExchanger.port_a) annotation (Line(
+      connect(cont.port_b, HX.port_a)
+                              annotation (Line(
           points={{-17.4182,87.44},{-14,87.44},{-14,79.4667},{-2.36,79.4667}},
           color={0,127,255},
           smooth=Smooth.None));
-      connect(HeatExchanger.port_b, hotWatOut)
-                                            annotation (Line(
+      connect(HX.port_b, hotWatOut)         annotation (Line(
           points={{52,79.4667},{62,79.4667},{62,80},{70,80},{70,-150},{-60,-150}},
           color={0,127,255},
           smooth=Smooth.None));
-      connect(AmbientTemperature, nonCondensingTanklessHXControllerMediumModel.TAmb)
+      connect(AmbientTemperature, cont.TAmb)
         annotation (Line(
           points={{-120,46},{-88,46},{-88,90.8},{-52.3273,90.8}},
           color={0,0,127},
           smooth=Smooth.None));
-      connect(HeatExchanger.T_Out, nonCondensingTanklessHXControllerMediumModel.T_out)
+      connect(HX.T_Out, cont.T_out)
         annotation (Line(
           points={{55.24,47.4667},{72,47.4667},{72,-22},{-68,-22},{-68,77.36},{
               -52.3273,77.36}},
           color={0,0,127},
           smooth=Smooth.None));
-      connect(pwrSig, nonCondensingTanklessHXControllerMediumModel.PowerSignal)
+      connect(pwrSig, cont.PowerSignal)
         annotation (Line(
           points={{-120,-140},{-70,-140},{-70,82.4},{-52.3273,82.4}},
           color={0,0,127},
           smooth=Smooth.None));
-      connect(AmbientTemperature, HeatExchanger.T_amb) annotation (Line(
+      connect(AmbientTemperature, HX.T_amb)            annotation (Line(
           points={{-120,46},{-64,46},{-64,51.7333},{-5.6,51.7333}},
           color={0,0,127},
           smooth=Smooth.None));
-      connect(nonCondensingTanklessHXControllerMediumModel.ControlConstant,
-        HeatExchanger.ControlConstant) annotation (Line(
+      connect(cont.ControlConstant, HX.ControlConstant)
+                                       annotation (Line(
           points={{-25.0982,80.96},{-20,80.96},{-20,-6},{26.44,-6},{26.44,30.4}},
           color={0,0,127},
           smooth=Smooth.None));
 
-      connect(HeatExchanger.T_Out, T_Out) annotation (Line(
+      connect(HX.T_Out, T_Out)            annotation (Line(
           points={{55.24,47.4667},{82,47.4667},{82,2},{110,2}},
           color={0,0,127},
           smooth=Smooth.None));
-      connect(nonCondensingTanklessHXControllerMediumModel.maxMasFlo, maxMasFlo)
+      connect(cont.maxMasFlo, maxMasFlo)
         annotation (Line(
           points={{-16.72,90.08},{76,90.08},{76,-60},{110,-60}},
           color={0,0,127},
@@ -16221,6 +19023,7 @@ function can be used as part of another scan operation.
                   "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Id+oogIhElfZ6Mi49p0JuLE5EEXjjwAKiCqKiBEIhAqBorzRWAjKhkIVzxqgRB6rBxXxm7ds/sqXvzI1NfW5z312ubOy+Yqt995778033HjNdXt/8tBjX/zyl/7kT/7sT7/x7WJyZsdVu+e3bP3CF75w59/5cLtl//t//cNjr534b3/0R0eOnfjc5z6/utZTjOLWb5DdI9wDkINCa2q6X1YYoWlBCLwCMps6BEQkRlLadsXiiy+89MUvfvHQoUPW2q9//ZvPP//8zp27Hnzw0Gc/+5lD9z9QlqUKtFoTkYsdVDlO/9UTAgM48eIDBKjrGgCKNBthMC/Dxomaj3I4fotyO4SIimrI0kpn7b6Hn86SHFFB3jo0zrz90/A6RbecUdR6vbGcnCcFIqIgdPu9xSsXP/WpT917z4+cc08+/sTqytJtt93+1BMPr6yVm+bnjFqVen4ie/HwU/v27bvlhhu/8j++9Af/4fdnp6e//c27br7jNuccEzFSBPVHyDahyvknXFHQhYicc1u2bIl70jjREBFiQQRjksAuNpI7di4efeXIt//iWwsLC//kn37q1deOfO97352bm7vzzjs/cNut999/PyLu27evKDIRb0xqh9tSVQVgQQ1BnXPOuUhlbbVa4+zry1/MXCJI3CW8UnFDWcpNCCLL2IwbobHfOvvbm5B1fvPs/P/+068+cPDBO+644zO/93v33vvD48dP/L1f/9UDf/lX2Pebt8z1jj3/7z/3u48//PDi5rknDv3oj//4q9Wg/u1/+VtrVfVnf/6tWx449NTTT+/du098HYlbqGCQNoLD1h2kuIsMIWzatGlmZqbX601Mtms38D5PmAFABYlMYlNXe0S8+eabV7vdztqatfa+Hx987rnnDh8+HGk1InLllVcuLi4O6YnGGMNEQSRWkyJa13VZllU1GAwGRVFYa33tGqLapSFQnbeBwNG8d0Pb/jO+S5UNA55RLJ4TVkp61moLVDlJawmCcPf37/nu//1/CGAtPvTo4w898oQCWoAnDj+XKRz+wY8z0f/ylf8JYAoUVP7PX/pfAJITfP/eHwaB6/dAw22OA4AgAQHOryGMCKKeiFRhYmJix44dzz7906qqnHNVVdokU/XMbLJMNWR52uv10jS98847X3rhhS9/+ctVWbdarbIsH3744Xa7vX///sXFRUJG5DTNmWwc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",
               fileName=
                   "modelica://WaterHeatingLibrary/../../../../../Pictures/TWH.png")}),
+                  defaultComponentName="nonCon",
                   Documentation(info="<html>
               <p>
               This model is a remake of NonCondensingTanklessHeater intended to make it more compatable with the Buildings library and other Modelica components. The model was
@@ -16721,27 +19524,27 @@ function can be used as part of another scan operation.
               origin={0,34})));
         Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor temSen1[nNode]
           annotation (Placement(transformation(extent={{-40,54},{-60,74}})));
-        Modelica.Blocks.Math.Add add[nNode](k1=-1)
+        Modelica.Blocks.Math.Add add[nNode](each k1=-1)
           annotation (Placement(transformation(extent={{-128,14},{-108,34}})));
         Modelica.Blocks.Routing.Replicator replicator(nout=nNode) annotation (
             Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=90,
               origin={-134,0})));
-        Modelica.Blocks.Sources.Constant const2[nNode](k=UA/nNode)
+        Modelica.Blocks.Sources.Constant const2[nNode](each k=UA/nNode)
           annotation (Placement(transformation(extent={{-118,-14},{-98,6}})));
         Modelica.Blocks.Math.Product product1[nNode]
           annotation (Placement(transformation(extent={{-90,8},{-70,28}})));
         Buildings.HeatTransfer.Sources.PrescribedHeatFlow UALos[nNode]
           annotation (Placement(transformation(extent={{-50,8},{-30,28}})));
-        Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor[nNode](C=
+        Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor[nNode](each C=
              Capacitance/nNode)
           annotation (Placement(transformation(extent={{36,78},{56,58}})));
         Buildings.Fluid.MixingVolumes.MixingVolume vol[nNode](
-          nPorts=2,
+          each nPorts=2,
           redeclare package Medium = Medium,
-          m_flow_nominal=0.06,
-          V=0.000000001/nNode)
+          each m_flow_nominal=0.06,
+          each V=0.000000001/nNode)
           annotation (Placement(transformation(extent={{14,104},{-6,84}})));
       equation
 
@@ -17535,11 +20338,7 @@ function can be used as part of another scan operation.
               transformation(extent={{176,-52},{204,-24}}), iconTransformation(extent={{100,-72},
                   {128,-44}})));
         Modelica.Blocks.Math.Product product2
-          annotation (Placement(transformation(extent={{46,50},{66,70}})));
-        Modelica.Blocks.Math.BooleanToReal booleanToReal
-          annotation (Placement(transformation(extent={{-22,70},{-2,90}})));
-        Modelica.Blocks.Math.BooleanToReal booleanToReal1
-          annotation (Placement(transformation(extent={{22,38},{42,58}})));
+          annotation (Placement(transformation(extent={{48,50},{68,70}})));
         Modelica.Blocks.Continuous.LimPID
                                        PID(
           y_start=PID_y_start,
@@ -17553,12 +20352,8 @@ function can be used as part of another scan operation.
           annotation (Placement(transformation(extent={{-16,-10},{4,10}})));
         Modelica.Blocks.Math.Product product3
           annotation (Placement(transformation(extent={{74,8},{94,28}})));
-        Modelica.Blocks.Logical.GreaterEqual greaterEqual
-          annotation (Placement(transformation(extent={{-56,76},{-36,96}})));
-        Modelica.Blocks.Logical.GreaterEqual greaterEqual1
-          annotation (Placement(transformation(extent={{-8,26},{12,46}})));
         Modelica.Blocks.Sources.RealExpression mdot_min(y=mdot_min_cons)
-          annotation (Placement(transformation(extent={{-94,66},{-74,86}})));
+          annotation (Placement(transformation(extent={{-102,80},{-82,100}})));
        replaceable package Medium = Modelica.Media.Interfaces.PartialMedium
           "Fluid in the heater";
        parameter Real mdot_min_cons(unit = "kg/s") = 0.252
@@ -17591,6 +20386,12 @@ function can be used as part of another scan operation.
           "Electric power consumed when the fan is not operating";
        parameter Real UA(unit = "W/K") = 13.6
           "Heat loss coefficient of the heater";
+       parameter Real mdot_min_deadband(unit = "kg/s") = 0.00416
+          "Deadband of the minimum flow rate check";
+
+      protected
+        parameter Real smoHeaDel = 0.01 "Delta of the smoothHeaviside function";
+      public
         Modelica.Blocks.Sources.RealExpression SpecificHeat(y=SpecificHeat_cons)
           annotation (Placement(transformation(extent={{-98,20},{-78,40}})));
         Modelica.Blocks.Sources.RealExpression T_Set(y=T_Set_cons)
@@ -17650,6 +20451,15 @@ function can be used as part of another scan operation.
           Qdot_max=Qdot_Rated_cons,
           UA=UA)
           annotation (Placement(transformation(extent={{-2,-144},{18,-124}})));
+        Buildings.Utilities.Math.SmoothHeaviside smoothHeaviside(delta=smoHeaDel)
+          annotation (Placement(transformation(extent={{-34,74},{-14,94}})));
+        Modelica.Blocks.Math.Add add1(k1=-1, k2=1)
+          annotation (Placement(transformation(extent={{-70,74},{-50,94}})));
+        Modelica.Blocks.Math.Add add2(k1=-1, k2=1)
+          annotation (Placement(transformation(extent={{-8,52},{12,32}})));
+        Buildings.Utilities.Math.SmoothHeaviside smoothHeaviside1(
+                                                                 delta=smoHeaDel)
+          annotation (Placement(transformation(extent={{20,34},{40,54}})));
       equation
         connect(T_Set.y, add.u2) annotation (Line(
             points={{-77,-14},{-68,-14},{-68,10}},
@@ -17663,36 +20473,8 @@ function can be used as part of another scan operation.
             points={{-45,16},{-44,16},{-44,42}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(booleanToReal1.y, product2.u2) annotation (Line(
-            points={{43,48},{44,48},{44,54}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(booleanToReal.y, product2.u1) annotation (Line(
-            points={{-1,80},{22,80},{22,66},{44,66}},
-            color={0,0,127},
-            smooth=Smooth.None));
         connect(product3.u1, product2.y) annotation (Line(
-            points={{72,24},{72,60},{67,60}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(greaterEqual.y, booleanToReal.u) annotation (Line(
-            points={{-35,86},{-30,86},{-30,80},{-24,80}},
-            color={255,0,255},
-            smooth=Smooth.None));
-        connect(greaterEqual1.y, booleanToReal1.u) annotation (Line(
-            points={{13,36},{16,36},{16,48},{20,48}},
-            color={255,0,255},
-            smooth=Smooth.None));
-        connect(product1.y, greaterEqual1.u1) annotation (Line(
-            points={{-21,48},{-16,48},{-16,36},{-10,36}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(Qdot_min.y, greaterEqual1.u2) annotation (Line(
-            points={{-17,16},{-10,16},{-10,28}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(mdot_min.y, greaterEqual.u2) annotation (Line(
-            points={{-73,76},{-66,76},{-66,78},{-58,78}},
+            points={{72,24},{72,60},{69,60}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(SpecificHeat.y, product.u2) annotation (Line(
@@ -17780,11 +20562,7 @@ function can be used as part of another scan operation.
             color={0,0,127},
             smooth=Smooth.None));
         connect(senMasFlo.m_flow, product.u1) annotation (Line(
-            points={{-48,-101},{-48,-60},{-98,-60},{-98,60},{-70,60}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(senMasFlo.m_flow, greaterEqual.u1) annotation (Line(
-            points={{-48,-101},{-48,-60},{-98,-60},{-98,86},{-58,86}},
+            points={{-48,-101},{-48,-60},{-100,-60},{-100,60},{-70,60}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(senMasFlo.port_b, port_b) annotation (Line(
@@ -17811,13 +20589,46 @@ function can be used as part of another scan operation.
             points={{-87,-88},{-72,-88},{-72,-128},{-4,-128}},
             color={0,0,127},
             smooth=Smooth.None));
+        connect(mdot_min.y, add1.u1) annotation (Line(
+            points={{-81,90},{-72,90}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(senMasFlo.m_flow, add1.u2) annotation (Line(
+            points={{-48,-101},{-48,-60},{-100,-60},{-100,78},{-72,78}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(add1.y, smoothHeaviside.u) annotation (Line(
+            points={{-49,84},{-36,84}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(smoothHeaviside.y, product2.u1) annotation (Line(
+            points={{-13,84},{20,84},{20,66},{46,66}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(product1.y, add2.u2) annotation (Line(
+            points={{-21,48},{-10,48}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(Qdot_min.y, add2.u1) annotation (Line(
+            points={{-17,16},{-14,16},{-14,36},{-10,36}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(add2.y, smoothHeaviside1.u) annotation (Line(
+            points={{13,42},{16,42},{16,44},{18,44}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(smoothHeaviside1.y, product2.u2) annotation (Line(
+            points={{41,44},{44,44},{44,54},{46,54}},
+            color={0,0,127},
+            smooth=Smooth.None));
         annotation (
-          Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,-150},
-                  {175,100}}),
+          Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,-150},{175,
+                  100}}),
                   graphics),
           Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-150},{175,100}}),
                graphics={Bitmap(extent={{-100,96},{100,-98}}, fileName=
                     "//vmware-host/Shared Folders/Downloads/ControlModule.jpg")}),
+                    defaultComponentName="con",
                     Documentation(info="<html>
               <p>
               This model is a modification of NonCondensingTanklessHXController. The modiciations were made to make this model use fluid connections instead of Real variables
@@ -17830,6 +20641,12 @@ function can be used as part of another scan operation.
               </p>
               </html>",
                     revisions="<html>
+              <ul>
+              <li>
+              Apr 15, 2013 by Peter Grant:<br>
+              Replaced greater than checks with add and smoothHeaviside blocks to reduce state events
+              </ul>
+              </li>
               <ul>
               <li>
               Mar 29, 2013 by Peter Grant:<br>
@@ -17901,109 +20718,203 @@ First implementation
             "Start delay with a long time between draws";
           parameter Modelica.SIunits.Time t_switch = 30
             "Time between draws required for t_long";
-          Modelica.SIunits.Time t_delay
-            "Delay before the burner starts in the current draw";
           Modelica.Blocks.Interfaces.RealInput mDotDra "Water flow rate"
-            annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
-          Modelica.Blocks.Logical.Greater greater
-            annotation (Placement(transformation(extent={{-70,0},{-50,20}})));
-          Modelica.Blocks.Sources.Constant const(k=0.0001)
-            annotation (Placement(transformation(extent={{-100,-34},{-80,-14}})));
+            annotation (Placement(transformation(extent={{-240,-20},{-200,20}}),
+                iconTransformation(extent={{-240,-20},{-200,20}})));
+          Modelica.Blocks.Sources.Constant const(k=0.00001)
+            annotation (Placement(transformation(extent={{-196,-96},{-176,-76}})));
           Modelica.Blocks.Logical.Timer timer
-            annotation (Placement(transformation(extent={{-36,0},{-16,20}})));
-          Modelica.Blocks.Sources.Constant const1(k=0.0001)
-            annotation (Placement(transformation(extent={{-98,74},{-78,94}})));
+            annotation (Placement(transformation(extent={{-72,-62},{-52,-42}})));
+          Modelica.Blocks.Sources.Constant const1(k=0.00001)
+            annotation (Placement(transformation(extent={{-194,74},{-174,94}})));
           Modelica.Blocks.Logical.Timer timer1
-            annotation (Placement(transformation(extent={{50,68},{70,88}})));
+            annotation (Placement(transformation(extent={{-38,22},{-18,42}})));
           Modelica.Blocks.Math.Add add(k2=-1)
-            annotation (Placement(transformation(extent={{78,62},{98,82}})));
-          Modelica.Blocks.Sources.RealExpression realExpression(y=t_delay)
-            annotation (Placement(transformation(extent={{20,24},{40,44}})));
-          Modelica.Blocks.Logical.Less less1
-            annotation (Placement(transformation(extent={{48,24},{68,44}})));
-          Modelica.Blocks.Logical.Greater greater1
-            annotation (Placement(transformation(extent={{-68,56},{-48,76}})));
-          Modelica.Blocks.Sources.Constant const2(k=t_long)
-            annotation (Placement(transformation(extent={{-48,30},{-28,50}})));
-          Modelica.Blocks.Logical.Or or1
-            annotation (Placement(transformation(extent={{22,68},{42,88}})));
-          Modelica.Blocks.Logical.Greater greater2
-            annotation (Placement(transformation(extent={{-10,30},{10,50}})));
-          Modelica.Blocks.Math.BooleanToReal booleanToReal
-            annotation (Placement(transformation(extent={{76,24},{96,44}})));
+            annotation (Placement(transformation(extent={{26,82},{46,62}})));
+          Modelica.Blocks.Sources.RealExpression realExpression(y=add6.y)
+            annotation (Placement(transformation(extent={{76,-4},{96,16}})));
           Modelica.Blocks.Interfaces.RealOutput y
-            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+            annotation (Placement(transformation(extent={{200,-10},{220,10}}),
+                iconTransformation(extent={{200,-10},{220,10}})));
+          Modelica.Blocks.Math.Add add1(k2=-1)
+            annotation (Placement(transformation(extent={{-160,-62},{-140,-42}})));
+          Buildings.Utilities.Math.SmoothHeaviside smoothHeaviside(delta=smoHeaDel)
+            annotation (Placement(transformation(extent={{-130,-62},{-110,-42}})));
+
+        protected
+          parameter Real smoHeaDel = 0.00001
+            "Delta used in the smoothHeaviside function";
+
+        public
+          Modelica.Blocks.Math.RealToBoolean realToBoolean(threshold=0.5)
+            annotation (Placement(transformation(extent={{-100,-62},{-80,-42}})));
+          Modelica.Blocks.Math.Add add2(k1=-1)
+            annotation (Placement(transformation(extent={{-160,80},{-140,60}})));
+          Buildings.Utilities.Math.SmoothHeaviside smoothHeaviside1(
+                                                                   delta=smoHeaDel)
+            annotation (Placement(transformation(extent={{-130,60},{-110,80}})));
+          Modelica.Blocks.Math.RealToBoolean realToBoolean1(threshold=0.5)
+            annotation (Placement(transformation(extent={{-66,22},{-46,42}})));
+          Modelica.Blocks.Math.Add add4(k2=-1)
+            annotation (Placement(transformation(extent={{108,10},{128,-10}})));
+          Buildings.Utilities.Math.SmoothHeaviside smoothHeaviside3(
+                                                                   delta=smoHeaDel)
+            annotation (Placement(transformation(extent={{140,-10},{160,10}})));
+          Buildings.Utilities.Math.SmoothHeaviside smoothHeaviside4(
+                                                                   delta=smoHeaDel)
+            annotation (Placement(transformation(extent={{56,62},{76,82}})));
+          Modelica.Blocks.Math.Product product1
+            annotation (Placement(transformation(extent={{92,48},{112,68}})));
+          Modelica.Blocks.Math.Add add5(k1=-1)
+            annotation (Placement(transformation(extent={{56,24},{76,44}})));
+          Modelica.Blocks.Sources.RealExpression realExpression1(y=t_long)
+            annotation (Placement(transformation(extent={{20,16},{40,36}})));
+          Modelica.Blocks.Sources.RealExpression realExpression2(y=t_short)
+            annotation (Placement(transformation(extent={{20,32},{40,52}})));
+          Modelica.Blocks.Math.Add add6
+            annotation (Placement(transformation(extent={{126,60},{146,80}})));
+          Modelica.Blocks.Sources.RealExpression realExpression3(y=t_short)
+            annotation (Placement(transformation(extent={{92,74},{112,94}})));
+          Modelica.Blocks.Sources.RealExpression realExpression4(y=t_switch)
+            annotation (Placement(transformation(extent={{-32,88},{-12,108}})));
+          Modelica.Blocks.Math.Add add3(k2=-1)
+            annotation (Placement(transformation(extent={{-10,16},{10,36}})));
+          Modelica.Blocks.Sources.RealExpression realExpression5(y=t_long)
+            annotation (Placement(transformation(extent={{-190,16},{-170,36}})));
+          Modelica.Blocks.Math.Add add7(k1=-1)
+            annotation (Placement(transformation(extent={{-162,30},{-142,10}})));
+          Buildings.Utilities.Math.SmoothHeaviside smoothHeaviside2(
+                                                                   delta=smoHeaDel)
+            annotation (Placement(transformation(extent={{-130,10},{-110,30}})));
+          Modelica.Blocks.Math.Add     product2
+            annotation (Placement(transformation(extent={{-96,22},{-76,42}})));
         equation
-          if add.y > t_switch then
-            t_delay = t_long;
-          else
-            t_delay = t_short;
-          end if;
-          connect(const.y, greater.u2) annotation (Line(
-              points={{-79,-24},{-76,-24},{-76,2},{-72,2}},
+
+          connect(const.y, add1.u2) annotation (Line(
+              points={{-175,-86},{-168,-86},{-168,-58},{-162,-58}},
               color={0,0,127},
               smooth=Smooth.None));
-          connect(mDotDra, greater.u1) annotation (Line(
-              points={{-120,0},{-96,0},{-96,10},{-72,10}},
+          connect(mDotDra, add1.u1) annotation (Line(
+              points={{-220,1.11022e-15},{-196,1.11022e-15},{-196,-46},{-162,
+                  -46}},
               color={0,0,127},
               smooth=Smooth.None));
-          connect(greater.y, timer.u) annotation (Line(
-              points={{-49,10},{-38,10}},
+          connect(add1.y, smoothHeaviside.u) annotation (Line(
+              points={{-139,-52},{-132,-52}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(smoothHeaviside.y, realToBoolean.u) annotation (Line(
+              points={{-109,-52},{-102,-52}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(realToBoolean.y, timer.u) annotation (Line(
+              points={{-79,-52},{-74,-52}},
               color={255,0,255},
               smooth=Smooth.None));
-          connect(timer1.y, add.u1) annotation (Line(
-              points={{71,78},{76,78}},
+          connect(const1.y, add2.u2) annotation (Line(
+              points={{-173,84},{-168,84},{-168,76},{-162,76}},
               color={0,0,127},
               smooth=Smooth.None));
-          connect(timer.y, add.u2) annotation (Line(
-              points={{-15,10},{18,10},{18,66},{76,66}},
+          connect(mDotDra, add2.u1) annotation (Line(
+              points={{-220,1.11022e-15},{-196,1.11022e-15},{-196,64},{-162,64}},
               color={0,0,127},
               smooth=Smooth.None));
-          connect(realExpression.y, less1.u1) annotation (Line(
-              points={{41,34},{46,34}},
+          connect(add2.y, smoothHeaviside1.u) annotation (Line(
+              points={{-139,70},{-132,70}},
               color={0,0,127},
               smooth=Smooth.None));
-          connect(timer.y, less1.u2) annotation (Line(
-              points={{-15,10},{32,10},{32,26},{46,26}},
+          connect(realExpression.y, add4.u2) annotation (Line(
+              points={{97,6},{106,6}},
               color={0,0,127},
               smooth=Smooth.None));
-          connect(const1.y, greater1.u1) annotation (Line(
-              points={{-77,84},{-74,84},{-74,66},{-70,66}},
+          connect(timer.y, add4.u1) annotation (Line(
+              points={{-51,-52},{94,-52},{94,-6},{106,-6}},
               color={0,0,127},
               smooth=Smooth.None));
-          connect(mDotDra, greater1.u2) annotation (Line(
-              points={{-120,0},{-96,0},{-96,58},{-70,58}},
+          connect(add4.y, smoothHeaviside3.u) annotation (Line(
+              points={{129,0},{138,0}},
               color={0,0,127},
               smooth=Smooth.None));
-          connect(greater1.y, or1.u1) annotation (Line(
-              points={{-47,66},{-32,66},{-32,78},{20,78}},
+          connect(smoothHeaviside3.y, y) annotation (Line(
+              points={{161,6.66134e-16},{180,6.66134e-16},{180,4.44089e-16},{210,4.44089e-16}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(add.y, smoothHeaviside4.u) annotation (Line(
+              points={{47,72},{54,72}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(realExpression2.y, add5.u1) annotation (Line(
+              points={{41,42},{46,42},{46,40},{54,40}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(realExpression1.y, add5.u2) annotation (Line(
+              points={{41,26},{48,26},{48,28},{54,28}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(add5.y, product1.u2) annotation (Line(
+              points={{77,34},{84,34},{84,52},{90,52}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(smoothHeaviside4.y, product1.u1) annotation (Line(
+              points={{77,72},{84,72},{84,64},{90,64}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(product1.y, add6.u2) annotation (Line(
+              points={{113,58},{118,58},{118,64},{124,64}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(realExpression3.y, add6.u1) annotation (Line(
+              points={{113,84},{118,84},{118,76},{124,76}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(realToBoolean1.y, timer1.u) annotation (Line(
+              points={{-45,32},{-40,32}},
               color={255,0,255},
               smooth=Smooth.None));
-          connect(or1.y, timer1.u) annotation (Line(
-              points={{43,78},{48,78}},
-              color={255,0,255},
-              smooth=Smooth.None));
-          connect(const2.y, greater2.u1) annotation (Line(
-              points={{-27,40},{-12,40}},
+          connect(realExpression4.y, add.u2) annotation (Line(
+              points={{-11,98},{6,98},{6,78},{24,78}},
               color={0,0,127},
               smooth=Smooth.None));
-          connect(timer.y, greater2.u2) annotation (Line(
-              points={{-15,10},{-12,10},{-12,32}},
+          connect(timer.y, add3.u2) annotation (Line(
+              points={{-51,-52},{-34,-52},{-34,20},{-12,20}},
               color={0,0,127},
               smooth=Smooth.None));
-          connect(less1.y, booleanToReal.u) annotation (Line(
-              points={{69,34},{74,34}},
-              color={255,0,255},
-              smooth=Smooth.None));
-          connect(booleanToReal.y, y) annotation (Line(
-              points={{97,34},{104,34},{104,0},{110,0}},
+          connect(timer1.y, add3.u1) annotation (Line(
+              points={{-17,32},{-12,32}},
               color={0,0,127},
               smooth=Smooth.None));
-          connect(greater2.y, or1.u2) annotation (Line(
-              points={{11,40},{14,40},{14,70},{20,70}},
-              color={255,0,255},
+          connect(add3.y, add.u1) annotation (Line(
+              points={{11,26},{14,26},{14,66},{24,66}},
+              color={0,0,127},
               smooth=Smooth.None));
-          annotation (Diagram(graphics),
+          connect(realExpression5.y, add7.u2) annotation (Line(
+              points={{-169,26},{-164,26}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(add7.y, smoothHeaviside2.u) annotation (Line(
+              points={{-141,20},{-136.5,20},{-136.5,20},{-132,20}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(product2.y, realToBoolean1.u) annotation (Line(
+              points={{-75,32},{-68,32}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(smoothHeaviside2.y, product2.u2) annotation (Line(
+              points={{-109,20},{-104,20},{-104,26},{-98,26}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(smoothHeaviside1.y, product2.u1) annotation (Line(
+              points={{-109,70},{-104,70},{-104,38},{-98,38}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(timer.y, add7.u1) annotation (Line(
+              points={{-51,-52},{-44,-52},{-44,-12},{-176,-12},{-176,14},{-164,
+                  14}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-200,
+                    -100},{200,100}}),
+                              graphics),
           defaultComponentName='tDel',
           Documentation(info="<html>
   <p>
@@ -18019,7 +20930,8 @@ First implementation
   First implementation
   </li>
   </ul>
-  </html>"));
+  </html>"),Icon(coordinateSystem(preserveAspectRatio=false, extent={{-200,-100},{200,100}}),
+                graphics));
         end StartDelay;
 
         model ConstantGammaControl
@@ -18107,91 +21019,22 @@ First implementation
         end MaxMassFlow;
 
         package Examples
-          model NonCondensingTanklessControllerMediumModel
+          model StartDelay
+            import WaterHeatingLibrary;
             extends Modelica.Icons.Example;
-            NoncondensingTanklessHighFlowControlMediumModel
-              noncondensingTanklessHighFlowControlMediumModel(
-              redeclare package Medium =
-                  Buildings.Media.ConstantPropertyLiquidWater,
-              Qdot_max=55555,
-              SteadyStateEff=0.82,
-              UA=13.5,
-              Cp=4190,
-              PID_P=1,
-              PID_D=0.00000001,
-              T_Set=333.15,
-              PID_I=0.0000001)
-              annotation (Placement(transformation(extent={{6,-10},{26,10}})));
-            Modelica.Blocks.Sources.Constant TAmb(k=273.15 + 20) annotation (
-                Placement(transformation(extent={{-76,-68},{-56,-48}})));
-            Modelica.Blocks.Sources.Constant TIn(k=273.15 + 10) annotation (
-                Placement(transformation(extent={{-76,-38},{-56,-18}})));
-            Buildings.Fluid.Sources.Boundary_pT boundary(
-              nPorts=1,
-              redeclare package Medium =
-                  Buildings.Media.ConstantPropertyLiquidWater,
-              use_T_in=true,
-              p=102000) annotation (Placement(transformation(extent={{-34,-10},
-                      {-14,10}})));
-            Buildings.Fluid.Sources.Boundary_pT boundary1(
-              redeclare package Medium =
-                  Buildings.Media.ConstantPropertyLiquidWater,
-              p=101325,
-              nPorts=1) annotation (Placement(transformation(
-                  extent={{-10,-10},{10,10}},
-                  rotation=180,
-                  origin={88,0})));
-            Modelica.Blocks.Sources.Ramp ramp(
-              duration=600,
-              height=1,
-              offset=0)
-              annotation (Placement(transformation(extent={{4,26},{24,46}})));
-            Buildings.Fluid.Actuators.Valves.TwoWayLinear val(
-              redeclare package Medium =
-                  Buildings.Media.ConstantPropertyLiquidWater,
-              m_flow_nominal=0.06,
-              dpValve_nominal=1,
-              l=1e-10,
-              riseTime=0.00000000001,
-              y_start=0)
-              annotation (Placement(transformation(extent={{40,-10},{60,10}})));
+            WaterHeatingLibrary.NonCondensingTankless.Controllers.BaseClasses.StartDelay
+              startDelay(t_short=1, t_long=5) annotation (Placement(
+                  transformation(extent={{-22,-10},{18,10}})));
+            Modelica.Blocks.Sources.Step step(height=0.063, startTime=31)
+              annotation (Placement(transformation(extent={{-78,-10},{-58,10}})));
           equation
-            connect(boundary.ports[1],
-              noncondensingTanklessHighFlowControlMediumModel.port_a)
-              annotation (Line(
-                points={{-14,0},{6,0}},
-                color={0,127,255},
-                smooth=Smooth.None));
-            connect(TIn.y, boundary.T_in) annotation (Line(
-                points={{-55,-28},{-42,-28},{-42,4},{-36,4}},
-                color={0,0,127},
-                smooth=Smooth.None));
-            connect(TAmb.y, noncondensingTanklessHighFlowControlMediumModel.TAmb)
-              annotation (Line(
-                points={{-55,-58},{-8,-58},{-8,-8},{4,-8}},
-                color={0,0,127},
-                smooth=Smooth.None));
-            connect(TIn.y, noncondensingTanklessHighFlowControlMediumModel.TIn)
-              annotation (Line(
-                points={{-55,-28},{-12,-28},{-12,-4},{4,-4}},
-                color={0,0,127},
-                smooth=Smooth.None));
-            connect(noncondensingTanklessHighFlowControlMediumModel.port_b, val.port_a)
-              annotation (Line(
-                points={{26,0},{40,0}},
-                color={0,127,255},
-                smooth=Smooth.None));
-            connect(val.port_b, boundary1.ports[1]) annotation (Line(
-                points={{60,0},{78,0}},
-                color={0,127,255},
-                smooth=Smooth.None));
-            connect(ramp.y, val.y) annotation (Line(
-                points={{25,36},{50,36},{50,12}},
+            connect(step.y, startDelay.mDotDra) annotation (Line(
+                points={{-57,0},{-24,0}},
                 color={0,0,127},
                 smooth=Smooth.None));
             annotation (Diagram(coordinateSystem(preserveAspectRatio=false,
                     extent={{-100,-100},{100,100}}), graphics));
-          end NonCondensingTanklessControllerMediumModel;
+          end StartDelay;
         end Examples;
       end BaseClasses;
 
@@ -18533,7 +21376,8 @@ First implementation
           annotation (Placement(transformation(extent={{46,-20},{66,0}})));
         Modelica.Blocks.Sources.Ramp ramp(duration=600, height=0.125)
           annotation (Placement(transformation(extent={{26,2},{46,22}})));
-        HWDis.Components.Pipe  pip(
+        HWDis.Components.PipeLumpedCap
+                               pip(
           redeclare package Medium =
               Buildings.Media.ConstantPropertyLiquidWater,
           m_flow_nominal=0.06,
