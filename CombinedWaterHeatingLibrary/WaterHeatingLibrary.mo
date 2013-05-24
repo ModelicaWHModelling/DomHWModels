@@ -6880,7 +6880,6 @@ First implementation.
         "Pipe model with capacitance of the pipe and water lumped together (No insulation)"
         extends WaterHeatingLibrary.HWDis.Components.BaseClasses.PartialPipe(
           diameter_i=sqrt(4*m_flow_nominal/rho_nominal/v_nominal/Modelica.Constants.pi),
-
           dp_nominal=2*dpStraightPipe_nominal,
           res(dp(nominal=length*10)),
           vol(each MixCoef=MixCoef));
@@ -7092,7 +7091,6 @@ First implementation.
       model PipeR "Pipe model with insulation specified using an R value"
         extends WaterHeatingLibrary.HWDis.Components.BaseClasses.PartialPipe(
           diameter_i=sqrt(4*m_flow_nominal/rho_nominal/v_nominal/Modelica.Constants.pi),
-
           dp_nominal=2*dpStraightPipe_nominal,
           res(dp(nominal=length*10)),
           vol(each MixCoef=MixCoef));
@@ -21434,6 +21432,67 @@ First implementation
                     Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                   -100},{100,100}}), graphics));
       end NonCondensingMediumModel;
+
+      model CharacterizationModel
+        "Model used to identify the parameters describing a given tankless water heater"
+        extends Modelica.Icons.Example;
+
+        package Water = Buildings.Media.ConstantPropertyLiquidWater
+          "Package used to represent water in the system";
+
+        NonCondensingTanklessHeaterMediumModel nonCon(redeclare package Medium
+            = Water)
+          annotation (Placement(transformation(extent={{52,2},{72,26}})));
+        Modelica.Blocks.Sources.CombiTimeTable combiTimeTable(
+          tableOnFile=true,
+          columns=2:5,
+          tableName="Data",
+          fileName=
+              "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForValidation/Rheem84DVLNCharacterization.txt")
+          annotation (Placement(transformation(extent={{-66,24},{-46,44}})));
+        Modelica.Blocks.Sources.Constant const(k=1)
+          annotation (Placement(transformation(extent={{14,0},{34,20}})));
+        Buildings.Fluid.Sources.MassFlowSource_T boundary(
+          nPorts=1,
+          use_m_flow_in=true,
+          use_T_in=true,
+          redeclare package Medium = Water)
+          annotation (Placement(transformation(extent={{-26,-22},{-6,-2}})));
+        Buildings.Fluid.Sources.Boundary_pT bou(nPorts=1, redeclare package
+            Medium = Water)                               annotation (Placement(
+              transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=90,
+              origin={56,-38})));
+      equation
+        connect(const.y, nonCon.pwrSig) annotation (Line(
+            points={{35,10},{42,10},{42,2.96},{50,2.96}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(boundary.ports[1], nonCon.colWatIn) annotation (Line(
+            points={{-6,-12},{59.6,-12},{59.6,2}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(bou.ports[1], nonCon.hotWatOut) annotation (Line(
+            points={{56,-28},{56,2}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(combiTimeTable.y[2], boundary.T_in) annotation (Line(
+            points={{-45,34},{-38,34},{-38,-8},{-28,-8}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(combiTimeTable.y[3], nonCon.AmbientTemperature) annotation (
+            Line(
+            points={{-45,34},{40,34},{40,20.816},{50,20.816}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(combiTimeTable.y[4], boundary.m_flow_in) annotation (Line(
+            points={{-45,34},{-38,34},{-38,-4},{-26,-4}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                  -100},{100,100}}), graphics));
+      end CharacterizationModel;
     end Examples;
     annotation (
       conversion(noneFromVersion=""));
