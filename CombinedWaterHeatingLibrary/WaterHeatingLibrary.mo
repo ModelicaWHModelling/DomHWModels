@@ -18924,6 +18924,9 @@ function can be used as part of another scan operation.
         "Electric power consumed when the fan is not operating";
       parameter Real mdot_min_deadband(unit = "kg/s") = 0.00416
         "Deadband on the minimum flow rate check";
+      parameter Modelica.SIunits.Time StopDelay = 1
+        "Delay between flow ceasing and heat transfer stopping";
+      parameter Modelica.SIunits.Time ControlDelay = 2 "Control response delay";
       Modelica.Blocks.Interfaces.RealOutput T_Out(unit = "K")
         annotation (Placement(transformation(extent={{100,-8},{120,12}})));
       Modelica.Fluid.Interfaces.FluidPort_a colWatIn(redeclare package Medium
@@ -18951,13 +18954,18 @@ function can be used as part of another scan operation.
         SpecificHeat_cons=SpecificHeat_input,
         Qdot_Rated_cons=Qdot_Rated_input,
         SteadyStateEff_cons=SteadyStateEff_input,
-        mdot_min_deadband=mdot_min_deadband)      annotation (Placement(
+        mdot_min_deadband=mdot_min_deadband,
+        StopDelay=StopDelay,
+        ControlDelay=ControlDelay)                annotation (Placement(
             transformation(
             extent={{-16,15},{16,-15}},
             rotation=0,
             origin={-34,77})));
       Modelica.Blocks.Interfaces.RealOutput maxMasFlo
         annotation (Placement(transformation(extent={{100,-70},{120,-50}})));
+      Modelica.Blocks.Interfaces.RealOutput Q_dot_in(unit="W")
+        "Inlet heat rate"
+        annotation (Placement(transformation(extent={{100,-110},{120,-90}})));
     equation
       connect(colWatIn, cont.port_a)
         annotation (Line(
@@ -18980,8 +18988,8 @@ function can be used as part of another scan operation.
           smooth=Smooth.None));
       connect(HX.T_Out, cont.T_out)
         annotation (Line(
-          points={{55.24,47.4667},{72,47.4667},{72,-22},{-68,-22},{-68,77.36},{
-              -52.3273,77.36}},
+          points={{55.24,56},{72,56},{72,-22},{-68,-22},{-68,77.36},{-52.3273,
+              77.36}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(pwrSig, cont.PowerSignal)
@@ -19000,7 +19008,7 @@ function can be used as part of another scan operation.
           smooth=Smooth.None));
 
       connect(HX.T_Out, T_Out)            annotation (Line(
-          points={{55.24,47.4667},{82,47.4667},{82,2},{110,2}},
+          points={{55.24,56},{82,56},{82,2},{110,2}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(cont.maxMasFlo, maxMasFlo)
@@ -19008,8 +19016,12 @@ function can be used as part of another scan operation.
           points={{-16.72,90.08},{76,90.08},{76,-60},{110,-60}},
           color={0,0,127},
           smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,
-                -150},{100,100}}),      graphics), Icon(coordinateSystem(
+      connect(HX.Q_dot_in, Q_dot_in) annotation (Line(
+          points={{53.8,39.7867},{62,39.7867},{62,-100},{110,-100}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,-150},
+                {100,100}}),            graphics), Icon(coordinateSystem(
               preserveAspectRatio=false,extent={{-100,-150},{100,100}}),
             graphics={Bitmap(
               extent={{-98,94},{92,-142}},
@@ -19489,7 +19501,7 @@ function can be used as part of another scan operation.
               rotation=90,
               origin={8,-120})));
         Modelica.Blocks.Interfaces.RealOutput T_Out(unit = "K")
-          annotation (Placement(transformation(extent={{150,-58},{186,-22}})));
+          annotation (Placement(transformation(extent={{150,-18},{186,18}})));
         Modelica.Blocks.Interfaces.RealInput T_amb(unit = "K")
           annotation (Placement(transformation(extent={{-190,-40},{-150,0}})));
         Modelica.Fluid.Interfaces.FluidPort_a port_a(redeclare package Medium
@@ -19509,7 +19521,7 @@ function can be used as part of another scan operation.
               origin={0,-22})));
         Buildings.Fluid.Sensors.Temperature senTem(redeclare package Medium =
               Medium)
-          annotation (Placement(transformation(extent={{110,-30},{130,-50}})));
+          annotation (Placement(transformation(extent={{110,10},{130,-10}})));
         Modelica.Blocks.Routing.Replicator replicator1(nout=nNode) annotation (
             Placement(transformation(
               extent={{-10,-10},{10,10}},
@@ -19544,6 +19556,16 @@ function can be used as part of another scan operation.
           each m_flow_nominal=0.06,
           each V=0.000000001/nNode)
           annotation (Placement(transformation(extent={{14,104},{-6,84}})));
+
+      protected
+        Modelica.Blocks.Math.Product product2
+          annotation (Placement(transformation(extent={{90,-86},{110,-66}})));
+        Modelica.Blocks.Sources.RealExpression realExpression(y=Qdot_Rated)
+          annotation (Placement(transformation(extent={{44,-80},{64,-60}})));
+      public
+        Modelica.Blocks.Interfaces.RealOutput Q_dot_in(unit="W")
+          "Used heat rate"
+          annotation (Placement(transformation(extent={{150,-86},{170,-66}})));
       equation
 
         connect(multiProduct.u[1], const.y) annotation (Line(
@@ -19551,7 +19573,7 @@ function can be used as part of another scan operation.
             color={0,0,127},
             smooth=Smooth.None));
         connect(const1.y, multiProduct.u[2]) annotation (Line(
-            points={{-41,-68},{-4.44089e-16,-68},{-4.44089e-16,-28}},
+            points={{-41,-68},{-6.66134e-16,-68},{-6.66134e-16,-28}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(ControlConstant, multiProduct.u[3]) annotation (Line(
@@ -19559,7 +19581,7 @@ function can be used as part of another scan operation.
             color={0,0,127},
             smooth=Smooth.None));
         connect(senTem.T, T_Out) annotation (Line(
-            points={{127,-40},{168,-40}},
+            points={{127,0},{168,0}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(multiProduct.y, replicator1.u) annotation (Line(
@@ -19616,7 +19638,7 @@ function can be used as part of another scan operation.
             color={0,127,255},
             smooth=Smooth.None));
         connect(port_b, senTem.port) annotation (Line(
-            points={{150,110},{120,110},{120,-30}},
+            points={{150,110},{120,110},{120,10}},
             color={0,127,255},
             smooth=Smooth.None));
          for i in 2:nNode loop
@@ -19626,6 +19648,18 @@ function can be used as part of another scan operation.
         connect(UALos.port, vol.heatPort) annotation (Line(
             points={{-30,18},{-20,18},{-20,64},{18,64},{18,94},{14,94}},
             color={191,0,0},
+            smooth=Smooth.None));
+        connect(ControlConstant, product2.u2) annotation (Line(
+            points={{8,-120},{8,-82},{88,-82}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(realExpression.y, product2.u1) annotation (Line(
+            points={{65,-70},{88,-70}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(product2.y, Q_dot_in) annotation (Line(
+            points={{111,-76},{160,-76}},
+            color={0,0,127},
             smooth=Smooth.None));
         annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-150,
                   -150},{150,150}}),
@@ -19754,8 +19788,6 @@ function can be used as part of another scan operation.
                   {128,-44}})));
         Modelica.Blocks.Math.Product product2
           annotation (Placement(transformation(extent={{46,50},{66,70}})));
-        Modelica.Blocks.Math.BooleanToReal booleanToReal
-          annotation (Placement(transformation(extent={{-22,70},{-2,90}})));
         Modelica.Blocks.Math.BooleanToReal booleanToReal1
           annotation (Placement(transformation(extent={{22,38},{42,58}})));
         Modelica.Blocks.Continuous.LimPID
@@ -19778,14 +19810,10 @@ function can be used as part of another scan operation.
           SpecificHeat=SpecificHeat_cons,
           T_Set=T_Set_cons)
           annotation (Placement(transformation(extent={{20,-8},{40,12}})));
-        Modelica.Blocks.Logical.GreaterEqual greaterEqual
-          annotation (Placement(transformation(extent={{-56,76},{-36,96}})));
         Modelica.Blocks.Logical.GreaterEqual greaterEqual1
           annotation (Placement(transformation(extent={{-8,26},{12,46}})));
         Modelica.Blocks.Interfaces.RealInput mdot_water(unit = "kg/s")
           annotation (Placement(transformation(extent={{-140,40},{-100,80}})));
-        Modelica.Blocks.Sources.RealExpression mdot_min(y=mdot_min_cons)
-          annotation (Placement(transformation(extent={{-94,66},{-74,86}})));
        parameter Real mdot_min_cons(unit = "kg/s") = 0.252
           "Minimum flow rate of the tankless heater";
        parameter Real Qdot_min_cons(unit = "W") = 5275
@@ -19814,6 +19842,8 @@ function can be used as part of another scan operation.
           "Electric power consumed when the fan is operating";
        parameter Real QIdl(unit = "W") = 15
           "Electric power consumed when the fan is not operating";
+       parameter Modelica.SIunits.Time StopDelay
+          "Delay between water flow ceasing and heat flow stopping";
         Modelica.Blocks.Sources.RealExpression SpecificHeat(y=SpecificHeat_cons)
           annotation (Placement(transformation(extent={{-98,20},{-78,40}})));
         Modelica.Blocks.Sources.RealExpression T_Set(y=T_Set_cons)
@@ -19852,6 +19882,9 @@ function can be used as part of another scan operation.
           annotation (Placement(transformation(extent={{176,-122},{196,-102}})));
         Modelica.Blocks.Math.Max max1
           annotation (Placement(transformation(extent={{138,-122},{158,-102}})));
+        BaseClasses.mDotMinCheck mDotMinCheck(mDot_min_cons=mdot_min_cons,
+            stopDelay=StopDelay)
+          annotation (Placement(transformation(extent={{-80,72},{-40,92}})));
       equation
         connect(T_Set.y, add.u2) annotation (Line(
             points={{-77,-14},{-68,-14},{-68,10}},
@@ -19869,10 +19902,6 @@ function can be used as part of another scan operation.
             points={{43,48},{44,48},{44,54}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(booleanToReal.y, product2.u1) annotation (Line(
-            points={{-1,80},{22,80},{22,66},{44,66}},
-            color={0,0,127},
-            smooth=Smooth.None));
         connect(product3.u1, product2.y) annotation (Line(
             points={{72,-26},{72,60},{67,60}},
             color={0,0,127},
@@ -19881,10 +19910,6 @@ function can be used as part of another scan operation.
           annotation (Line(
             points={{41.9,8.1},{126.95,8.1},{126.95,59},{187,59}},
             color={0,0,127},
-            smooth=Smooth.None));
-        connect(greaterEqual.y, booleanToReal.u) annotation (Line(
-            points={{-35,86},{-30,86},{-30,80},{-24,80}},
-            color={255,0,255},
             smooth=Smooth.None));
         connect(greaterEqual1.y, booleanToReal1.u) annotation (Line(
             points={{13,36},{16,36},{16,48},{20,48}},
@@ -19906,16 +19931,8 @@ function can be used as part of another scan operation.
             points={{-120,60},{-70,60}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(mdot_water, greaterEqual.u1) annotation (Line(
-            points={{-120,60},{-100,60},{-100,86},{-58,86}},
-            color={0,0,127},
-            smooth=Smooth.None));
         connect(mdot_water,FlowRateControl. mdot_water) annotation (Line(
             points={{-120,60},{-99,60},{-99,0},{18,0}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(mdot_min.y, greaterEqual.u2) annotation (Line(
-            points={{-73,76},{-66,76},{-66,78},{-58,78}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(SpecificHeat.y, product.u2) annotation (Line(
@@ -19971,11 +19988,11 @@ function can be used as part of another scan operation.
             color={0,0,127},
             smooth=Smooth.None));
         connect(mdot_water, startDelay.mDotDra) annotation (Line(
-            points={{-120,60},{-98,60},{-98,-86},{74,-86}},
+            points={{-120,60},{-98,60},{-98,-86},{75,-86}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(startDelay.y, product5.u2) annotation (Line(
-            points={{97,-86},{120,-86},{120,-80},{138,-80}},
+            points={{96.5,-86},{120,-86},{120,-80},{138,-80}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(product4.y, product5.u1) annotation (Line(
@@ -19987,7 +20004,7 @@ function can be used as part of another scan operation.
             color={0,0,127},
             smooth=Smooth.None));
         connect(startDelay.y, product6.u1) annotation (Line(
-            points={{97,-86},{100,-86},{100,-100},{104,-100}},
+            points={{96.5,-86},{100,-86},{100,-100},{104,-100}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(QFan.y, product6.u2) annotation (Line(
@@ -20010,9 +20027,17 @@ function can be used as part of another scan operation.
             points={{159,-112},{186,-112}},
             color={0,0,127},
             smooth=Smooth.None));
+        connect(mdot_water, mDotMinCheck.mDotDra) annotation (Line(
+            points={{-120,60},{-90,60},{-90,82},{-72,82}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(mDotMinCheck.y, product2.u1) annotation (Line(
+            points={{-39,82},{28,82},{28,66},{44,66}},
+            color={0,0,127},
+            smooth=Smooth.None));
         annotation (
-          Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,-150},
-                  {175,100}}),
+          Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,-150},{175,
+                  100}}),
                   graphics),
           Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-150},{175,100}}),
                graphics={Bitmap(extent={{-100,96},{100,-98}}, fileName=
@@ -20326,12 +20351,6 @@ function can be used as part of another scan operation.
       //Debugging notes: Need to work with PID Controller. Does not seem to work...at all
         Modelica.Blocks.Interfaces.RealInput T_out(unit = "K")
          annotation (Placement(transformation(extent={{-140,-48},{-100,-8}})));
-        Modelica.Blocks.Math.Add add(k1=-1, k2=+1)
-          annotation (Placement(transformation(extent={{-66,6},{-46,26}})));
-        Modelica.Blocks.Math.Product product
-          annotation (Placement(transformation(extent={{-68,44},{-48,64}})));
-        Modelica.Blocks.Math.Product product1
-          annotation (Placement(transformation(extent={{-42,38},{-22,58}})));
         Modelica.Blocks.Interfaces.RealOutput ControlConstant annotation (Placement(
               transformation(extent={{176,-52},{204,-24}}), iconTransformation(extent={{100,-72},
                   {128,-44}})));
@@ -20349,9 +20368,7 @@ function can be used as part of another scan operation.
           k=PID_P)
           annotation (Placement(transformation(extent={{-16,-10},{4,10}})));
         Modelica.Blocks.Math.Product product3
-          annotation (Placement(transformation(extent={{74,8},{94,28}})));
-        Modelica.Blocks.Sources.RealExpression mdot_min(y=mdot_min_cons)
-          annotation (Placement(transformation(extent={{-102,80},{-82,100}})));
+          annotation (Placement(transformation(extent={{78,8},{98,28}})));
        replaceable package Medium = Modelica.Media.Interfaces.PartialMedium
           "Fluid in the heater";
        parameter Real mdot_min_cons(unit = "kg/s") = 0.252
@@ -20386,24 +20403,13 @@ function can be used as part of another scan operation.
           "Heat loss coefficient of the heater";
        parameter Real mdot_min_deadband(unit = "kg/s") = 0.00416
           "Deadband of the minimum flow rate check";
+       parameter Modelica.SIunits.Time StopDelay
+          "Delay between water flow ceasing and heat transfer stopping";
+       parameter Modelica.SIunits.Time ControlDelay "Control response delay";
 
       protected
         parameter Real smoHeaDel = 0.01 "Delta of the smoothHeaviside function";
       public
-        Modelica.Blocks.Sources.RealExpression SpecificHeat(y=SpecificHeat_cons)
-          annotation (Placement(transformation(extent={{-98,20},{-78,40}})));
-        Modelica.Blocks.Sources.RealExpression T_Set(y=T_Set_cons)
-          annotation (Placement(transformation(extent={{-98,-24},{-78,-4}})));
-        Modelica.Blocks.Sources.RealExpression Qdot_min(y=Qdot_min_cons)
-          annotation (Placement(transformation(extent={{-38,6},{-18,26}})));
-        Modelica.Blocks.Math.Min min
-          annotation (Placement(transformation(extent={{20,8},{40,28}})));
-        Modelica.Blocks.Sources.RealExpression ControlConstantMaximum(y=1)
-          annotation (Placement(transformation(extent={{-18,-50},{2,-30}})));
-        Modelica.Blocks.Math.Max max
-          annotation (Placement(transformation(extent={{48,2},{68,22}})));
-        Modelica.Blocks.Sources.RealExpression ControlConstantMinimum(y=0)
-          annotation (Placement(transformation(extent={{20,-20},{40,0}})));
         Modelica.Blocks.Interfaces.RealInput PowerSignal
           annotation (Placement(transformation(extent={{-140,-90},{-100,-50}})));
         Modelica.Blocks.Math.Product product4
@@ -20413,7 +20419,7 @@ function can be used as part of another scan operation.
           t_short=t_short,
           t_long=t_long,
           t_switch=t_switch)
-          annotation (Placement(transformation(extent={{72,-40},{92,-20}})));
+          annotation (Placement(transformation(extent={{68,-40},{92,-20}})));
         Modelica.Blocks.Math.Product product5
           annotation (Placement(transformation(extent={{140,-28},{160,-8}})));
         Modelica.Blocks.Math.Product product6
@@ -20449,70 +20455,28 @@ function can be used as part of another scan operation.
           Qdot_max=Qdot_Rated_cons,
           UA=UA)
           annotation (Placement(transformation(extent={{-2,-144},{18,-124}})));
-        Buildings.Utilities.Math.SmoothHeaviside smoothHeaviside(delta=smoHeaDel)
-          annotation (Placement(transformation(extent={{-34,74},{-14,94}})));
-        Modelica.Blocks.Math.Add add1(k1=-1, k2=1)
-          annotation (Placement(transformation(extent={{-70,74},{-50,94}})));
-        Modelica.Blocks.Math.Add add2(k1=-1, k2=1)
-          annotation (Placement(transformation(extent={{-8,52},{12,32}})));
-        Buildings.Utilities.Math.SmoothHeaviside smoothHeaviside1(
-                                                                 delta=smoHeaDel)
-          annotation (Placement(transformation(extent={{20,34},{40,54}})));
+        BaseClasses.mDotMinCheck mDotMin(mDot_min_cons=mdot_min_cons, stopDelay=
+              StopDelay)
+          annotation (Placement(transformation(extent={{-70,74},{-30,94}})));
+        BaseClasses.QDotMinCheck qDotMinCheck(
+          SpecificHeat=SpecificHeat_cons,
+          T_Set=T_Set_cons,
+          StopDelay=StopDelay,
+          QDot_min=Qdot_min_cons)
+          annotation (Placement(transformation(extent={{-58,34},{-28,54}})));
+        Modelica.Blocks.Sources.RealExpression realExpression(y=T_Set_cons)
+          annotation (Placement(transformation(extent={{-60,-10},{-40,10}})));
       equation
-        connect(T_Set.y, add.u2) annotation (Line(
-            points={{-77,-14},{-68,-14},{-68,10}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(product.y, product1.u1) annotation (Line(
-            points={{-47,54},{-44,54}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(add.y, product1.u2) annotation (Line(
-            points={{-45,16},{-44,16},{-44,42}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(product3.u1, product2.y) annotation (Line(
-            points={{72,24},{72,60},{69,60}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(SpecificHeat.y, product.u2) annotation (Line(
-            points={{-77,30},{-74,30},{-74,48},{-70,48}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(PID.y, min.u1) annotation (Line(
-            points={{5,6.66134e-16},{8,6.66134e-16},{8,0},{12,0},{12,24},{18,24}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(ControlConstantMaximum.y, min.u2) annotation (Line(
-            points={{3,-40},{14,-40},{14,12},{18,12}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(max.y, product3.u2) annotation (Line(
-            points={{69,12},{72,12}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(ControlConstantMinimum.y, max.u2) annotation (Line(
-            points={{41,-10},{42,-10},{42,6},{46,6}},
-            color={0,0,127},
-            smooth=Smooth.None));
         connect(PowerSignal, product4.u2) annotation (Line(
             points={{-120,-70},{94,-70},{94,6},{108,6}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(product3.y, product4.u1) annotation (Line(
-            points={{95,18},{108,18}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(T_Set.y, PID.u_s) annotation (Line(
-            points={{-77,-14},{-48,-14},{-48,0},{-18,0}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(T_out, PID.u_m) annotation (Line(
-            points={{-120,-28},{-6,-28},{-6,-12}},
+            points={{99,18},{108,18}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(startDelay.y, product5.u2) annotation (Line(
-            points={{93,-30},{116,-30},{116,-24},{138,-24}},
+            points={{92.6,-30},{116,-30},{116,-24},{138,-24}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(product4.y, product5.u1) annotation (Line(
@@ -20520,11 +20484,11 @@ function can be used as part of another scan operation.
             color={0,0,127},
             smooth=Smooth.None));
         connect(product5.y, ControlConstant) annotation (Line(
-            points={{161,-18},{176,-18},{176,-38},{190,-38}},
+            points={{161,-18},{166,-18},{166,-38},{190,-38}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(startDelay.y, product6.u1) annotation (Line(
-            points={{93,-30},{100,-30},{100,-42},{104,-42}},
+            points={{92.6,-30},{100,-30},{100,-42},{104,-42}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(QFan.y, product6.u2) annotation (Line(
@@ -20547,20 +20511,12 @@ function can be used as part of another scan operation.
             points={{159,-56},{172,-56},{172,-92},{186,-92}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(min.y, max.u1) annotation (Line(
-            points={{41,18},{46,18}},
-            color={0,0,127},
-            smooth=Smooth.None));
         connect(port_a, senMasFlo.port_a) annotation (Line(
             points={{-104,-112},{-58,-112}},
             color={0,127,255},
             smooth=Smooth.None));
         connect(senMasFlo.m_flow, startDelay.mDotDra) annotation (Line(
-            points={{-48,-101},{-48,-60},{26,-60},{26,-30},{70,-30}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(senMasFlo.m_flow, product.u1) annotation (Line(
-            points={{-48,-101},{-48,-60},{-100,-60},{-100,60},{-70,60}},
+            points={{-48,-101},{-48,-60},{26,-60},{26,-30},{66.8,-30}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(senMasFlo.port_b, port_b) annotation (Line(
@@ -20570,10 +20526,6 @@ function can be used as part of another scan operation.
         connect(port_a, senTem.port) annotation (Line(
             points={{-104,-112},{-94,-112},{-94,-98}},
             color={0,127,255},
-            smooth=Smooth.None));
-        connect(senTem.T, add.u1) annotation (Line(
-            points={{-87,-88},{-72,-88},{-72,22},{-68,22}},
-            color={0,0,127},
             smooth=Smooth.None));
         connect(TAmb, maxMassFlow.TAmb) annotation (Line(
             points={{-120,-140},{-4,-140}},
@@ -20587,41 +20539,45 @@ function can be used as part of another scan operation.
             points={{-87,-88},{-72,-88},{-72,-128},{-4,-128}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(mdot_min.y, add1.u1) annotation (Line(
-            points={{-81,90},{-72,90}},
+        connect(mDotMin.y, product2.u1) annotation (Line(
+            points={{-29,84},{28,84},{28,66},{46,66}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(senMasFlo.m_flow, add1.u2) annotation (Line(
-            points={{-48,-101},{-48,-60},{-100,-60},{-100,78},{-72,78}},
+        connect(qDotMinCheck.y, product2.u2) annotation (Line(
+            points={{-27,44},{28,44},{28,54},{46,54}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(add1.y, smoothHeaviside.u) annotation (Line(
-            points={{-49,84},{-36,84}},
+        connect(senTem.T, qDotMinCheck.TIn) annotation (Line(
+            points={{-87,-88},{-72,-88},{-72,36},{-60,36}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(smoothHeaviside.y, product2.u1) annotation (Line(
-            points={{-13,84},{20,84},{20,66},{46,66}},
+        connect(realExpression.y, PID.u_s) annotation (Line(
+            points={{-39,0},{-18,0}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(product1.y, add2.u2) annotation (Line(
-            points={{-21,48},{-10,48}},
+        connect(product2.y, product3.u1) annotation (Line(
+            points={{69,60},{72,60},{72,24},{76,24}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(Qdot_min.y, add2.u1) annotation (Line(
-            points={{-17,16},{-14,16},{-14,36},{-10,36}},
+        connect(senMasFlo.m_flow, qDotMinCheck.mDotDra) annotation (Line(
+            points={{-48,-101},{-48,-60},{-82,-60},{-82,52},{-60,52}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(add2.y, smoothHeaviside1.u) annotation (Line(
-            points={{13,42},{16,42},{16,44},{18,44}},
+        connect(senMasFlo.m_flow, mDotMin.mDotDra) annotation (Line(
+            points={{-48,-101},{-48,-60},{-82,-60},{-82,84},{-62,84}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(smoothHeaviside1.y, product2.u2) annotation (Line(
-            points={{41,44},{44,44},{44,54},{46,54}},
+        connect(PID.y, product3.u2) annotation (Line(
+            points={{5,0},{68,0},{68,12},{76,12}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(T_out, PID.u_m) annotation (Line(
+            points={{-120,-28},{-6,-28},{-6,-12}},
             color={0,0,127},
             smooth=Smooth.None));
         annotation (
-          Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,-150},{175,
-                  100}}),
+          Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,-150},
+                  {175,100}}),
                   graphics),
           Icon(coordinateSystem(preserveAspectRatio=true, extent={{-100,-150},{175,100}}),
                graphics={Bitmap(extent={{-100,96},{100,-98}}, fileName=
@@ -20655,6 +20611,91 @@ function can be used as part of another scan operation.
       end NonCondensingTanklessHXControllerMediumModel;
 
       package BaseClasses
+        model ConstantGammaControl
+          "Identifies control signal assuming steady state"
+          extends Modelica.Blocks.Interfaces.BlockIcon;
+          parameter Real SteadyStateEfficiency;
+          parameter Real T_Set;
+          parameter Real SpecificHeat;
+          parameter Real Q_Rated;
+        //  parameter Real UA;
+
+          Real Q_in;
+
+          Modelica.Blocks.Interfaces.RealInput WaterFlowRate
+            annotation (Placement(transformation(extent={{-140,20},{-100,60}})));
+          Modelica.Blocks.Interfaces.RealInput T_In
+            annotation (Placement(transformation(extent={{-140,-60},{-100,-20}})));
+          Modelica.Blocks.Interfaces.RealOutput ControlSignal
+            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+
+          Modelica.Blocks.Interfaces.RealInput Qdot_Environment
+            annotation (Placement(transformation(extent={{-140,60},{-100,100}})));
+        equation
+          Q_in = (1/SteadyStateEfficiency)*(WaterFlowRate * SpecificHeat * (T_Set - T_In)+Qdot_Environment);
+          ControlSignal = Q_in/Q_Rated;
+
+          annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                    -100},{100,100}}), graphics),
+                    Documentation(info="<html>
+            <p>
+            Identifies the control signal needed to provide hot water at the set temperature during steady state conditions.<br>
+            </p>
+            </html>",
+                    revisions="<html>
+            <ul>
+            <li>
+            Mar 29, 2013 by Peter Grant:<br>
+            First implementation
+            </li>
+            </ul>
+            </html>"));
+        end ConstantGammaControl;
+
+
+        model MaxMassFlow
+          "Identifies the maximum mass flow the heater can handle at current conditions"
+          extends Modelica.Blocks.Interfaces.BlockIcon;
+
+          parameter Modelica.SIunits.Power Qdot_max
+            "Maximum heat input rate of the heater";
+          parameter Real SteadyStateEff "Heater efficiency at steady state";
+          parameter Real UA(unit = "W/K") "Heat loss coefficient";
+          parameter Modelica.SIunits.SpecificHeatCapacity Cp
+            "Specific heat of the fluid";
+          parameter Modelica.SIunits.Temperature T_Set "Setpoint";
+
+          Modelica.Blocks.Interfaces.RealInput TIn(unit = "K")
+            annotation (Placement(transformation(extent={{-140,40},{-100,80}})));
+          Modelica.Blocks.Interfaces.RealInput TAmb(unit = "K")
+            annotation (Placement(transformation(extent={{-140,-80},{-100,-40}})));
+          Modelica.Blocks.Interfaces.RealOutput y
+            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+
+        equation
+          y = (Qdot_max * SteadyStateEff - UA*(T_Set - TAmb))/(Cp*(T_Set-TIn));
+
+          annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                    -100},{100,100}}), graphics),
+                    Documentation(info="<html>
+            <p>
+            Identifies the maximum flow rate of water the heater can handle at current conditions. This output can be used in other models to limit the flow rate of water
+            so that the heater can provide water at the setpoint while burning at maximum capacity. The limiting of the flow rate is then applied externally to this model.<br>
+            </p>
+            <p>
+            Planned future revisions include changing the environmental losses term to be more accurate (Currently a slighly imprecise calculation).<br>
+            </p>
+            </html>",
+                    revisions="<html>
+            <ul>
+            <li>
+            Mar 29, 2013 by Peter Grant:<br>
+            First implementation
+            </li>
+            </ul>
+            </html>"));
+        end MaxMassFlow;
+
         block NoncondensingTanklessHighFlowControl
           "Checks to determine whether or not the heater is able to provide enough heat to meet setpoint at the desired flow rate. Reduces the flow rate as necessary to meet T_set"
         parameter Real SteadyStateEff = 0.82;
@@ -20932,91 +20973,208 @@ First implementation
                 graphics));
         end StartDelay;
 
-        model ConstantGammaControl
-          "Identifies control signal assuming steady state"
-          extends Modelica.Blocks.Interfaces.BlockIcon;
-          parameter Real SteadyStateEfficiency;
-          parameter Real T_Set;
-          parameter Real SpecificHeat;
-          parameter Real Q_Rated;
-        //  parameter Real UA;
-
-          Real Q_in;
-
-          Modelica.Blocks.Interfaces.RealInput WaterFlowRate
-            annotation (Placement(transformation(extent={{-140,20},{-100,60}})));
-          Modelica.Blocks.Interfaces.RealInput T_In
-            annotation (Placement(transformation(extent={{-140,-60},{-100,-20}})));
-          Modelica.Blocks.Interfaces.RealOutput ControlSignal
-            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
-
-          Modelica.Blocks.Interfaces.RealInput Qdot_Environment
-            annotation (Placement(transformation(extent={{-140,60},{-100,100}})));
-        equation
-          Q_in = (1/SteadyStateEfficiency)*(WaterFlowRate * SpecificHeat * (T_Set - T_In)+Qdot_Environment);
-          ControlSignal = Q_in/Q_Rated;
-
-          annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                    -100},{100,100}}), graphics),
-                    Documentation(info="<html>
-            <p>
-            Identifies the control signal needed to provide hot water at the set temperature during steady state conditions.<br>
-            </p>
-            </html>",
-                    revisions="<html>
-            <ul>
-            <li>
-            Mar 29, 2013 by Peter Grant:<br>
-            First implementation
-            </li>
-            </ul>
-            </html>"));
-        end ConstantGammaControl;
-
-        model MaxMassFlow
-          "Identifies the maximum mass flow the heater can handle at current conditions"
+        model mDotMinCheck "Control logic for flow rate vs minimum flow rate"
           extends Modelica.Blocks.Interfaces.BlockIcon;
 
-          parameter Modelica.SIunits.Power Qdot_max
-            "Maximum heat input rate of the heater";
-          parameter Real SteadyStateEff "Heater efficiency at steady state";
-          parameter Real UA(unit = "W/K") "Heat loss coefficient";
-          parameter Modelica.SIunits.SpecificHeatCapacity Cp
-            "Specific heat of the fluid";
-          parameter Modelica.SIunits.Temperature T_Set "Setpoint";
+          parameter Real mDot_min_cons "Rated minimum flow rate of the heater";
+          parameter Modelica.SIunits.Time stopDelay
+            "Delay between the water flow ceasing and the heat transfer stopping";
 
-          Modelica.Blocks.Interfaces.RealInput TIn(unit = "K")
-            annotation (Placement(transformation(extent={{-140,40},{-100,80}})));
-          Modelica.Blocks.Interfaces.RealInput TAmb(unit = "K")
-            annotation (Placement(transformation(extent={{-140,-80},{-100,-40}})));
+          //fixme - How do I move the icons for inputs and outputs on the Icon but not in the diagram?
+
+          Modelica.Blocks.Interfaces.RealInput mDotDra
+            annotation (Placement(transformation(extent={{-140,-20},{-100,20}}),
+                iconTransformation(extent={{-140,-20},{-100,20}})));
+          Modelica.Blocks.Sources.RealExpression mDotMin(y=mDot_min_cons)
+            annotation (Placement(transformation(extent={{-200,-24},{-180,-4}})));
+          Modelica.Blocks.Math.Add add(k1=-1)
+            annotation (Placement(transformation(extent={{-160,-12},{-140,8}})));
+          Buildings.Utilities.Math.SmoothHeaviside smoHea(delta=0.0001)
+            annotation (Placement(transformation(extent={{-130,-12},{-110,8}})));
+          Modelica.Blocks.Math.RealToBoolean realToBoolean
+            annotation (Placement(transformation(extent={{-100,-12},{-80,8}})));
+          Modelica.Blocks.Logical.Timer timer
+            annotation (Placement(transformation(extent={{-72,-12},{-52,8}})));
+          Modelica.Blocks.Sources.RealExpression stoDel(y=stopDelay)
+            "Time after water flow ceases before gas heat delivery stops"
+            annotation (Placement(transformation(extent={{-70,-38},{-50,-18}})));
+          Modelica.Blocks.Math.Add add1(k1=-1)
+            annotation (Placement(transformation(extent={{-24,-22},{-4,-2}})));
+          Buildings.Utilities.Math.SmoothHeaviside smoHea1(delta=0.00001)
+            annotation (Placement(transformation(extent={{8,-22},{28,-2}})));
           Modelica.Blocks.Interfaces.RealOutput y
-            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
-
+            annotation (Placement(transformation(extent={{200,-10},{220,10}})));
         equation
-          y = (Qdot_max * SteadyStateEff - UA*(T_Set - TAmb))/(Cp*(T_Set-TIn));
+          connect(mDotDra, add.u1) annotation (Line(
+              points={{-120,8.88178e-16},{-190,8.88178e-16},{-190,4},{-162,4}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(mDotMin.y, add.u2) annotation (Line(
+              points={{-179,-14},{-176,-14},{-176,-8},{-162,-8}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(add.y, smoHea.u) annotation (Line(
+              points={{-139,-2},{-132,-2}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(smoHea.y, realToBoolean.u) annotation (Line(
+              points={{-109,-2},{-102,-2}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(realToBoolean.y, timer.u) annotation (Line(
+              points={{-79,-2},{-74,-2}},
+              color={255,0,255},
+              smooth=Smooth.None));
+          connect(timer.y, add1.u1) annotation (Line(
+              points={{-51,-2},{-38,-2},{-38,-6},{-26,-6}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(stoDel.y, add1.u2) annotation (Line(
+              points={{-49,-28},{-38,-28},{-38,-18},{-26,-18}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(add1.y, smoHea1.u) annotation (Line(
+              points={{-3,-12},{6,-12}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(smoHea1.y, y) annotation (Line(
+              points={{29,-12},{66,-12},{66,0},{210,0}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-200,
+                    -100},{200,100}}), graphics), Icon(coordinateSystem(
+                  preserveAspectRatio=false, extent={{-200,-100},{200,100}}), graphics));
+        end mDotMinCheck;
 
+        model QDotMinCheck "Control logic module for minimum heat rate"
+          extends Modelica.Blocks.Interfaces.BlockIcon;
+
+          parameter Modelica.SIunits.SpecificHeatCapacity SpecificHeat
+            "Specific heat of the heated fluid";
+          parameter Modelica.SIunits.Temperature T_Set
+            "Set temperature of the heater";
+          parameter Modelica.SIunits.Time StopDelay
+            "Delay between flow stopping and heat transfer stopping";
+          parameter Modelica.SIunits.HeatFlowRate QDot_min
+            "Minimum heat rate of the heater";
+
+        public
+          Modelica.Blocks.Sources.RealExpression SpeHea(y=SpecificHeat)
+            annotation (Placement(transformation(extent={{-96,-2},{-76,18}})));
+          Modelica.Blocks.Sources.RealExpression TSet(y=T_Set)
+            annotation (Placement(transformation(extent={{-96,-20},{-76,0}})));
+          Modelica.Blocks.Math.Add add(k2=-1)
+            annotation (Placement(transformation(extent={{-60,-26},{-40,-6}})));
+          Modelica.Blocks.Math.Product product
+            annotation (Placement(transformation(extent={{-60,12},{-40,32}})));
+          Modelica.Blocks.Math.Product product1
+            annotation (Placement(transformation(extent={{-26,6},{-6,26}})));
+          Modelica.Blocks.Sources.RealExpression QDotMin(y=QDot_min)
+            annotation (Placement(transformation(extent={{-26,-28},{-6,-8}})));
+          Modelica.Blocks.Math.Add add2(k1=-1)
+            annotation (Placement(transformation(extent={{4,-10},{24,10}})));
+          Buildings.Utilities.Math.SmoothHeaviside smoHea(delta=0.000001)
+            annotation (Placement(transformation(extent={{34,-10},{54,10}})));
+          Modelica.Blocks.Interfaces.RealInput mDotDra
+            annotation (Placement(transformation(extent={{-140,60},{-100,100}})));
+          Modelica.Blocks.Interfaces.RealInput TIn
+            annotation (Placement(transformation(extent={{-140,-100},{-100,-60}})));
+          Modelica.Blocks.Math.RealToBoolean realToBoolean
+            annotation (Placement(transformation(extent={{64,-10},{84,10}})));
+          Modelica.Blocks.Logical.Timer timer
+            annotation (Placement(transformation(extent={{94,-10},{114,10}})));
+          Modelica.Blocks.Sources.RealExpression stoDel(y=StopDelay)
+            annotation (Placement(transformation(extent={{94,-38},{114,-18}})));
+          Modelica.Blocks.Math.Add add1(k1=-1)
+            annotation (Placement(transformation(extent={{128,-22},{148,-2}})));
+          Buildings.Utilities.Math.SmoothHeaviside smoHea1(delta=0.000001)
+            annotation (Placement(transformation(extent={{158,-22},{178,-2}})));
+          Modelica.Blocks.Interfaces.RealOutput y
+            annotation (Placement(transformation(extent={{200,-10},{220,10}})));
+        equation
+          connect(product1.u1, product.y) annotation (Line(
+              points={{-28,22},{-39,22}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(mDotDra, product.u1) annotation (Line(
+              points={{-120,80},{-92,80},{-92,28},{-62,28}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(SpeHea.y, product.u2)       annotation (Line(
+              points={{-75,8},{-72,8},{-72,16},{-62,16}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(TIn, add.u2) annotation (Line(
+              points={{-120,-80},{-80,-80},{-80,-22},{-62,-22}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(TSet.y, add.u1)  annotation (Line(
+              points={{-75,-10},{-62,-10}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(add.y, product1.u2) annotation (Line(
+              points={{-39,-16},{-32,-16},{-32,10},{-28,10}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(add2.y, smoHea.u) annotation (Line(
+              points={{25,0},{32,0}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(QDotMin.y, add2.u2)  annotation (Line(
+              points={{-5,-18},{-2,-18},{-2,-6},{2,-6}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(product1.y, add2.u1) annotation (Line(
+              points={{-5,16},{-2,16},{-2,6},{2,6}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(smoHea.y, realToBoolean.u) annotation (Line(
+              points={{55,0},{62,0}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(realToBoolean.y, timer.u) annotation (Line(
+              points={{85,0},{92,0}},
+              color={255,0,255},
+              smooth=Smooth.None));
+          connect(stoDel.y, add1.u2) annotation (Line(
+              points={{115,-28},{120,-28},{120,-18},{126,-18}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(timer.y, add1.u1) annotation (Line(
+              points={{115,0},{120,0},{120,-6},{126,-6}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(add1.y, smoHea1.u) annotation (Line(
+              points={{149,-12},{156,-12}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(smoHea1.y, y) annotation (Line(
+              points={{179,-12},{188,-12},{188,0},{210,0}},
+              color={0,0,127},
+              smooth=Smooth.None));
           annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                    -100},{100,100}}), graphics),
-                    Documentation(info="<html>
-            <p>
-            Identifies the maximum flow rate of water the heater can handle at current conditions. This output can be used in other models to limit the flow rate of water
-            so that the heater can provide water at the setpoint while burning at maximum capacity. The limiting of the flow rate is then applied externally to this model.<br>
-            </p>
-            <p>
-            Planned future revisions include changing the environmental losses term to be more accurate (Currently a slighly imprecise calculation).<br>
-            </p>
-            </html>",
-                    revisions="<html>
-            <ul>
-            <li>
-            Mar 29, 2013 by Peter Grant:<br>
-            First implementation
-            </li>
-            </ul>
-            </html>"));
-        end MaxMassFlow;
+                    -100},{200,100}}), graphics), Icon(coordinateSystem(
+                  preserveAspectRatio=false, extent={{-100,-100},{200,100}})));
+        end QDotMinCheck;
 
         package Examples
+          model ControlResponseDelay "Test model for ControlResponseDelay"
+            import WaterHeatingLibrary;
+            extends Modelica.Icons.Example;
+            WaterHeatingLibrary.NonCondensingTankless.Controllers.BaseClasses.ControlResponseDelay
+              controlResponseDelay
+              annotation (Placement(transformation(extent={{-12,-10},{8,10}})));
+            Modelica.Blocks.Sources.Sine sine(amplitude=10, freqHz=0.01)
+              annotation (Placement(transformation(extent={{-80,-10},{-60,10}})));
+          equation
+            connect(sine.y, controlResponseDelay.u) annotation (Line(
+                points={{-59,0},{-14,0}},
+                color={0,0,127},
+                smooth=Smooth.None));
+            annotation (Diagram(coordinateSystem(preserveAspectRatio=false,
+                    extent={{-100,-100},{100,100}}), graphics));
+          end ControlResponseDelay;
+
           model StartDelay
             import WaterHeatingLibrary;
             extends Modelica.Icons.Example;
@@ -21033,6 +21191,56 @@ First implementation
             annotation (Diagram(coordinateSystem(preserveAspectRatio=false,
                     extent={{-100,-100},{100,100}}), graphics));
           end StartDelay;
+
+          model StopDelay "Example of the use of StartDelay"
+            import WaterHeatingLibrary;
+            extends Modelica.Icons.Example;
+            WaterHeatingLibrary.NonCondensingTankless.Controllers.BaseClasses.mDotMinCheck
+              stopDelay(mDot_min_cons=0.016, stopDelay=2) annotation (Placement(
+                  transformation(extent={{-20,-10},{20,10}})));
+            Modelica.Blocks.Sources.Step step(
+              height=-0.063,
+              offset=0.063,
+              startTime=10) annotation (Placement(transformation(extent={{-88,
+                      -10},{-68,10}})));
+          equation
+            connect(step.y, stopDelay.mDotDra) annotation (Line(
+                points={{-67,0},{-12,0}},
+                color={0,0,127},
+                smooth=Smooth.None));
+            annotation (Diagram(coordinateSystem(preserveAspectRatio=false,
+                    extent={{-100,-100},{100,100}}), graphics));
+          end StopDelay;
+
+          model QDotMinCheck "Example showing the use of QDotMinCheck"
+            import WaterHeatingLibrary;
+            extends Modelica.Icons.Example;
+            WaterHeatingLibrary.NonCondensingTankless.Controllers.BaseClasses.QDotMinCheck
+              qDotMinCheck(
+              SpecificHeat=4186,
+              T_Set=333.15,
+              StopDelay=2,
+              QDot_min=1000)
+              annotation (Placement(transformation(extent={{-10,-6},{20,14}})));
+            Modelica.Blocks.Sources.Step step(
+              height=-0.063,
+              offset=0.063,
+              startTime=10)
+              annotation (Placement(transformation(extent={{-78,6},{-58,26}})));
+            Modelica.Blocks.Sources.Constant const(k=15) annotation (Placement(
+                  transformation(extent={{-78,-24},{-58,-4}})));
+          equation
+            connect(step.y, qDotMinCheck.mDotDra) annotation (Line(
+                points={{-57,16},{-30,16},{-30,12},{-12,12}},
+                color={0,0,127},
+                smooth=Smooth.None));
+            connect(const.y, qDotMinCheck.TIn) annotation (Line(
+                points={{-57,-14},{-30,-14},{-30,-4},{-12,-4}},
+                color={0,0,127},
+                smooth=Smooth.None));
+            annotation (Diagram(coordinateSystem(preserveAspectRatio=false,
+                    extent={{-100,-100},{100,100}}), graphics));
+          end QDotMinCheck;
         end Examples;
       end BaseClasses;
 
@@ -21041,8 +21249,9 @@ First implementation
           extends Modelica.Icons.Example;
           NonCondensingTanklessHXControllerMediumModel
             nonCondensingTanklessHXControllerMediumModel(redeclare package
-              Medium = Buildings.Media.ConstantPropertyLiquidWater, T_Set_cons=
-                333.15)
+              Medium = Buildings.Media.ConstantPropertyLiquidWater,
+            T_Set_cons=333.15,
+            StopDelay=1)
             annotation (Placement(transformation(extent={{-14,-12},{14,12}})));
           Buildings.Fluid.Sources.Boundary_pT boundary(
             nPorts=1,
@@ -21073,9 +21282,7 @@ First implementation
           Modelica.Blocks.Sources.Constant T_Out(k=273.15 + 60)
             annotation (Placement(transformation(extent={{-92,44},{-72,64}})));
           Modelica.Blocks.Sources.Ramp ramp(
-            duration=600,
-            offset=0,
-            height=0.25)
+            duration=600, height=0.25)
             annotation (Placement(transformation(extent={{10,20},{30,40}})));
         equation
           connect(boundary.ports[1],
@@ -21441,16 +21648,30 @@ First implementation
           "Package used to represent water in the system";
 
         NonCondensingTanklessHeaterMediumModel nonCon(redeclare package Medium
-            = Water)
+            = Water,
+          T_Set_input=273.15 + 38,
+          SteadyStateEff_input=0.85,
+          SpecificHeat_input=4186,
+          Qdot_Rated_input=58300,
+          Qdot_min_input=3200,
+          t_short=2,
+          t_long=10,
+          t_switch=600,
+          QAct=60,
+          QIdl=3,
+          mdot_min_input=0.025,
+          StopDelay=5,
+          ControlDelay=0.5)
           annotation (Placement(transformation(extent={{52,2},{72,26}})));
         Modelica.Blocks.Sources.CombiTimeTable combiTimeTable(
           tableOnFile=true,
-          columns=2:5,
           tableName="Data",
           fileName=
-              "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForValidation/Rheem84DVLNCharacterization.txt")
+              "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForValidation/Rheem84DVLNEffSSCharacterization.txt",
+          columns=2:7)
           annotation (Placement(transformation(extent={{-66,24},{-46,44}})));
-        Modelica.Blocks.Sources.Constant const(k=1)
+
+        Modelica.Blocks.Sources.Step     const(startTime=500)
           annotation (Placement(transformation(extent={{14,0},{34,20}})));
         Buildings.Fluid.Sources.MassFlowSource_T boundary(
           nPorts=1,
