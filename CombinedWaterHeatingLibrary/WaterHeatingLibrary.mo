@@ -1166,49 +1166,49 @@ package WaterHeatingLibrary "Library of water heating models and packages"
         fileName=
             "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchTAmb.txt")
         "Temperature surrounding the system(unit = K)"
-        annotation (Placement(transformation(extent={{-100,86},{-80,106}})));
+        annotation (Placement(transformation(extent={{-100,92},{-80,112}})));
       Modelica.Blocks.Sources.CombiTimeTable TIn(
         tableOnFile=true,
         tableName="Temp",
         fileName=
             "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchTIn.txt")
         "Inlet temperature (unit = K)"
-        annotation (Placement(transformation(extent={{-100,2},{-80,22}})));
+        annotation (Placement(transformation(extent={{-100,52},{-80,72}})));
       Buildings.Fluid.Sources.Boundary_pT Mains(
         use_T_in=true,
         nPorts=1,
         redeclare package Medium = Water,
         p=150000) "Connects to the mains water system"
-        annotation (Placement(transformation(extent={{-70,-2},{-50,18}})));
+        annotation (Placement(transformation(extent={{-64,48},{-44,68}})));
       parameter Real valCon = 1/13.25 "Gain value for the EndUse models";
 
-      Modelica.Blocks.Sources.Constant const(k=0)
-        annotation (Placement(transformation(extent={{-30,-20},{-24,-14}})));
+      Modelica.Blocks.Sources.Constant Rec(k=0)
+        annotation (Placement(transformation(extent={{-60,-30},{-48,-18}})));
       Modelica.Blocks.Sources.Constant effTan(k=0.75)
-        annotation (Placement(transformation(extent={{-30,-8},{-24,-2}})));
+        annotation (Placement(transformation(extent={{-60,-8},{-48,4}})));
       Modelica.Blocks.Math.Product product annotation (Placement(transformation(
-            extent={{-3,-3},{3,3}},
+            extent={{-5,-5},{5,5}},
             rotation=180,
-            origin={-7,-41})));
+            origin={-13,-53})));
       Modelica.Blocks.Math.Add add annotation (Placement(transformation(
-            extent={{-3,-3},{3,3}},
+            extent={{-5,-5},{5,5}},
             rotation=180,
-            origin={-21,-37})));
+            origin={-39,-43})));
       Modelica.Blocks.Math.IntegerToReal integerToReal annotation (Placement(
             transformation(
-            extent={{-3,-3},{3,3}},
+            extent={{-5,-5},{5,5}},
             rotation=180,
-            origin={7,-33})));
+            origin={9,-35})));
       Modelica.Blocks.Sources.Constant QDotBurner(k=12000) annotation (Placement(
             transformation(
-            extent={{-3,-3},{3,3}},
+            extent={{-5,-5},{5,5}},
             rotation=180,
-            origin={7,-47})));
+            origin={9,-53})));
       Modelica.Blocks.Sources.Constant QDotPilot(k=158) annotation (Placement(
             transformation(
-            extent={{-3,-3},{3,3}},
+            extent={{-5,-5},{5,5}},
             rotation=180,
-            origin={-7,-31})));
+            origin={-9,-35})));
       Modelica.Blocks.Sources.CombiTimeTable TRadMea(tableOnFile=true, tableName="TRadMea",
         fileName="/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchTRadMea.txt")
         "Mean radiant temperature surrounding the pipes(unit = K)"
@@ -1252,48 +1252,44 @@ package WaterHeatingLibrary "Library of water heating models and packages"
           smooth=Smooth.None));
 
       connect(Mains.ports[1], tan.port_a) annotation (Line(
-          points={{-50,8},{-2.8,8},{-2.8,8.64}},
+          points={{-44,58},{-2.8,58},{-2.8,8.64}},
           color={0,127,255},
           smooth=Smooth.None));
-      connect(const.y, tan.mFloRec) annotation (Line(
-          points={{-23.7,-17},{-14,-17},{-14,-10.72},{-9.66,-10.72}},
+      connect(Rec.y, tan.mFloRec)   annotation (Line(
+          points={{-47.4,-24},{-14,-24},{-14,-10.72},{-9.66,-10.72}},
           color={0,0,127},
           smooth=Smooth.None));
-      connect(const.y, tan.TInRec) annotation (Line(
-          points={{-23.7,-17},{-14,-17},{-14,-17.12},{-9.66,-17.12}},
+      connect(Rec.y, tan.TInRec)   annotation (Line(
+          points={{-47.4,-24},{-14,-24},{-14,-17.12},{-9.66,-17.12}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(TAmb.y[1], tan.TAmb) annotation (Line(
-          points={{-79,96},{-20,96},{-20,-0.16},{-9.66,-0.16}},
+          points={{-79,102},{-20,102},{-20,-0.16},{-9.66,-0.16}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(effTan.y, tan.EffTan) annotation (Line(
-          points={{-23.7,-5},{-16.85,-5},{-16.85,-4.64},{-9.66,-4.64}},
+          points={{-47.4,-2},{-16.85,-2},{-16.85,-4.64},{-9.66,-4.64}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(QDotPilot.y,add. u2) annotation (Line(
-          points={{-10.3,-31},{-14,-31},{-14,-35.2},{-17.4,-35.2}},
+          points={{-14.5,-35},{-26,-35},{-26,-40},{-33,-40}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(product.y, add.u1) annotation (Line(
-          points={{-10.3,-41},{-14,-41},{-14,-38.8},{-17.4,-38.8}},
+          points={{-18.5,-53},{-26,-53},{-26,-46},{-33,-46}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(QDotBurner.y, product.u1) annotation (Line(
-          points={{3.7,-47},{0,-47},{0,-42.8},{-3.4,-42.8}},
+          points={{3.5,-53},{0,-53},{0,-56},{-7,-56}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(integerToReal.y, product.u2) annotation (Line(
-          points={{3.7,-33},{0,-33},{0,-39.2},{-3.4,-39.2}},
+          points={{3.5,-35},{0,-35},{0,-50},{-7,-50}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(tan.TStatSig, integerToReal.u) annotation (Line(
-          points={{9.8,-16.64},{16,-16.64},{16,-33},{10.6,-33}},
+          points={{9.8,-16.64},{16,-16.64},{16,-35},{15,-35}},
           color={255,127,0},
-          smooth=Smooth.None));
-      connect(add.y, tan.QDotIn) annotation (Line(
-          points={{-24.3,-37},{-36,-37},{-36,5.76},{-9.8,5.76}},
-          color={0,0,127},
           smooth=Smooth.None));
       connect(watFlo.y[1], KitchenSink.watFlo) annotation (Line(
           points={{-79,-62},{170,-62},{170,-33},{178,-33}},
@@ -1312,31 +1308,31 @@ package WaterHeatingLibrary "Library of water heating models and packages"
           color={0,0,127},
           smooth=Smooth.None));
       connect(TAmb.y[1], tru1.TAmb) annotation (Line(
-          points={{-79,96},{28,96},{28,15}},
+          points={{-79,102},{28,102},{28,15}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(TAmb.y[1], bra11.TAmb) annotation (Line(
-          points={{-79,96},{60,96},{60,51}},
+          points={{-79,102},{60,102},{60,51}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(TAmb.y[1], twi1.TAmb) annotation (Line(
-          points={{-79,96},{144,96},{144,85}},
+          points={{-79,102},{144,102},{144,85}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(TAmb.y[1], tru2.TAmb) annotation (Line(
-          points={{-79,96},{88,96},{88,15}},
+          points={{-79,102},{88,102},{88,15}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(TAmb.y[1], bra12.TAmb) annotation (Line(
-          points={{-79,96},{114,96},{114,54},{144,54},{144,51}},
+          points={{-79,102},{114,102},{114,54},{144,54},{144,51}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(TAmb.y[1], tru3.TAmb) annotation (Line(
-          points={{-79,96},{114,96},{114,18},{144,18},{144,15}},
+          points={{-79,102},{114,102},{114,18},{144,18},{144,15}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(TAmb.y[1], bra2.TAmb) annotation (Line(
-          points={{-79,96},{114,96},{114,-16},{144,-16},{144,-21}},
+          points={{-79,102},{114,102},{114,-16},{144,-16},{144,-21}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(TRadMea.y[1], tru1.TRadMea) annotation (Line(
@@ -1375,8 +1371,13 @@ package WaterHeatingLibrary "Library of water heating models and packages"
           points={{56,44},{50,44},{50,8},{44,8}},
           color={0,127,255},
           smooth=Smooth.None));
+      connect(add.y, tan.QDotIn) annotation (Line(
+          points={{-44.5,-43},{-66,-43},{-66,16},{-16,16},{-16,5.76},{-9.8,5.76}},
+          color={0,0,127},
+          smooth=Smooth.None));
+
       connect(TIn.y[1], Mains.T_in) annotation (Line(
-          points={{-79,12},{-72,12}},
+          points={{-79,62},{-66,62}},
           color={0,0,127},
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
@@ -14487,14 +14488,14 @@ First implementation.
             iconTransformation(extent={{60,-64},{80,-44}})));
       Modelica.Blocks.Interfaces.RealInput TInRec
         "Recirulation loop inlet temperature"
-        annotation (Placement(transformation(extent={{-106,-94},{-58,-46}}),
+        annotation (Placement(transformation(extent={{-496,-274},{-420,-198}}),
             iconTransformation(extent={{-80,-68},{-58,-46}})));
       Modelica.Blocks.Interfaces.RealOutput TOutRec
         "Temperature out to the recirculation loop"
         annotation (Placement(transformation(extent={{56,46},{108,98}}),
             iconTransformation(extent={{58,46},{80,68}})));
       Modelica.Blocks.Interfaces.RealInput mFloRec "Recirculation flow rate"
-        annotation (Placement(transformation(extent={{-102,-20},{-62,20}}),
+        annotation (Placement(transformation(extent={{-498,-208},{-420,-130}}),
             iconTransformation(extent={{-80,-28},{-58,-6}})));
       Hybrid.HeatersUsed.EditedBaseClasses.cirHeaTra cirHeaTra(nSeg=nSeg,
           redeclare package Medium = Medium)
@@ -14510,8 +14511,9 @@ First implementation.
             rotation=180,
             origin={104,-40})));
       Modelica.Blocks.Interfaces.RealInput QDotIn "Heat entering the flue"
-        annotation (Placement(transformation(extent={{-132,24},{-60,96}}),
-            iconTransformation(extent={{-80,76},{-60,96}})));
+        annotation (Placement(transformation(extent={{-494,324},{-422,396}}),
+                                                                            iconTransformation(
+              extent={{-80,70},{-60,90}})));
       Modelica.Blocks.Sources.RealExpression realExpression1[nSeg](y=buoHeaTraMod.buoHeaTra)
         annotation (Placement(transformation(
             extent={{-27,-16},{27,16}},
@@ -14536,7 +14538,7 @@ First implementation.
             origin={104,-110})));
       Modelica.Blocks.Interfaces.RealInput TAmb
         annotation (Placement(transformation(extent={{-502,178},{-420,260}}),
-            iconTransformation(extent={{-80,38},{-58,60}})));
+            iconTransformation(extent={{-80,40},{-58,62}})));
       Modelica.Blocks.Interfaces.RealOutput TOutDra
         "Temperature of water going to the draw"
         annotation (Placement(transformation(extent={{640,-116},{700,-56}}),
@@ -14562,7 +14564,7 @@ First implementation.
         annotation (Placement(transformation(extent={{-218,338},{-180,376}})));
       Modelica.Blocks.Interfaces.RealInput EffTan
         "Conversion efficiency of the tank"
-        annotation (Placement(transformation(extent={{-98,-8},{-58,32}}),
+        annotation (Placement(transformation(extent={{-496,-38},{-420,38}}),
             iconTransformation(extent={{-80,10},{-58,32}})));
       Modelica.Blocks.Math.Product product1
         annotation (Placement(transformation(extent={{-376,356},{-356,376}})));
@@ -14570,11 +14572,11 @@ First implementation.
         annotation (Placement(transformation(extent={{-414,410},{-394,430}})));
       Modelica.Fluid.Interfaces.FluidPort_a port_a(redeclare package Medium =
             Medium)
-        annotation (Placement(transformation(extent={{-24,94},{-4,114}}),
+        annotation (Placement(transformation(extent={{-210,450},{-190,470}}),
             iconTransformation(extent={{-30,94},{-10,114}})));
       Modelica.Fluid.Interfaces.FluidPort_b port_b(redeclare package Medium =
             Medium)
-        annotation (Placement(transformation(extent={{14,96},{34,116}}),
+        annotation (Placement(transformation(extent={{372,448},{392,468}}),
             iconTransformation(extent={{20,94},{40,114}})));
       Modelica.Blocks.Routing.Replicator replicator(nout=nSeg) annotation (
           Placement(transformation(
@@ -14603,10 +14605,10 @@ First implementation.
             origin={286,238})));
       Buildings.Fluid.Sources.MassFlowSource_T boundary1(
         redeclare package Medium = Medium,
-        nPorts=1,
         use_m_flow_in=true,
-        T=288.15)
-        annotation (Placement(transformation(extent={{68,420},{48,440}})));
+        T=288.15,
+        nPorts=1)
+        annotation (Placement(transformation(extent={{68,426},{48,446}})));
       Buildings.Fluid.Sensors.MassFlowRate senMasFlo1(redeclare package Medium
           = Medium) annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
@@ -14617,14 +14619,16 @@ First implementation.
         annotation (Placement(transformation(extent={{228,50},{190,84}})));
       Buildings.Fluid.Sensors.MassFlowRate senMasFlo(redeclare package Medium
           = Medium) annotation (Placement(transformation(
-            extent={{-10,-10},{10,10}},
-            rotation=90,
-            origin={-12,250})));
+            extent={{10,-10},{-10,10}},
+            rotation=180,
+            origin={-132,436})));
       Buildings.Fluid.Sensors.Temperature senTem(redeclare package Medium =
             Medium)
-        annotation (Placement(transformation(extent={{-20,184},{-40,204}})));
+        annotation (Placement(transformation(extent={{10,10},{-10,-10}},
+            rotation=90,
+            origin={-112,460})));
       Modelica.Blocks.Sources.RealExpression realExpression6(y=-senMasFlo1.m_flow)
-        annotation (Placement(transformation(extent={{138,428},{118,448}})));
+        annotation (Placement(transformation(extent={{138,434},{118,454}})));
     equation
       TOutRec = vol[RecircOutSeg].T;
       TOutDra = vol[1].T;
@@ -14637,11 +14641,11 @@ First implementation.
           color={0,0,127},
           smooth=Smooth.None));
       connect(mFloRec, cirHeaTra.mFloCir) annotation (Line(
-          points={{-82,0},{-344,0},{-344,-170},{-243.6,-170}},
+          points={{-459,-169},{-348,-169},{-348,-170},{-243.6,-170}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(TInRec, cirHeaTra.TRec) annotation (Line(
-          points={{-82,-70},{-344,-70},{-344,-192.4},{-243.6,-192.4}},
+          points={{-458,-236},{-344,-236},{-344,-192.4},{-243.6,-192.4}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(realExpression.y, prescribedHeatFlow.Q_flow) annotation (Line(
@@ -14682,10 +14686,6 @@ First implementation.
           smooth=Smooth.None));
       connect(QPerFlu.y, buoHeaTraMod.QDotFlu) annotation (Line(
           points={{-309,370},{-270,370},{-270,353.2},{-221.8,353.2}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(QDotIn, product1.u2) annotation (Line(
-          points={{-96,60},{-257,60},{-257,360},{-378,360}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(product1.y, QPerBas.u) annotation (Line(
@@ -14745,7 +14745,7 @@ First implementation.
           color={0,0,127},
           smooth=Smooth.None));
       connect(port_b, senMasFlo1.port_b) annotation (Line(
-          points={{24,106},{24,262},{306,262},{306,418}},
+          points={{382,458},{382,418},{306,418}},
           color={0,127,255},
           smooth=Smooth.None));
       connect(senMasFlo1.port_a, boundary.ports[1]) annotation (Line(
@@ -14758,31 +14758,35 @@ First implementation.
       end for;
 
       connect(port_a, senMasFlo.port_a) annotation (Line(
-          points={{-14,104},{-12,104},{-12,240}},
-          color={0,127,255},
-          smooth=Smooth.None));
-      connect(senMasFlo.port_b, boundary1.ports[1]) annotation (Line(
-          points={{-12,260},{-12,346},{28,346},{28,432},{48,432},{48,430}},
+          points={{-200,460},{-142,460},{-142,436}},
           color={0,127,255},
           smooth=Smooth.None));
       connect(senMasFlo.m_flow, replicator.u) annotation (Line(
-          points={{-23,250},{-44,250},{-44,416},{-132,416},{-132,402}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(port_a, senTem.port) annotation (Line(
-          points={{-14,104},{-30,104},{-30,184}},
-          color={0,127,255},
-          smooth=Smooth.None));
-      connect(senTem.T, draHeaTra.TIn) annotation (Line(
-          points={{-37,194},{-44,194},{-44,416},{-113.64,416},{-113.64,366.6}},
+          points={{-132,425},{-132,402}},
           color={0,0,127},
           smooth=Smooth.None));
 
       connect(realExpression6.y, boundary1.m_flow_in) annotation (Line(
-          points={{117,438},{68,438}},
+          points={{117,444},{68,444}},
           color={0,0,127},
           smooth=Smooth.None));
 
+      connect(QDotIn, product1.u2) annotation (Line(
+          points={{-458,360},{-378,360}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(senMasFlo.port_b, boundary1.ports[1]) annotation (Line(
+          points={{-122,436},{48,436}},
+          color={0,127,255},
+          smooth=Smooth.None));
+      connect(senTem.T, draHeaTra.TIn) annotation (Line(
+          points={{-112,453},{-114,453},{-114,366.6},{-113.64,366.6}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(port_a, senTem.port) annotation (Line(
+          points={{-200,460},{-122,460}},
+          color={0,127,255},
+          smooth=Smooth.None));
       annotation (Line(
           points={{98,78},{100,78},{100,64},{190,64},{190,67}},
           color={0,127,255},
@@ -18931,12 +18935,12 @@ function can be used as part of another scan operation.
         annotation (Placement(transformation(extent={{100,-8},{120,12}})));
       Modelica.Fluid.Interfaces.FluidPort_a colWatIn(redeclare package Medium
           = Medium)
-        annotation (Placement(transformation(extent={{-34,-160},{-14,-140}}),
-            iconTransformation(extent={{-34,-160},{-14,-140}})));
+        annotation (Placement(transformation(extent={{-82,-162},{-62,-142}}),
+            iconTransformation(extent={{-82,-162},{-62,-142}})));
       Modelica.Fluid.Interfaces.FluidPort_b hotWatOut(redeclare package Medium
           = Medium)
-        annotation (Placement(transformation(extent={{-70,-160},{-50,-140}}),
-            iconTransformation(extent={{-70,-160},{-50,-140}})));
+        annotation (Placement(transformation(extent={{58,-162},{78,-142}}),
+            iconTransformation(extent={{58,-162},{78,-142}})));
       Controllers.NonCondensingTanklessHXControllerMediumModel cont(
         redeclare package Medium = Medium,
         t_short=t_short,
@@ -18969,7 +18973,7 @@ function can be used as part of another scan operation.
     equation
       connect(colWatIn, cont.port_a)
         annotation (Line(
-          points={{-24,-150},{-78,-150},{-78,87.44},{-50.4655,87.44}},
+          points={{-72,-152},{-78,-152},{-78,87.44},{-50.4655,87.44}},
           color={0,127,255},
           smooth=Smooth.None));
       connect(cont.port_b, HX.port_a)
@@ -18978,7 +18982,7 @@ function can be used as part of another scan operation.
           color={0,127,255},
           smooth=Smooth.None));
       connect(HX.port_b, hotWatOut)         annotation (Line(
-          points={{52,79.4667},{62,79.4667},{62,80},{70,80},{70,-150},{-60,-150}},
+          points={{52,79.4667},{62,79.4667},{62,80},{70,80},{70,-152},{68,-152}},
           color={0,127,255},
           smooth=Smooth.None));
       connect(AmbientTemperature, cont.TAmb)
@@ -19003,7 +19007,7 @@ function can be used as part of another scan operation.
           smooth=Smooth.None));
       connect(cont.ControlConstant, HX.ControlConstant)
                                        annotation (Line(
-          points={{-25.0982,80.96},{-20,80.96},{-20,-6},{26.44,-6},{26.44,30.4}},
+          points={{-25.0982,80.96},{-20,80.96},{-20,-6},{25,-6},{25,19.7333}},
           color={0,0,127},
           smooth=Smooth.None));
 
@@ -19048,6 +19052,186 @@ function can be used as part of another scan operation.
               </ul>
               </html>"));
     end NonCondensingTanklessHeaterMediumModel;
+
+    model NonConVariableTSet
+      "Non condensing tankless water heater with TSet as an input"
+
+      replaceable package Medium = Modelica.Media.Interfaces.PartialMedium
+        "Fluid in the heater";
+
+      HeatExchangers.NonCondensingMediumModel HX(
+        Capacitance=Capacitance,
+        SteadyStateEff=SteadyStateEff,
+        UA=UA,
+        nNode=nNode,
+        EffPilot=EffPilot,
+        Qdot_Pilot=Q_flow_pilot,
+        Qdot_Rated=Q_flow_rated,
+        redeclare package Medium = Medium)
+        annotation (Placement(transformation(extent={{24,32},{78,96}})));
+      Modelica.Blocks.Interfaces.RealInput AmbientTemperature(unit = "K")
+        annotation (Placement(transformation(extent={{-140,22},{-100,62}})));
+      Modelica.Blocks.Interfaces.RealInput pwrSig
+        annotation (Placement(transformation(extent={{-140,-160},{-100,-120}})));
+      parameter Real Capacitance(unit = "J/K") = 18138.9
+        "Capacitance of the heat exchanger";
+      parameter Real SteadyStateEff=0.83 "Unit efficiency at steady state";
+      parameter Real UA(unit = "W/K")=13.6521
+        "Coefficient describing heat loss to ambient";
+      parameter Real m_flow_min(unit = "kg/s") = 0.043
+        "Minimum water flow rate";
+      parameter Real SpecificHeat(unit = "J/(kg.K)") = 4190
+        "Specific heat of the fluid";
+      parameter Real PID_P = 0.405891
+        "Proportional value in the PID controller";
+      parameter Modelica.SIunits.Time PID_I = 47597.1
+        "Integral value in the PID controller";
+      parameter Real PID_D(unit = "s") = 35.3539
+        "Derivative value in the PID controller";
+      parameter Integer nNode = 10 "Number of segments in the heat exchanger";
+      parameter Real EffPilot = 0.8 "Efficiency of the pilot light";
+      parameter Real Q_flow_pilot(unit = "W") = 0
+        "Energy consumption rate of the pilot light";
+      parameter Real Q_flow_rated(unit = "W") = 55555
+        "Energy consumed by the burner at max capacity";
+      parameter Real Q_flow_min(unit = "W") = 5275
+        "Minimum heat rate the burner will operate at";
+      parameter Modelica.SIunits.Time t_short = 1.5
+        "Start delay with a short time between draws";
+      parameter Modelica.SIunits.Time t_long = 3
+        "Start delay with a long time between draws";
+      parameter Modelica.SIunits.Time t_switch = 30
+        "Time between draws required for t_long";
+      parameter Real QAct(unit = "W") = 50
+        "Electric power consumed when the fan is operating";
+      parameter Real QIdl(unit = "W") = 15
+        "Electric power consumed when the fan is not operating";
+      parameter Real m_flow_min_deadband(unit = "kg/s") = 0.00416
+        "Deadband on the minimum flow rate check";
+      parameter Modelica.SIunits.Time StopDelay = 1
+        "Delay between flow ceasing and heat transfer stopping";
+      parameter Modelica.SIunits.Time ControlDelay = 2 "Control response delay";
+      Modelica.Blocks.Interfaces.RealOutput T_Out(unit = "K")
+        annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+      Modelica.Fluid.Interfaces.FluidPort_a colWatIn(redeclare package Medium
+          = Medium)
+        annotation (Placement(transformation(extent={{-116,76},{-92,98}}),
+            iconTransformation(extent={{-42,-162},{-18,-140}})));
+      Modelica.Fluid.Interfaces.FluidPort_b hotWatOut(redeclare package Medium
+          = Medium)
+        annotation (Placement(transformation(extent={{94,78},{114,98}}),
+            iconTransformation(extent={{-66,-160},{-46,-140}})));
+      Controllers.NonConVariableTSet                           cont(
+        redeclare package Medium = Medium,
+        t_short=t_short,
+        t_long=t_long,
+        t_switch=t_switch,
+        QAct=QAct,
+        QIdl=QIdl,
+        PID_P=PID_P,
+        PID_I=PID_I,
+        PID_D=PID_D,
+        UA=UA,
+        mdot_min_cons=m_flow_min,
+        Qdot_min_cons=Q_flow_min,
+        SpecificHeat_cons=SpecificHeat,
+        Qdot_Rated_cons=Q_flow_rated,
+        SteadyStateEff_cons=SteadyStateEff,
+        mdot_min_deadband=m_flow_min_deadband,
+        StopDelay=StopDelay,
+        ControlDelay=ControlDelay)                annotation (Placement(
+            transformation(
+            extent={{-28,32},{28,-32}},
+            rotation=0,
+            origin={-46,64})));
+      Modelica.Blocks.Interfaces.RealOutput maxMasFlo
+        annotation (Placement(transformation(extent={{100,-70},{120,-50}})));
+      Modelica.Blocks.Interfaces.RealOutput Q_flow_in(unit="W")
+        "Inlet heat rate"
+        annotation (Placement(transformation(extent={{100,-110},{120,-90}})));
+      Modelica.Blocks.Interfaces.RealInput TSet(unit = "K") "Set temperature"
+        annotation (Placement(transformation(extent={{-140,-40},{-100,0}})));
+    equation
+      connect(cont.port_b, HX.port_a)
+                              annotation (Line(
+          points={{-16.9818,86.784},{-8,86.784},{-8,87.4667},{23.64,87.4667}},
+          color={0,127,255},
+          smooth=Smooth.None));
+
+      connect(colWatIn, cont.port_a) annotation (Line(
+          points={{-104,87},{-78,87},{-78,86.784},{-74.8145,86.784}},
+          color={0,127,255},
+          smooth=Smooth.None));
+      connect(HX.port_b, hotWatOut) annotation (Line(
+          points={{78,87.4667},{79,87.4667},{79,88},{104,88}},
+          color={0,127,255},
+          smooth=Smooth.None));
+      connect(pwrSig, cont.PowerSignal) annotation (Line(
+          points={{-120,-140},{-96,-140},{-96,75.52},{-78.0727,75.52}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(HX.T_Out, T_Out) annotation (Line(
+          points={{81.24,64},{90,64},{90,4.44089e-16},{110,4.44089e-16}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(HX.T_Out, cont.T_out) annotation (Line(
+          points={{81.24,64},{90,64},{90,0},{-92,0},{-92,64.768},{-78.0727,
+              64.768}},
+          color={0,0,127},
+          smooth=Smooth.None));
+
+      connect(HX.Q_flow_in, Q_flow_in) annotation (Line(
+          points={{81.06,49.28},{86,49.28},{86,-100},{110,-100}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(cont.maxMasFlo, maxMasFlo) annotation (Line(
+          points={{-15.3527,48.896},{-6,48.896},{-6,-60},{110,-60}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(cont.ControlConstant, HX.ControlConstant) annotation (Line(
+          points={{-15.3527,60.16},{0,60.16},{0,10},{51,10},{51,27.7333}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(TSet, cont.TSet) annotation (Line(
+          points={{-120,-20},{-88,-20},{-88,52.48},{-78.0727,52.48}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(AmbientTemperature, cont.TAmb) annotation (Line(
+          points={{-120,42},{-100,42},{-100,42.24},{-78.0727,42.24}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      connect(AmbientTemperature, HX.T_amb) annotation (Line(
+          points={{-120,42},{-84,42},{-84,4},{10,4},{10,59.7333},{20.4,59.7333}},
+          color={0,0,127},
+          smooth=Smooth.None));
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,
+                -150},{100,100}}),      graphics), Icon(coordinateSystem(
+              preserveAspectRatio=false,extent={{-100,-150},{100,100}}),
+            graphics={Bitmap(
+              extent={{-98,94},{92,-142}},
+              imageSource=
+                  "iVBORw0KGgoAAAANSUhEUgAAANAAAAEUCAIAAADVyC81AAAAiXpUWHRSYXcgcHJvZmlsZSB0eXBlIGV4aWYAAHjaVY7LDcMwDEPvniIj6GfKGqdIE6AbdPxIcFKj7yARhESwHd/P2baCSZp1HwiAEgsLeaUYNFEiFuLaOSf3Vk4ly24qUyCGk61Du/2Hrhg43dzRsWOXTJdDWbVmBlUqVY1YIe/nW/99tl+B2eICR7gsRnkDPd0AAAnsaVRYdFhNTDpjb20uYWRvYmUueG1wAAAAAAA8P3hwYWNrZXQgYmVnaW49Iu+7vyIgaWQ9Ilc1TTBNcENlaGlIenJlU3pOVGN6a2M5ZCI/Pgo8eDp4bXBtZXRhIHhtbG5zOng9ImFkb2JlOm5zOm1ldGEvIiB4OnhtcHRrPSJYTVAgQ29yZSA0LjQuMC1FeGl2MiI+CiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPgogIDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PSIiCiAgICB4bWxuczpleGlmPSJodHRwOi8vbnMuYWRvYmUuY29tL2V4aWYvMS4wLyIKICAgIHhtbG5zOnRpZmY9Imh0dHA6Ly9ucy5hZG9iZS5jb20vdGlmZi8xLjAvIgogICBleGlmOlBpeGVsWERpbWVuc2lvbj0iMjA4IgogICBleGlmOlBpeGVsWURpbWVuc2lvbj0iMjc2IgogICB0aWZmOkltYWdlV2lkdGg9IjEiCiAgIHRpZmY6SW1hZ2VIZWlnaHQ9IjI3NiIvPgogPC9yZGY6UkRGPgo8L3g6eG1wbWV0YT4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAg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"
+                   +
+                  "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"
+                   +
+                  "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Id+oogIhElfZ6Mi49p0JuLE5EEXjjwAKiCqKiBEIhAqBorzRWAjKhkIVzxqgRB6rBxXxm7ds/sqXvzI1NfW5z312ubOy+Yqt995778033HjNdXt/8tBjX/zyl/7kT/7sT7/x7WJyZsdVu+e3bP3CF75w59/5cLtl//t//cNjr534b3/0R0eOnfjc5z6/utZTjOLWb5DdI9wDkINCa2q6X1YYoWlBCLwCMps6BEQkRlLadsXiiy+89MUvfvHQoUPW2q9//ZvPP//8zp27Hnzw0Gc/+5lD9z9QlqUKtFoTkYsdVDlO/9UTAgM48eIDBKjrGgCKNBthMC/Dxomaj3I4fotyO4SIimrI0kpn7b6Hn86SHFFB3jo0zrz90/A6RbecUdR6vbGcnCcFIqIgdPu9xSsXP/WpT917z4+cc08+/sTqytJtt93+1BMPr6yVm+bnjFqVen4ie/HwU/v27bvlhhu/8j++9Af/4fdnp6e//c27br7jNuccEzFSBPVHyDahyvknXFHQhYicc1u2bIl70jjREBFiQQRjksAuNpI7di4efeXIt//iWwsLC//kn37q1deOfO97352bm7vzzjs/cNut999/PyLu27evKDIRb0xqh9tSVQVgQQ1BnXPOuUhlbbVa4+zry1/MXCJI3CW8UnFDWcpNCCLL2IwbobHfOvvbm5B1fvPs/P/+068+cPDBO+644zO/93v33vvD48dP/L1f/9UDf/lX2Pebt8z1jj3/7z/3u48//PDi5rknDv3oj//4q9Wg/u1/+VtrVfVnf/6tWx449NTTT+/du098HYlbqGCQNoLD1h2kuIsMIWzatGlmZqbX601Mtms38D5PmAFABYlMYlNXe0S8+eabV7vdztqatfa+Hx987rnnDh8+HGk1InLllVcuLi4O6YnGGMNEQSRWkyJa13VZllU1GAwGRVFYa33tGqLapSFQnbeBwNG8d0Pb/jO+S5UNA55RLJ4TVkp61moLVDlJawmCcPf37/nu//1/CGAtPvTo4w898oQCWoAnDj+XKRz+wY8z0f/ylf8JYAoUVP7PX/pfAJITfP/eHwaB6/dAw22OA4AgAQHOryGMCKKeiFRhYmJix44dzz7906qqnHNVVdokU/XMbLJMNWR52uv10jS98847X3rhhS9/+ctVWbdarbIsH3744Xa7vX///sXFRUJG5DTNmWwc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",
+              fileName=
+                  "modelica://WaterHeatingLibrary/../../../../../Pictures/TWH.png")}),
+                  defaultComponentName="nonCon",
+                  Documentation(info="<html>
+              <p>
+              This model is a remake of NonCondensingTanklessHeater intended to make it more compatable with the Buildings library and other Modelica components. The model was
+              changed to use fluid ports for the fluid inlet/outlet conditions instead of Real variables. Further development efforts will focus on his model and largely neglect
+              NonCondensingTanklessHeater. The intent is that eventually NonCondensingTanklessHeater will be obsolete, deleted, and simply replaced with this model.
+              </p>
+              </html>",
+                  revisions="<html>
+              Mar 29, 2013 by Peter Grant:<br>
+              First implementation
+              </li>
+              </ul>
+              </html>"));
+    end NonConVariableTSet;
 
     model NonCondSteadyState
       "Non-condensing tankless heater model with a constant signal controller"
@@ -19499,7 +19683,10 @@ function can be used as part of another scan operation.
               transformation(
               extent={{-20,-20},{20,20}},
               rotation=90,
-              origin={8,-120})));
+              origin={8,-120}), iconTransformation(
+              extent={{-20,-20},{20,20}},
+              rotation=90,
+              origin={0,-170})));
         Modelica.Blocks.Interfaces.RealOutput T_Out(unit = "K")
           annotation (Placement(transformation(extent={{150,-18},{186,18}})));
         Modelica.Blocks.Interfaces.RealInput T_amb(unit = "K")
@@ -19510,9 +19697,11 @@ function can be used as part of another scan operation.
         Modelica.Fluid.Interfaces.FluidPort_b port_b(redeclare package Medium
             = Medium)
           annotation (Placement(transformation(extent={{140,100},{160,120}})));
-        Modelica.Blocks.Sources.Constant const(k=SteadyStateEff)
+        Modelica.Blocks.Sources.Constant EffSS(k=SteadyStateEff)
+          "Steady state eficiency"
           annotation (Placement(transformation(extent={{-62,-48},{-42,-28}})));
-        Modelica.Blocks.Sources.Constant const1(k=Qdot_Rated/nNode)
+        Modelica.Blocks.Sources.Constant QRatNod(k=Qdot_Rated/nNode)
+          "Rated hat input per node"
           annotation (Placement(transformation(extent={{-62,-78},{-42,-58}})));
         Modelica.Blocks.Math.MultiProduct multiProduct(nu=3) annotation (Placement(
               transformation(
@@ -19522,7 +19711,7 @@ function can be used as part of another scan operation.
         Buildings.Fluid.Sensors.Temperature senTem(redeclare package Medium =
               Medium)
           annotation (Placement(transformation(extent={{110,10},{130,-10}})));
-        Modelica.Blocks.Routing.Replicator replicator1(nout=nNode) annotation (
+        Modelica.Blocks.Routing.Replicator per1(nout=nNode)        annotation (
             Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=90,
@@ -19536,25 +19725,27 @@ function can be used as part of another scan operation.
           annotation (Placement(transformation(extent={{-40,54},{-60,74}})));
         Modelica.Blocks.Math.Add add[nNode](each k1=-1)
           annotation (Placement(transformation(extent={{-128,14},{-108,34}})));
-        Modelica.Blocks.Routing.Replicator replicator(nout=nNode) annotation (
+        Modelica.Blocks.Routing.Replicator rep(nout=nNode)        annotation (
             Placement(transformation(
               extent={{-10,-10},{10,10}},
               rotation=90,
               origin={-134,0})));
-        Modelica.Blocks.Sources.Constant const2[nNode](each k=UA/nNode)
+        Modelica.Blocks.Sources.Constant UANode[nNode](each k=UA/nNode)
+          "UA value per node"
           annotation (Placement(transformation(extent={{-118,-14},{-98,6}})));
         Modelica.Blocks.Math.Product product1[nNode]
           annotation (Placement(transformation(extent={{-90,8},{-70,28}})));
         Buildings.HeatTransfer.Sources.PrescribedHeatFlow UALos[nNode]
           annotation (Placement(transformation(extent={{-50,8},{-30,28}})));
-        Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heatCapacitor[nNode](each C=
-             Capacitance/nNode)
+        Modelica.Thermal.HeatTransfer.Components.HeatCapacitor heaCapNod[nNode](each
+            C=Capacitance/nNode) "Capcitance per node"
           annotation (Placement(transformation(extent={{36,78},{56,58}})));
-        Buildings.Fluid.MixingVolumes.MixingVolume vol[nNode](
+        Buildings.Fluid.MixingVolumes.MixingVolume volNod[nNode](
           each nPorts=2,
           redeclare package Medium = Medium,
           each m_flow_nominal=0.06,
           each V=0.000000001/nNode)
+          "Nominal volume of water. Capacitance is represented in heaCapNod"
           annotation (Placement(transformation(extent={{14,104},{-6,84}})));
 
       protected
@@ -19563,16 +19754,18 @@ function can be used as part of another scan operation.
         Modelica.Blocks.Sources.RealExpression realExpression(y=Qdot_Rated)
           annotation (Placement(transformation(extent={{44,-80},{64,-60}})));
       public
-        Modelica.Blocks.Interfaces.RealOutput Q_dot_in(unit="W")
+        Modelica.Blocks.Interfaces.RealOutput Q_flow_in(unit="W")
           "Used heat rate"
-          annotation (Placement(transformation(extent={{150,-86},{170,-66}})));
+          annotation (Placement(transformation(extent={{150,-86},{170,-66}}),
+              iconTransformation(extent={{150,-86},{184,-52}})));
       equation
 
-        connect(multiProduct.u[1], const.y) annotation (Line(
+        connect(multiProduct.u[1],EffSS. y) annotation (Line(
             points={{-2.8,-28},{-2,-28},{-2,-38},{-41,-38}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(const1.y, multiProduct.u[2]) annotation (Line(
+        connect(QRatNod.y, multiProduct.u[2])
+                                             annotation (Line(
             points={{-41,-68},{-6.66134e-16,-68},{-6.66134e-16,-28}},
             color={0,0,127},
             smooth=Smooth.None));
@@ -19584,19 +19777,19 @@ function can be used as part of another scan operation.
             points={{127,0},{168,0}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(multiProduct.y, replicator1.u) annotation (Line(
+        connect(multiProduct.y, per1.u)        annotation (Line(
             points={{0,-14.98},{0,-8}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(replicator1.y, heaAdd.Q_flow) annotation (Line(
+        connect(per1.y, heaAdd.Q_flow)        annotation (Line(
             points={{0,15},{0,24}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(replicator.u, T_amb) annotation (Line(
+        connect(rep.u, T_amb)        annotation (Line(
             points={{-134,-12},{-134,-20},{-170,-20}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(replicator.y, add.u2) annotation (Line(
+        connect(rep.y, add.u2)        annotation (Line(
             points={{-134,11},{-134,18},{-130,18}},
             color={0,0,127},
             smooth=Smooth.None));
@@ -19608,7 +19801,7 @@ function can be used as part of another scan operation.
             points={{-107,24},{-92,24}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(const2.y, product1.u2) annotation (Line(
+        connect(UANode.y, product1.u2) annotation (Line(
             points={{-97,-4},{-92,-4},{-92,12}},
             color={0,0,127},
             smooth=Smooth.None));
@@ -19616,24 +19809,28 @@ function can be used as part of another scan operation.
             points={{-69,18},{-50,18}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(temSen1.port, vol.heatPort) annotation (Line(
+        connect(temSen1.port, volNod.heatPort)
+                                            annotation (Line(
             points={{-40,64},{18,64},{18,94},{14,94}},
             color={191,0,0},
             smooth=Smooth.None));
-        connect(heaAdd.port, vol.heatPort) annotation (Line(
+        connect(heaAdd.port, volNod.heatPort)
+                                           annotation (Line(
             points={{0,44},{0,60},{18,60},{18,94},{14,94}},
             color={191,0,0},
             smooth=Smooth.None));
-        connect(heatCapacitor.port, vol.heatPort) annotation (Line(
+        connect(heaCapNod.port, volNod.heatPort)  annotation (Line(
             points={{46,78},{46,94},{14,94}},
             color={191,0,0},
             smooth=Smooth.None));
 
-        connect(port_a, vol[1].ports[1]) annotation (Line(
+        connect(port_a, volNod[1].ports[1])
+                                         annotation (Line(
             points={{-152,110},{6,110},{6,104}},
             color={0,127,255},
             smooth=Smooth.None));
-        connect(vol[nNode].ports[2], port_b) annotation (Line(
+        connect(volNod[nNode].ports[2], port_b)
+                                             annotation (Line(
             points={{2,104},{6,104},{6,110},{150,110}},
             color={0,127,255},
             smooth=Smooth.None));
@@ -19642,10 +19839,11 @@ function can be used as part of another scan operation.
             color={0,127,255},
             smooth=Smooth.None));
          for i in 2:nNode loop
-           connect(vol[i-1].ports[2],vol[i].ports[1]);
+          connect(volNod[i - 1].ports[2], volNod[i].ports[1]);
          end for;
 
-        connect(UALos.port, vol.heatPort) annotation (Line(
+        connect(UALos.port, volNod.heatPort)
+                                          annotation (Line(
             points={{-30,18},{-20,18},{-20,64},{18,64},{18,94},{14,94}},
             color={191,0,0},
             smooth=Smooth.None));
@@ -19657,7 +19855,7 @@ function can be used as part of another scan operation.
             points={{65,-70},{88,-70}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(product2.y, Q_dot_in) annotation (Line(
+        connect(product2.y, Q_flow_in) annotation (Line(
             points={{111,-76},{160,-76}},
             color={0,0,127},
             smooth=Smooth.None));
@@ -19665,8 +19863,17 @@ function can be used as part of another scan operation.
                   -150},{150,150}}),
                             graphics), Icon(coordinateSystem(
                 preserveAspectRatio=false, extent={{-150,-150},{150,150}}),
-                                            graphics={Bitmap(extent={{-100,98},{100,-100}},
-                  fileName="//vmware-host/Shared Folders/Downloads/HeatExchanger.jpg")}),
+                                            graphics={Rectangle(
+                extent={{-150,150},{150,-150}},
+                lineColor={255,128,0},
+                fillColor={255,128,0},
+                fillPattern=FillPattern.Solid), Line(
+                points={{-150,110},{-120,110},{-120,-136},{118,-136},{118,-96},{-88,-96},
+                    {-88,-54},{118,-54},{118,-16},{-88,-16},{-88,24},{116,24},{116,64},
+                    {-90,64},{-90,110},{152,110},{152,110}},
+                color={0,128,255},
+                thickness=1,
+                smooth=Smooth.None)}),
                     Diagram(graphics),
                     Documentation(info="<html>
               <p>
@@ -19882,7 +20089,7 @@ function can be used as part of another scan operation.
           annotation (Placement(transformation(extent={{176,-122},{196,-102}})));
         Modelica.Blocks.Math.Max max1
           annotation (Placement(transformation(extent={{138,-122},{158,-102}})));
-        BaseClasses.mDotMinCheck mDotMinCheck(mDot_min_cons=mdot_min_cons,
+        BaseClasses.MDotMinCheck mDotMinCheck(mDot_min_cons=mdot_min_cons,
             stopDelay=StopDelay)
           annotation (Placement(transformation(extent={{-80,72},{-40,92}})));
       equation
@@ -20354,8 +20561,6 @@ function can be used as part of another scan operation.
         Modelica.Blocks.Interfaces.RealOutput ControlConstant annotation (Placement(
               transformation(extent={{176,-52},{204,-24}}), iconTransformation(extent={{100,-72},
                   {128,-44}})));
-        Modelica.Blocks.Math.Product product2
-          annotation (Placement(transformation(extent={{48,50},{68,70}})));
         Modelica.Blocks.Continuous.LimPID
                                        PID(
           y_start=PID_y_start,
@@ -20366,9 +20571,7 @@ function can be used as part of another scan operation.
           controllerType=Modelica.Blocks.Types.SimpleController.PID,
           Ni=0.9,
           k=PID_P)
-          annotation (Placement(transformation(extent={{-16,-10},{4,10}})));
-        Modelica.Blocks.Math.Product product3
-          annotation (Placement(transformation(extent={{78,8},{98,28}})));
+          annotation (Placement(transformation(extent={{-32,-10},{-12,10}})));
        replaceable package Medium = Modelica.Media.Interfaces.PartialMedium
           "Fluid in the heater";
        parameter Real mdot_min_cons(unit = "kg/s") = 0.252
@@ -20412,22 +20615,21 @@ function can be used as part of another scan operation.
       public
         Modelica.Blocks.Interfaces.RealInput PowerSignal
           annotation (Placement(transformation(extent={{-140,-90},{-100,-50}})));
-        Modelica.Blocks.Math.Product product4
-          annotation (Placement(transformation(extent={{110,2},{130,22}})));
         BaseClasses.StartDelay
                    startDelay(
           t_short=t_short,
           t_long=t_long,
-          t_switch=t_switch)
-          annotation (Placement(transformation(extent={{68,-40},{92,-20}})));
-        Modelica.Blocks.Math.Product product5
-          annotation (Placement(transformation(extent={{140,-28},{160,-8}})));
+          t_switch=t_switch,
+          mDotMin=mdot_min_cons)
+          annotation (Placement(transformation(extent={{-12,-10},{12,10}},
+              rotation=0,
+              origin={64,-32})));
         Modelica.Blocks.Math.Product product6
-          annotation (Placement(transformation(extent={{106,-58},{126,-38}})));
+          annotation (Placement(transformation(extent={{108,-58},{128,-38}})));
         Modelica.Blocks.Sources.Constant QFan(k=QAct)
-          annotation (Placement(transformation(extent={{34,-62},{54,-42}})));
+          annotation (Placement(transformation(extent={{54,-68},{74,-48}})));
         Modelica.Blocks.Sources.Constant QCon(k=QIdl)
-          annotation (Placement(transformation(extent={{34,-96},{54,-76}})));
+          annotation (Placement(transformation(extent={{54,-100},{74,-80}})));
         Modelica.Blocks.Interfaces.RealOutput QElec(unit = "W")
           annotation (Placement(transformation(extent={{176,-102},{196,-82}})));
         Modelica.Blocks.Math.Max max1
@@ -20455,52 +20657,33 @@ function can be used as part of another scan operation.
           Qdot_max=Qdot_Rated_cons,
           UA=UA)
           annotation (Placement(transformation(extent={{-2,-144},{18,-124}})));
-        BaseClasses.mDotMinCheck mDotMin(mDot_min_cons=mdot_min_cons, stopDelay=
-              StopDelay)
-          annotation (Placement(transformation(extent={{-70,74},{-30,94}})));
-        BaseClasses.QDotMinCheck qDotMinCheck(
+        BaseClasses.MFlowMin     mFloMin(m_flow_min=mdot_min_cons, StopDelay=
+              StopDelay) "Checks the flow rate vs the minimum"
+          annotation (Placement(transformation(extent={{-68,74},{-28,94}})));
+        BaseClasses.QFlowMin         qFloMin(
           SpecificHeat=SpecificHeat_cons,
           T_Set=T_Set_cons,
           StopDelay=StopDelay,
-          QDot_min=Qdot_min_cons)
+          Q_flow_min=Qdot_min_cons)
+          "Compares the required heat rate to the minimum"
           annotation (Placement(transformation(extent={{-58,34},{-28,54}})));
         Modelica.Blocks.Sources.RealExpression realExpression(y=T_Set_cons)
           annotation (Placement(transformation(extent={{-60,-10},{-40,10}})));
+        Modelica.Blocks.Math.MultiProduct multiProduct(nu=5)
+          annotation (Placement(transformation(extent={{96,52},{108,64}})));
+        Modelica.Blocks.Nonlinear.PadeDelay padeDelay(delayTime=ControlDelay)
+          annotation (Placement(transformation(extent={{-64,-38},{-44,-18}})));
       equation
-        connect(PowerSignal, product4.u2) annotation (Line(
-            points={{-120,-70},{94,-70},{94,6},{108,6}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(product3.y, product4.u1) annotation (Line(
-            points={{99,18},{108,18}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(startDelay.y, product5.u2) annotation (Line(
-            points={{92.6,-30},{116,-30},{116,-24},{138,-24}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(product4.y, product5.u1) annotation (Line(
-            points={{131,12},{132,12},{132,-12},{138,-12}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(product5.y, ControlConstant) annotation (Line(
-            points={{161,-18},{166,-18},{166,-38},{190,-38}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(startDelay.y, product6.u1) annotation (Line(
-            points={{92.6,-30},{100,-30},{100,-42},{104,-42}},
-            color={0,0,127},
-            smooth=Smooth.None));
         connect(QFan.y, product6.u2) annotation (Line(
-            points={{55,-52},{80,-52},{80,-54},{104,-54}},
+            points={{75,-58},{80,-58},{80,-54},{106,-54}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(product6.y, max1.u1) annotation (Line(
-            points={{127,-48},{132,-48},{132,-50},{136,-50}},
+            points={{129,-48},{132,-48},{132,-50},{136,-50}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(QCon.y, max1.u2) annotation (Line(
-            points={{55,-86},{124,-86},{124,-62},{136,-62}},
+            points={{75,-90},{124,-90},{124,-62},{136,-62}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(QElec, QElec) annotation (Line(
@@ -20514,10 +20697,6 @@ function can be used as part of another scan operation.
         connect(port_a, senMasFlo.port_a) annotation (Line(
             points={{-104,-112},{-58,-112}},
             color={0,127,255},
-            smooth=Smooth.None));
-        connect(senMasFlo.m_flow, startDelay.mDotDra) annotation (Line(
-            points={{-48,-101},{-48,-60},{26,-60},{26,-30},{66.8,-30}},
-            color={0,0,127},
             smooth=Smooth.None));
         connect(senMasFlo.port_b, port_b) annotation (Line(
             points={{-38,-112},{180,-112}},
@@ -20539,40 +20718,60 @@ function can be used as part of another scan operation.
             points={{-87,-88},{-72,-88},{-72,-128},{-4,-128}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(mDotMin.y, product2.u1) annotation (Line(
-            points={{-29,84},{28,84},{28,66},{46,66}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(qDotMinCheck.y, product2.u2) annotation (Line(
-            points={{-27,44},{28,44},{28,54},{46,54}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(senTem.T, qDotMinCheck.TIn) annotation (Line(
+        connect(senTem.T, qFloMin.TIn)      annotation (Line(
             points={{-87,-88},{-72,-88},{-72,36},{-60,36}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(realExpression.y, PID.u_s) annotation (Line(
-            points={{-39,0},{-18,0}},
+            points={{-39,0},{-34,0}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(product2.y, product3.u1) annotation (Line(
-            points={{69,60},{72,60},{72,24},{76,24}},
+        connect(startDelay.y, product6.u1) annotation (Line(
+            points={{76.6,-32},{106,-32},{106,-42}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(senMasFlo.m_flow, qDotMinCheck.mDotDra) annotation (Line(
-            points={{-48,-101},{-48,-60},{-82,-60},{-82,52},{-60,52}},
+        connect(senMasFlo.m_flow, qFloMin.mDotDra) annotation (Line(
+            points={{-48,-101},{-48,-52},{-84,-52},{-84,52},{-60,52}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(senMasFlo.m_flow, mDotMin.mDotDra) annotation (Line(
-            points={{-48,-101},{-48,-60},{-82,-60},{-82,84},{-62,84}},
+        connect(senMasFlo.m_flow, mFloMin.mDotDra) annotation (Line(
+            points={{-48,-101},{-48,-52},{-84,-52},{-84,84},{-69.8,84}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(PID.y, product3.u2) annotation (Line(
-            points={{5,0},{68,0},{68,12},{76,12}},
+        connect(senMasFlo.m_flow, startDelay.mDotDra) annotation (Line(
+            points={{-48,-101},{-48,-52},{28,-52},{28,-32},{50.8,-32}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(T_out, PID.u_m) annotation (Line(
-            points={{-120,-28},{-6,-28},{-6,-12}},
+        connect(mFloMin.y, multiProduct.u[1]) annotation (Line(
+            points={{-27,84},{10,84},{10,61.36},{96,61.36}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(qFloMin.y, multiProduct.u[2]) annotation (Line(
+            points={{-27,44},{10,44},{10,59.68},{96,59.68}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(PID.y, multiProduct.u[3]) annotation (Line(
+            points={{-11,0},{16,0},{16,58},{96,58}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(PowerSignal, multiProduct.u[4]) annotation (Line(
+            points={{-120,-70},{20,-70},{20,56.32},{96,56.32}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(startDelay.y, multiProduct.u[5]) annotation (Line(
+            points={{76.6,-32},{88,-32},{88,54.64},{96,54.64}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(multiProduct.y, ControlConstant) annotation (Line(
+            points={{109.02,58},{160,58},{160,-38},{190,-38}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(T_out, padeDelay.u) annotation (Line(
+            points={{-120,-28},{-66,-28}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(padeDelay.y, PID.u_m) annotation (Line(
+            points={{-43,-28},{-22,-28},{-22,-12}},
             color={0,0,127},
             smooth=Smooth.None));
         annotation (
@@ -20609,6 +20808,282 @@ function can be used as part of another scan operation.
               </ul>
               </html>"));
       end NonCondensingTanklessHXControllerMediumModel;
+
+      model NonConVariableTSet
+        "Control module for the non-condensing TWH model using a medium (Variable TSet)"
+        Modelica.Blocks.Interfaces.RealInput T_out(unit = "K")
+         annotation (Placement(transformation(extent={{-140,-48},{-100,-8}})));
+        Modelica.Blocks.Interfaces.RealOutput ControlConstant annotation (Placement(
+              transformation(extent={{176,-52},{204,-24}}), iconTransformation(extent={{174,-24},
+                  {202,4}})));
+        Modelica.Blocks.Continuous.LimPID
+                                       PID(
+          y_start=PID_y_start,
+          Ti=PID_I,
+          Td=PID_D,
+          yMax=1,
+          yMin=0,
+          controllerType=Modelica.Blocks.Types.SimpleController.PID,
+          Ni=0.9,
+          k=PID_P)
+          annotation (Placement(transformation(extent={{-32,-10},{-12,10}})));
+       replaceable package Medium = Modelica.Media.Interfaces.PartialMedium
+          "Fluid in the heater";
+       parameter Real mdot_min_cons(unit = "kg/s") = 0.252
+          "Minimum flow rate of the tankless heater";
+       parameter Real Qdot_min_cons(unit = "W") = 5275
+          "Minimum heat rate of the tankless heater";
+       parameter Real SpecificHeat_cons(unit = "J/(kg.K)") = 4190
+          "Specific heat of the fluid being heated";
+       parameter Real Qdot_Rated_cons(unit = "W") = 55555
+          "Raed heat input rate of the tankless heater";
+       parameter Real SteadyStateEff_cons = 0.82
+          "Efficiency of the heater at steady state";
+       parameter Modelica.SIunits.Time PID_P = 1
+          "Proportional value of the PID controller";
+       parameter Modelica.SIunits.Time PID_I = 1
+          "Integral value of the PID controller";
+       parameter Modelica.SIunits.Time PID_D = 1
+          "Derivative value of the PID controller";
+       parameter Real PID_y_start = 0.666;
+       parameter Modelica.SIunits.Time t_short = 1.5
+          "Start delay with a short time between draws";
+       parameter Modelica.SIunits.Time t_long = 3
+          "Start delay with a long time between draws";
+       parameter Modelica.SIunits.Time t_switch = 30
+          "Time between draws required for t_long";
+       parameter Real QAct(unit = "W") = 50
+          "Electric power consumed when the fan is operating";
+       parameter Real QIdl(unit = "W") = 15
+          "Electric power consumed when the fan is not operating";
+       parameter Real UA(unit = "W/K") = 13.6
+          "Heat loss coefficient of the heater";
+       parameter Real mdot_min_deadband(unit = "kg/s") = 0.00416
+          "Deadband of the minimum flow rate check";
+       parameter Modelica.SIunits.Time StopDelay
+          "Delay between water flow ceasing and heat transfer stopping";
+       parameter Modelica.SIunits.Time ControlDelay "Control response delay";
+
+      protected
+        parameter Real smoHeaDel = 0.01 "Delta of the smoothHeaviside function";
+      public
+        Modelica.Blocks.Interfaces.RealInput PowerSignal
+          annotation (Placement(transformation(extent={{-140,-90},{-100,-50}})));
+        BaseClasses.StartDelay
+                   startDelay(
+          t_short=t_short,
+          t_long=t_long,
+          t_switch=t_switch,
+          mDotMin=mdot_min_cons)
+          annotation (Placement(transformation(extent={{-12,-10},{12,10}},
+              rotation=0,
+              origin={64,-32})));
+        Modelica.Blocks.Math.Product product6
+          annotation (Placement(transformation(extent={{108,-58},{128,-38}})));
+        Modelica.Blocks.Sources.Constant QFan(k=QAct)
+          annotation (Placement(transformation(extent={{54,-68},{74,-48}})));
+        Modelica.Blocks.Sources.Constant QCon(k=QIdl)
+          annotation (Placement(transformation(extent={{54,-100},{74,-80}})));
+        Modelica.Blocks.Interfaces.RealOutput QElec(unit = "W")
+          annotation (Placement(transformation(extent={{176,-66},{196,-46}}),
+              iconTransformation(extent={{174,-66},{202,-38}})));
+        Modelica.Blocks.Math.Max max1
+          annotation (Placement(transformation(extent={{138,-66},{158,-46}})));
+        Modelica.Blocks.Interfaces.RealInput TAmb
+          annotation (Placement(transformation(extent={{-140,40},{-100,80}}),
+              iconTransformation(extent={{-140,40},{-100,80}})));
+        Modelica.Fluid.Interfaces.FluidPort_a port_a(redeclare package Medium
+            = Medium)
+          annotation (Placement(transformation(extent={{-114,-122},{-94,-102}}),
+              iconTransformation(extent={{-114,-122},{-94,-102}})));
+        Modelica.Fluid.Interfaces.FluidPort_b port_b(redeclare package Medium
+            = Medium)
+          annotation (Placement(transformation(extent={{170,-122},{190,-102}}),
+              iconTransformation(extent={{170,-122},{190,-102}})));
+        Buildings.Fluid.Sensors.MassFlowRate senMasFlo(redeclare package Medium
+            = Medium) annotation (Placement(transformation(extent={{-58,-122},{
+                  -38,-102}})));
+        Modelica.Blocks.Interfaces.RealOutput maxMasFlo annotation (Placement(
+              transformation(extent={{174,20},{194,40}}), iconTransformation(extent={{
+                  174,20},{202,48}})));
+        Buildings.Fluid.Sensors.Temperature senTem(redeclare package Medium =
+              Medium)
+          annotation (Placement(transformation(extent={{-104,-98},{-84,-78}})));
+        BaseClasses.MaxMassFlowVariableTSet
+                                maxMassFlow(
+          SteadyStateEff=SteadyStateEff_cons,
+          Cp=SpecificHeat_cons,
+          Qdot_max=Qdot_Rated_cons,
+          UA=UA)
+          annotation (Placement(transformation(extent={{-2,-144},{18,-124}})));
+        BaseClasses.MFlowMin     mFloMin(m_flow_min=mdot_min_cons, StopDelay=
+              StopDelay) "Checks the flow rate vs the minimum"
+          annotation (Placement(transformation(extent={{-68,74},{-28,94}})));
+        BaseClasses.QFlowMinVariableTSet
+                                     qFloMin(
+          SpecificHeat=SpecificHeat_cons,
+          StopDelay=StopDelay,
+          Q_flow_min=Qdot_min_cons)
+          "Compares the required heat rate to the minimum"
+          annotation (Placement(transformation(extent={{-58,34},{-28,54}})));
+        Modelica.Blocks.Math.MultiProduct multiProduct(nu=5)
+          annotation (Placement(transformation(extent={{96,52},{108,64}})));
+        Modelica.Blocks.Nonlinear.PadeDelay padeDelay(delayTime=ControlDelay)
+          annotation (Placement(transformation(extent={{-54,-38},{-34,-18}})));
+        Modelica.Blocks.Interfaces.RealInput TSet(unit = "K")
+          "Temperature setpoint"
+          annotation (Placement(transformation(extent={{-140,0},{-100,40}})));
+      equation
+        connect(QFan.y, product6.u2) annotation (Line(
+            points={{75,-58},{80,-58},{80,-54},{106,-54}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(product6.y, max1.u1) annotation (Line(
+            points={{129,-48},{132,-48},{132,-50},{136,-50}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(QCon.y, max1.u2) annotation (Line(
+            points={{75,-90},{124,-90},{124,-62},{136,-62}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(QElec, QElec) annotation (Line(
+            points={{186,-56},{186,-56}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(max1.y, QElec) annotation (Line(
+            points={{159,-56},{172,-56},{172,-56},{186,-56}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(port_a, senMasFlo.port_a) annotation (Line(
+            points={{-104,-112},{-58,-112}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(senMasFlo.port_b, port_b) annotation (Line(
+            points={{-38,-112},{180,-112}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(port_a, senTem.port) annotation (Line(
+            points={{-104,-112},{-94,-112},{-94,-98}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(TAmb, maxMassFlow.TAmb) annotation (Line(
+            points={{-120,60},{-72,60},{-72,-140},{-4,-140}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(maxMassFlow.y, maxMasFlo) annotation (Line(
+            points={{19,-134},{94,-134},{94,30},{184,30}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(senTem.T, maxMassFlow.TIn) annotation (Line(
+            points={{-87,-88},{-68,-88},{-68,-128},{-4,-128}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(senTem.T, qFloMin.TIn)      annotation (Line(
+            points={{-87,-88},{-72,-88},{-72,36},{-60,36}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(startDelay.y, product6.u1) annotation (Line(
+            points={{76.6,-32},{106,-32},{106,-42}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(senMasFlo.m_flow, qFloMin.mDotDra) annotation (Line(
+            points={{-48,-101},{-48,-52},{-84,-52},{-84,52},{-60,52}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(senMasFlo.m_flow, mFloMin.mDotDra) annotation (Line(
+            points={{-48,-101},{-48,-52},{-84,-52},{-84,84},{-69.8,84}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(senMasFlo.m_flow, startDelay.mDotDra) annotation (Line(
+            points={{-48,-101},{-48,-52},{28,-52},{28,-32},{50.8,-32}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(mFloMin.y, multiProduct.u[1]) annotation (Line(
+            points={{-27,84},{10,84},{10,61.36},{96,61.36}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(qFloMin.y, multiProduct.u[2]) annotation (Line(
+            points={{-27,44},{10,44},{10,59.68},{96,59.68}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(PID.y, multiProduct.u[3]) annotation (Line(
+            points={{-11,0},{16,0},{16,58},{96,58}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(PowerSignal, multiProduct.u[4]) annotation (Line(
+            points={{-120,-70},{20,-70},{20,56.32},{96,56.32}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(startDelay.y, multiProduct.u[5]) annotation (Line(
+            points={{76.6,-32},{88,-32},{88,54.64},{96,54.64}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(multiProduct.y, ControlConstant) annotation (Line(
+            points={{109.02,58},{160,58},{160,-38},{190,-38}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(T_out, padeDelay.u) annotation (Line(
+            points={{-120,-28},{-56,-28}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(padeDelay.y, PID.u_m) annotation (Line(
+            points={{-33,-28},{-22,-28},{-22,-12}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(TSet, qFloMin.TSet) annotation (Line(
+            points={{-120,20},{-78,20},{-78,43},{-60,43}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(TSet, PID.u_s) annotation (Line(
+            points={{-120,20},{-50,20},{-50,0},{-34,0}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(TSet, maxMassFlow.TSet) annotation (Line(
+            points={{-120,20},{-70,20},{-70,-134},{-4,-134}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(ControlConstant, ControlConstant) annotation (Line(
+            points={{190,-38},{186,-38},{186,-38},{190,-38}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        annotation (
+          Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-100,-150},
+                  {175,100}}),
+                  graphics),
+          Icon(coordinateSystem(preserveAspectRatio=false,extent={{-100,-150},{
+                  175,100}}),
+               graphics={Rectangle(
+                extent={{-100,100},{176,-150}},
+                lineColor={0,0,255},
+                fillColor={255,255,255},
+                fillPattern=FillPattern.Solid)}),
+                    defaultComponentName="con",
+                    Documentation(info="<html>
+              <p>
+              This model is a modification of NonCondensingTanklessHXController. The modiciations were made to make this model use fluid connections instead of Real variables
+              to pass input/output data. It was the first step in making the tankless water heater model compatible with the Buildings library.
+              </p>
+              <p>
+              Future modification plans include:<br>
+              Further efforts to bring the model up to Buildings library standards.<br>
+              Breaking the controller into several sub-control modules (example: a model for the low flow control) so that user's can easily construct their own controller models.
+              </p>
+              </html>",
+                    revisions="<html>
+              <ul>
+              <li>
+              Apr 15, 2013 by Peter Grant:<br>
+              Replaced greater than checks with add and smoothHeaviside blocks to reduce state events
+              </ul>
+              </li>
+              <ul>
+              <li>
+              Mar 29, 2013 by Peter Grant:<br>
+              First implementation
+              </li>
+              </ul>
+              </html>"));
+      end NonConVariableTSet;
 
       package BaseClasses
         model ConstantGammaControl
@@ -20652,7 +21127,6 @@ function can be used as part of another scan operation.
             </html>"));
         end ConstantGammaControl;
 
-
         model MaxMassFlow
           "Identifies the maximum mass flow the heater can handle at current conditions"
           extends Modelica.Blocks.Interfaces.BlockIcon;
@@ -20695,6 +21169,119 @@ function can be used as part of another scan operation.
             </ul>
             </html>"));
         end MaxMassFlow;
+
+        model MaxMassFlowVariableTSet
+          "Identifies the maximum mass flow the heater can handle at current conditions"
+          extends Modelica.Blocks.Interfaces.BlockIcon;
+
+          parameter Modelica.SIunits.Power Qdot_max
+            "Maximum heat input rate of the heater";
+          parameter Real SteadyStateEff "Heater efficiency at steady state";
+          parameter Real UA(unit = "W/K") "Heat loss coefficient";
+          parameter Modelica.SIunits.SpecificHeatCapacity Cp
+            "Specific heat of the fluid";
+
+          Modelica.Blocks.Interfaces.RealInput TIn(unit = "K")
+            annotation (Placement(transformation(extent={{-140,40},{-100,80}})));
+          Modelica.Blocks.Interfaces.RealInput TAmb(unit = "K")
+            annotation (Placement(transformation(extent={{-140,-80},{-100,-40}})));
+          Modelica.Blocks.Interfaces.RealOutput y
+            annotation (Placement(transformation(extent={{100,-10},{120,10}})));
+
+          Modelica.Blocks.Interfaces.RealInput TSet(unit = "K")
+            "Temperature setpoint"
+            annotation (Placement(transformation(extent={{-140,-20},{-100,20}})));
+        equation
+          y = (Qdot_max * SteadyStateEff - UA*(TSet - TAmb))/(Cp*(TSet-TIn));
+
+          annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                    -100},{100,100}}), graphics),
+                    Documentation(info="<html>
+            <p>
+            Identifies the maximum flow rate of water the heater can handle at current conditions. This output can be used in other models to limit the flow rate of water
+            so that the heater can provide water at the setpoint while burning at maximum capacity. The limiting of the flow rate is then applied externally to this model.<br>
+            </p>
+            <p>
+            Planned future revisions include changing the environmental losses term to be more accurate (Currently a slighly imprecise calculation).<br>
+            </p>
+            </html>",
+                    revisions="<html>
+            <ul>
+            <li>
+            Mar 29, 2013 by Peter Grant:<br>
+            First implementation
+            </li>
+            </ul>
+            </html>"));
+        end MaxMassFlowVariableTSet;
+
+        model MFlowMin "Control logic for flow rate vs minimum flow rate"
+          extends Modelica.Blocks.Interfaces.BlockIcon;
+
+          parameter Real m_flow_min "Rated minimum flow rate of the heater";
+          parameter Modelica.SIunits.Time StopDelay "Control reaction time";
+
+          Modelica.Blocks.Interfaces.RealInput mDotDra
+            annotation (Placement(transformation(extent={{-238,-20},{-198,20}})));
+          Modelica.Blocks.Sources.RealExpression mDotMin(y=m_flow_min)
+            annotation (Placement(transformation(extent={{-200,-24},{-180,-4}})));
+          Modelica.Blocks.Math.Add add(k1=-1, k2=+1)
+            annotation (Placement(transformation(extent={{-160,-10},{-140,10}})));
+          Buildings.Utilities.Math.SmoothHeaviside smoHea(delta=0.0001)
+            annotation (Placement(transformation(extent={{-130,-12},{-110,8}})));
+          Modelica.Blocks.Interfaces.RealOutput y
+            annotation (Placement(transformation(extent={{200,-10},{220,10}})));
+          Modelica.Blocks.Math.RealToBoolean realToBoolean
+            annotation (Placement(transformation(extent={{-88,-12},{-68,8}})));
+          Modelica.Blocks.Logical.Timer timer
+            annotation (Placement(transformation(extent={{-42,-12},{-22,8}})));
+          Modelica.Blocks.Sources.RealExpression stoDel(y=StopDelay)
+            annotation (Placement(transformation(extent={{-44,-42},{-24,-22}})));
+          Modelica.Blocks.Math.Add add1(k1=-1)
+            annotation (Placement(transformation(extent={{-6,-18},{14,2}})));
+          Buildings.Utilities.Math.SmoothHeaviside smoHea1(delta=0.00001)
+            annotation (Placement(transformation(extent={{26,-18},{46,2}})));
+        equation
+          connect(mDotDra, add.u1) annotation (Line(
+              points={{-218,8.88178e-16},{-190,8.88178e-16},{-190,6},{-162,6}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(mDotMin.y, add.u2) annotation (Line(
+              points={{-179,-14},{-176,-14},{-176,-6},{-162,-6}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(add.y, smoHea.u) annotation (Line(
+              points={{-139,4.44089e-16},{-136,4.44089e-16},{-136,-2},{-132,-2}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(smoHea.y, realToBoolean.u) annotation (Line(
+              points={{-109,-2},{-90,-2}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(realToBoolean.y, timer.u) annotation (Line(
+              points={{-67,-2},{-44,-2}},
+              color={255,0,255},
+              smooth=Smooth.None));
+          connect(timer.y, add1.u1) annotation (Line(
+              points={{-21,-2},{-8,-2}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(stoDel.y, add1.u2) annotation (Line(
+              points={{-23,-32},{-18,-32},{-18,-14},{-8,-14}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(add1.y, smoHea1.u) annotation (Line(
+              points={{15,-8},{24,-8}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(smoHea1.y, y) annotation (Line(
+              points={{47,-8},{68,-8},{68,0},{210,0}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-200,
+                    -100},{200,100}}), graphics), Icon(coordinateSystem(
+                  preserveAspectRatio=false, extent={{-200,-100},{200,100}}), graphics));
+        end MFlowMin;
 
         block NoncondensingTanklessHighFlowControl
           "Checks to determine whether or not the heater is able to provide enough heat to meet setpoint at the desired flow rate. Reduces the flow rate as necessary to meet T_set"
@@ -20748,6 +21335,239 @@ First implementation
 </html>"));
         end NoncondensingTanklessHighFlowControl;
 
+        model QFlowMin "Control logic module for minimum heat rate"
+          extends Modelica.Blocks.Interfaces.BlockIcon;
+
+          parameter Modelica.SIunits.SpecificHeatCapacity SpecificHeat
+            "Specific heat of the heated fluid";
+          parameter Modelica.SIunits.Temperature T_Set
+            "Set temperature of the heater";
+          parameter Modelica.SIunits.HeatFlowRate Q_flow_min
+            "Minimum heat rate of the heater";
+          parameter Modelica.SIunits.Time StopDelay "Control reaction time";
+
+        public
+          Modelica.Blocks.Math.Product Q_flow_req
+            annotation (Placement(transformation(extent={{-26,6},{-6,26}})));
+
+          Modelica.Blocks.Interfaces.RealInput mDotDra
+            annotation (Placement(transformation(extent={{-140,60},{-100,100}})));
+          Modelica.Blocks.Interfaces.RealInput TIn
+            annotation (Placement(transformation(extent={{-140,-100},{-100,-60}})));
+          Modelica.Blocks.Interfaces.RealOutput y
+            annotation (Placement(transformation(extent={{200,-10},{220,10}})));
+
+        protected
+            Modelica.Blocks.Sources.RealExpression SpeHea(y=SpecificHeat)
+            annotation (Placement(transformation(extent={{-96,-2},{-76,18}})));
+          Modelica.Blocks.Sources.RealExpression TSet(y=T_Set)
+            annotation (Placement(transformation(extent={{-96,-20},{-76,0}})));
+          Modelica.Blocks.Math.Add add(k2=-1)
+            annotation (Placement(transformation(extent={{-60,-26},{-40,-6}})));
+          Modelica.Blocks.Math.Product product
+            annotation (Placement(transformation(extent={{-60,12},{-40,32}})));
+          Modelica.Blocks.Sources.RealExpression QFloMin(y=Q_flow_min)
+            annotation (Placement(transformation(extent={{-26,-28},{-6,-8}})));
+          Modelica.Blocks.Math.Add add2(k1=-1)
+            annotation (Placement(transformation(extent={{4,-10},{24,10}})));
+          Buildings.Utilities.Math.SmoothHeaviside smoHea(delta=0.000001)
+            annotation (Placement(transformation(extent={{34,-10},{54,10}})));
+        public
+          Modelica.Blocks.Math.RealToBoolean realToBoolean
+            annotation (Placement(transformation(extent={{66,-10},{86,10}})));
+          Modelica.Blocks.Logical.Timer timer
+            annotation (Placement(transformation(extent={{96,-10},{116,10}})));
+          Modelica.Blocks.Sources.RealExpression realExpression(y=StopDelay)
+            annotation (Placement(transformation(extent={{96,-34},{116,-14}})));
+          Modelica.Blocks.Math.Add add1(k1=-1)
+            annotation (Placement(transformation(extent={{128,-16},{148,4}})));
+          Buildings.Utilities.Math.SmoothHeaviside smoothHeaviside(delta=0.00001)
+            annotation (Placement(transformation(extent={{160,-10},{180,10}})));
+        equation
+          connect(Q_flow_req.u1, product.y)
+                                          annotation (Line(
+              points={{-28,22},{-39,22}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(mDotDra, product.u1) annotation (Line(
+              points={{-120,80},{-92,80},{-92,28},{-62,28}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(SpeHea.y, product.u2)       annotation (Line(
+              points={{-75,8},{-72,8},{-72,16},{-62,16}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(TIn, add.u2) annotation (Line(
+              points={{-120,-80},{-80,-80},{-80,-22},{-62,-22}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(TSet.y, add.u1)  annotation (Line(
+              points={{-75,-10},{-62,-10}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(add.y, Q_flow_req.u2)
+                                      annotation (Line(
+              points={{-39,-16},{-32,-16},{-32,10},{-28,10}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(add2.y, smoHea.u) annotation (Line(
+              points={{25,0},{32,0}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(QFloMin.y, add2.u2)  annotation (Line(
+              points={{-5,-18},{-2,-18},{-2,-6},{2,-6}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(Q_flow_req.y, add2.u1)
+                                       annotation (Line(
+              points={{-5,16},{-2,16},{-2,6},{2,6}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(smoHea.y, realToBoolean.u) annotation (Line(
+              points={{55,0},{64,0}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(realToBoolean.y, timer.u) annotation (Line(
+              points={{87,0},{94,0}},
+              color={255,0,255},
+              smooth=Smooth.None));
+          connect(timer.y, add1.u1) annotation (Line(
+              points={{117,0},{126,0}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(realExpression.y, add1.u2) annotation (Line(
+              points={{117,-24},{122,-24},{122,-12},{126,-12}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(add1.y, smoothHeaviside.u) annotation (Line(
+              points={{149,-6},{152,-6},{152,0},{158,0}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(smoothHeaviside.y, y) annotation (Line(
+              points={{181,0},{210,0}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                    -100},{200,100}}), graphics), Icon(coordinateSystem(
+                  preserveAspectRatio=false, extent={{-100,-100},{200,100}})));
+        end QFlowMin;
+
+        model QFlowMinVariableTSet
+          "Control logic module for minimum heat rate (allows a variable setpoint)"
+          extends Modelica.Blocks.Interfaces.BlockIcon;
+
+          parameter Modelica.SIunits.SpecificHeatCapacity SpecificHeat
+            "Specific heat of the heated fluid";
+          parameter Modelica.SIunits.HeatFlowRate Q_flow_min
+            "Minimum heat rate of the heater";
+          parameter Modelica.SIunits.Time StopDelay "Control reaction time";
+
+        public
+          Modelica.Blocks.Math.Product Q_flow_req
+            annotation (Placement(transformation(extent={{-26,6},{-6,26}})));
+
+          Modelica.Blocks.Interfaces.RealInput mDotDra
+            annotation (Placement(transformation(extent={{-140,60},{-100,100}})));
+          Modelica.Blocks.Interfaces.RealInput TIn
+            annotation (Placement(transformation(extent={{-140,-100},{-100,-60}})));
+          Modelica.Blocks.Interfaces.RealOutput y
+            annotation (Placement(transformation(extent={{200,-10},{220,10}})));
+
+        protected
+            Modelica.Blocks.Sources.RealExpression SpeHea(y=SpecificHeat)
+            annotation (Placement(transformation(extent={{-96,-2},{-76,18}})));
+          Modelica.Blocks.Math.Add add(k2=-1)
+            annotation (Placement(transformation(extent={{-60,-26},{-40,-6}})));
+          Modelica.Blocks.Math.Product product
+            annotation (Placement(transformation(extent={{-60,12},{-40,32}})));
+          Modelica.Blocks.Sources.RealExpression QFloMin(y=Q_flow_min)
+            annotation (Placement(transformation(extent={{-26,-28},{-6,-8}})));
+          Modelica.Blocks.Math.Add add2(k1=-1)
+            annotation (Placement(transformation(extent={{4,-10},{24,10}})));
+          Buildings.Utilities.Math.SmoothHeaviside smoHea(delta=0.000001)
+            annotation (Placement(transformation(extent={{34,-10},{54,10}})));
+        public
+          Modelica.Blocks.Math.RealToBoolean realToBoolean
+            annotation (Placement(transformation(extent={{66,-10},{86,10}})));
+          Modelica.Blocks.Logical.Timer timer
+            annotation (Placement(transformation(extent={{96,-10},{116,10}})));
+          Modelica.Blocks.Sources.RealExpression realExpression(y=StopDelay)
+            annotation (Placement(transformation(extent={{96,-34},{116,-14}})));
+          Modelica.Blocks.Math.Add add1(k1=-1)
+            annotation (Placement(transformation(extent={{128,-16},{148,4}})));
+          Buildings.Utilities.Math.SmoothHeaviside smoothHeaviside(delta=0.00001)
+            annotation (Placement(transformation(extent={{160,-10},{180,10}})));
+          Modelica.Blocks.Interfaces.RealInput TSet(unit = "K") "Setpoint"
+            annotation (Placement(transformation(extent={{-140,-30},{-100,10}})));
+        equation
+          connect(Q_flow_req.u1, product.y)
+                                          annotation (Line(
+              points={{-28,22},{-39,22}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(mDotDra, product.u1) annotation (Line(
+              points={{-120,80},{-92,80},{-92,28},{-62,28}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(SpeHea.y, product.u2)       annotation (Line(
+              points={{-75,8},{-72,8},{-72,16},{-62,16}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(TIn, add.u2) annotation (Line(
+              points={{-120,-80},{-80,-80},{-80,-22},{-62,-22}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(add.y, Q_flow_req.u2)
+                                      annotation (Line(
+              points={{-39,-16},{-32,-16},{-32,10},{-28,10}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(add2.y, smoHea.u) annotation (Line(
+              points={{25,0},{32,0}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(QFloMin.y, add2.u2)  annotation (Line(
+              points={{-5,-18},{-2,-18},{-2,-6},{2,-6}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(Q_flow_req.y, add2.u1)
+                                       annotation (Line(
+              points={{-5,16},{-2,16},{-2,6},{2,6}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(smoHea.y, realToBoolean.u) annotation (Line(
+              points={{55,0},{64,0}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(realToBoolean.y, timer.u) annotation (Line(
+              points={{87,0},{94,0}},
+              color={255,0,255},
+              smooth=Smooth.None));
+          connect(timer.y, add1.u1) annotation (Line(
+              points={{117,0},{126,0}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(realExpression.y, add1.u2) annotation (Line(
+              points={{117,-24},{122,-24},{122,-12},{126,-12}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(add1.y, smoothHeaviside.u) annotation (Line(
+              points={{149,-6},{152,-6},{152,0},{158,0}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(smoothHeaviside.y, y) annotation (Line(
+              points={{181,0},{210,0}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(TSet, add.u1) annotation (Line(
+              points={{-120,-10},{-62,-10}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                    -100},{200,100}}), graphics), Icon(coordinateSystem(
+                  preserveAspectRatio=false, extent={{-100,-100},{200,100}})));
+        end QFlowMinVariableTSet;
+
         model StartDelay
           "Identifies when the heater will begin firing at the start of a draw"
           extends Modelica.Blocks.Interfaces.BlockIcon;
@@ -20757,14 +21577,16 @@ First implementation
             "Start delay with a long time between draws";
           parameter Modelica.SIunits.Time t_switch = 30
             "Time between draws required for t_long";
-          Modelica.Blocks.Interfaces.RealInput mDotDra "Water flow rate"
+          parameter Modelica.SIunits.MassFlowRate mDotMin
+            "Minimum mass flow rate for the heater";
+          Modelica.Blocks.Interfaces.RealInput mDotDra "Draw flow rate"
             annotation (Placement(transformation(extent={{-240,-20},{-200,20}}),
                 iconTransformation(extent={{-240,-20},{-200,20}})));
-          Modelica.Blocks.Sources.Constant const(k=0.00001)
+          Modelica.Blocks.Sources.Constant const(k=mDotMin)
             annotation (Placement(transformation(extent={{-196,-96},{-176,-76}})));
           Modelica.Blocks.Logical.Timer timer
             annotation (Placement(transformation(extent={{-72,-62},{-52,-42}})));
-          Modelica.Blocks.Sources.Constant const1(k=0.00001)
+          Modelica.Blocks.Sources.Constant const1(k=mDotMin)
             annotation (Placement(transformation(extent={{-194,74},{-174,94}})));
           Modelica.Blocks.Logical.Timer timer1
             annotation (Placement(transformation(extent={{-38,22},{-18,42}})));
@@ -20973,190 +21795,6 @@ First implementation
                 graphics));
         end StartDelay;
 
-        model mDotMinCheck "Control logic for flow rate vs minimum flow rate"
-          extends Modelica.Blocks.Interfaces.BlockIcon;
-
-          parameter Real mDot_min_cons "Rated minimum flow rate of the heater";
-          parameter Modelica.SIunits.Time stopDelay
-            "Delay between the water flow ceasing and the heat transfer stopping";
-
-          //fixme - How do I move the icons for inputs and outputs on the Icon but not in the diagram?
-
-          Modelica.Blocks.Interfaces.RealInput mDotDra
-            annotation (Placement(transformation(extent={{-140,-20},{-100,20}}),
-                iconTransformation(extent={{-140,-20},{-100,20}})));
-          Modelica.Blocks.Sources.RealExpression mDotMin(y=mDot_min_cons)
-            annotation (Placement(transformation(extent={{-200,-24},{-180,-4}})));
-          Modelica.Blocks.Math.Add add(k1=-1)
-            annotation (Placement(transformation(extent={{-160,-12},{-140,8}})));
-          Buildings.Utilities.Math.SmoothHeaviside smoHea(delta=0.0001)
-            annotation (Placement(transformation(extent={{-130,-12},{-110,8}})));
-          Modelica.Blocks.Math.RealToBoolean realToBoolean
-            annotation (Placement(transformation(extent={{-100,-12},{-80,8}})));
-          Modelica.Blocks.Logical.Timer timer
-            annotation (Placement(transformation(extent={{-72,-12},{-52,8}})));
-          Modelica.Blocks.Sources.RealExpression stoDel(y=stopDelay)
-            "Time after water flow ceases before gas heat delivery stops"
-            annotation (Placement(transformation(extent={{-70,-38},{-50,-18}})));
-          Modelica.Blocks.Math.Add add1(k1=-1)
-            annotation (Placement(transformation(extent={{-24,-22},{-4,-2}})));
-          Buildings.Utilities.Math.SmoothHeaviside smoHea1(delta=0.00001)
-            annotation (Placement(transformation(extent={{8,-22},{28,-2}})));
-          Modelica.Blocks.Interfaces.RealOutput y
-            annotation (Placement(transformation(extent={{200,-10},{220,10}})));
-        equation
-          connect(mDotDra, add.u1) annotation (Line(
-              points={{-120,8.88178e-16},{-190,8.88178e-16},{-190,4},{-162,4}},
-              color={0,0,127},
-              smooth=Smooth.None));
-          connect(mDotMin.y, add.u2) annotation (Line(
-              points={{-179,-14},{-176,-14},{-176,-8},{-162,-8}},
-              color={0,0,127},
-              smooth=Smooth.None));
-          connect(add.y, smoHea.u) annotation (Line(
-              points={{-139,-2},{-132,-2}},
-              color={0,0,127},
-              smooth=Smooth.None));
-          connect(smoHea.y, realToBoolean.u) annotation (Line(
-              points={{-109,-2},{-102,-2}},
-              color={0,0,127},
-              smooth=Smooth.None));
-          connect(realToBoolean.y, timer.u) annotation (Line(
-              points={{-79,-2},{-74,-2}},
-              color={255,0,255},
-              smooth=Smooth.None));
-          connect(timer.y, add1.u1) annotation (Line(
-              points={{-51,-2},{-38,-2},{-38,-6},{-26,-6}},
-              color={0,0,127},
-              smooth=Smooth.None));
-          connect(stoDel.y, add1.u2) annotation (Line(
-              points={{-49,-28},{-38,-28},{-38,-18},{-26,-18}},
-              color={0,0,127},
-              smooth=Smooth.None));
-          connect(add1.y, smoHea1.u) annotation (Line(
-              points={{-3,-12},{6,-12}},
-              color={0,0,127},
-              smooth=Smooth.None));
-          connect(smoHea1.y, y) annotation (Line(
-              points={{29,-12},{66,-12},{66,0},{210,0}},
-              color={0,0,127},
-              smooth=Smooth.None));
-          annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-200,
-                    -100},{200,100}}), graphics), Icon(coordinateSystem(
-                  preserveAspectRatio=false, extent={{-200,-100},{200,100}}), graphics));
-        end mDotMinCheck;
-
-        model QDotMinCheck "Control logic module for minimum heat rate"
-          extends Modelica.Blocks.Interfaces.BlockIcon;
-
-          parameter Modelica.SIunits.SpecificHeatCapacity SpecificHeat
-            "Specific heat of the heated fluid";
-          parameter Modelica.SIunits.Temperature T_Set
-            "Set temperature of the heater";
-          parameter Modelica.SIunits.Time StopDelay
-            "Delay between flow stopping and heat transfer stopping";
-          parameter Modelica.SIunits.HeatFlowRate QDot_min
-            "Minimum heat rate of the heater";
-
-        public
-          Modelica.Blocks.Sources.RealExpression SpeHea(y=SpecificHeat)
-            annotation (Placement(transformation(extent={{-96,-2},{-76,18}})));
-          Modelica.Blocks.Sources.RealExpression TSet(y=T_Set)
-            annotation (Placement(transformation(extent={{-96,-20},{-76,0}})));
-          Modelica.Blocks.Math.Add add(k2=-1)
-            annotation (Placement(transformation(extent={{-60,-26},{-40,-6}})));
-          Modelica.Blocks.Math.Product product
-            annotation (Placement(transformation(extent={{-60,12},{-40,32}})));
-          Modelica.Blocks.Math.Product product1
-            annotation (Placement(transformation(extent={{-26,6},{-6,26}})));
-          Modelica.Blocks.Sources.RealExpression QDotMin(y=QDot_min)
-            annotation (Placement(transformation(extent={{-26,-28},{-6,-8}})));
-          Modelica.Blocks.Math.Add add2(k1=-1)
-            annotation (Placement(transformation(extent={{4,-10},{24,10}})));
-          Buildings.Utilities.Math.SmoothHeaviside smoHea(delta=0.000001)
-            annotation (Placement(transformation(extent={{34,-10},{54,10}})));
-          Modelica.Blocks.Interfaces.RealInput mDotDra
-            annotation (Placement(transformation(extent={{-140,60},{-100,100}})));
-          Modelica.Blocks.Interfaces.RealInput TIn
-            annotation (Placement(transformation(extent={{-140,-100},{-100,-60}})));
-          Modelica.Blocks.Math.RealToBoolean realToBoolean
-            annotation (Placement(transformation(extent={{64,-10},{84,10}})));
-          Modelica.Blocks.Logical.Timer timer
-            annotation (Placement(transformation(extent={{94,-10},{114,10}})));
-          Modelica.Blocks.Sources.RealExpression stoDel(y=StopDelay)
-            annotation (Placement(transformation(extent={{94,-38},{114,-18}})));
-          Modelica.Blocks.Math.Add add1(k1=-1)
-            annotation (Placement(transformation(extent={{128,-22},{148,-2}})));
-          Buildings.Utilities.Math.SmoothHeaviside smoHea1(delta=0.000001)
-            annotation (Placement(transformation(extent={{158,-22},{178,-2}})));
-          Modelica.Blocks.Interfaces.RealOutput y
-            annotation (Placement(transformation(extent={{200,-10},{220,10}})));
-        equation
-          connect(product1.u1, product.y) annotation (Line(
-              points={{-28,22},{-39,22}},
-              color={0,0,127},
-              smooth=Smooth.None));
-          connect(mDotDra, product.u1) annotation (Line(
-              points={{-120,80},{-92,80},{-92,28},{-62,28}},
-              color={0,0,127},
-              smooth=Smooth.None));
-          connect(SpeHea.y, product.u2)       annotation (Line(
-              points={{-75,8},{-72,8},{-72,16},{-62,16}},
-              color={0,0,127},
-              smooth=Smooth.None));
-          connect(TIn, add.u2) annotation (Line(
-              points={{-120,-80},{-80,-80},{-80,-22},{-62,-22}},
-              color={0,0,127},
-              smooth=Smooth.None));
-          connect(TSet.y, add.u1)  annotation (Line(
-              points={{-75,-10},{-62,-10}},
-              color={0,0,127},
-              smooth=Smooth.None));
-          connect(add.y, product1.u2) annotation (Line(
-              points={{-39,-16},{-32,-16},{-32,10},{-28,10}},
-              color={0,0,127},
-              smooth=Smooth.None));
-          connect(add2.y, smoHea.u) annotation (Line(
-              points={{25,0},{32,0}},
-              color={0,0,127},
-              smooth=Smooth.None));
-          connect(QDotMin.y, add2.u2)  annotation (Line(
-              points={{-5,-18},{-2,-18},{-2,-6},{2,-6}},
-              color={0,0,127},
-              smooth=Smooth.None));
-          connect(product1.y, add2.u1) annotation (Line(
-              points={{-5,16},{-2,16},{-2,6},{2,6}},
-              color={0,0,127},
-              smooth=Smooth.None));
-          connect(smoHea.y, realToBoolean.u) annotation (Line(
-              points={{55,0},{62,0}},
-              color={0,0,127},
-              smooth=Smooth.None));
-          connect(realToBoolean.y, timer.u) annotation (Line(
-              points={{85,0},{92,0}},
-              color={255,0,255},
-              smooth=Smooth.None));
-          connect(stoDel.y, add1.u2) annotation (Line(
-              points={{115,-28},{120,-28},{120,-18},{126,-18}},
-              color={0,0,127},
-              smooth=Smooth.None));
-          connect(timer.y, add1.u1) annotation (Line(
-              points={{115,0},{120,0},{120,-6},{126,-6}},
-              color={0,0,127},
-              smooth=Smooth.None));
-          connect(add1.y, smoHea1.u) annotation (Line(
-              points={{149,-12},{156,-12}},
-              color={0,0,127},
-              smooth=Smooth.None));
-          connect(smoHea1.y, y) annotation (Line(
-              points={{179,-12},{188,-12},{188,0},{210,0}},
-              color={0,0,127},
-              smooth=Smooth.None));
-          annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                    -100},{200,100}}), graphics), Icon(coordinateSystem(
-                  preserveAspectRatio=false, extent={{-100,-100},{200,100}})));
-        end QDotMinCheck;
-
         package Examples
           model ControlResponseDelay "Test model for ControlResponseDelay"
             import WaterHeatingLibrary;
@@ -21179,9 +21817,10 @@ First implementation
             import WaterHeatingLibrary;
             extends Modelica.Icons.Example;
             WaterHeatingLibrary.NonCondensingTankless.Controllers.BaseClasses.StartDelay
-              startDelay(t_short=1, t_long=5) annotation (Placement(
+              startDelay(t_short=1, t_long=5,
+              mDotMin=0.016)                  annotation (Placement(
                   transformation(extent={{-22,-10},{18,10}})));
-            Modelica.Blocks.Sources.Step step(height=0.063, startTime=31)
+            Modelica.Blocks.Sources.Step step(              startTime=31, height=0.5)
               annotation (Placement(transformation(extent={{-78,-10},{-58,10}})));
           equation
             connect(step.y, startDelay.mDotDra) annotation (Line(
@@ -21192,11 +21831,12 @@ First implementation
                     extent={{-100,-100},{100,100}}), graphics));
           end StartDelay;
 
-          model StopDelay "Example of the use of StartDelay"
+          model M_flow_min_check "Example of the use of M_flow_min_check"
             import WaterHeatingLibrary;
             extends Modelica.Icons.Example;
-            WaterHeatingLibrary.NonCondensingTankless.Controllers.BaseClasses.mDotMinCheck
-              stopDelay(mDot_min_cons=0.016, stopDelay=2) annotation (Placement(
+            WaterHeatingLibrary.NonCondensingTankless.Controllers.BaseClasses.MFlowMin
+              mDotMin(m_flow_min=0.016, StopDelay=2)
+                                             annotation (Placement(
                   transformation(extent={{-20,-10},{20,10}})));
             Modelica.Blocks.Sources.Step step(
               height=-0.063,
@@ -21204,23 +21844,23 @@ First implementation
               startTime=10) annotation (Placement(transformation(extent={{-88,
                       -10},{-68,10}})));
           equation
-            connect(step.y, stopDelay.mDotDra) annotation (Line(
-                points={{-67,0},{-12,0}},
+            connect(step.y, mDotMin.mDotDra)   annotation (Line(
+                points={{-67,0},{-21.8,0}},
                 color={0,0,127},
                 smooth=Smooth.None));
             annotation (Diagram(coordinateSystem(preserveAspectRatio=false,
                     extent={{-100,-100},{100,100}}), graphics));
-          end StopDelay;
+          end M_flow_min_check;
 
-          model QDotMinCheck "Example showing the use of QDotMinCheck"
+          model Q_flow_min_check "Example showing the use of Q_flow_min_check"
             import WaterHeatingLibrary;
             extends Modelica.Icons.Example;
-            WaterHeatingLibrary.NonCondensingTankless.Controllers.BaseClasses.QDotMinCheck
-              qDotMinCheck(
+            WaterHeatingLibrary.NonCondensingTankless.Controllers.BaseClasses.QFlowMin
+              QFloMin(
               SpecificHeat=4186,
+              Q_flow_min=2000,
               T_Set=333.15,
-              StopDelay=2,
-              QDot_min=1000)
+              StopDelay=2)
               annotation (Placement(transformation(extent={{-10,-6},{20,14}})));
             Modelica.Blocks.Sources.Step step(
               height=-0.063,
@@ -21230,17 +21870,46 @@ First implementation
             Modelica.Blocks.Sources.Constant const(k=15) annotation (Placement(
                   transformation(extent={{-78,-24},{-58,-4}})));
           equation
-            connect(step.y, qDotMinCheck.mDotDra) annotation (Line(
+            connect(step.y, QFloMin.mDotDra)      annotation (Line(
                 points={{-57,16},{-30,16},{-30,12},{-12,12}},
                 color={0,0,127},
                 smooth=Smooth.None));
-            connect(const.y, qDotMinCheck.TIn) annotation (Line(
+            connect(const.y, QFloMin.TIn)      annotation (Line(
                 points={{-57,-14},{-30,-14},{-30,-4},{-12,-4}},
                 color={0,0,127},
                 smooth=Smooth.None));
             annotation (Diagram(coordinateSystem(preserveAspectRatio=false,
                     extent={{-100,-100},{100,100}}), graphics));
-          end QDotMinCheck;
+          end Q_flow_min_check;
+
+          model StopDelay "Test model for StopDelay"
+            import WaterHeatingLibrary;
+            extends Modelica.Icons.Example;
+            WaterHeatingLibrary.NonCondensingTankless.Controllers.BaseClasses.StopDelay
+              stopDelay(StopDelay=5, m_flow_min=0.016)
+              annotation (Placement(transformation(extent={{-10,-8},{10,12}})));
+            Modelica.Blocks.Sources.Step step(
+              height=-0.5,
+              offset=0.5,
+              startTime=5) annotation (Placement(transformation(extent={{-70,20},
+                      {-50,40}})));
+            Modelica.Blocks.Sources.Step step1(
+              height=-0.5,
+              offset=0.5,
+              startTime=6) annotation (Placement(transformation(extent={{-70,
+                      -40},{-50,-20}})));
+          equation
+            connect(step1.y, stopDelay.conSig) annotation (Line(
+                points={{-49,-30},{-26,-30},{-26,-4},{-12,-4}},
+                color={0,0,127},
+                smooth=Smooth.None));
+            connect(step.y, stopDelay.m_flow_dra) annotation (Line(
+                points={{-49,30},{-26,30},{-26,8},{-12,8}},
+                color={0,0,127},
+                smooth=Smooth.None));
+            annotation (Diagram(coordinateSystem(preserveAspectRatio=false,
+                    extent={{-100,-100},{100,100}}), graphics));
+          end StopDelay;
         end Examples;
       end BaseClasses;
 
@@ -21251,7 +21920,11 @@ First implementation
             nonCondensingTanklessHXControllerMediumModel(redeclare package
               Medium = Buildings.Media.ConstantPropertyLiquidWater,
             T_Set_cons=333.15,
-            StopDelay=1)
+            StopDelay=0,
+            ControlDelay=0,
+            t_short=2,
+            t_long=10,
+            t_switch=110)
             annotation (Placement(transformation(extent={{-14,-12},{14,12}})));
           Buildings.Fluid.Sources.Boundary_pT boundary(
             nPorts=1,
@@ -21322,10 +21995,222 @@ First implementation
           annotation (Diagram(coordinateSystem(preserveAspectRatio=false,
                   extent={{-100,-100},{100,100}}), graphics));
         end NonCondensingControllerMediumModel;
+
+        model NonConVariableTSet "Test model for NonConVariableTSet"
+          import WaterHeatingLibrary;
+          extends Modelica.Icons.Example;
+          WaterHeatingLibrary.NonCondensingTankless.Controllers.NonConVariableTSet
+            nonCondensingTanklessHXControllerMediumModel(redeclare package
+              Medium = Buildings.Media.ConstantPropertyLiquidWater,
+            StopDelay=0,
+            t_short=2,
+            t_long=10,
+            t_switch=110,
+            ControlDelay=0.1)
+            annotation (Placement(transformation(extent={{-14,-12},{14,12}})));
+          Buildings.Fluid.Sources.Boundary_pT boundary(
+            nPorts=1,
+            redeclare package Medium =
+                Buildings.Media.ConstantPropertyLiquidWater,
+            p=110000,
+            T=288.15)
+            annotation (Placement(transformation(extent={{-94,-20},{-74,0}})));
+          Buildings.Fluid.Sources.Boundary_pT boundary1(
+            nPorts=1,
+            redeclare package Medium =
+                Buildings.Media.ConstantPropertyLiquidWater,
+            p=101325)
+            annotation (Placement(transformation(extent={{92,-18},{72,2}})));
+          Buildings.Fluid.Actuators.Valves.TwoWayLinear val(
+            redeclare package Medium =
+                Buildings.Media.ConstantPropertyLiquidWater,
+            m_flow_nominal=0.06,
+            dpValve_nominal=1,
+            l=1e-10,
+            riseTime=0.00000001,
+            y_start=0)
+            annotation (Placement(transformation(extent={{34,-18},{54,2}})));
+          Modelica.Blocks.Sources.Constant const annotation (Placement(
+                transformation(extent={{-78,-66},{-58,-46}})));
+          Modelica.Blocks.Sources.Constant pwrSig(k=1)
+            annotation (Placement(transformation(extent={{-94,12},{-74,32}})));
+          Modelica.Blocks.Sources.Constant T_Out(k=273.15 + 60)
+            annotation (Placement(transformation(extent={{-92,44},{-72,64}})));
+          Modelica.Blocks.Sources.Ramp ramp(
+            duration=600, height=0.25)
+            annotation (Placement(transformation(extent={{10,20},{30,40}})));
+          Modelica.Blocks.Sources.Constant TSet(k=273.15 + 50)
+            annotation (Placement(transformation(extent={{-92,74},{-72,94}})));
+        equation
+          connect(boundary.ports[1],
+            nonCondensingTanklessHXControllerMediumModel.port_a) annotation (
+              Line(
+              points={{-74,-10},{-36,-10},{-36,-8.352},{-14.4073,-8.352}},
+              color={0,127,255},
+              smooth=Smooth.None));
+          connect(nonCondensingTanklessHXControllerMediumModel.port_b, val.port_a)
+            annotation (Line(
+              points={{14.5091,-8.352},{24.2546,-8.352},{24.2546,-8},{34,-8}},
+              color={0,127,255},
+              smooth=Smooth.None));
+          connect(val.port_b, boundary1.ports[1]) annotation (Line(
+              points={{54,-8},{72,-8}},
+              color={0,127,255},
+              smooth=Smooth.None));
+          connect(const.y, nonCondensingTanklessHXControllerMediumModel.TAmb)
+            annotation (Line(
+              points={{-57,-56},{-26,-56},{-26,-11.04},{-16.0364,-11.04}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(pwrSig.y, nonCondensingTanklessHXControllerMediumModel.PowerSignal)
+            annotation (Line(
+              points={{-73,22},{-64,22},{-64,-4.32},{-16.0364,-4.32}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(T_Out.y, nonCondensingTanklessHXControllerMediumModel.T_out)
+            annotation (Line(
+              points={{-71,54},{-56,54},{-56,-0.288},{-16.0364,-0.288}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(ramp.y, val.y) annotation (Line(
+              points={{31,30},{44,30},{44,4}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          connect(TSet.y, nonCondensingTanklessHXControllerMediumModel.TSet)
+            annotation (Line(
+              points={{-71,84},{-48,84},{-48,4.32},{-16.0364,4.32}},
+              color={0,0,127},
+              smooth=Smooth.None));
+          annotation (Diagram(coordinateSystem(preserveAspectRatio=false,
+                  extent={{-100,-100},{100,100}}), graphics));
+        end NonConVariableTSet;
       end Examples;
     end Controllers;
 
     package Examples
+      model CharacterizationModel
+        "Model used to identify the parameters describing a given tankless water heater"
+        import WaterHeatingLibrary;
+        extends Modelica.Icons.Example;
+
+        package Water = Buildings.Media.ConstantPropertyLiquidWater
+          "Package used to represent water in the system";
+
+        Modelica.Blocks.Sources.CombiTimeTable combiTimeTable(
+          tableOnFile=true,
+          tableName="Data",
+          columns=2:7,
+          fileName=
+              "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForValidation/Rheem84DVLNValidation.txt")
+          annotation (Placement(transformation(extent={{-66,24},{-46,44}})));
+
+        Buildings.Fluid.Sources.MassFlowSource_T boundary(
+          use_m_flow_in=true,
+          use_T_in=true,
+          redeclare package Medium = Water,
+          nPorts=1)
+          annotation (Placement(transformation(extent={{-26,-42},{-6,-22}})));
+        Buildings.Fluid.Sources.Boundary_pT bou(          redeclare package
+            Medium = Water, nPorts=1)                     annotation (Placement(
+              transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=90,
+              origin={56,-58})));
+        Modelica.Blocks.Sources.Step TSet(
+          height=-5,
+          offset=5,
+          startTime=3900)
+          annotation (Placement(transformation(extent={{-104,-28},{-84,-8}})));
+        Modelica.Thermal.FluidHeatFlow.Examples.Utilities.DoubleRamp doubleRamp(
+          offset=0,
+          startTime=500,
+          height_1=1,
+          duration_1=1,
+          duration_2=1,
+          interval=13500,
+          height_2=-1)
+          annotation (Placement(transformation(extent={{14,-18},{34,2}})));
+        Modelica.Blocks.Sources.Constant const(k=273 + 41)
+          annotation (Placement(transformation(extent={{-104,4},{-84,24}})));
+        Modelica.Thermal.FluidHeatFlow.Examples.Utilities.DoubleRamp
+          doubleRamp1(
+          offset=0,
+          startTime=6800,
+          interval=1200,
+          height_1=4.4,
+          duration_1=1,
+          height_2=-4.4,
+          duration_2=1)
+          annotation (Placement(transformation(extent={{-104,-60},{-84,-40}})));
+        Modelica.Blocks.Math.MultiSum multiSum(nu=3)
+          annotation (Placement(transformation(extent={{-2,10},{10,24}})));
+        WaterHeatingLibrary.NonCondensingTankless.NonConVariableTSet nonCon(
+          redeclare package Medium = Water,
+          t_switch=200,
+          QAct=60,
+          QIdl=3,
+          ControlDelay=0.01,
+          Capacitance=17505,
+          UA=3,
+          m_flow_min_deadband=0.0016,
+          Q_flow_rated=58300,
+          Q_flow_min=3200,
+          SteadyStateEff=0.854,
+          StopDelay=0.01,
+          t_short=11,
+          t_long=11,
+          PID_I=12086,
+          PID_P=0.85,
+          PID_D=9.55,
+          m_flow_min=0.016)
+          annotation (Placement(transformation(extent={{52,-8},{88,28}})));
+      equation
+        connect(combiTimeTable.y[2], boundary.T_in) annotation (Line(
+            points={{-45,34},{-38,34},{-38,-28},{-28,-28}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(combiTimeTable.y[4], boundary.m_flow_in) annotation (Line(
+            points={{-45,34},{-38,34},{-38,-24},{-26,-24}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(const.y, multiSum.u[1]) annotation (Line(
+            points={{-83,14},{-42,14},{-42,20.2667},{-2,20.2667}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(TSet.y, multiSum.u[2]) annotation (Line(
+            points={{-83,-18},{-58,-18},{-58,-16},{-34,-16},{-34,17},{-2,17}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(doubleRamp1.y, multiSum.u[3]) annotation (Line(
+            points={{-83,-50},{-4,-50},{-4,2},{-8,2},{-8,13.7333},{-2,13.7333}},
+            color={0,0,127},
+            smooth=Smooth.None));
+
+        connect(doubleRamp.y, nonCon.pwrSig) annotation (Line(
+            points={{35,-8},{42,-8},{42,-6.56},{48.4,-6.56}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(boundary.ports[1], nonCon.colWatIn) annotation (Line(
+            points={{-6,-32},{64.6,-32},{64.6,-8.144}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(bou.ports[1], nonCon.hotWatOut) annotation (Line(
+            points={{56,-48},{58,-48},{58,-8},{59.92,-8}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(multiSum.y, nonCon.TSet) annotation (Line(
+            points={{11.02,17},{28,17},{28,10.72},{48.4,10.72}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(combiTimeTable.y[3], nonCon.AmbientTemperature) annotation (
+            Line(
+            points={{-45,34},{36,34},{36,19.648},{48.4,19.648}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+                  -100},{100,100}}), graphics));
+      end CharacterizationModel;
+
       model NonCondensingTanklessExample
         import TanklessWaterHeater = WaterHeatingLibrary.NonCondensingTankless;
         extends Modelica.Icons.Example;
@@ -21401,131 +22286,6 @@ First implementation
             smooth=Smooth.None));
         annotation (Diagram(graphics));
       end NonCondensingTanklessExample;
-
-      model StartDelayExample
-
-        extends Modelica.Icons.Example;
-
-        Controllers.BaseClasses.StartDelay
-                               startDelay
-          annotation (Placement(transformation(extent={{-18,0},{2,20}})));
-        Modelica.Blocks.Tables.CombiTable1Ds combiTable1Ds(
-          tableOnFile=true,
-          tableName="Flow",
-          fileName="TanklessExampleDemandFlowPattern.txt")
-          annotation (Placement(transformation(extent={{-62,0},{-42,20}})));
-        Modelica.Blocks.Sources.RealExpression realExpression(y=time)
-          annotation (Placement(transformation(extent={{-98,0},{-78,20}})));
-      equation
-        connect(realExpression.y, combiTable1Ds.u) annotation (Line(
-            points={{-77,10},{-64,10}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(combiTable1Ds.y[1], startDelay.mDotDra) annotation (Line(
-            points={{-41,10},{-30.5,10},{-30.5,10},{-20,10}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        annotation (Diagram(graphics));
-      end StartDelayExample;
-
-      model TanklessValidationJay
-        "Tankless model used to validate Jay Burchs work"
-
-        extends Modelica.Icons.Example;
-
-        parameter Real Cap_input = 8360;
-        parameter Real SteadyStateEff_input = 0.802;
-        parameter Real UA_input = 3.6;
-        parameter Real T_Set_input = 54.444;
-        parameter Real mdot_min_input = 0.043;
-        parameter Real SpecificHeat_input = 4190;
-        parameter Real EffPilot_input = 0.8;
-        parameter Real Qdot_Pilot_input = 0;
-        parameter Real Qdot_Rated_input = 55555;
-        parameter Real Qdot_min_input = 5275;
-        parameter Real t_short = 3;
-        parameter Real t_long = 10;
-        parameter Real t_switch = 30;
-        parameter Real QAct = 2;
-        parameter Real QIdl = 50;
-
-        NonCondSteadyStateIntegrators
-          nonCondensingTanklessHeater(
-          SteadyStateEff_input=SteadyStateEff_input,
-          UA_input=UA_input,
-          T_Set_input=T_Set_input,
-          mdot_min_input=mdot_min_input,
-          SpecificHeat_input=SpecificHeat_input,
-          EffPilot_input=EffPilot_input,
-          Qdot_Pilot_input=Qdot_Pilot_input,
-          Qdot_Rated_input=Qdot_Rated_input,
-          Qdot_min_input=Qdot_min_input,
-          Capacitance_input=Cap_input,
-          nNode_input=10,
-          t_short=0,
-          t_long=0,
-          t_switch=0)
-          annotation (Placement(transformation(extent={{20,-12},{66,46}})));
-        Modelica.Blocks.Sources.RealExpression Time(y=time)
-          annotation (Placement(transformation(extent={{-90,6},{-70,26}})));
-        Modelica.Blocks.Tables.CombiTable1Ds TAmb(
-          tableOnFile=true,
-          tableName="Ambient",
-          columns={2},
-          fileName="TanklessExampleAmbientTemperature.txt")
-          annotation (Placement(transformation(extent={{-50,46},{-30,66}})));
-        Modelica.Blocks.Tables.CombiTable1Ds TIn(
-          tableOnFile=true,
-          columns={2},
-          tableName="Inlet",
-          fileName="TanklessExampleInletTemperature.txt")
-          annotation (Placement(transformation(extent={{-50,20},{-30,40}})));
-        Modelica.Blocks.Tables.CombiTable1Ds pwrSig(
-          tableOnFile=true,
-          tableName="Power",
-          columns={2},
-          fileName="TanklessExamplePowerSignal.txt")
-          annotation (Placement(transformation(extent={{-50,-32},{-30,-12}})));
-        Modelica.Blocks.Sources.CombiTimeTable draPat(
-          tableOnFile=true,
-          tableName="Flow",
-          fileName="/home/peter/JayValidation/TanklessExampleDemandFlowPattern.txt")
-          annotation (Placement(transformation(extent={{-50,-6},{-30,14}})));
-      equation
-        connect(Time.y,TIn. u) annotation (Line(
-            points={{-69,16},{-60,16},{-60,30},{-52,30}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(Time.y,TAmb. u) annotation (Line(
-            points={{-69,16},{-60,16},{-60,56},{-52,56}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(TAmb.y[1],nonCondensingTanklessHeater. AmbientTemperature)
-          annotation (Line(
-            points={{-29,56},{-8,56},{-8,41.7467},{16.32,41.7467}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(TIn.y[1],nonCondensingTanklessHeater. InletTemperature)
-          annotation (Line(
-            points={{-29,30},{-6.8,30},{-6.8,27.8267},{16.32,27.8267}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(pwrSig.y[1],nonCondensingTanklessHeater. pwrSig) annotation (Line(
-            points={{-29,-22},{-8,-22},{-8,-0.786667},{16.32,-0.786667}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(Time.y,pwrSig. u) annotation (Line(
-            points={{-69,16},{-60,16},{-60,-22},{-52,-22}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(draPat.y[1], nonCondensingTanklessHeater.DemandFlowRate) annotation (
-            Line(
-            points={{-29,4},{-6,4},{-6,14.68},{16.32,14.68}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                  -100},{100,100}}), graphics));
-      end TanklessValidationJay;
 
       model NonCondensingMediumModel
         extends Modelica.Icons.Example;
@@ -21640,80 +22400,140 @@ First implementation
                   -100},{100,100}}), graphics));
       end NonCondensingMediumModel;
 
-      model CharacterizationModel
-        "Model used to identify the parameters describing a given tankless water heater"
+      model NonConVariableTSet "Test model for NonConVariableTSet"
+        import WaterHeatingLibrary;
         extends Modelica.Icons.Example;
-
-        package Water = Buildings.Media.ConstantPropertyLiquidWater
-          "Package used to represent water in the system";
-
-        NonCondensingTanklessHeaterMediumModel nonCon(redeclare package Medium
-            = Water,
-          T_Set_input=273.15 + 38,
-          SteadyStateEff_input=0.85,
-          SpecificHeat_input=4186,
-          Qdot_Rated_input=58300,
-          Qdot_min_input=3200,
-          t_short=2,
-          t_long=10,
-          t_switch=600,
-          QAct=60,
-          QIdl=3,
-          mdot_min_input=0.025,
-          StopDelay=5,
-          ControlDelay=0.5)
-          annotation (Placement(transformation(extent={{52,2},{72,26}})));
-        Modelica.Blocks.Sources.CombiTimeTable combiTimeTable(
+        WaterHeatingLibrary.NonCondensingTankless.NonConVariableTSet nonCon(
+          redeclare package Medium =
+              Buildings.Media.ConstantPropertyLiquidWater,
+          mdot_min_input=0.018,
+          ControlDelay=0.1)
+          annotation (Placement(transformation(extent={{-26,-34},{-6,-10}})));
+        Modelica.Blocks.Sources.CombiTimeTable TAmb(
           tableOnFile=true,
-          tableName="Data",
           fileName=
-              "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForValidation/Rheem84DVLNEffSSCharacterization.txt",
-          columns=2:7)
-          annotation (Placement(transformation(extent={{-66,24},{-46,44}})));
-
-        Modelica.Blocks.Sources.Step     const(startTime=500)
-          annotation (Placement(transformation(extent={{14,0},{34,20}})));
-        Buildings.Fluid.Sources.MassFlowSource_T boundary(
+              "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchTAmb.txt",
+          tableName="TAmb") "Temperature surrounding the system(unit = K)"
+          annotation (Placement(transformation(extent={{-96,-8},{-76,12}})));
+        Modelica.Blocks.Sources.CombiTimeTable TIn(
+          tableOnFile=true,
+          tableName="Temp",
+          fileName=
+              "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchTIn.txt")
+          "Inlet temperature (unit = K)"
+          annotation (Placement(transformation(extent={{-96,20},{-76,40}})));
+        Modelica.Blocks.Sources.CombiTimeTable pwrSig(
+          tableOnFile=true,
+          tableName="pwr",
+          fileName=
+              "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchpwr.txt")
+          "Power signal (1 = on, 0 = off)"
+          annotation (Placement(transformation(extent={{-96,-76},{-76,-56}})));
+        Buildings.Fluid.Sources.Boundary_pT boundary(
+          redeclare package Medium =
+              Buildings.Media.ConstantPropertyLiquidWater,
           nPorts=1,
-          use_m_flow_in=true,
-          use_T_in=true,
-          redeclare package Medium = Water)
-          annotation (Placement(transformation(extent={{-26,-22},{-6,-2}})));
-        Buildings.Fluid.Sources.Boundary_pT bou(nPorts=1, redeclare package
-            Medium = Water)                               annotation (Placement(
-              transformation(
+          p=101325) annotation (Placement(transformation(
               extent={{-10,-10},{10,10}},
-              rotation=90,
-              origin={56,-38})));
+              rotation=180,
+              origin={80,-10})));
+        Buildings.Fluid.Sources.Boundary_pT boundary1(
+          redeclare package Medium =
+              Buildings.Media.ConstantPropertyLiquidWater,
+          use_T_in=true,
+          p=110000,
+          nPorts=1)
+          annotation (Placement(transformation(extent={{-66,16},{-46,36}})));
+        Buildings.Fluid.Actuators.Valves.TwoWayLinear val(
+          redeclare package Medium =
+              Buildings.Media.ConstantPropertyLiquidWater,
+          m_flow_nominal=0.06,
+          dpValve_nominal=1,
+          l=1e-10,
+          riseTime=0.000001,
+          y_start=0)
+          annotation (Placement(transformation(extent={{42,-20},{62,0}})));
+        Modelica.Blocks.Sources.Ramp ramp(duration=600, height=0.125)
+          annotation (Placement(transformation(extent={{16,50},{36,70}})));
+        HWDis.Components.PipeLumpedCap
+                               pip(
+          redeclare package Medium =
+              Buildings.Media.ConstantPropertyLiquidWater,
+          m_flow_nominal=0.06,
+          dp_nominal=1,
+          thicknessIns=0.1,
+          lambdaIns=0.12,
+          length=10,
+          MixCoef=0.6,
+          diameter_i=0.019939,
+          diameter_o=0.02,
+          c_p_pip=4190,
+          rho_pip=870,
+          til=0,
+          ePipe=0.95)
+          annotation (Placement(transformation(extent={{10,-20},{30,0}})));
+        Modelica.Blocks.Sources.Constant TSet(k=273.15 + 60)
+          annotation (Placement(transformation(extent={{-96,-40},{-76,-20}})));
+        Modelica.Blocks.Sources.Constant const
+          annotation (Placement(transformation(extent={{-80,60},{-60,80}})));
       equation
-        connect(const.y, nonCon.pwrSig) annotation (Line(
-            points={{35,10},{42,10},{42,2.96},{50,2.96}},
+        connect(pwrSig.y[1], nonCon.pwrSig)
+          annotation (Line(
+            points={{-75,-66},{-44,-66},{-44,-33.04},{-28,-33.04}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(boundary.ports[1], nonCon.colWatIn) annotation (Line(
-            points={{-6,-12},{59.6,-12},{59.6,2}},
+        connect(TAmb.y[1], nonCon.AmbientTemperature)
+          annotation (Line(
+            points={{-75,2},{-54,2},{-54,-15.184},{-28,-15.184}},
+            color={0,0,127},
+            smooth=Smooth.None));
+
+        connect(TIn.y[1], boundary1.T_in) annotation (Line(
+            points={{-75,30},{-68,30}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(val.port_b, boundary.ports[1]) annotation (Line(
+            points={{62,-10},{70,-10}},
             color={0,127,255},
             smooth=Smooth.None));
-        connect(bou.ports[1], nonCon.hotWatOut) annotation (Line(
-            points={{56,-28},{56,2}},
+        connect(ramp.y, val.y) annotation (Line(
+            points={{37,60},{52,60},{52,2}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(pip.port_b, val.port_a) annotation (Line(
+            points={{30,-10},{42,-10}},
             color={0,127,255},
             smooth=Smooth.None));
-        connect(combiTimeTable.y[2], boundary.T_in) annotation (Line(
-            points={{-45,34},{-38,34},{-38,-8},{-28,-8}},
+        connect(boundary1.ports[1], nonCon.colWatIn)
+          annotation (Line(
+            points={{-46,26},{-34,26},{-34,-50},{-18.4,-50},{-18.4,-34}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(pip.port_a, nonCon.hotWatOut)
+          annotation (Line(
+            points={{10,-10},{2,-10},{2,-44},{-22,-44},{-22,-34}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(TSet.y, nonCon.u)                                 annotation (Line(
+            points={{-75,-30},{-54,-30},{-54,-19.6},{-28,-19.6}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(combiTimeTable.y[3], nonCon.AmbientTemperature) annotation (
-            Line(
-            points={{-45,34},{40,34},{40,20.816},{50,20.816}},
+        connect(TAmb.y[1], pip.TAmb) annotation (Line(
+            points={{-75,2},{14,2},{14,-3}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(combiTimeTable.y[4], boundary.m_flow_in) annotation (Line(
-            points={{-45,34},{-38,34},{-38,-4},{-26,-4}},
+        connect(TAmb.y[1], pip.TRadMea) annotation (Line(
+            points={{-75,2},{26,2},{26,-3}},
             color={0,0,127},
             smooth=Smooth.None));
-        annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
+          annotation (Line(
+            points={{21,-28.624},{28,-28.624},{28,-60},{-96,-60},{-96,18},{-42,18},{-42,
+                6}},
+            color={0,0,127},
+            smooth=Smooth.None),
+                    Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
                   -100},{100,100}}), graphics));
-      end CharacterizationModel;
+      end NonConVariableTSet;
     end Examples;
     annotation (
       conversion(noneFromVersion=""));
@@ -22491,4 +23311,142 @@ Rate Control")}),                               Diagram(graphics));
   end CondensingTankless;
   annotation (uses(Modelica(version="3.2"), Buildings(version="1.4"),
       TanklessWaterHeater(version="1")));
+  package CombiSystems "Models of combi DHW and space heating systems"
+    extends Modelica.Icons.Package;
+    model AHU "Model of a typical AHU used in combi systems"
+      extends Modelica.Blocks.Interfaces.BlockIcon;
+      Modelica.Fluid.Interfaces.FluidPort_a port_a
+        annotation (Placement(transformation(extent={{-110,70},{-90,90}})));
+      Modelica.Fluid.Interfaces.FluidPort_b port_b
+        annotation (Placement(transformation(extent={{-110,-90},{-90,-70}})));
+      Modelica.Fluid.Interfaces.FluidPort_a port_a1
+        annotation (Placement(transformation(extent={{-10,-110},{10,-90}})));
+      Modelica.Fluid.Interfaces.FluidPort_b port_b1
+        annotation (Placement(transformation(extent={{-10,90},{10,110}})));
+    equation
+
+      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{
+                -100,-100},{100,100}}), graphics));
+    end AHU;
+
+    package Examples "Models of compelte combi systems"
+      extends Modelica.Icons.ExamplesPackage;
+      model CondTWHAndHydronicAHU
+        "Model of a combi system using a condensing tankless water heater and hydronic AHU"
+        extends Modelica.Icons.Example;
+        NonCondensingTankless.NonCondensingTanklessHeaterMediumModel nonCon
+          annotation (Placement(transformation(extent={{-68,22},{-48,46}})));
+        AHU aHU annotation (Placement(transformation(extent={{50,-8},{70,12}})));
+        HWDis.Components.BasePipe pip annotation (Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=90,
+              origin={-66,-2})));
+        HWDis.Components.BasePipe pip1 annotation (Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=90,
+              origin={-40,62})));
+        HWDis.Components.BasePipe pip2
+          annotation (Placement(transformation(extent={{-28,6},{-8,26}})));
+        HWDis.Components.BasePipe pip3
+          annotation (Placement(transformation(extent={{14,-32},{-6,-12}})));
+        Buildings.Fluid.Movers.FlowMachine_m_flow fan
+          annotation (Placement(transformation(extent={{6,6},{26,26}})));
+        Buildings.Fluid.Sources.Boundary_pT DHWOut(nPorts=1) annotation (
+            Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=270,
+              origin={-40,90})));
+        Buildings.Fluid.Sources.Boundary_pT bou1(nPorts=1) annotation (
+            Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=270,
+              origin={60,90})));
+        Buildings.Fluid.Sources.MassFlowSource_T DHWIn(
+          nPorts=1,
+          use_m_flow_in=true,
+          use_T_in=true) annotation (Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=90,
+              origin={-66,-46})));
+        Buildings.Fluid.Sources.MassFlowSource_T boundary1(
+          nPorts=1,
+          use_m_flow_in=true,
+          use_T_in=true) annotation (Placement(transformation(
+              extent={{-10,-10},{10,10}},
+              rotation=90,
+              origin={60,-36})));
+        Modelica.Blocks.Sources.CombiTimeTable DHWProfile annotation (Placement(
+              transformation(extent={{-100,-100},{-80,-80}})));
+        Modelica.Blocks.Sources.CombiTimeTable HeatCont
+          annotation (Placement(transformation(extent={{10,-100},{30,-80}})));
+      equation
+        connect(pip.port_b, nonCon.colWatIn) annotation (Line(
+            points={{-66,8},{-66,21.808},{-65.2,21.808}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(nonCon.hotWatOut, pip1.port_a) annotation (Line(
+            points={{-51.2,21.808},{-51.2,16},{-40,16},{-40,52}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(nonCon.hotWatOut, pip2.port_a) annotation (Line(
+            points={{-51.2,21.808},{-51.2,16},{-28,16}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(pip2.port_b, fan.port_a) annotation (Line(
+            points={{-8,16},{6,16}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(fan.port_b, aHU.port_a) annotation (Line(
+            points={{26,16},{32,16},{32,10},{50,10}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(aHU.port_b, pip3.port_a) annotation (Line(
+            points={{50,-6},{32,-6},{32,-22},{14,-22}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(pip3.port_b, pip.port_a) annotation (Line(
+            points={{-6,-22},{-66,-22},{-66,-12}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(pip1.port_b, DHWOut.ports[1]) annotation (Line(
+            points={{-40,72},{-40,80}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(bou1.ports[1], aHU.port_b1) annotation (Line(
+            points={{60,80},{60,12}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(boundary1.ports[1], aHU.port_a1) annotation (Line(
+            points={{60,-26},{60,-8}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(DHWIn.ports[1], pip.port_a) annotation (Line(
+            points={{-66,-36},{-66,-12}},
+            color={0,127,255},
+            smooth=Smooth.None));
+        connect(DHWProfile.y[1], DHWIn.m_flow_in) annotation (Line(
+            points={{-79,-90},{-74,-90},{-74,-56}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(DHWProfile.y[2], DHWIn.T_in) annotation (Line(
+            points={{-79,-90},{-70,-90},{-70,-58}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(HeatCont.y[1], boundary1.m_flow_in) annotation (Line(
+            points={{31,-90},{52,-90},{52,-46}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(HeatCont.y[2], boundary1.T_in) annotation (Line(
+            points={{31,-90},{56,-90},{56,-48}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        connect(HeatCont.y[3], fan.m_flow_in) annotation (Line(
+            points={{31,-90},{36,-90},{36,34},{15.8,34},{15.8,28}},
+            color={0,0,127},
+            smooth=Smooth.None));
+        annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent=
+                  {{-100,-100},{100,100}}), graphics));
+      end CondTWHAndHydronicAHU;
+    end Examples;
+  end CombiSystems;
 end WaterHeatingLibrary;
