@@ -214,13 +214,13 @@ package WaterHeatingLibrary "Library of water heating models and packages"
       NonCondensingTankless.NonCondensingTanklessHeaterMediumModelConstantGamma
         nonCon(
         redeclare package Medium = Buildings.Media.ConstantPropertyLiquidWater,
-
         Capacitance_input=17505,
         SteadyStateEff_input=0.854,
         UA_input=3,
         mdot_min_input=0.016,
         StopDelay=1)
         annotation (Placement(transformation(extent={{-14,-8},{6,18}})));
+
     equation
       connect(tru1.port_b, tru2.port_a) annotation (Line(
           points={{56,4},{94,4}},
@@ -449,7 +449,7 @@ package WaterHeatingLibrary "Library of water heating models and packages"
         UA_input=3,
         mdot_min_input=0.016,
         StopDelay=0.01)
-        annotation (Placement(transformation(extent={{-176,80},{-146,130}})));
+        annotation (Placement(transformation(extent={{-162,80},{-132,130}})));
 
       Buildings.Fluid.Sources.Boundary_pT Mains(
         nPorts=2,
@@ -811,12 +811,12 @@ package WaterHeatingLibrary "Library of water heating models and packages"
           smooth=Smooth.None));
       connect(pwrSig.y[1], nonCon.pwrSig)
         annotation (Line(
-          points={{-215,82},{-179,82}},
+          points={{-215,82},{-165,82}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(TAmb.y[1], nonCon.AmbientTemperature)
         annotation (Line(
-          points={{-253,-12},{-246,-12},{-246,119.2},{-179,119.2}},
+          points={{-253,-12},{-246,-12},{-246,119.2},{-165,119.2}},
           color={0,0,127},
           smooth=Smooth.None));
 
@@ -854,7 +854,7 @@ package WaterHeatingLibrary "Library of water heating models and packages"
           smooth=Smooth.None));
       connect(Mains.ports[1], nonCon.colWatIn)
         annotation (Line(
-          points={{-172,46},{-171.8,46},{-171.8,79.6}},
+          points={{-172,46},{-157.8,46},{-157.8,79.6}},
           color={0,127,255},
           smooth=Smooth.None));
       connect(TIn.y[1], Mains.T_in) annotation (Line(
@@ -863,7 +863,7 @@ package WaterHeatingLibrary "Library of water heating models and packages"
           smooth=Smooth.None));
       connect(nonCon.hotWatOut, hTru1.port_a)
         annotation (Line(
-          points={{-150.8,79.6},{-150.8,60},{10,60}},
+          points={{-136.8,79.6},{-136.8,60},{10,60}},
           color={0,127,255},
           smooth=Smooth.None));
       connect(hTwi1.port_b, Sink.hotIn) annotation (Line(
@@ -899,7 +899,7 @@ package WaterHeatingLibrary "Library of water heating models and packages"
           color={0,127,255},
           smooth=Smooth.None));
       connect(Mains.ports[2], cTru1.port_a) annotation (Line(
-          points={{-172,42},{-164,42},{-164,-126},{10,-126}},
+          points={{-172,42},{-158,42},{-158,-126},{10,-126}},
           color={0,127,255},
           smooth=Smooth.None));
       connect(prescribedTemperature.port, hTru1.heatPort) annotation (Line(
@@ -996,7 +996,7 @@ package WaterHeatingLibrary "Library of water heating models and packages"
       package Water = Buildings.Media.ConstantPropertyLiquidWater
         "Fluid in the system";
 
-      parameter Modelica.SIunits.Temperature T_start_dis = 273.15+30
+      parameter Modelica.SIunits.Temperature T_start_dis[20] = {273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30}
         "Initial temperature in the distribution system";
 
       NonCondensingTank.SimplifiedStorageTankMediumModel tan(
@@ -1025,7 +1025,6 @@ package WaterHeatingLibrary "Library of water heating models and packages"
         m_flow_nominal=0.1,
         dp_nominal=1,
         allowFlowReversal=false,
-        nSeg=20,
         MixCoef=0.6,
         diameter_i=0.019939,
         c_p_pip=390,
@@ -1036,7 +1035,8 @@ package WaterHeatingLibrary "Library of water heating models and packages"
         redeclare package Medium = Water,
         thicknessIns=0.0127,
         lambdaIns=0.04,
-        T_start=T_start_dis) "First section of the trunk pipe"
+        T_Initial=T_start_dis,
+        nSeg=20) "First section of the trunk pipe"
         annotation (Placement(transformation(extent={{24,-2},{44,18}})));
 
       HWDis.Components.PipeLumpedCap
@@ -1055,7 +1055,7 @@ package WaterHeatingLibrary "Library of water heating models and packages"
         redeclare package Medium = Water,
         thicknessIns=0.0127,
         lambdaIns=0.04,
-        T_start=T_start_dis)    annotation (Placement(transformation(
+        T_Initial=T_start_dis)    annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=0,
             origin={66,44})));
@@ -1076,7 +1076,7 @@ package WaterHeatingLibrary "Library of water heating models and packages"
         redeclare package Medium = Water,
         thicknessIns=0.0127,
         lambdaIns=0.04,
-        T_start=T_start_dis)    annotation (Placement(transformation(
+        T_Initial=T_start_dis)    annotation (Placement(transformation(
             extent={{-10,-10},{10,10}},
             rotation=0,
             origin={150,-28})));
@@ -1097,7 +1097,7 @@ package WaterHeatingLibrary "Library of water heating models and packages"
         redeclare package Medium = Water,
         thicknessIns=0.0127,
         lambdaIns=0.04,
-        T_start=T_start_dis)
+        T_Initial=T_start_dis)
         annotation (Placement(transformation(extent={{140,68},{160,88}})));
 
       HWDis.Components.PipeLumpedCap
@@ -1116,7 +1116,7 @@ package WaterHeatingLibrary "Library of water heating models and packages"
         redeclare package Medium = Water,
         thicknessIns=0.0127,
         lambdaIns=0.04,
-        T_start=T_start_dis)
+        T_Initial=T_start_dis)
         annotation (Placement(transformation(extent={{140,34},{160,54}})));
 
       HWDis.Components.PipeLumpedCap
@@ -1135,7 +1135,7 @@ package WaterHeatingLibrary "Library of water heating models and packages"
         redeclare package Medium = Water,
         thicknessIns=0.0127,
         lambdaIns=0.04,
-        T_start=T_start_dis)
+        T_Initial=T_start_dis)
         annotation (Placement(transformation(extent={{84,-2},{104,18}})));
 
       HWDis.Components.PipeLumpedCap
@@ -1154,27 +1154,26 @@ package WaterHeatingLibrary "Library of water heating models and packages"
         redeclare package Medium = Water,
         thicknessIns=0.0127,
         lambdaIns=0.04,
-        T_start=T_start_dis)
+        T_Initial=T_start_dis)
         annotation (Placement(transformation(extent={{140,-2},{160,18}})));
 
-      HWDis.Components.EndUse     Sink(                  gain=valCon, redeclare
-          package Medium = Water) "Models the draw at a sink"
+      HWDis.Components.EndUse     Sink(redeclare package Medium =
+                           Water) "Models the draw at a sink"
         annotation (Placement(transformation(extent={{180,68},{200,88}})));
-      HWDis.Components.EndUse     Shower(                gain=valCon, redeclare
-          package Medium = Water) "Models the draw at a shower"
+      HWDis.Components.EndUse     Shower(redeclare package Medium =
+                           Water) "Models the draw at a shower"
         annotation (Placement(transformation(extent={{180,34},{200,54}})));
-      HWDis.Components.EndUse     Dishwasher(            gain=valCon, redeclare
-          package Medium = Water) "Models the draw at a dishwasher"
+      HWDis.Components.EndUse     Dishwasher(redeclare package Medium =
+                           Water) "Models the draw at a dishwasher"
         annotation (Placement(transformation(extent={{180,-2},{200,18}})));
-      HWDis.Components.EndUse     KitchenSink(           gain=valCon, redeclare
-          package Medium = Water) "Models the draw at a kitchen sink"
+      HWDis.Components.EndUse     KitchenSink( redeclare package Medium =
+                           Water) "Models the draw at a kitchen sink"
         annotation (Placement(transformation(extent={{180,-38},{200,-18}})));
       Modelica.Blocks.Sources.CombiTimeTable TAmb(
         tableOnFile=true,
-        tableName="Temp",
         fileName=
-            "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchTAmb.txt")
-        "Temperature surrounding the system(unit = K)"
+            "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchTAmb.txt",
+        tableName="TAmb") "Temperature surrounding the system(unit = K)"
         annotation (Placement(transformation(extent={{-100,92},{-80,112}})));
       Modelica.Blocks.Sources.CombiTimeTable TIn(
         tableOnFile=true,
@@ -1189,7 +1188,6 @@ package WaterHeatingLibrary "Library of water heating models and packages"
         redeclare package Medium = Water,
         p=150000) "Connects to the mains water system"
         annotation (Placement(transformation(extent={{-64,48},{-44,68}})));
-      parameter Real valCon = 1/13.25 "Gain value for the EndUse models";
 
       Modelica.Blocks.Sources.Constant Rec(k=0)
         annotation (Placement(transformation(extent={{-60,-30},{-48,-18}})));
@@ -1273,7 +1271,7 @@ package WaterHeatingLibrary "Library of water heating models and packages"
           color={0,0,127},
           smooth=Smooth.None));
       connect(TAmb.y[1], tan.TAmb) annotation (Line(
-          points={{-79,102},{-20,102},{-20,-0.16},{-9.66,-0.16}},
+          points={{-79,102},{-20,102},{-20,0.16},{-9.66,0.16}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(effTan.y, tan.EffTan) annotation (Line(
@@ -1381,7 +1379,7 @@ package WaterHeatingLibrary "Library of water heating models and packages"
           color={0,127,255},
           smooth=Smooth.None));
       connect(add.y, tan.QDotIn) annotation (Line(
-          points={{-44.5,-43},{-66,-43},{-66,16},{-16,16},{-16,5.76},{-9.8,5.76}},
+          points={{-44.5,-43},{-66,-43},{-66,16},{-16,16},{-16,4.8},{-9.8,4.8}},
           color={0,0,127},
           smooth=Smooth.None));
 
@@ -1440,7 +1438,7 @@ package WaterHeatingLibrary "Library of water heating models and packages"
       package Water = Buildings.Media.ConstantPropertyLiquidWater
         "Fluid in the system";
 
-      parameter Modelica.SIunits.Temperature T_start_dis = 273.15 + 30
+      parameter Modelica.SIunits.Temperature T_start_dis[20] = {273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30}
         "Initial temperature in the dustribution system";
 
       HWDis.Components.Obsolete.EndUseLPSTwoBranch
@@ -1450,7 +1448,7 @@ package WaterHeatingLibrary "Library of water heating models and packages"
         PID_D=0.00000001,
         gain=1/13.25,
         redeclare package Medium = Water,
-        T_start=T_start_dis)
+        T_start=273.15+30)
         annotation (Placement(transformation(extent={{80,-12},{100,8}})));
 
       NonCondensingTank.SimplifiedStorageTankMediumModel tan(
@@ -1492,7 +1490,7 @@ package WaterHeatingLibrary "Library of water heating models and packages"
         redeclare package Medium = Water,
         thicknessIns=0.0127,
         lambdaIns=0.04,
-        T_start=T_start_dis)
+        T_Initial=T_start_dis)
         annotation (Placement(transformation(extent={{18,-36},{38,-16}})));
 
       HWDis.Components.PipeLumpedCap
@@ -1511,7 +1509,7 @@ package WaterHeatingLibrary "Library of water heating models and packages"
         redeclare package Medium = Water,
         thicknessIns=0.0127,
         lambdaIns=0.04,
-        T_start=T_start_dis)
+        T_Initial=T_start_dis)
         annotation (Placement(transformation(extent={{18,28},{38,48}})));
 
       Modelica.Blocks.Sources.Ramp ramp(
@@ -1560,7 +1558,7 @@ package WaterHeatingLibrary "Library of water heating models and packages"
           color={0,127,255},
           smooth=Smooth.None));
       connect(ramp.y, Draw.TOutDes) annotation (Line(
-          points={{49,-54},{62,-54},{62,-7},{78,-7}},
+          points={{49,-54},{62,-54},{62,-7.6},{78,-7.6}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(watFlow.y, Draw.WatFlowDes) annotation (Line(
@@ -1612,11 +1610,11 @@ package WaterHeatingLibrary "Library of water heating models and packages"
           color={0,0,127},
           smooth=Smooth.None));
       connect(TAmb.y, tan.TAmb) annotation (Line(
-          points={{-125,10},{-70,10},{-70,5.84},{-61.66,5.84}},
+          points={{-125,10},{-70,10},{-70,6.16},{-61.66,6.16}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(add.y, tan.QDotIn) annotation (Line(
-          points={{-70.3,-31},{-84,-31},{-84,11.76},{-61.8,11.76}},
+          points={{-70.3,-31},{-84,-31},{-84,10.8},{-61.8,10.8}},
           color={0,0,127},
           smooth=Smooth.None));
       connect(TAmb.y, Cold.TAmb) annotation (Line(
