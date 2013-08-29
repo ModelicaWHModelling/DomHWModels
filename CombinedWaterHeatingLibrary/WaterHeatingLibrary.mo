@@ -378,8 +378,7 @@ package WaterHeatingLibrary "Library of water heating models and packages"
           color={0,0,127},
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -75},{200,150}}),       graphics), Icon(coordinateSystem(
-              preserveAspectRatio=false, extent={{-100,-75},{200,150}})),
+                -75},{200,150}}),       graphics),
               Documentation(info="<html>
           <p>
           This example shows how several components can be combined to simulate a hot water distribution system in a house. The model starts at the left with text file inputs.
@@ -963,8 +962,7 @@ package WaterHeatingLibrary "Library of water heating models and packages"
           color={0,0,127},
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-275,
-                -200},{275,200}}),      graphics), Icon(coordinateSystem(
-              preserveAspectRatio=false, extent={{-275,-200},{275,200}})),
+                -200},{275,200}}),      graphics),
               Documentation(info="<html>
           <p>
           This example shows how the components can be combined to create a hot water distribution system where a tankless water heater serves a house. The distribution system
@@ -1388,8 +1386,7 @@ package WaterHeatingLibrary "Library of water heating models and packages"
           color={0,0,127},
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -75},{200,150}}),       graphics), Icon(coordinateSystem(
-              preserveAspectRatio=false, extent={{-100,-75},{200,150}})),
+                -75},{200,150}}),       graphics),
               Documentation(info="<html>
           <p>
           This example shows how several components can be combined to simulate a hot water distribution system in a house. The model starts at the left with text file inputs.
@@ -1634,8 +1631,7 @@ package WaterHeatingLibrary "Library of water heating models and packages"
           color={0,0,127},
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-150,
-                -100},{150,100}}),      graphics), Icon(coordinateSystem(
-              preserveAspectRatio=false, extent={{-150,-100},{150,100}})),
+                -100},{150,100}}),      graphics),
               Documentation(info="<html>
           <p>
           This example shows how the components can be combined to create a hot water distribution system where a storage tank water heater serves a house. The distribution
@@ -1937,8 +1933,7 @@ package WaterHeatingLibrary "Library of water heating models and packages"
           color={0,0,127},
           smooth=Smooth.None));
       annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-150,
-                -100},{150,100}}),      graphics), Icon(coordinateSystem(
-              preserveAspectRatio=false, extent={{-150,-100},{150,100}})),
+                -100},{150,100}}),      graphics),
               Documentation(info="<html>
           <p>
           This example shows how the components can be combined to create a hot water distribution system where a tankless water heater serves a house. The distribution system
@@ -1963,346 +1958,22 @@ package WaterHeatingLibrary "Library of water heating models and packages"
           </html>"));
     end HotAndColdDisWithTanklessPID;
 
-    annotation ();
+    annotation (Documentation(info="<html>
+  <p>
+  This package contains examples demonstrating the combination of multuple WaterHeatingLibrary models.
+  Examples are created by combining models to simulate the mains water system, the water heater,
+  the pipes making up the distribution system, and the end uses. Flow rates and set temperatures
+  can be adjusted by editing the included text files.
+  </p>
+  <p>
+  Note that all models in this package contain models in the LBNL Modelica Buildings library. The Buildings
+  library must also be loaded before these models can be simulated.
+  </p>
+  </html>"));
   end CombinedExamples;
 
   package CondensingTank
     package Examples
-      model CondensingWaterHeater "Test model for water heater"
-        import WaterHeaterLib = WaterHeatingLibrary.CondensingTank;
-        extends Modelica.Icons.Example;
-        import Modelica.SIunits;
-        package Medium = Modelica.Media.Water.WaterIF97_ph "Medium model";
-        parameter Integer nStaRef=6 "Number of states in a reference material";
-      //  parameter Integer nSeg=tan.nSeg;
-        parameter Real T_DB = Modelica.Utilities.Examples.readRealParameter("StorageExampleParameters.txt", "DryBulbTemperature");
-        parameter Real TMeaRad = Modelica.Utilities.Examples.readRealParameter("StorageExampleParameters.txt", "MeanRadiantTemperature");
-        parameter Real T_Floor = Modelica.Utilities.Examples.readRealParameter("StorageExampleParameters.txt", "FloorTemperature");
-        parameter Real Q_P = Modelica.Utilities.Examples.readRealParameter("StorageExampleParameters.txt", "QDot_Pilot");
-        parameter Real Q_Burner = Modelica.Utilities.Examples.readRealParameter("StorageExampleParameters.txt", "QDot_Burner");
-        parameter Real T_Set = Modelica.Utilities.Examples.readRealParameter("StorageExampleParameters.txt", "T_Set");
-        parameter Real Deadband = Modelica.Utilities.Examples.readRealParameter("StorageExampleParameters.txt", "ThermostatDeadband");
-        parameter Real TankVolume = Modelica.Utilities.Examples.readRealParameter("StorageExampleParameters.txt", "TankVolume");
-        parameter Real FlueDiameter = Modelica.Utilities.Examples.readRealParameter("StorageExampleParameters.txt", "FlueDiameter");
-        parameter Real FlueLength = Modelica.Utilities.Examples.readRealParameter("StorageExampleParameters.txt", "FlueLength");
-        parameter Real InletWaterTemp = Modelica.Utilities.Examples.readRealParameter("StorageExampleParameters.txt", "InletWaterTemp");
-        parameter Real FlueToWaterConvectionCoefficient = Modelica.Utilities.Examples.readRealParameter("StorageExampleParameters.txt", "FlueToWaterConvectionCoefficient");
-        parameter Real GasToFlueConvectionCoefficient = Modelica.Utilities.Examples.readRealParameter("StorageExampleParameters.txt", "GasToFlueConvectionCoefficient");
-        parameter Real TankDiameter = Modelica.Utilities.Examples.readRealParameter("StorageExampleParameters.txt", "TankDiameter");
-        parameter Real GasToBaseConvectionCoefficient = Modelica.Utilities.Examples.readRealParameter("StorageExampleParameters.txt", "GasToBaseConvectionCoefficient");
-        parameter Real FuelHigherHeatingValue = Modelica.Utilities.Examples.readRealParameter("StorageExampleParameters.txt", "FuelHigherHeatingValue");
-        parameter Real FuelLowerHeatingValue = Modelica.Utilities.Examples.readRealParameter("StorageExampleParameters.txt", "FuelLowerHeatingValue");
-        parameter Real StoichiometricAirFuelRatio = Modelica.Utilities.Examples.readRealParameter("StorageExampleParameters.txt", "StoichiometricAirFuelRatio");
-        parameter Real ExcessAir = Modelica.Utilities.Examples.readRealParameter("StorageExampleParameters.txt", "ExcessAir");
-        parameter Real GasSpecificHeat = Modelica.Utilities.Examples.readRealParameter("StorageExampleParameters.txt", "GasSpecificHeat");
-      //  parameter Real InitialTemp = Modelica.Utilities.Examples.readRealParameter("StorageExampleParameters.txt", "T_Initial");
-        parameter Integer nSeg = WaterHeaterLib.BaseClasses.readIntegerParameter("StorageExampleParameters.txt", "nSeg");
-      //  parameter Integer ThermostatHeight = WaterHeaterLib.BaseClasses.readIntegerParameter("StorageExampleParameters.txt", "ThermostatHeight");
-        inner Modelica.Fluid.System system(energyDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial,
-            massDynamics=Modelica.Fluid.Types.Dynamics.FixedInitial) annotation (
-            Placement(transformation(extent={{-140,-138},{-120,-118}})));
-        Buildings.HeatTransfer.Sources.PrescribedTemperature TBCBot
-          "Boundary condition for tank" annotation (Placement(transformation(
-              extent={{6,-6},{-6,6}},
-              rotation=180,
-              origin={-56,-8})));
-        Modelica.Blocks.Sources.Constant QBurner(k=11000) annotation (Placement(
-              transformation(extent={{140,-78},{120,-98}}, rotation=0)));
-        parameter Buildings.HeatTransfer.Data.OpaqueConstructions.Generic
-          matLayExt(
-          absIR_a=0.9,
-          absIR_b=0.9,
-          absSol_a=0.6,
-          absSol_b=0.6,
-          nLay=2,
-          material={Buildings.HeatTransfer.Data.Solids.Generic(
-              x=0.012,
-              k=4.671,
-              c=473,
-              d=7801,
-              nStaRef=nStaRef),Buildings.HeatTransfer.Data.Solids.Generic(
-              x=0.013,
-              k=0.04,
-              c=1380,
-              d=150,
-              nStaRef=nStaRef)}) "Tank Envelope"
-          annotation (Placement(transformation(extent={{-142,-98},{-124,-80}})));
-        parameter Buildings.HeatTransfer.Data.OpaqueConstructions.Generic
-          matLayTanBot(
-          absIR_a=0.9,
-          absIR_b=0.9,
-          absSol_a=0.6,
-          absSol_b=0.6,
-          final nLay=1,
-          material={Buildings.HeatTransfer.Data.Solids.Generic(
-                  x=0.003176,
-                  k=4.671,
-                  c=473,
-                  d=7801,
-                  nStaRef=nStaRef)}) "Flue Wall"
-          annotation (Placement(transformation(extent={{-114,-98},{-96,-80}})));
-        Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor T_sensor
-          "switch temperature"
-          annotation (Placement(transformation(extent={{62,-16},{72,-6}})));
-        Modelica.Blocks.Logical.OnOffController onOffController(bandwidth=12)
-          annotation (Placement(transformation(extent={{56,-142},{36,-122}})));
-        Modelica.Blocks.Sources.Constant T_switch(k=273.105 + 48)
-          annotation (Placement(transformation(extent={{142,-136},{122,-116}})));
-        Modelica.Blocks.Math.BooleanToReal booleanToInteger
-          annotation (Placement(transformation(extent={{24,-142},{4,-122}})));
-        Modelica.Blocks.Math.Product product annotation (Placement(transformation(
-              extent={{-8,-8},{8,8}},
-              rotation=90,
-              origin={-2,-74})));
-        parameter Buildings.HeatTransfer.Data.OpaqueConstructions.Generic
-          matLayFlue(
-          absIR_a=0.9,
-          absIR_b=0.9,
-          absSol_a=0.6,
-          absSol_b=0.6,
-          final nLay=1,
-          material={Buildings.HeatTransfer.Data.Solids.Generic(
-                  x=0.000753,
-                  k=4.671,
-                  c=1,
-                  d=7801,
-                  nStaRef=nStaRef)}) "Flue Wall"
-          annotation (Placement(transformation(extent={{-84,-98},{-66,-80}})));
-        Modelica.Blocks.Sources.Constant TDryBul(k=T_DB)
-          annotation (Placement(transformation(extent={{140,68},{120,88}})));
-        Modelica.Blocks.Sources.Constant TRadMea(k=TMeaRad)
-          annotation (Placement(transformation(extent={{140,30},{120,50}})));
-        Modelica.Blocks.Sources.Constant TFloor(k=T_Floor)
-          annotation (Placement(transformation(extent={{-134,-18},{-114,2}})));
-        Modelica.Blocks.Sources.Constant QPilot(k=158) annotation (Placement(
-              transformation(extent={{140,-42},{120,-62}}, rotation=0)));
-        Modelica.Blocks.Math.Add add annotation (Placement(transformation(
-              extent={{-10,-10},{10,10}},
-              rotation=90,
-              origin={6,-36})));
-        BaseClasses.Burner.Gas burn(
-          datTanEnv(
-            layers=matLayExt,
-            A=1.75,
-            til=Buildings.HeatTransfer.Types.Tilt.Wall,
-            azi=Buildings.HeatTransfer.Types.Azimuth.W),
-          datTanEnvBot(
-            layers=matLayTanBot,
-            A=0.12,
-            til=Buildings.HeatTransfer.Types.Tilt.Floor,
-            azi=Buildings.HeatTransfer.Types.Azimuth.W),
-          absIR_FS=0.2,
-          DTan=TankDiameter,
-          DFlu=FlueDiameter,
-          h_GB=GasToBaseConvectionCoefficient,
-          deltaHc_H=FuelHigherHeatingValue,
-          deltaHc_L=FuelLowerHeatingValue,
-          stoich=StoichiometricAirFuelRatio,
-          EA=ExcessAir,
-          cp_G=GasSpecificHeat)
-          annotation (Placement(transformation(extent={{-24,0},{34,42}})));
-        WaterHeaterLib.CondensingTank
-                                   tan(
-          allowFlowReversal=false,
-          m_flow_nominal=0.001,
-          energyDynamics=Modelica.Fluid.Types.Dynamics.DynamicFreeInitial,
-          massDynamics=Modelica.Fluid.Types.Dynamics.DynamicFreeInitial,
-          redeclare package Medium = Medium,
-          datTanEnv(
-            layers=matLayExt,
-            A=1.75,
-            til=Buildings.HeatTransfer.Types.Tilt.Wall,
-            azi=Buildings.HeatTransfer.Types.Azimuth.W),
-          datTanEnvTop(
-            layers=matLayExt,
-            A=0.04,
-            til=Buildings.HeatTransfer.Types.Tilt.Ceiling,
-            azi=Buildings.HeatTransfer.Types.Azimuth.W),
-          datTanEnvBot(
-            layers=matLayTanBot,
-            A=0.12,
-            til=Buildings.HeatTransfer.Types.Tilt.Floor,
-            azi=Buildings.HeatTransfer.Types.Azimuth.W),
-          h_cw_B_cons=1000,
-          datFlueWall(
-            layers=matLayFlue,
-            A=0.236,
-            til=Buildings.HeatTransfer.Types.Tilt.Wall),
-          c_wB=1/15,
-          c_wI=0.001,
-          c_sr=110000,
-          conMod=Buildings.HeatTransfer.Types.InteriorConvection.Temperature,
-          VTan=TankVolume,
-          DFlu=FlueDiameter,
-          LFlu=FlueLength,
-          TIn=InletWaterTemp,
-          h_WF_cons=FlueToWaterConvectionCoefficient,
-          nSeg=nSeg,
-          perInA={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-1.0033,2.8428,-0.4415,6.1873,4.0134},
-          perInB={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1.1405,0.102,-0.2213,-2.8662,-2.0619},
-          perInC={0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,-0.0224,-0.0032,0.2329,0.5048,0.7896},
-          timDelA={-2092.3,-2092.3,-2092.3,-2092.3,-2092.3,-2092.3,-2092.3,-2092.3,-2092.3,
-              -2092.3,-2092.3,-2092.3,-2092.3,-2376.6,-2660.9,-3112.4,-1971.9,-567.21,
-              100.33,0},
-          timDelB={812.61,812.61,812.61,812.61,812.61,812.61,812.61,812.61,812.61,812.61,
-              812.61,812.61,812.61,802.41,792.21,805.42,475.76,79.1,-14.047,0},
-          timDelC={7.6157,7.6157,7.6157,7.6157,7.6157,7.6157,7.6157,7.6157,7.6157,7.6157,
-              7.6157,7.6157,7.6157,7.9334,8.2512,8.1676,14.305,21.676,0.2408,0},
-          T_Initial={326.139441,326.139441,326.139442,326.139441,326.078106,326.078106,
-              326.078106,326.080484,326.080484,326.080484,326.080484,326.038548,
-              326.038548,326.038548,324.322451,325.322451,324.437641,322.833392,
-              322.833392,321.872635})
-          annotation (Placement(transformation(extent={{-52,48},{62,136}})));
-        Modelica.Blocks.Tables.CombiTable1Ds WaterFlow[nSeg](
-          tableOnFile=true,
-          tableName="Flow",
-          fileName="26-WaterFlowFromTest8.txt")
-          annotation (Placement(transformation(extent={{-112,126},{-92,146}})));
-        Modelica.Blocks.Sources.RealExpression Time[nSeg](y=time)
-          annotation (Placement(transformation(extent={{-154,126},{-134,146}})));
-        Modelica.Blocks.Tables.CombiTable1Ds UATemp(
-          tableOnFile=true,
-          tableName="Temp",
-          fileName="26-UALossTempData.txt",
-          columns=2:9)
-          annotation (Placement(transformation(extent={{-108,80},{-88,100}})));
-        Modelica.Blocks.Sources.RealExpression realExpression(y=time)
-          annotation (Placement(transformation(extent={{-148,80},{-128,100}})));
-        Modelica.Blocks.Tables.CombiTable1Ds TstatStatus(
-          tableOnFile=true,
-          tableName="Tstat",
-          fileName="26-TstatDataFromTest8.txt")
-          annotation (Placement(transformation(extent={{-108,50},{-88,70}})));
-        Modelica.Blocks.Tables.CombiTable1Ds Test8Temps(
-          tableOnFile=true,
-          tableName="Temp",
-          fileName="26-TempDataFromTest8.txt",
-          columns=2:13)
-          annotation (Placement(transformation(extent={{-108,18},{-88,38}})));
-        WaterHeaterLib.BaseClasses.hGasFlu hGasFlu(
-          nSeg=nSeg,
-          a=1,
-          b=1,
-          c=1) annotation (Placement(transformation(extent={{88,94},{108,114}})));
-      equation
-        connect(T_switch.y, onOffController.reference) annotation (Line(
-            points={{121,-126},{58,-126}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(onOffController.y, booleanToInteger.u) annotation (Line(
-            points={{35,-132},{26,-132}},
-            color={255,0,255},
-            smooth=Smooth.None));
-        connect(booleanToInteger.y, product.u1) annotation (Line(
-            points={{3,-132},{-6.8,-132},{-6.8,-83.6}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(TFloor.y, TBCBot.T) annotation (Line(
-            points={{-113,-8},{-88.1,-8},{-88.1,-8},{-63.2,-8}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(QBurner.y, product.u2) annotation (Line(
-            points={{119,-88},{2.8,-88},{2.8,-83.6}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(product.y, add.u1) annotation (Line(
-            points={{-2,-65.2},{-2,-48},{-8.88178e-016,-48}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(QPilot.y, add.u2) annotation (Line(
-            points={{119,-52},{12,-52},{12,-48}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(add.y, burn.QBurner) annotation (Line(
-            points={{6,-25},{6,-2},{16.31,-2},{16.31,5.64828}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(TBCBot.port, burn.heaPorBot) annotation (Line(
-            points={{-50,-8},{3.26,-8},{3.26,5.50345}},
-            color={191,0,0},
-            smooth=Smooth.None));
-        connect(TDryBul.y, burn.TDryBul) annotation (Line(
-            points={{119,78},{74,78},{74,-2},{-8.195,-2},{-8.195,5.50345}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(tan.heaPorBot, burn.heaPorTop) annotation (Line(
-            points={{-9.84151,45.8537},{-9.84151,47},{-9.5,47},{-9.5,36.2069}},
-            color={191,0,0},
-            smooth=Smooth.None));
-        connect(tan.Q_B, burn.Q_B) annotation (Line(
-            points={{0.483019,45.8537},{0.483019,47},{1.23,47},{1.23,36.3517}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(tan.T_F0_y, burn.T_F0_y) annotation (Line(
-            points={{9.73208,46.9268},{9.73208,47.5},{10.365,47.5},{10.365,
-                36.2069}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(tan.cdot_G_y, burn.cdot_G_y) annotation (Line(
-            points={{18.766,46.9268},{18.766,47.5},{19.355,47.5},{19.355,
-                35.9172}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(TDryBul.y, tan.TDryBul) annotation (Line(
-            points={{119,78},{74,78},{74,100.371},{28.4453,100.371}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(TRadMea.y, tan.TRadMea)  annotation (Line(
-            points={{119,40},{74,40},{74,66.4585},{27.8,66.4585}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(tan.heaPor[18], T_sensor.port) annotation (Line(
-            points={{28.3377,84.3805},{46,84.3805},{46,-11},{62,-11}},
-            color={191,0,0},
-            smooth=Smooth.None));
-        connect(T_sensor.T, onOffController.u) annotation (Line(
-            points={{72,-11},{80,-11},{80,-138},{58,-138}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(Time.y, WaterFlow.u)               annotation (Line(
-            points={{-133,136},{-114,136}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(WaterFlow.y[1], tan.m_flow_in)     annotation (Line(
-            points={{-91,136},{-56.5509,136},{-56.5509,136.429},{-22.1019,
-                136.429}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(realExpression.y, UATemp.u)         annotation (Line(
-            points={{-127,90},{-110,90}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(realExpression.y, TstatStatus.u)    annotation (Line(
-            points={{-127,90},{-122,90},{-122,60},{-110,60}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(realExpression.y, Test8Temps.u) annotation (Line(
-            points={{-127,90},{-120,90},{-120,28},{-110,28}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(tan.heaPor, hGasFlu.TWat) annotation (Line(
-            points={{28.3377,84.3805},{46,84.3805},{46,105},{88,105}},
-            color={191,0,0},
-            smooth=Smooth.None));
-        connect(hGasFlu.y, tan.h_cv_F) annotation (Line(
-            points={{109.8,105},{118,105},{118,122},{74,122},{74,122.049},{
-                28.8755,122.049}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        annotation (
-          Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-150,-150},{150,
-                  150}}),      graphics),
-          __Dymola_Commands(file=
-                "modelica://Buildings/Resources/Scripts/Dymola/Fluid/Storage/Examples/Stratified.mos"
-              "Simulate and plot"),
-          Documentation(info="<html>
-This test model compares two tank models. The only difference between
-the two tank models is that one uses the third order upwind discretization
-scheme that reduces numerical diffusion that is induced when connecting 
-volumes in series.
-</html>"),Icon(coordinateSystem(preserveAspectRatio=true, extent={{-150,-150},{
-                  150,150}})));
-      end CondensingWaterHeater;
 
       model SimplifiedCondensingWaterHeater
         "Provides a model to simulate condensing storage tank water heaters using the simplified model"
@@ -2328,7 +1999,8 @@ volumes in series.
           Deadband=12,
           UA=35)
           annotation (Placement(transformation(extent={{-46,2},{72,94}})));
-        BaseClasses.EffTankCond EffTan(
+        OBSOLETEBaseClasses.EffTankCond
+                                EffTan(
           nSeg=nSeg,
           a=0,
           b=-0.01,
@@ -2381,7 +2053,7 @@ volumes in series.
 
           TTanAvg = sum(tan.vol.T)/nSeg;
         connect(EffTan.y, tan.EffTan)  annotation (Line(
-            points={{-82.2,51},{-78.1,51},{-78.1,51.3659},{-48.2264,51.3659}},
+            points={{-82.2,51},{-78.1,51},{-78.1,49.4585},{-50.1189,49.4585}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(QDotBurner.y,product. u1) annotation (Line(
@@ -2409,19 +2081,19 @@ volumes in series.
             color={0,0,127},
             smooth=Smooth.None));
         connect(const.y, tan.TIn) annotation (Line(
-            points={{-71,168},{23.0189,168},{23.0189,96.4683}},
+            points={{-71,168},{23.0189,168},{23.0189,94.2244}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(TAmb.y, tan.TAmb) annotation (Line(
-            points={{-135.2,94},{-80,94},{-80,66.961},{-50.5642,66.961}},
+            points={{-135.2,94},{-120,94},{-120,67.4098},{-50.1189,67.4098}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(mFloRecirc.y, tan.mFloRec) annotation (Line(
-            points={{-129,8},{-80,26},{-80,35.6585},{-48.4491,35.6585}},
+            points={{-129,8},{-80,8},{-80,33.9756},{-50.1189,33.9756}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(TInRecirc.y, tan.TInRec) annotation (Line(
-            points={{-129,-24},{-68,-6},{-68,20.8488},{-48.6717,20.8488}},
+            points={{-129,-24},{-68,-24},{-68,19.6146},{-49.8962,19.6146}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(add.y, tan.QDotIn) annotation (Line(
@@ -2440,7 +2112,15 @@ volumes in series.
         annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-200,
                   -200},{200,200}}), graphics),
                                       Icon(coordinateSystem(preserveAspectRatio=false,
-                extent={{-200,-200},{200,200}})));
+                extent={{-200,-200},{200,200}})),
+                Documentation(info="<html>
+          <p>
+          This is a model demonstrating how the
+          <a href=\"modelica:WaterHeatingLibrary.NonCondensingTank.SimplifiedStorageTank\">
+          WaterHeatingLibrary.NonCondensingTank.SimplifiedStorageTank</a> model can be used to
+          simulate a condensing storage tank water heater.
+          </p>
+          </html>"));
       end SimplifiedCondensingWaterHeater;
 
       model SimplifiedCondensingWaterHeaterRepeatedDraws
@@ -2474,7 +2154,8 @@ volumes in series.
           TSet=273.15 + 50)
           annotation (Placement(transformation(extent={{-46,2},{72,94}})));
 
-        BaseClasses.EffTankCond EffTan(
+        OBSOLETEBaseClasses.EffTankCond
+                                EffTan(
           nSeg=nSeg,
           a=0,
           b=-0.0101,
@@ -2531,7 +2212,7 @@ volumes in series.
           TTanSumValidation = tan.vol[19].T+tan.vol[17].T+tan.vol[16].T+tan.vol[15].T+tan.vol[13].T;
           TTanAvg = sum(tan.vol.T)/nSeg;
         connect(EffTan.y, tan.EffTan)  annotation (Line(
-            points={{-82.2,51},{-78.1,51},{-78.1,51.3659},{-48.2264,51.3659}},
+            points={{-82.2,51},{-78.1,51},{-78.1,49.4585},{-50.1189,49.4585}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(QDotBurner.y,product. u1) annotation (Line(
@@ -2555,15 +2236,15 @@ volumes in series.
             color={0,0,127},
             smooth=Smooth.None));
         connect(mFloRecirc.y, tan.mFloRec) annotation (Line(
-            points={{-129,8},{-80,26},{-80,35.6585},{-48.4491,35.6585}},
+            points={{-129,8},{-80,8},{-80,33.9756},{-50.1189,33.9756}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(TInRecirc.y, tan.TInRec) annotation (Line(
-            points={{-129,-24},{-68,-6},{-68,20.8488},{-48.6717,20.8488}},
+            points={{-129,-24},{-68,-24},{-68,19.6146},{-49.8962,19.6146}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(add.y, tan.QDotIn) annotation (Line(
-            points={{-59,-88},{-178,-88},{-178,110},{-108,110},{-108,82.7805},{
+            points={{-59,-88},{-178,-88},{-178,82},{-108,82},{-108,82.7805},{
                 -50.2302,82.7805}},
             color={0,0,127},
             smooth=Smooth.None));
@@ -2576,11 +2257,11 @@ volumes in series.
             color={0,0,127},
             smooth=Smooth.None));
         connect(combiTimeTable.y[2], tan.TAmb) annotation (Line(
-            points={{-159,154},{-120,154},{-120,66.961},{-50.5642,66.961}},
+            points={{-159,154},{-120,154},{-120,67.4098},{-50.1189,67.4098}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(combiTimeTable.y[1], tan.TIn) annotation (Line(
-            points={{-159,154},{23.0189,154},{23.0189,96.4683}},
+            points={{-159,154},{23.0189,154},{23.0189,94.2244}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(replicator.y, tan.m_flow_in) annotation (Line(
@@ -2594,7 +2275,21 @@ volumes in series.
         annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-200,
                   -200},{200,200}}), graphics),
                                       Icon(coordinateSystem(preserveAspectRatio=false,
-                extent={{-200,-200},{200,200}})));
+                extent={{-200,-200},{200,200}})),
+                Documentation(info="<html>
+          <p>
+          This model was created and used during the characterization and validation process.
+          It is generally the same as the example model 
+          <a href=\"WaterHeatingLibrary.CondensingTank.Examples.SimplifiedCondensingWaterHeater\">
+          WaterHeatingLibrary.CondensingTank.Examples.SimplifiedCondensingWaterHeater</a> except
+          the water temperature and flow rate values have been replaced with a data table reader.
+          The data table reader references text files holding experimental data. This creates
+          the opportunity to expose the simulated water heater to the same conditions as the
+          experimental water heater, and compare the results. In this example, the data reader
+          is referencing a text file with experimental data collected during a \"Repeated Draws\"
+          test.
+          </p>
+          </html>"));
       end SimplifiedCondensingWaterHeaterRepeatedDraws;
 
       model SimplifiedCondensingWaterHeaterUALoss
@@ -2628,7 +2323,8 @@ volumes in series.
           UA=2.2)
           annotation (Placement(transformation(extent={{-46,2},{72,94}})));
 
-        BaseClasses.EffTankCond EffTan(
+        OBSOLETEBaseClasses.EffTankCond
+                                EffTan(
           nSeg=nSeg,
           a=0,
           b=-0.0101,
@@ -2686,7 +2382,7 @@ volumes in series.
           TTanSumValidation = tan.vol[19].T+tan.vol[17].T+tan.vol[16].T+tan.vol[15].T+tan.vol[13].T;
           TTanAvg = sum(tan.vol.T)/nSeg;
         connect(EffTan.y, tan.EffTan)  annotation (Line(
-            points={{-82.2,51},{-78.1,51},{-78.1,51.3659},{-48.2264,51.3659}},
+            points={{-82.2,51},{-78.1,51},{-78.1,49.4585},{-50.1189,49.4585}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(QDotBurner.y,product. u1) annotation (Line(
@@ -2710,11 +2406,11 @@ volumes in series.
             color={0,0,127},
             smooth=Smooth.None));
         connect(mFloRecirc.y, tan.mFloRec) annotation (Line(
-            points={{-129,8},{-80,26},{-80,35.6585},{-48.4491,35.6585}},
+            points={{-129,8},{-80,8},{-80,33.9756},{-50.1189,33.9756}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(TInRecirc.y, tan.TInRec) annotation (Line(
-            points={{-129,-24},{-68,-6},{-68,20.8488},{-48.6717,20.8488}},
+            points={{-129,-24},{-68,-24},{-68,19.6146},{-49.8962,19.6146}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(add.y, tan.QDotIn) annotation (Line(
@@ -2731,11 +2427,11 @@ volumes in series.
             color={0,0,127},
             smooth=Smooth.None));
         connect(combiTimeTable.y[2], tan.TAmb) annotation (Line(
-            points={{-159,154},{-120,154},{-120,66.961},{-50.5642,66.961}},
+            points={{-159,154},{-120,154},{-120,67.4098},{-50.1189,67.4098}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(combiTimeTable.y[1], tan.TIn) annotation (Line(
-            points={{-159,154},{23.0189,154},{23.0189,96.4683}},
+            points={{-159,154},{23.0189,154},{23.0189,94.2244}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(replicator.y, tan.m_flow_in) annotation (Line(
@@ -2749,7 +2445,21 @@ volumes in series.
         annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-200,
                   -200},{200,200}}), graphics),
                                       Icon(coordinateSystem(preserveAspectRatio=false,
-                extent={{-200,-200},{200,200}})));
+                extent={{-200,-200},{200,200}})),
+                Documentation(info="<html>
+          <p>
+          This model was created and used during the characterization and validation process.
+          It is generally the same as the example model 
+          <a href=\"WaterHeatingLibrary.CondensingTank.Examples.SimplifiedCondensingWaterHeater\">
+          WaterHeatingLibrary.CondensingTank.Examples.SimplifiedCondensingWaterHeater</a> except
+          the water temperature and flow rate values have been replaced with a data table reader.
+          The data table reader references text files holding experimental data. This creates
+          the opportunity to expose the simulated water heater to the same conditions as the
+          experimental water heater, and compare the results. In this example, the data reader
+          is referencing a text file with experimental data collected during a \"UA Loss\"
+          test.
+          </p>
+          </html>"));
       end SimplifiedCondensingWaterHeaterUALoss;
 
       model SimplifiedCondensingWaterHeaterValidation
@@ -2783,7 +2493,8 @@ volumes in series.
               320.15,314.15,314.15})
           annotation (Placement(transformation(extent={{-46,2},{72,94}})));
 
-        BaseClasses.EffTankCond EffTan(
+        OBSOLETEBaseClasses.EffTankCond
+                                EffTan(
           nSeg=nSeg,
           a=0,
           b=-0.0101,
@@ -2873,11 +2584,11 @@ volumes in series.
             color={0,0,127},
             smooth=Smooth.None));
         connect(mFloRecirc.y, tan.mFloRec) annotation (Line(
-            points={{-129,8},{-80,26},{-80,33.9756},{-50.1189,33.9756}},
+            points={{-129,8},{-80,8},{-80,33.9756},{-50.1189,33.9756}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(TInRecirc.y, tan.TInRec) annotation (Line(
-            points={{-129,-24},{-68,-6},{-68,19.6146},{-49.8962,19.6146}},
+            points={{-129,-24},{-68,-24},{-68,19.6146},{-49.8962,19.6146}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(add.y, tan.QDotIn) annotation (Line(
@@ -2910,7 +2621,7 @@ volumes in series.
             color={0,0,127},
             smooth=Smooth.None));
         connect(product.y, startDelay.mDotDra) annotation (Line(
-            points={{-21,-102},{-28,-102},{-28,-126},{-32,-126}},
+            points={{-21,-102},{-28,-102},{-28,-126},{-33,-126}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(add.u1, product1.y) annotation (Line(
@@ -2918,7 +2629,7 @@ volumes in series.
             color={0,0,127},
             smooth=Smooth.None));
         connect(startDelay.y, product1.u1) annotation (Line(
-            points={{-55,-126},{-60,-126},{-60,-100},{-66,-100}},
+            points={{-54.5,-126},{-60,-126},{-60,-100},{-66,-100}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(product.y, product1.u2) annotation (Line(
@@ -2928,11 +2639,26 @@ volumes in series.
         annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-200,
                   -200},{200,200}}), graphics),
                                       Icon(coordinateSystem(preserveAspectRatio=false,
-                extent={{-200,-200},{200,200}})));
+                extent={{-200,-200},{200,200}})),
+                Documentation(info="<html>
+          <p>
+          This model was created and used during the characterization and validation process.
+          It is generally the same as the example model 
+          <a href=\"WaterHeatingLibrary.CondensingTank.Examples.SimplifiedCondensingWaterHeater\">
+          WaterHeatingLibrary.CondensingTank.Examples.SimplifiedCondensingWaterHeater</a> except
+          the water temperature and flow rate values have been replaced with a data table reader.
+          The data table reader references text files holding experimental data. This creates
+          the opportunity to expose the simulated water heater to the same conditions as the
+          experimental water heater, and compare the results. In this example, the data reader
+          is referencing a text file with experimental data collected during the \"Validation\"
+          test.
+          </p>
+          </html>"));
       end SimplifiedCondensingWaterHeaterValidation;
     end Examples;
 
-    package BaseClasses
+    package OBSOLETEBaseClasses
+      "Package of base classes used in old versions of condensing tank models. Saved in case needed for future use"
       model buo "flue gas flow rate times capacity"
         import WaterHeaterLib = WaterHeatingLibrary.CondensingTank;
         extends Modelica.Blocks.Interfaces.BlockIcon;
@@ -2941,7 +2667,7 @@ volumes in series.
         parameter Real A=1 "area surface";
         replaceable package Medium = Modelica.Media.Interfaces.PartialMedium
           "Medium in the component" annotation (choicesAllMatching=true);
-        WaterHeaterLib.BaseClasses.SISO
+        WaterHeaterLib.OBSOLETEBaseClasses.SISO
                     Q_Wx annotation (Placement(transformation(
               extent={{13,-13},{-13,13}},
               rotation=0,
@@ -2951,14 +2677,15 @@ volumes in series.
               extent={{-10,-10},{10,10}},
               rotation=180,
               origin={72,60})));
-        WaterHeaterLib.BaseClasses.TH
+        WaterHeaterLib.OBSOLETEBaseClasses.TH
             t_H(A=A, c_w=c_w)
           "Calculates the temperature of water flow caused by buoyancy"
           annotation (Placement(transformation(extent={{0,-8},{-36,28}})));
         Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor T_vol_nSeg
           "Temperature of the water"
           annotation (Placement(transformation(extent={{88,16},{66,-6}})));
-        WaterHeaterLib.BaseClasses.mFlowBuo   m_flow_buo_x(
+        WaterHeaterLib.OBSOLETEBaseClasses.mFlowBuo
+                                              m_flow_buo_x(
           A=A,
           c_w=c_w,
           redeclare package Medium = Medium)
@@ -3593,7 +3320,8 @@ First implementation.
           annotation (Placement(transformation(extent={{-96,26},{-76,46}})));
         Modelica.Blocks.Interfaces.RealOutput buoHeaTra[nSeg]
           annotation (Placement(transformation(extent={{100,-6},{132,26}})));
-        WaterHeatingLibrary.CondensingTank.BaseClasses.strLay strLay(nSeg=nSeg,
+        WaterHeatingLibrary.CondensingTank.OBSOLETEBaseClasses.strLay
+                                                              strLay(nSeg=nSeg,
             QDotPilot=QDotPilot)
                                 annotation (Placement(transformation(extent={{-66,26},
                   {-46,46}})));
@@ -3978,7 +3706,8 @@ First implementation.
           parameter Real EA=0.5 "excess air fraction";
           parameter Modelica.SIunits.SpecificHeatCapacity cp_G=4186*0.28
             "mean specific heat of flue gas";
-          WaterHeaterLib.BaseClasses.TFlame     T_AD_flame(
+          WaterHeaterLib.OBSOLETEBaseClasses.TFlame
+                                                T_AD_flame(
             deltaHc_H=deltaHc_H,
             stoich=stoich,
             EA=EA,
@@ -3986,7 +3715,8 @@ First implementation.
                 extent={{-15,-15},{15,15}},
                 rotation=0,
                 origin={-105,-79})));
-          WaterHeaterLib.BaseClasses.InteriorWH heaGasBas(
+          WaterHeaterLib.OBSOLETEBaseClasses.InteriorWH
+                                                heaGasBas(
             each hFixed=hFixed,
             final til=datTanEnvBot.til,
             final A=datTanEnvBot.A,
@@ -4001,7 +3731,8 @@ First implementation.
                 extent={{10,-10},{-10,10}},
                 rotation=270,
                 origin={0,44})));
-          WaterHeaterLib.BaseClasses.hRB  h_RB annotation (Placement(
+          WaterHeaterLib.OBSOLETEBaseClasses.hRB
+                                          h_RB annotation (Placement(
                 transformation(
                 extent={{16,-16},{-16,16}},
                 rotation=270,
@@ -4009,7 +3740,8 @@ First implementation.
           Modelica.Thermal.HeatTransfer.Sensors.TemperatureSensor TtanBot
             "tank bottom temperature"
             annotation (Placement(transformation(extent={{-48,-60},{-32,-44}})));
-          WaterHeaterLib.BaseClasses.LongWaveRadiationExchange radGasFlr(A=
+          WaterHeaterLib.OBSOLETEBaseClasses.LongWaveRadiationExchange
+                                                               radGasFlr(A=
                 datTanEnvBot.A)
             "Radiative heat transfer between the gas in the burner and the floor"
                                                    annotation (Placement(
@@ -4021,12 +3753,14 @@ First implementation.
                 datTanEnv.layers.absIR_b + (1/absIR_FS)*(1/(absIR_Fla*fv) + 1)
                  - 1)) annotation (Placement(transformation(extent={{158,-246},{
                     104,-216}})));
-          WaterHeaterLib.BaseClasses.THotGas  hotGasTemp(A_B=datTanEnvBot.A)
+          WaterHeaterLib.OBSOLETEBaseClasses.THotGas
+                                              hotGasTemp(A_B=datTanEnvBot.A)
             annotation (Placement(transformation(
                 extent={{16,-16},{-16,16}},
                 rotation=270,
                 origin={0,-2})));
-          WaterHeaterLib.BaseClasses.TF0  T_F0(final deltaHc_H=deltaHc_H, final
+          WaterHeaterLib.OBSOLETEBaseClasses.TF0
+                                          T_F0(final deltaHc_H=deltaHc_H, final
               deltaHc_L=deltaHc_L)
             annotation (Placement(transformation(extent={{344,4},{376,36}})));
           Modelica.Blocks.Interfaces.RealInput QBurner annotation (Placement(
@@ -4039,7 +3773,8 @@ First implementation.
                 origin={216,-282})));
           Modelica.Blocks.Math.Add add
             annotation (Placement(transformation(extent={{268,6},{290,28}})));
-          WaterHeaterLib.BaseClasses.hCB  h_CB(DT=DTan, DF=DFlu) annotation (
+          WaterHeaterLib.OBSOLETEBaseClasses.hCB
+                                          h_CB(DT=DTan, DF=DFlu) annotation (
               Placement(transformation(
                 extent={{-16,-16},{16,16}},
                 rotation=90,
@@ -4055,7 +3790,8 @@ First implementation.
           Modelica.Blocks.Sources.RealExpression fsRadiationExchange4_Q_flow(y=
                 radGasFlr.port.Q_flow)
             annotation (Placement(transformation(extent={{174,-20},{232,18}})));
-          WaterHeaterLib.BaseClasses.cdotG  cdot_G annotation (Placement(
+          WaterHeaterLib.OBSOLETEBaseClasses.cdotG
+                                            cdot_G annotation (Placement(
                 transformation(
                 extent={{-16,-16},{16,16}},
                 rotation=90,
@@ -4370,7 +4106,8 @@ First implementation.
                   extent={{6,-6},{-6,6}},
                   rotation=180,
                   origin={-42,58})));
-            WaterHeaterLib.BaseClasses.Burner.Gas burn
+            WaterHeaterLib.OBSOLETEBaseClasses.Burner.Gas
+                                                  burn
               annotation (Placement(transformation(extent={{-28,-20},{52,38}})));
           equation
             connect(TFloor.y, TBCBot.T) annotation (Line(
@@ -4409,7 +4146,8 @@ First implementation.
       package Examples
         model cdotG "this is an example for cdotG"
           import WaterHeaterLib = WaterHeatingLibrary.CondensingTank;
-          WaterHeaterLib.BaseClasses.cdotG  cdot_G
+          WaterHeaterLib.OBSOLETEBaseClasses.cdotG
+                                            cdot_G
             annotation (Placement(transformation(extent={{12,26},{32,46}})));
           Modelica.Blocks.Sources.Constant T_AD_flame(k=273.15 + 1000)
             annotation (Placement(transformation(extent={{-46,26},{-26,46}})));
@@ -4435,7 +4173,8 @@ First implementation.
 
         model TFlame "this is an example for TFlame"
           import WaterHeaterLib = WaterHeatingLibrary.CondensingTank;
-          WaterHeaterLib.BaseClasses.TFlame     t_AD_Flame
+          WaterHeaterLib.OBSOLETEBaseClasses.TFlame
+                                                t_AD_Flame
             annotation (Placement(transformation(extent={{22,-12},{42,8}})));
           Modelica.Blocks.Sources.Constant T_Dry_Bul(k=273.15 + 20)
             annotation (Placement(transformation(extent={{-40,14},{-20,34}})));
@@ -4455,7 +4194,8 @@ First implementation.
 
         model THotGas "this is an example for THotGas"
           import WaterHeaterLib = WaterHeatingLibrary.CondensingTank;
-          WaterHeaterLib.BaseClasses.THotGas  t_hotGas
+          WaterHeaterLib.OBSOLETEBaseClasses.THotGas
+                                              t_hotGas
             annotation (Placement(transformation(extent={{58,6},{78,26}})));
           Modelica.Blocks.Sources.Constant h_RB(k=2)
             annotation (Placement(transformation(extent={{-80,22},{-60,42}})));
@@ -5464,9 +5204,20 @@ function can be used as part of another scan operation.
   </li>
   </html>"));
       end EffTankCond;
-    end BaseClasses;
 
-    model CondensingTank "Storage tank in a gas-fired water heater"
+      annotation(Documentation(info="<html>
+  <p>
+  This package contains base class models used in the construction of storage tank water heater models.
+  Most of these models are obsolete, however they are stored here in case they are wanted in the future.
+  Most of these models are a repeat copy of those found in 
+  <a href=\"modelica:WaterHeatingLibrary.NonCondensingTank.BaseClasses\">
+  WaterHeatingLibrary.NonCondensingTank.BaseClasses</a>.
+  </p>
+  </html>"));
+
+    end OBSOLETEBaseClasses;
+
+    model OBSOLETECondensingTank "Storage tank in a gas-fired water heater"
       import SI = Modelica.SIunits;
       import Modelica.Constants;
       import WaterHeaterLib = WaterHeatingLibrary.CondensingTank;
@@ -5543,7 +5294,8 @@ function can be used as part of another scan operation.
         each T_b_start=datFlueWall.T_b_start)
         "Heat conduction through partitions that have both sides inside the thermal zone"
         annotation (Placement(transformation(extent={{-118,-36},{-184,30}})));
-      WaterHeaterLib.BaseClasses.InteriorWH heaFluWat[nSeg](
+      WaterHeaterLib.OBSOLETEBaseClasses.InteriorWH
+                                            heaFluWat[nSeg](
         each final A=datFlueWall.A/nSeg,
         each final til=datFlueWall.til,
         each final conMod=Buildings.HeatTransfer.Types.InteriorConvection.Temperature,
@@ -5682,7 +5434,8 @@ function can be used as part of another scan operation.
        Modelica.SIunits.Temperature T_F[nSeg]( each start = 0)
         "Temperature of flue wall";
       Real smoDel = 0.00001;
-      WaterHeaterLib.BaseClasses.InteriorWH heaBasWat(
+      WaterHeaterLib.OBSOLETEBaseClasses.InteriorWH
+                                            heaBasWat(
         final A=datTanEnvBot.A,
         final til=datTanEnvBot.til,
         hFixed=hFixed,
@@ -5692,7 +5445,8 @@ function can be used as part of another scan operation.
             extent={{14,-14},{-14,14}},
             rotation=-90,
             origin={0,-50})));
-      WaterHeaterLib.BaseClasses.InteriorWH convConBou3(
+      WaterHeaterLib.OBSOLETEBaseClasses.InteriorWH
+                                            convConBou3(
         final A=datTanEnvTop.A,
         final til=datTanEnvTop.til,
         final conMod=Buildings.HeatTransfer.Types.InteriorConvection.Temperature,
@@ -5701,7 +5455,8 @@ function can be used as part of another scan operation.
             extent={{-14,-14},{14,14}},
             rotation=-90,
             origin={0,110})));
-      WaterHeaterLib.BaseClasses.InteriorWH heaWatJac[nSeg](
+      WaterHeaterLib.OBSOLETEBaseClasses.InteriorWH
+                                            heaWatJac[nSeg](
         each final A=datTanEnv.A/nSeg,
         each final til=datTanEnv.til,
         each final conMod=Buildings.HeatTransfer.Types.InteriorConvection.Temperature,
@@ -5714,7 +5469,8 @@ function can be used as part of another scan operation.
       Modelica.Blocks.Interfaces.RealVectorInput m_flow_in[nSeg] annotation (
           Placement(transformation(extent={{-178,444},{-138,484}}),
             iconTransformation(extent={{-162,444},{-122,484}})));
-      WaterHeaterLib.BaseClasses.draHeaTra draHeaTra(
+      WaterHeaterLib.OBSOLETEBaseClasses.draHeaTra
+                                           draHeaTra(
         nSeg=nSeg,
         TIn=TIn,
         redeclare package Medium = Medium,
@@ -5758,7 +5514,8 @@ function can be used as part of another scan operation.
             extent={{-13,-13},{13,13}},
             rotation=180,
             origin={-93,19})));
-      WaterHeaterLib.BaseClasses.InteriorWH heaWatFit[nSeg](
+      WaterHeaterLib.OBSOLETEBaseClasses.InteriorWH
+                                            heaWatFit[nSeg](
         each hFixed=hFixed,
         each conMod=Buildings.HeatTransfer.Types.InteriorConvection.Temperature,
         each final til=datTanEnv.til,
@@ -5799,7 +5556,8 @@ function can be used as part of another scan operation.
             extent={{-13,-13},{13,13}},
             rotation=90,
             origin={399,43})));
-      WaterHeaterLib.BaseClasses.LongWaveRadiationExchange radJacAmb[nSeg](each A=
+      WaterHeaterLib.OBSOLETEBaseClasses.LongWaveRadiationExchange
+                                                           radJacAmb[nSeg](each A=
            datTanEnv.A/nSeg)
         "Radiative heat exchange between the tank and the surroundings"
         annotation (Placement(transformation(extent={{342,-16},{316,-42}})));
@@ -5825,7 +5583,8 @@ function can be used as part of another scan operation.
         annotation (Placement(transformation(extent={{436,-96},{406,-66}})));
       Modelica.Blocks.Sources.RealExpression absIRJac2[nSeg](each y=datTanEnv.layers.absIR_b)
         annotation (Placement(transformation(extent={{440,-48},{388,-12}})));
-      WaterHeaterLib.BaseClasses.InteriorWH heaGasFlu[nSeg](
+      WaterHeaterLib.OBSOLETEBaseClasses.InteriorWH
+                                            heaGasFlu[nSeg](
         each hFixed=hFixed,
         each final conMod=Buildings.HeatTransfer.Types.InteriorConvection.Temperature,
         each final A=datFlueWall.A/nSeg,
@@ -5849,7 +5608,8 @@ function can be used as part of another scan operation.
             extent={{-14,-14},{14,14}},
             rotation=90,
             origin={-44,328})));
-      WaterHeaterLib.BaseClasses.LongWaveRadiationExchange radTopAmb(A=
+      WaterHeaterLib.OBSOLETEBaseClasses.LongWaveRadiationExchange
+                                                           radTopAmb(A=
             datTanEnvTop.A)
         "Radiative heat transfer between the top of the tank and the surroundings"
                            annotation (Placement(transformation(
@@ -5888,7 +5648,8 @@ function can be used as part of another scan operation.
             extent={{-20,-20},{20,20}},
             rotation=90,
             origin={238,-370})));
-      WaterHeaterLib.BaseClasses.buoHeaTra buoHeaTra(
+      WaterHeaterLib.OBSOLETEBaseClasses.buoHeaTra
+                                           buoHeaTra(
         nSeg=nSeg, QDotPilot=QDotPilot)
         "Calculates the heat transfer between segments in the heater caused by buoyant flow"
                                                      annotation (Placement(
@@ -6259,7 +6020,7 @@ First implementation.
                 pattern=LinePattern.Dot)}),
         Diagram(coordinateSystem(preserveAspectRatio=true, extent={{-100,-100},{
                 100,100}}), graphics));
-    end CondensingTank;
+    end OBSOLETECondensingTank;
     annotation (
       conversion(noneFromVersion=""));
   end CondensingTank;
@@ -11424,7 +11185,7 @@ The insulation used in Carl Hiller's test lab has a conductivity of 0.02 Btu/hr-
     annotation ();
   end HWDis;
 
-  package Hybrid "Provides models for hybrid water heaters"
+  package PRELIMINARYHybrid "Provides models for hybrid water heaters"
     model HybridWH
       "Provides a model of a hybrid water heater. Based on the A.O. Smith NEXT"
       parameter Real RecircFlow = 0.12 "Flow rate of the recirculation loop";
@@ -12809,7 +12570,7 @@ First implementation.
 
           model EffTank
             "Provides an example showing how the EffTank model is used"
-            import WaterHeatingLibrary.Hybrid;
+            import Hybrid = WaterHeatingLibrary.PRELIMINARYHybrid;
             extends Modelica.Icons.Example;
             Hybrid.HeatersUsed.EditedBaseClasses.EffTank effTank(EffTankless=0.85,
                 EffSys=0.9)
@@ -13136,8 +12897,15 @@ First implementation.
   </html>"));
       end GenHyb;
     end Examples;
-    annotation ();
-  end Hybrid;
+    annotation (Documentation(info="<html>
+  <p>
+  This package contains preliminary work developing a hybrid water heater simulation model.
+  As of now the available model has not been calibrated or validated, and no experimental
+  data is available for this process. The models in this package could create a starting
+  point for future model development, but are not considered ready for use.
+  </p>
+  </html>"));
+  end PRELIMINARYHybrid;
 
   package NonCondensingTank
     model ComplexTank "model of a gas water heater without burner"
@@ -14074,7 +13842,8 @@ First implementation.
       Modelica.Blocks.Interfaces.RealInput mFloRec "Recirculation flow rate"
         annotation (Placement(transformation(extent={{-462,-80},{-422,-40}}),
             iconTransformation(extent={{-492,-110},{-422,-40}})));
-      Hybrid.HeatersUsed.EditedBaseClasses.cirHeaTra cirHeaTra(nSeg=nSeg,
+      PRELIMINARYHybrid.HeatersUsed.EditedBaseClasses.cirHeaTra
+                                                     cirHeaTra(nSeg=nSeg,
           redeclare package Medium = Medium)
         annotation (Placement(transformation(extent={{-238,-198},{-182,-142}})));
       Modelica.Blocks.Sources.RealExpression realExpression[nSeg](y=cirHeaTra.cirHeaTra)
@@ -14099,7 +13868,8 @@ First implementation.
             extent={{-10,-10},{10,10}},
             rotation=180,
             origin={104,-80})));
-      Hybrid.HeatersUsed.EditedBaseClasses.UALoss uALoss(nSeg=nSeg, UA=UA)
+      PRELIMINARYHybrid.HeatersUsed.EditedBaseClasses.UALoss
+                                                  uALoss(nSeg=nSeg, UA=UA)
         annotation (Placement(transformation(extent={{-314,204},{-270,248}})));
       Modelica.Blocks.Sources.RealExpression realExpression2[nSeg](y=-uALoss.UALoss)
         annotation (Placement(transformation(
@@ -14504,7 +14274,8 @@ First implementation.
       Modelica.Blocks.Interfaces.RealInput mFloRec "Recirculation flow rate"
         annotation (Placement(transformation(extent={{-498,-208},{-420,-130}}),
             iconTransformation(extent={{-80,-28},{-58,-6}})));
-      Hybrid.HeatersUsed.EditedBaseClasses.cirHeaTra cirHeaTra(nSeg=nSeg,
+      PRELIMINARYHybrid.HeatersUsed.EditedBaseClasses.cirHeaTra
+                                                     cirHeaTra(nSeg=nSeg,
           redeclare package Medium = Medium)
         annotation (Placement(transformation(extent={{-238,-198},{-182,-142}})));
       Modelica.Blocks.Sources.RealExpression realExpression[nSeg](y=cirHeaTra.cirHeaTra)
@@ -14531,7 +14302,8 @@ First implementation.
             extent={{-10,-10},{10,10}},
             rotation=180,
             origin={104,-80})));
-      Hybrid.HeatersUsed.EditedBaseClasses.UALoss uALoss(nSeg=nSeg, UA=UA)
+      PRELIMINARYHybrid.HeatersUsed.EditedBaseClasses.UALoss
+                                                  uALoss(nSeg=nSeg, UA=UA)
         annotation (Placement(transformation(extent={{-314,204},{-270,248}})));
       Modelica.Blocks.Sources.RealExpression realExpression2[nSeg](y=-uALoss.UALoss)
         annotation (Placement(transformation(
@@ -14832,11 +14604,14 @@ This model is intended to replace the SimplifiedStorageTank model. The implement
 with fluid connections using components from the Modelica and Buildings libraries. It is intended to be closer to Buildings library standards.
 </p>
 <p>
-Planned future revisions include:<br>
-CLEAN THE MODEL and make it easier to understand.<br>
-Continue to bring it up to Buildings library standards.
+Planned future revisions include:
 </p>
-</html>",   revisions="<html>
+<ul>
+<li>CLEAN THE MODEL and make it easier to understand.</li>
+<li>Continue to bring it up to Buildings library standards.</li>
+<li>Re-examine the draw mixing model. Make it easuer to understand and use<li>
+</html>",
+    revisions="<html>
 <ul>
 <li>
 Mar 29,2013 by Peter Grant:<br>
@@ -14847,7 +14622,7 @@ First implementation.
     end SimplifiedStorageTankMediumModel;
 
     package Examples
-      model ComplexTank "Test model for water heater"
+      model OBSOLETEComplexTank "Test model for water heater"
         import WaterHeaterLib = WaterHeatingLibrary.NonCondensingTank;
         extends Modelica.Icons.Example;
         import Modelica.SIunits;
@@ -15181,14 +14956,20 @@ First implementation.
           __Dymola_Commands(file=
                 "modelica://Buildings/Resources/Scripts/Dymola/Fluid/Storage/Examples/Stratified.mos"
               "Simulate and plot"),
-          Documentation(info="<html>
-This test model compares two tank models. The only difference between
-the two tank models is that one uses the third order upwind discretization
-scheme that reduces numerical diffusion that is induced when connecting 
-volumes in series.
-</html>"),Icon(coordinateSystem(preserveAspectRatio=true, extent={{-150,-150},{
-                  150,150}})));
-      end ComplexTank;
+       Documentation(info="<html>
+          <p>
+          This model demonstrates the use of
+          <a href=\"modelica:WaterHeatingLibrary.NonCondensingTank.ComplexTank\">
+          WaterHeaterModeling.NonCondensingTank.ComplexTank</a>. It is
+          considered obsolete because the model
+          <a href=\"modelica:WaterHeatingLibrary.NonCondensingTank.SimplifiedStorageTankMediumModel\">
+          WaterHeaterModeling.NonCondensingTank.SimplifiedStorageTankMediumModel</a> is
+          a better model to use. For an example demonstrating the use of that model see
+          <a href=\"modelica:WaterHeatingLibrary.NonCondensingTank.Examples.SimplifiedStorageTankMediumModel\">
+          WaterHeaterModeling.NonCondensingTank.Examples.SimplifiedStorageTankMediumModel</a>.
+          </p>
+          </html>"));
+      end OBSOLETEComplexTank;
 
       model StorageTankWithFan
         import WaterHeaterLib = WaterHeatingLibrary.NonCondensingTank;
@@ -15584,11 +15365,11 @@ volumes in series.
             color={0,0,127},
             smooth=Smooth.None));
         connect(mFloRecirc.y, tan.mFloRec) annotation (Line(
-            points={{3,-38},{8,-38},{8,-34},{21.8,-34}},
+            points={{3,-38},{8,-38},{8,-35.5},{20.3,-35.5}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(TInRecirc.y, tan.TInRec) annotation (Line(
-            points={{3,-68},{10,-68},{10,-47.2},{21.6,-47.2}},
+            points={{3,-68},{10,-68},{10,-48.3},{20.5,-48.3}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(tan.m_flow_in, DrawFlow.y[1]) annotation (Line(
@@ -15612,15 +15393,15 @@ volumes in series.
             color={0,0,127},
             smooth=Smooth.None));
         connect(TIn.y[1], tan.TIn) annotation (Line(
-            points={{-55,132},{86,132},{86,20.2}},
+            points={{-55,132},{86,132},{86,18.2}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(TAmb.y[1], tan.TAmb) annotation (Line(
-            points={{-55,104},{-40,104},{-40,-6.1},{19.9,-6.1}},
+            points={{-55,104},{-40,104},{-40,-5.7},{20.3,-5.7}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(EffTan.y, tan.EffTan) annotation (Line(
-            points={{-41,-20},{22,-20}},
+            points={{-41,-20},{-10,-20},{-10,-21.7},{20.3,-21.7}},
             color={0,0,127},
             smooth=Smooth.None));
         annotation (Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-150,
@@ -15716,11 +15497,11 @@ volumes in series.
             color={0,0,127},
             smooth=Smooth.None));
         connect(mFloRecirc.y, tan.mFloRec) annotation (Line(
-            points={{-71,14},{-60,14},{-60,12},{-48.2,12}},
+            points={{-71,14},{-60,14},{-60,10.5},{-49.7,10.5}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(TInRecirc.y, tan.TInRec) annotation (Line(
-            points={{-71,-18},{-66,-18},{-66,-1.2},{-48.4,-1.2}},
+            points={{-71,-18},{-66,-18},{-66,-2.3},{-49.5,-2.3}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(integerToReal.y, qEle.BurnerStatus) annotation (Line(
@@ -15732,15 +15513,15 @@ volumes in series.
             color={0,0,127},
             smooth=Smooth.None));
         connect(const.y, tan.TIn) annotation (Line(
-            points={{-39,146},{16,146},{16,66.2}},
+            points={{-39,146},{16,146},{16,64.2}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(TAmb.y, tan.TAmb) annotation (Line(
-            points={{-77.2,40},{-63.65,40},{-63.65,39.9},{-50.1,39.9}},
+            points={{-77.2,40},{-63.65,40},{-63.65,40.3},{-49.7,40.3}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(EffTan.y, tan.EffTan) annotation (Line(
-            points={{-143,26},{-48,26}},
+            points={{-143,26},{-96,26},{-96,24.3},{-49.7,24.3}},
             color={0,0,127},
             smooth=Smooth.None));
         annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-200,
@@ -15846,11 +15627,11 @@ volumes in series.
             color={255,127,0},
             smooth=Smooth.None));
         connect(add.y, tan.QDotIn) annotation (Line(
-            points={{-19,-48},{-94,-48},{-94,100.92},{10.4,100.92}},
+            points={{-19,-48},{-94,-48},{-94,99.6},{10.4,99.6}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(TAmb.y, tan.TAmb) annotation (Line(
-            points={{-67,82},{-60,82},{-60,92.78},{10.68,92.78}},
+            points={{-67,82},{-60,82},{-60,93.22},{10.68,93.22}},
             color={0,0,127},
             smooth=Smooth.None));
         connect(effTan.y, tan.EffTan) annotation (Line(
@@ -15882,8 +15663,7 @@ volumes in series.
             color={0,127,255},
             smooth=Smooth.None));
         annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                  -100},{150,150}}),        graphics), Icon(coordinateSystem(
-                preserveAspectRatio=false, extent={{-100,-100},{150,150}})));
+                  -100},{150,150}}),        graphics));
       end SimplifiedStorageTankMediumModel;
     end Examples;
 
@@ -18704,12 +18484,25 @@ function can be used as part of another scan operation.
       end heaSumMod;
     end BaseClasses;
     annotation (
-      conversion(noneFromVersion=""));
+      conversion(noneFromVersion=""),
+      Documentation(info="<html>
+    <p>
+    This package contains models of non-condensing storage tank water heaters.
+    While three different model varieties are available, it is recommended that
+    people use 
+    <a href=\"modelica:WaterHeatingLibrary.NonCondensingTank.SimplifiedStorageTankMediumModel\">
+    WaterHeatingLibrary.NonCondensingTank.SimplifiedStorageTankMediumModel</a>. That model
+    will typically be the most user-friendly, as it is designed to simulate faster than
+    the other models while also being easier to connect to other models in the
+    WaterHeatingLibrary.
+    </p>
+    </html>"));
   end NonCondensingTank;
 
   package NonCondensingTankless
     "A model for non-condensing tankless water heaters"
     model NonCondensingTanklessHeater
+      "Tankless water heater model based on TRNSYS Type 940"
 
       HeatExchangers.NonCondensing HeatExchanger(
         ConductionCoefficient=0.000001,
@@ -18878,6 +18671,7 @@ function can be used as part of another scan operation.
     end NonCondensingTanklessHeater;
 
     model NonCondensingTanklessHeaterMediumModel
+      "Improved TWH model using a medium model and component-based programming"
 
       replaceable package Medium = Modelica.Media.Interfaces.PartialMedium
         "Fluid in the heater";
@@ -19161,12 +18955,12 @@ function can be used as part of another scan operation.
     equation
       connect(cont.port_b, HX.port_a)
                               annotation (Line(
-          points={{-16.9818,86.784},{-8,86.784},{-8,87.4667},{23.64,87.4667}},
+          points={{-16.9818,86.272},{-8,86.272},{-8,87.4667},{23.64,87.4667}},
           color={0,127,255},
           smooth=Smooth.None));
 
       connect(colWatIn, cont.port_a) annotation (Line(
-          points={{-104,87},{-78,87},{-78,86.784},{-74.8145,86.784}},
+          points={{-104,87},{-78,87},{-78,86.272},{-74.8145,86.272}},
           color={0,127,255},
           smooth=Smooth.None));
       connect(HX.port_b, hotWatOut) annotation (Line(
@@ -19241,6 +19035,7 @@ function can be used as part of another scan operation.
     end NonConVariableTSet;
 
     model NonCondensingTanklessHeaterMediumModelConstantGamma
+      "Non-condensing TWH model using a steady state control signal assumption"
 
       replaceable package Medium = Modelica.Media.Interfaces.PartialMedium
         "Fluid in the heater";
@@ -20099,6 +19894,7 @@ function can be used as part of another scan operation.
       end NonCondensingMediumModel;
 
       package Examples
+        "Examples showing the use of some NonCondensingTankless.HeatExchangers models"
         model NonCondensingMediumModel
           import WaterHeatingLibrary;
           extends Modelica.Icons.Example;
@@ -20178,6 +19974,30 @@ function can be used as part of another scan operation.
                   extent={{-100,-100},{100,100}}), graphics));
         end NonCondensingMediumModel;
       end Examples;
+
+      annotation(Documentation(info="<html>
+  <p>
+  This package contains heat exchanger models used in non-condensing tankless water heater models.
+  There are two models available. They are:
+  </p>
+  <ul>
+  <li><a href=\"modelica:WaterHeatingLibrary.NonCondensingTankless.HeatExchangers.NonCondensing\">
+  WaterHeatingLibrary.NonCondensingTankless.HeatExchangers.NonCondensing</a>: This is the original model
+  made using the source code from TRNSYS Type940. It is considered obsolete, as
+  <a href=\"modelica:WaterHeatingLibrary.NonCondensingTankless.HeatExchangers.NonCondensingMediumModel\">
+  WaterHeatingLibrary.NonCondensingTankless.HeatExchangers.NonCondensingMediumModel</a> uses a medium model
+  and graphical model representation, making it more user friendly.</li>
+  <li><a href=\"modelica:WaterHeatingLibrary.NonCondensingTankless.HeatExchangers.NonCondensingMediumModel\">
+  WaterHeatingLibrary.NonCondensingTankless.HeatExchangers.NonCondensingMediumModel</a>: This model is
+  effectively identical to
+  <a href=\"modelica:WaterHeatingLibrary.NonCondensingTankless.HeatExchangers.NonCondensing\">
+  WaterHeatingLibrary.NonCondensingTankless.HeatExchangers.NonCondensing</a>. The programming has been changed
+  to feature a medium model, instead of real variables, and use component models from the LBNL Buildings library.
+  These changes make the model easier for users to understand, and provides connections so the tankless water
+  heater model can more easily be connected to other WaterHeatingLibrary models.</li>
+  </ul>
+  </html>"));
+
     end HeatExchangers;
 
     package Controllers
@@ -21260,6 +21080,7 @@ function can be used as part of another scan operation.
 
       model NonConVariableTSet
         "Control module for the non-condensing TWH model using a medium (Variable TSet)"
+
         Modelica.Blocks.Interfaces.RealInput T_out(unit = "K")
          annotation (Placement(transformation(extent={{-140,-48},{-100,-8}})));
         Modelica.Blocks.Interfaces.RealOutput ControlConstant annotation (Placement(
@@ -21535,6 +21356,7 @@ function can be used as part of another scan operation.
       end NonConVariableTSet;
 
       package BaseClasses
+        "BaseClasses used in the construction of NonCondensingTankless.Controllers models"
         model ConstantGammaControl
           "Identifies control signal assuming steady state"
           extends Modelica.Blocks.Interfaces.BlockIcon;
@@ -22245,6 +22067,7 @@ First implementation
         end StartDelay;
 
         package Examples
+          "Examples showing the use of some Controllers.BaseClasses models"
           model ControlResponseDelay "Test model for ControlResponseDelay"
             import WaterHeatingLibrary;
             extends Modelica.Icons.Example;
@@ -22262,7 +22085,7 @@ First implementation
                     extent={{-100,-100},{100,100}}), graphics));
           end ControlResponseDelay;
 
-          model StartDelay
+          model StartDelay "Test model for StartDelay"
             import WaterHeatingLibrary;
             extends Modelica.Icons.Example;
             WaterHeatingLibrary.NonCondensingTankless.Controllers.BaseClasses.StartDelay
@@ -22363,7 +22186,9 @@ First implementation
       end BaseClasses;
 
       package Examples
+        "Examples showing the use of some NonCondensingTankless.Controllers models"
         model NonCondensingControllerMediumModel
+          "Test model for NonCondensingControllerMediumModel"
           extends Modelica.Icons.Example;
           NonCondensingTanklessHXControllerMediumModel
             nonCondensingTanklessHXControllerMediumModel(redeclare package
@@ -22534,9 +22359,53 @@ First implementation
                   extent={{-100,-100},{100,100}}), graphics));
         end NonConVariableTSet;
       end Examples;
+
+      annotation(Documentation(info="<html>
+  <p>
+  This package contains several different controller models that are designed to emulate the controllers 
+  in tankless water heaters. The different controller models are as follows:
+  </p>
+  <ul>
+  <li>
+  <a href=\"modelica:WaterHeatingLibrary.NonCondensingTankless.Controllers.NonCondensingTanklessHXController\">
+  WaterHeatingLibrary.NonCondensingTankless.Controllers.NonCondensingTanklessHXController</a>: This model
+  is the original version, made primarily to replicate the control logic in TRNSYS Type 940. The sole difference
+  between this model and the control logic in Type 940 is the addition of a PID controller.</li>
+  <li><a href=\"modelica:WaterHeatingLibrary.NonCondensingTankless.Controllers.ConstantGammaController\">
+  WaterHeatingLibrary.NonCondensingTankless.Controllers.ConstantGammaController</a>: This model is a modification
+  of
+  <a href=\"modelica:WaterHeatingLibrary.NonCondensingTankless.Controllers.NonCondensingTanklessHXController\">
+  WaterHeatingLibrary.NonCondensingTankless.Controllers.NonCondensingTanklessHXController</a>. It was developed
+  for a specific study comparing the results of this tankless water heater model with other models which use a 
+  steady state control signal assumption.</li>
+  <li>
+  <a href=\"modelica:WaterHeatingLibrary.NonCondensingTankless.Controllers.NonCondensingTanklessHXControllerMediumModel\">
+  WaterHeatingLibrary.NonCondensingTankless.Controllers.NonCondensingTanklessHXControllerMediumModel</a>: This is a model
+  improving upon
+  <a href=\"modelica:WaterHeatingLibrary.NonCondensingTankless.Controllers.NonCondensingTanklessHXController\">
+  WaterHeatingLibrary.NonCondensingTankless.Controllers.NonCondensingTanklessHXController</a>. Improvements include
+  converting the model to use a medium model instead of a real variables, and condensing sections of logic into
+  sub models (for example, the calculations for comparing the required heat rate to the minimum heat rate are now
+  contained in a single model called \"qFloiMin\").</li>
+  <li>
+  <a href=\"modelica:WaterHeatingLibrary.NonCondensingTankless.Controllers.ConstantGammaControllerMediumModel\">
+  WaterHeatingLibrary.NonCondensingTankless.Controllers.ConstantGammaControllerMediumModel</a>: This model is a
+  modified form of
+  <a href=\"modelica:WaterHeatingLibrary.NonCondensingTankless.Controllers.NonCondensingTanklessHXControllerMediumModel\">
+  WaterHeatingLibrary.NonCondensingTankless.Controllers.NonCondensingTanklessHXControllerMediumModel</a>. The modifications
+  implemented the steady state control signal that was used for a specific project.</li>
+  <li>
+  <a href=\"modelica:WaterHeatingLibrary.NonCondensingTankless.Controllers.NonConVariableTSet\">
+  WaterHeatingLibrary.NonCondensingTankless.Controllers.NonConVariableTSet</a>: This model is a modification of 
+  <a href=\"modelica:WaterHeatingLibrary.NonCondensingTankless.Controllers.NonCondensingTanklessHXControllerMediumModel\">
+  WaterHeatingLibrary.NonCondensingTankless.Controllers.NonCondensingTanklessHXControllerMediumModel</a>. The modifications
+  changed the set temperature from a parameter to a real input, allowing for simulations with a changing set temperature.</li>
+  </ul>
+  </html>"));
     end Controllers;
 
     package Examples
+      "Examples howing the use of some NonCondensingTankless models"
       model CharacterizationModel
         "Model used to identify the parameters describing a given tankless water heater"
         import WaterHeatingLibrary;
@@ -22660,7 +22529,7 @@ First implementation
                   -100},{100,100}}), graphics));
       end CharacterizationModel;
 
-      model NonCondensingTanklessExample
+      model NonCondensingTanklessExample "Test model for NonCondensingTankless"
         import TanklessWaterHeater = WaterHeatingLibrary.NonCondensingTankless;
         extends Modelica.Icons.Example;
 
@@ -22736,7 +22605,7 @@ First implementation
         annotation (Diagram(graphics));
       end NonCondensingTanklessExample;
 
-      model NonCondensingMediumModel
+      model NonCondensingMediumModel "Test model for NoncondensingMediumModel"
         extends Modelica.Icons.Example;
         NonCondensingTanklessHeaterMediumModel nonCondensingTanklessHeaterMediumModel(
             redeclare package Medium =
@@ -22985,7 +22854,62 @@ First implementation
       end NonConVariableTSet;
     end Examples;
     annotation (
-      conversion(noneFromVersion=""));
+      conversion(noneFromVersion=""),
+      Documentation(info="<html>
+    <p>
+    This package contains models used to simulate non-condensing gas tankless water heaters.
+    There are several top-level models available. The are:
+    </p>
+    <ul>
+    <li><a href=\"modelica:WaterHeatingLibrary.NonCondensingTankless.NonCondensingTanklessHeater\">
+    WaterHeatingLibrary.NonCondensingTankless.NonCondensingTanklessHeater</a>: This model was the 
+    original non-condensing tankless water heater model. It uses real variables for all dat
+    transmission. It is considered obsolete as it has been replaced with
+    <a href=\"modelica:WaterHeatingLibrary.NonCondensingTankless.NonCondensingTanklessHeaterMediumModel\">
+    WaterHeatingLibrary.NonCondensingTankless.NonCondensingTanklessHeaterMediumModel</a>.</li>
+    <li><a href=\"modelica:WaterHeatingLibrary.NonCondensingTankless.NonCondensingTanklessHeaterMediumModel\">
+    WaterHeatingLibrary.NonCondensingTankless.NonCondensingTanklessHeaterMediumModel</a>: This model
+    is a modified version of 
+    <a href=\"modelica:WaterHeatingLibrary.NonCondensingTankless.NonCondensingTanklessHeater\">
+    WaterHeatingLibrary.NonCondensingTankless.NonCondensingTanklessHeater</a>. It was modified to use a medium
+    model to represent the fluid, instead of using solely real values. It also uses 
+    <a href=\"modelica:WaterHeatingLibrary.NonCondensingTankless.HeatExchangers.NonCondensingMediumModel\">
+    WaterHeatingLibrary.NonCondensingTankless.HeatExchangers.NonCondensingMediumModel</a> instead of 
+    <a href=\"modelica:WaterHeatingLibrary.NonCondensingTankless.HeatExchangers.NonCondensing\">
+    WaterHeatingLibrary.NonCondensingTankless.HeatExchangers.NonCondensing</a>. The new heat exchanger model
+    uses graphical representation and component models instead of written code, making the model easier
+    for users to understand.</li>
+    <li><a href=\"modelica:WaterHeatingLibrary.NonCondensingTankless.NonConVariableTSet\">
+    WaterHeatingLibrary.NonCondensingTankless.NonCondensing</a>. This model is a variation of
+    <a href=\"modelica:WaterHeatingLibrary.NonCondensingTankless.NonCondensingTanklessHeaterMediumModel\">  
+    WaterHeatingLibrary.NonCondensingTankless.NonCondensingTanklessHeaterMediumModel</a>. The model was changed to 
+    use set temperature as an input variable, rather than a parameter. Having an adjustable set temperature was
+    necessary during the calibration and validation process and may be useful for future studies.</li>
+    <li><a href=\"modelica:WaterHeatingLibrary.NonCondensingTankless.NonCondensingTanklessHeaterMediumModelConstantGamma\">
+    WaterHeatingLibrary.NonCondensingTankless.NonCondensingTanklessHeaterMediumModelConstantGamma</a>: This is a variation
+    of <a href=\"modelica:WaterHeatingLibrary.NonCondensingTankless.NonCondensingTanklessHeaterMediumModel\">
+    WaterHeatingLibrary.NonCondensingTankless.NonCondensingTanklessHeaterMediumModel</a> with the PID controller removed
+    and replaced with a steady state control assumption. In this model the control signal, dictating the amount of gas
+    consumed and thus heat added to the water, is determined by identifying the heat needed to keep the outlet water
+    at the set temperature under steady state conditions. This steady state control signal is used for the entire draw.
+    It was used for a specific study comparing results with other models using the steady state control signal assumption.
+    </li>
+    <li><a href=\"modelica:WaterHeatingLibrary.NonCondensingTankless.NonCondSteadyState\">
+    WaterHeatingLibrary.NonCondensingTankless.NonCondSteadyState</a>. This model is the same as
+    <a href=\"modelica:WaterHeatingLibrary.NonCondensingTankless.NonCondensingTanklessHeaterMediumModelConstantGamma\">
+    WaterHeatingLibrary.NonCondensingTankless.NonCondensingTanklessHeaterMediumModelConstantGamma</a>. It is an older version
+    based on <a href=\"modelica:WaterHeatingLibrary.NonCondensingTankless.NonCondensingTanklessHeater\">
+    WaterHeatingLibrary.NonCondensingTankless.NonCondensingTanklessHeater</a> instead of 
+    <a href=\"modelica:WaterHeatingLibrary.NonCondensingTankless.NonCondensingTanklessHeaterMediumModel\">
+    WaterHeatingLibrary.NonCondensingTankless.NonCondensingTanklessHeaterMediumModel</a>.</li>
+    <li><a href=\"modelica:WaterHeatingLibrary.NonCondensingTankless.NonCondSteadyStateIntegrators\">
+    WaterHeatingLibrary.NonCondensingTankless.NonCondSteadyStateIntegrators</a>: This model is an extention of
+    <a href=\"modelica:WaterHeatingLibrary.NonCondensingTankless.NonCondSteadyState\">
+    WaterHeatingLibrary.NonCondensingTankless.NonCondSteadyState</a> to include integrators identifying the gas
+    consumption, and effective heat use during certain periods in the simulation. It was developed for a specific study
+    comparing the model to other models.</li>
+    </ul>
+    </html>"));
   end NonCondensingTankless;
 
   package CondensingTankless
@@ -23896,6 +23820,15 @@ Rate Control")}),                               Diagram(graphics));
                   {{-100,-100},{100,100}}), graphics));
       end CondTWHAndHydronicAHU;
     end Examples;
+
+    annotation(Documentation(info="<html>
+    <p>
+    This package was made as preliminary work on CombiSystems. The models are constructed
+    to demonstrate how a combi system could be constructed, but there has been no
+    development work to create an accurate combi system model.
+    </p>
+    </html>"));
+
   end CombiSystems;
   annotation (uses(Modelica(version="3.2"),
       TanklessWaterHeater(version="1"),
