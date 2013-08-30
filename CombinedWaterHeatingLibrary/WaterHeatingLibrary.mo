@@ -15,9 +15,8 @@ package WaterHeatingLibrary "Library of water heating models and packages"
       Modelica.Blocks.Sources.CombiTimeTable watFlo(
         tableOnFile=true,
         tableName="Flow",
-        fileName=
-            "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchFlow.txt",
-        columns=2:5)
+        columns=2:5,
+        fileName="InputFilesForExamples/TanklessWithTrunkAndBranchFlow.txt")
         "Reads a data file describing the desired water flow rate at each fixture[Dishwasher, KitchenSink, Shower, Sink]"
         annotation (Placement(transformation(extent={{-80,-74},{-60,-54}})));
 
@@ -173,22 +172,20 @@ package WaterHeatingLibrary "Library of water heating models and packages"
         annotation (Placement(transformation(extent={{180,-42},{200,-22}})));
       Modelica.Blocks.Sources.CombiTimeTable TAmb(
         tableOnFile=true,
-        fileName=
-            "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchTAmb.txt",
-        tableName="TAmb") "Temperature surrounding the system(unit = K)"
+        tableName="TAmb",
+        fileName="InputFilesForExamples/TanklessWithTrunkAndBranchTAmb.txt")
+        "Temperature surrounding the system(unit = K)"
         annotation (Placement(transformation(extent={{-80,96},{-60,116}})));
       Modelica.Blocks.Sources.CombiTimeTable TIn(
         tableOnFile=true,
         tableName="Temp",
-        fileName=
-            "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchTIn.txt")
+        fileName="InputFilesForExamples/TanklessWithTrunkAndBranchTIn.txt")
         "Inlet temperature (unit = K)"
         annotation (Placement(transformation(extent={{-100,-30},{-80,-10}})));
       Modelica.Blocks.Sources.CombiTimeTable pwrSig(
         tableOnFile=true,
         tableName="pwr",
-        fileName=
-            "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchpwr.txt")
+        fileName="InputFilesForExamples/TanklessWithTrunkAndBranchpwr.txt")
         "Power signal (1 = on, 0 = off)"
         annotation (Placement(transformation(extent={{-80,-4},{-60,16}})));
       Buildings.Fluid.Sources.Boundary_pT Mains(
@@ -207,8 +204,7 @@ package WaterHeatingLibrary "Library of water heating models and packages"
       Modelica.Blocks.Math.Min min1
         annotation (Placement(transformation(extent={{40,-52},{60,-32}})));
       Modelica.Blocks.Sources.CombiTimeTable TRadMea(tableOnFile=true, tableName="TRadMea",
-        fileName=
-            "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchTRadMea.txt")
+        fileName="InputFilesForExamples/TanklessWithTrunkAndBranchTRadMea.txt")
         "Mean radiant temperature surrounding the pipes(unit = K)"
         annotation (Placement(transformation(extent={{-80,124},{-60,144}})));
       NonCondensingTankless.NonCondensingTanklessHeaterMediumModelConstantGamma
@@ -381,40 +377,74 @@ package WaterHeatingLibrary "Library of water heating models and packages"
                 -75},{200,150}}),       graphics),
               Documentation(info="<html>
           <p>
-          This example shows how several components can be combined to simulate a hot water distribution system in a house. The model starts at the left with text file inputs.
-          The inputs include data for ambient temperature (TAmb), inlet temperature (TIn), the power control to the tankless heater (pwrSig) and the desired hot water flow rate
-          (watFlo).
+          This example shows how several components can be combined to simulate a hot water distribution
+          system in a house. The model starts at the left with text file inputs. The inputs include data 
+          for ambient temperature (TAmb), inlet temperature (TIn), the power control to the tankless 
+          heater (pwrSig) and the desired hot water flow rate (watFlo).
           </p>
           <p>
-          The inlet temperature data is passed from the data reader to a boundary condition model. The boundary condition model is used to represent the connection to the mains
-          water system by allowing the user to specify the inlet temperature and the pressure of the mains system. It is currently assumed that the mains pressure is constant;
-          however that can be changed by imitating the connection used to input the inlet temperature.
+          The inlet temperature data is passed from the data reader to a boundary condition model. The 
+          boundary condition model is used to represent the connection to the mains water system by 
+          allowing the user to specify the inlet temperature and the pressure of the mains system. It 
+          is currently assumed that the mains pressure is constant; however that can be changed by 
+          imitating the connection used to input the inlet temperature.
           </p>
           <p>
-          The power signal is passed straight from the data reader to the power signal connection on the tankless water heater model.
+          The power signal is passed straight from the data reader to the power signal connection on the 
+          tankless water heater model.
           </p>
           <p>
-          The ambient temperature is read from the data file and passed into a prescribedTemperature model. This model gives the temperature number units (K). The ambient
-          temperature is then connected to the pipe models describing the temperature of the air surrounding the pipes. The ambient temperature data file is also connected
-          directly to the tankless water heater model for use in calculating the UA losses from the heat exchanger.
+          The ambient temperature is read from the data file and passed into a prescribedTemperature model. 
+          This model gives the temperature number units (K). The ambient temperature is then connected to 
+          the pipe models describing the temperature of the air surrounding the pipes. The ambient 
+          temperature data file is also connected directly to the tankless water heater model for use in 
+          calculating the UA losses from the heat exchanger.
           </p>
           <p>
-          The information from watFlo is passed into two separate models. The first simply sums all of the flows at the various fixtures. The totalled flow is then compared
-          to the maximum flow rate allowed by the heater. The smaller of the two is passed into the floRed model. Depending on how the desired draw flow compares to the 
-          maximum allowable flow the floRed model may reduce the draw flow rate at each fixture. This happens in cases when the desired flow is larger than the flow rate the
-          heater will allow. The flow rate information is then connected to each of the draw endUse models.
+          The information from watFlo is passed into two separate models. The first simply sums all of the 
+          flows at the various fixtures. The totalled flow is then compared to the maximum flow rate 
+          allowed by the heater. The smaller of the two is passed into the floRed model. Depending on how 
+          the desired draw flow compares to the maximum allowable flow the floRed model may reduce the 
+          draw flow rate at each fixture. This happens in cases when the desired flow is larger than the flow 
+          rate the heater will allow. The flow rate information is then connected to each of the draw endUse models.
           </p>
           <p>
-          The boundary condition representing the mains water system is connected to the tankless water heater initiating the fluid flow system. After water passes through the
-          heater it enters the distribution system. The distribution system in this model is a trunk and branch system representing four fixtures in a house. It only models
-          the hot water pipes, ignoring the cold water pipes. Because the cold water pipes are not included in this model all flow rates are representing hot water flow, not flow
+          The boundary condition representing the mains water system is connected to the tankless water heater 
+          initiating the fluid flow system. After water passes through the heater it enters the distribution 
+          system. The distribution system in this model is a trunk and branch system representing four fixtures 
+          in a house. It only models the hot water pipes, ignoring the cold water pipes. Because the cold water 
+          pipes are not included in this model all flow rates are representing hot water flow, not flow
           of water leaving the fixture.
           </p>
           <p>
-          Depending on which fixture is calling for hot water the water can pass through one of four paths in the distribution tree. The path of the water can be identified by
-          following the blue lines from the heater to the fixture. For example, the hot water serving the shower passes from the tankless water heater through tru1, to bra11, to
-          bra 12 and to the fixture itself. <br>
+          Depending on which fixture is calling for hot water the water can pass through one of four paths in 
+          the distribution tree. The path of the water can be identified by following the blue lines from the 
+          heater to the fixture. For example, the hot water serving the shower passes from the tankless water 
+          heater through tru1, to bra11, to bra 12 and to the fixture itself.
           </p>
+          <p>
+          This model contains a command to run the example, and display some example results. To run the script,
+          open the \"Commands\" pull-down menu, and select \"Simulate and Plot\". Running the script will switch
+          Dymola to the \"Simulation\" tab, simulate the model, and display three plots. The pre-generated plots 
+          show:
+          </p>
+          <ul>
+          <li>Plot 1: This plot shows the water flow rate to the shower when, of the four end uses, only the
+          shower is turned on. It is present to help make sense of the results in Plot 2.</li>
+          <li>Plot 2: This plot shows water temperatures at several points in the distribution system during the
+          shower. It focuses on the period of time before the water getting to the shower reaches the set temperature.
+          It shows the temperature of the hot water at several points in the system. The points in the hot water
+          system include leaving the tankless water heater, at several intersection points in the piping tree,
+          and exiting the shower. In this plot the user can see the time lag, and dynamics introduced by the 
+          distribution system, as well as the response of the tankless water heater and hot water delivery to
+          the user in the shower.</li>
+          <li>Plot 3: This plot shows the effects of the flow reduction control logic when all draws are active
+          at the same time. The data lines shown indicate the sum of all desired flow rates (blue), the
+          maximum flow rate that the tankless water heater can provide (red), and the required reduction factor
+          (green). In this example, the tankless water heater can't provide enough heat to reach set temperature
+          at the desired total water flow rate and restricts the water flow. As shown by the green data, the 
+          flow of each draw is multiplied by 0.88532 to match the maximum flow rate that the heater can handle.</li>
+          </ul>
           </html>",
               revisions="<html>
           <ul>
@@ -423,7 +453,9 @@ package WaterHeatingLibrary "Library of water heating models and packages"
           First implementation
           </li>
           </ul>
-          </html>"));
+          </html>"),
+        Commands(file="Scripts/TanklessWithTrunkAndBranch.mos"
+            "Simulate and Plot"));
     end TanklessWithTrunkAndBranch;
 
     model HotAndColdDisWithTankless
@@ -460,13 +492,12 @@ package WaterHeatingLibrary "Library of water heating models and packages"
       Modelica.Blocks.Sources.CombiTimeTable TAmb(
         tableOnFile=true,
         tableName="TAmb",
-        fileName=
-            "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchTAmb.txt")
+        fileName="InputFilesForExamples/TanklessWithTrunkAndBranchTAmb.txt")
         annotation (Placement(transformation(extent={{-274,-22},{-254,-2}})));
       Modelica.Blocks.Sources.CombiTimeTable pwrSig(
         tableOnFile=true,
         tableName="pwr",
-        fileName="/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchpwr.txt")
+        fileName="InputFilesForExamples/TanklessWithTrunkAndBranchpwr.txt")
         annotation (Placement(transformation(extent={{-236,72},{-216,92}})));
       Buildings.Fluid.FixedResistances.Pipe
                                      hTru1(
@@ -710,18 +741,16 @@ package WaterHeatingLibrary "Library of water heating models and packages"
       Modelica.Blocks.Sources.CombiTimeTable TDra(
         tableOnFile=true,
         tableName="TOut",
-        fileName=
-            "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchTOut.txt",
-        columns=2:5)
+        columns=2:5,
+        fileName="InputFilesForExamples/TanklessWithTrunkAndBranchTOut.txt")
         "Desired temperature of the hot water draws (unit=K; KitchenSink, Dishwasher, Shower, Sink)"
         annotation (Placement(transformation(extent={{-274,138},{-254,158}})));
 
       Modelica.Blocks.Sources.CombiTimeTable watFlo(
         tableOnFile=true,
-        fileName=
-            "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchFlow.txt",
         tableName="Flow",
-        columns=2:5)
+        columns=2:5,
+        fileName="InputFilesForExamples/TanklessWithTrunkAndBranchFlow.txt")
         "Desired flow rate of the hot water draws (unit = kg/s; KitchenSink, Dishwasher, Shower, Sink)"
         annotation (Placement(transformation(extent={{-274,166},{-254,186}})));
 
@@ -751,9 +780,8 @@ package WaterHeatingLibrary "Library of water heating models and packages"
         annotation (Placement(transformation(extent={{204,62},{224,82}})));
       Modelica.Blocks.Sources.CombiTimeTable TIn(
         tableOnFile=true,
-        fileName=
-            "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchTIn.txt",
-        tableName="Temp")
+        tableName="Temp",
+        fileName="InputFilesForExamples/TanklessWithTrunkAndBranchTIn.txt")
         annotation (Placement(transformation(extent={{-236,38},{-216,58}})));
 
       Buildings.HeatTransfer.Sources.PrescribedTemperature
@@ -965,17 +993,72 @@ package WaterHeatingLibrary "Library of water heating models and packages"
                 -200},{275,200}}),      graphics),
               Documentation(info="<html>
           <p>
-          This example shows how the components can be combined to create a hot water distribution system where a tankless water heater serves a house. The distribution system
-          is simplified to only be single branches, rather than a full trunk and branch system. In this example pipes for both hot and cold water are included.
+          This example shows how the components can be combined to create a hot water distribution system 
+          where a tankless water heater serves a house. The distribution system includes both hot and cold
+          piping, as well as end use models.
           </p>
           <p>
-          The end use model is an instance of WaterHeatingLibrary.HWDis.Components.EndUseLPSTwoBranch. It is a model intended to allow a user to specify a draw flow rate and 
-          temperature. The model then uses a two-way valve to set the total system flow rate and a three-way valve to control the outlet temperature. The three-way valve 
-          controls the outlet temperature by varying the amount of water which comes from the hot and cold water branched of the distribution system.
+          The tankless water heater model is an instance of
+          <a href=\"modelica:WaterHeatingLibrary.NonCondensingTankless.NonCondensingTanklessMediumModelConstantGamma\">
+          WaterHeatingLibrary.NonCondnsingTankless.NonCondensingTanklessMediumModelConstantGamma</a>. This tankless water
+          heater model uses the assumption that the gas consumption control signal is equal to the control signal required 
+          at steady state for the entire draw. This model was chosen because the hot and cold distribution systems add a 
+          lot of complexity to the models, and reducing the complexity of the water heater significantly improved 
+          the model simulation times.
           </p>
           <p>
-          The cold water branch of the distribution system is connected to the same boundary condition describing the mains water system as the water heater.<br>
+          The pipes used to construct the distribution system are instances of 
+          <a href=\"modelica:Buildings.Fluid.FixedResistances.Pipe\">Buildings.Fluid.FixedResistances.Pipe</a>. The
+          WaterHeatingLibrary contains pipe models which are more complex than this model; however, they add complexity
+          and increase simulation times. This model was selected to keep simulation times short.
           </p>
+          <p>
+          The end use model is an instance of WaterHeatingLibrary.HWDis.Components.EndUseLPSTwoBranch. It is a model 
+          intended to allow a user to specify a draw flow rate and temperature. The model then uses a two-way valve 
+          to set the total system flow rate and a three-way valve to control the outlet temperature. The three-way valve 
+          controls the outlet temperature by varying the amount of water which comes from the hot and cold water branches 
+          of the distribution system.
+          </p>
+          <p>
+          The boundary condition called <code>Mains</code> represents the connection to the mains water system. The user can
+          use this boundary condition to specify a set pressure and temperature coming from the mains system. The
+          model is then connected to both the inlet to the tankless water heater and to the inlet to the cold water distribution
+          pipes.
+          </p>
+          <p>
+          This example file includes a script to simulate the model and display some auto-generated results. The auto-generated
+          results show specific capabilities of the model. This script is similar to the script used in
+          <a href=\"modelica:WaterHeatingLibrary.CombinedExamples.TanklessWithTrunkAndBranch\">
+          WaterHeatingLibrary.CombinedExamples.TanklessWithTrunkAndBranch</a>. The results in this plot only show the results
+          during the warm-up period at the start of a shower. The results generated show some main points of how this model
+          can be used to analyze a more detailed system than
+          <a href=\"modelica:WaterHeatingLibrary.CombinedExamples.TanklessWithTrunkAndBranch\">
+          WaterHeatingLibrary.CombinedExamples.TanklessWithTrunkAndBranch</a>. The two auto-generated plots are as follows:
+          </p>
+          <ul>
+          <li>Plot 1: This plot shows the hot water flow entering the shower and the user-specified total flow rate for the
+          shower. Plot 1 shows that the water flow begins at 31,000 s. Initially the water coming out of the shower head is not
+          as hot as the user-defined set temperature, so the entire water flow comes from the hot branch of the distribution system.
+          At 31,109 s the temperature of the hot water entering the shower reaches the set temperature for the shower and, as the
+          temperature of the hot water reaching the shower continues to increase, the model adjusts water flows so that the shower
+          temperature matches the set temperature. This means the hot water flow decreases and the cold water flow, which is not
+          plotted, increases to maintain the total flow rate. Around 31,168 s the system reaches steady state and hot water flow
+          remains steady for the rest of the draw.</li>
+          <li>Plot 2: This plot shows all of the information that is shown in Plot 2 
+          <a href=\"modelica:WaterHeatingLibrary.CombinedExamples.TanklessWithTrunkAndBranch\">
+          WaterHeatingLibrary.CombinedExamples.TanklessWithTrunkAndBranch</a>, and adds the new capabilities available in this model.
+          The new capabilities are shown by the lines \"Shower.TOut\" and \"Shower.TOutDes\". Because
+          <a href=\"modelica:WaterHeatingLibrary.CombinedExamples.TanklessWithTrunkAndBranch\">
+          WaterHeatingLibrary.CombinedExamples.TanklessWithTrunkAndBranch</a> only models the hot water distribution system the
+          temperature of water exiting the shower was equal to the temperature of hot water reaching the shower. In this model, the
+          cold water distribution system is also modeled. This allows the user to specify a set temperature for the shower which
+          is not identical to the temperature of hot water reaching the shower. As is shown in Plot 2, the set temperature for the
+          shower in this example is 50 deg C while the temperature of water reaching the shower is 60 deg C. This difference is
+          what caused the changing flow rate in Plot 1, as well as why the data for \"Shower.TOut\" remains steady at 50 deg C
+          instead of following \"hBra12.vol[5].T\" to 60 deg C as it does in
+           <a href=\"modelica:WaterHeatingLibrary.CombinedExamples.TanklessWithTrunkAndBranch\">
+          WaterHeatingLibrary.CombinedExamples.TanklessWithTrunkAndBranch</a>.</li>
+          </ul>         
           </html>",
               revisions="<html>
           <ul>
@@ -984,7 +1067,9 @@ package WaterHeatingLibrary "Library of water heating models and packages"
           First implementation
           </li>
           </ul>
-          </html>"));
+          </html>"),
+        Commands(file="Scripts/HotAndColdDisWithTankless.mos"
+            "Simulate and Plot"));
     end HotAndColdDisWithTankless;
 
     model TankWithTrunkAndBranch
@@ -1011,9 +1096,8 @@ package WaterHeatingLibrary "Library of water heating models and packages"
       Modelica.Blocks.Sources.CombiTimeTable watFlo(
         tableOnFile=true,
         tableName="Flow",
-        fileName=
-            "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchFlow.txt",
-        columns=2:5)
+        columns=2:5,
+        fileName="InputFilesForExamples/TanklessWithTrunkAndBranchFlow.txt")
         "Reads a data file describing the desired water flow rate at each fixture[KitchenSink, Dishwasher, Shower, Sink]"
         annotation (Placement(transformation(extent={{-100,-72},{-80,-52}})));
 
@@ -1169,15 +1253,14 @@ package WaterHeatingLibrary "Library of water heating models and packages"
         annotation (Placement(transformation(extent={{180,-38},{200,-18}})));
       Modelica.Blocks.Sources.CombiTimeTable TAmb(
         tableOnFile=true,
-        fileName=
-            "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchTAmb.txt",
-        tableName="TAmb") "Temperature surrounding the system(unit = K)"
+        tableName="TAmb",
+        fileName="InputFilesForExamples/TanklessWithTrunkAndBranchTAmb.txt")
+        "Temperature surrounding the system(unit = K)"
         annotation (Placement(transformation(extent={{-100,92},{-80,112}})));
       Modelica.Blocks.Sources.CombiTimeTable TIn(
         tableOnFile=true,
         tableName="Temp",
-        fileName=
-            "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchTIn.txt")
+        fileName="InputFilesForExamples/TanklessWithTrunkAndBranchTIn.txt")
         "Inlet temperature (unit = K)"
         annotation (Placement(transformation(extent={{-100,52},{-80,72}})));
       Buildings.Fluid.Sources.Boundary_pT Mains(
@@ -1215,7 +1298,7 @@ package WaterHeatingLibrary "Library of water heating models and packages"
             rotation=180,
             origin={-9,-35})));
       Modelica.Blocks.Sources.CombiTimeTable TRadMea(tableOnFile=true, tableName="TRadMea",
-        fileName="/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchTRadMea.txt")
+        fileName="InputFilesForExamples/TanklessWithTrunkAndBranchTRadMea.txt")
         "Mean radiant temperature surrounding the pipes(unit = K)"
         annotation (Placement(transformation(extent={{-100,120},{-80,140}})));
     equation
@@ -1428,535 +1511,8 @@ package WaterHeatingLibrary "Library of water heating models and packages"
           </html>"));
     end TankWithTrunkAndBranch;
 
-    model HotAndColdDisWithTank
-      "Model of a distribution system containting both hot and cold plumbing served with a tankless heater"
-      extends Modelica.Icons.Example;
 
-      package Water = Buildings.Media.ConstantPropertyLiquidWater
-        "Fluid in the system";
 
-      parameter Modelica.SIunits.Temperature T_start_dis[20] = {273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30, 273.15+30}
-        "Initial temperature in the dustribution system";
-
-      HWDis.Components.Obsolete.EndUseLPSTwoBranch
-                                           Draw(
-        PID_P=2,
-        PID_I=1,
-        PID_D=0.00000001,
-        gain=1/13.25,
-        redeclare package Medium = Water,
-        T_start=273.15+30)
-        annotation (Placement(transformation(extent={{80,-12},{100,8}})));
-
-      NonCondensingTank.SimplifiedStorageTankMediumModel tan(
-        RecircOutSeg=8,
-        RecircInSeg=1,
-        Deadband=16,
-        UA=5.5,
-        perInA={0,0,0,0,0,0,0,0},
-        perInB={0,0,0,0,0,0,0,0},
-        perInC={0,0,0,0,0,0,0,1},
-        timDelA={0,0,0,0,0,0,0,0},
-        timDelB={0,0,0,0,0,0,0,0},
-        timDelC={0,0,0,0,0,0,0,0},
-        redeclare package Medium = Water,
-        T_Initial={333.15,333.15,333.15,333.15,333.15,333.15,333.15,333.15})
-        annotation (Placement(transformation(extent={{-66,-18},{-38,14}})));
-      Buildings.Fluid.Sources.Boundary_pT Mains(
-        nPorts=2,
-        redeclare package Medium = Water,
-        p=150000,
-        T=288.15)
-        annotation (Placement(transformation(extent={{-110,26},{-90,46}})));
-
-      Modelica.Blocks.Sources.Constant TAmb(k=273.15 + 20)
-        annotation (Placement(transformation(extent={{-146,0},{-126,20}})));
-      HWDis.Components.PipeLumpedCap
-                             Hot(
-        m_flow_nominal=0.06,
-        dp_nominal=1,
-        MixCoef=0.6,
-        length=0.1,
-        nSeg=20,
-        diameter_i=0.019939,
-        c_p_pip=390,
-        rho_pip=8960,
-        diameter_o=0.022225,
-        til=0,
-        ePipe=0.95,
-        redeclare package Medium = Water,
-        thicknessIns=0.0127,
-        lambdaIns=0.04,
-        T_Initial=T_start_dis)
-        annotation (Placement(transformation(extent={{18,-36},{38,-16}})));
-
-      HWDis.Components.PipeLumpedCap
-                             Cold(
-        m_flow_nominal=0.06,
-        dp_nominal=1,
-        length=10,
-        MixCoef=0.6,
-        nSeg=20,
-        diameter_i=0.019939,
-        c_p_pip=390,
-        rho_pip=8960,
-        diameter_o=0.022225,
-        til=0,
-        ePipe=0.95,
-        redeclare package Medium = Water,
-        thicknessIns=0.0127,
-        lambdaIns=0.04,
-        T_Initial=T_start_dis)
-        annotation (Placement(transformation(extent={{18,28},{38,48}})));
-
-      Modelica.Blocks.Sources.Ramp ramp(
-        height=45,
-        offset=273.15 + 20,
-        duration=30000)
-        annotation (Placement(transformation(extent={{28,-64},{48,-44}})));
-      Modelica.Blocks.Sources.Constant watFlow(k=0.126) "Unit = L/s"
-        annotation (Placement(transformation(extent={{46,48},{66,68}})));
-      Modelica.Blocks.Sources.Constant effTan(k=0.75)
-        annotation (Placement(transformation(extent={{-82,0},{-76,6}})));
-      Modelica.Blocks.Sources.Constant const(k=0)
-        annotation (Placement(transformation(extent={{-82,-12},{-76,-6}})));
-      Modelica.Blocks.Math.Add add annotation (Placement(transformation(
-            extent={{-3,-3},{3,3}},
-            rotation=180,
-            origin={-67,-31})));
-      Modelica.Blocks.Sources.Constant QDotPilot(k=158) annotation (Placement(
-            transformation(
-            extent={{-3,-3},{3,3}},
-            rotation=180,
-            origin={-53,-25})));
-      Modelica.Blocks.Math.Product product annotation (Placement(transformation(
-            extent={{-3,-3},{3,3}},
-            rotation=180,
-            origin={-53,-35})));
-      Modelica.Blocks.Math.IntegerToReal integerToReal annotation (Placement(
-            transformation(
-            extent={{-3,-3},{3,3}},
-            rotation=180,
-            origin={-39,-27})));
-      Modelica.Blocks.Sources.Constant QDotBurner(k=12000) annotation (Placement(
-            transformation(
-            extent={{-3,-3},{3,3}},
-            rotation=180,
-            origin={-39,-41})));
-      Modelica.Blocks.Sources.Constant TRadMea(k=273.15 + 20)
-        annotation (Placement(transformation(extent={{-146,70},{-126,90}})));
-    equation
-      connect(Mains.ports[1], Cold.port_a) annotation (Line(
-          points={{-90,38},{18,38}},
-          color={0,127,255},
-          smooth=Smooth.None));
-      connect(Cold.port_b, Draw.colIn) annotation (Line(
-          points={{38,38},{44,38},{44,1.6},{80,1.6}},
-          color={0,127,255},
-          smooth=Smooth.None));
-      connect(ramp.y, Draw.TOutDes) annotation (Line(
-          points={{49,-54},{62,-54},{62,-7.6},{78,-7.6}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(watFlow.y, Draw.WatFlowDes) annotation (Line(
-          points={{67,58},{72,58},{72,5},{78,5}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(Hot.port_b, Draw.hotIn) annotation (Line(
-          points={{38,-26},{44,-26},{44,-2},{80,-2}},
-          color={0,127,255},
-          smooth=Smooth.None));
-      connect(Mains.ports[2], tan.port_a) annotation (Line(
-          points={{-90,34},{-54.8,34},{-54.8,14.64}},
-          color={0,127,255},
-          smooth=Smooth.None));
-      connect(tan.port_b, Hot.port_a) annotation (Line(
-          points={{-47.8,14.64},{-47.8,16},{-24,16},{-24,-26},{18,-26}},
-          color={0,127,255},
-          smooth=Smooth.None));
-      connect(tan.TStatSig, integerToReal.u) annotation (Line(
-          points={{-42.2,-10.64},{-30,-10.64},{-30,-27},{-35.4,-27}},
-          color={255,127,0},
-          smooth=Smooth.None));
-      connect(integerToReal.y, product.u2) annotation (Line(
-          points={{-42.3,-27},{-46,-27},{-46,-33.2},{-49.4,-33.2}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(QDotBurner.y, product.u1) annotation (Line(
-          points={{-42.3,-41},{-46,-41},{-46,-36.8},{-49.4,-36.8}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(product.y, add.u1) annotation (Line(
-          points={{-56.3,-35},{-60,-35},{-60,-32.8},{-63.4,-32.8}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(QDotPilot.y, add.u2) annotation (Line(
-          points={{-56.3,-25},{-60,-25},{-60,-29.2},{-63.4,-29.2}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(const.y, tan.TInRec) annotation (Line(
-          points={{-75.7,-9},{-69.85,-9},{-69.85,-11.12},{-61.66,-11.12}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(const.y, tan.mFloRec) annotation (Line(
-          points={{-75.7,-9},{-70,-9},{-70,-4.72},{-61.66,-4.72}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(effTan.y, tan.EffTan) annotation (Line(
-          points={{-75.7,3},{-70,3},{-70,1.36},{-61.66,1.36}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(TAmb.y, tan.TAmb) annotation (Line(
-          points={{-125,10},{-70,10},{-70,6.16},{-61.66,6.16}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(add.y, tan.QDotIn) annotation (Line(
-          points={{-70.3,-31},{-84,-31},{-84,10.8},{-61.8,10.8}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(TAmb.y, Cold.TAmb) annotation (Line(
-          points={{-125,10},{-116,10},{-116,52},{22,52},{22,45}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(TAmb.y, Hot.TAmb) annotation (Line(
-          points={{-125,10},{-116,10},{-116,52},{4,52},{4,-6},{22,-6},{22,-19}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(TRadMea.y, Cold.TRadMea) annotation (Line(
-          points={{-125,80},{34,80},{34,45}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(TRadMea.y, Hot.TRadMea) annotation (Line(
-          points={{-125,80},{12,80},{12,6},{34,6},{34,-19}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-150,
-                -100},{150,100}}),      graphics),
-              Documentation(info="<html>
-          <p>
-          This example shows how the components can be combined to create a hot water distribution system where a storage tank water heater serves a house. The distribution
-           system is simplified to only be single branches, rather than a full trunk and branch system. In this example pipes for both hot and cold water are included.
-          </p>
-          <p>
-          The end use model is an instance of WaterHeatingLibrary.HWDis.Components.EndUseLPSTwoBranch. It is a model intended to allow a user to specify a draw flow rate and 
-          temperature. The model then uses a two-way valve to set the total system flow rate and a three-way valve to control the outlet temperature. The three-way valve 
-          controls the outlet temperature by varying the amount of water which comes from the hot and cold water branched of the distribution system.
-          </p>
-          <p>
-          The cold water branch of the distribution system is connected to the same boundary condition describing the mains water system as the water heater.<br>
-          </p>
-          </html>",
-              revisions="<html>
-          <ul>
-          <li>
-          Mar 28, 2013 by Peter Grant:<br>
-          First implementation
-          </li>
-          </ul>
-          </html>"));
-    end HotAndColdDisWithTank;
-
-    model TanklessWithPIDDraw
-      extends Modelica.Icons.Example;
-
-      package Water = Buildings.Media.ConstantPropertyLiquidWater "Water model";
-
-      parameter Modelica.SIunits.Temperature T_start_dis = 273.15 + 30
-        "Initial temperature in the distribution system";
-
-      HWDis.Components.Obsolete.EndUseLPSPID
-                                    endUseLPSPID(
-        redeclare package Medium = Water,
-        PID_P=2,
-        PID_I=3,
-        PID_D=0.1)
-        annotation (Placement(transformation(extent={{58,-12},{78,8}})));
-      NonCondensingTankless.NonCondensingTanklessHeaterMediumModel
-        nonCondensingTanklessHeaterMediumModel(redeclare package Medium = Water)
-        annotation (Placement(transformation(extent={{-40,2},{-14,48}})));
-      HWDis.Components.PipeLumpedCap
-                            pip(
-        redeclare package Medium = Water,
-        m_flow_nominal=0.063,
-        dp_nominal=1,
-        length=10,
-        MixCoef=0.6,
-        nSeg=20,
-        diameter_i=0.019939,
-        c_p_pip=390,
-        rho_pip=8960,
-        diameter_o=0.022225,
-        til=0,
-        ePipe=0.95,
-        thicknessIns=0.0127,
-        lambdaIns=0.04,
-        T_start=T_start_dis)
-        annotation (Placement(transformation(extent={{-2,-14},{18,6}})));
-      Buildings.Fluid.Sources.Boundary_pT boundary(
-        nPorts=1,
-        redeclare package Medium = Water,
-        p=150000,
-        T=288.15)
-        annotation (Placement(transformation(extent={{-96,-38},{-76,-18}})));
-      Modelica.Blocks.Sources.Constant pwrSig(k=1)
-        annotation (Placement(transformation(extent={{-96,-6},{-76,14}})));
-      Modelica.Blocks.Sources.Constant TAmb(k=273.15 + 20)
-        annotation (Placement(transformation(extent={{-96,36},{-76,56}})));
-      Modelica.Blocks.Sources.Constant const2(k=0.063)
-        annotation (Placement(transformation(extent={{16,-48},{36,-28}})));
-      Modelica.Blocks.Sources.Constant TRadMea(k=273.15 + 20)
-        annotation (Placement(transformation(extent={{-96,74},{-76,94}})));
-    equation
-      connect(nonCondensingTanklessHeaterMediumModel.hotWatOut, pip.port_a)
-        annotation (Line(
-          points={{-18.16,1.632},{-18.16,-4},{-2,-4}},
-          color={0,127,255},
-          smooth=Smooth.None));
-      connect(pip.port_b, endUseLPSPID.Inlet) annotation (Line(
-          points={{18,-4},{34,-4},{34,3.4},{58,3.4}},
-          color={0,127,255},
-          smooth=Smooth.None));
-      connect(nonCondensingTanklessHeaterMediumModel.colWatIn, boundary.ports[1])
-        annotation (Line(
-          points={{-36.36,1.632},{-30,1.632},{-30,-28},{-76,-28}},
-          color={0,127,255},
-          smooth=Smooth.None));
-      connect(pwrSig.y, nonCondensingTanklessHeaterMediumModel.pwrSig)
-                                                                      annotation (
-          Line(
-          points={{-75,4},{-60,4},{-60,3.84},{-42.6,3.84}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(TAmb.y, nonCondensingTanklessHeaterMediumModel.AmbientTemperature)
-        annotation (Line(
-          points={{-75,46},{-60,46},{-60,38.064},{-42.6,38.064}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(const2.y, endUseLPSPID.watFlo) annotation (Line(
-          points={{37,-38},{46,-38},{46,-7},{56,-7}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(TAmb.y, pip.TAmb) annotation (Line(
-          points={{-75,46},{2,46},{2,3}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(TRadMea.y, pip.TRadMea) annotation (Line(
-          points={{-75,84},{14,84},{14,3}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-100,
-                -100},{100,100}}), graphics),
-                Documentation(info="<html>
-            <p>
-            This model provides a simple example of how a tankless water heater model and an end use model with PID control can be combined. The model consists of a tankless
-            water heater, with constant input conditions, serving a single pipe with a single draw. The inputs to the endUse model are a connection to the water flow system
-            via the fluid ports on the endUse model and the pipe, as well as a specified flow rate through the constant model. This endUse model is considered to be easier
-            to use than in the other example files because the PID controller will adjust the valve position until the outlet flow rate matches the desired flow rate rather
-            than requiring the user to adjust a gain value until it does.<br>
-            </p>
-            </html>",
-                revisions="<html>
-            <ul>
-            <li>
-            Mar 28, 2013 by Peter Grant:<br>
-            First implementation
-            </li>
-            </ul>
-            </html>"));
-    end TanklessWithPIDDraw;
-
-    model HotAndColdDisWithTanklessPID
-      "Model of a distribution system containting both hot and cold plumbing served with a tankless heater"
-      extends Modelica.Icons.Example;
-
-      package Water = Buildings.Media.ConstantPropertyLiquidWater
-        "Fluid in the system";
-
-      parameter Modelica.SIunits.Temperature T_start_dis = 273.15 + 30
-        "Initial temperature in the distribution system";
-
-      HWDis.Components.EndUseTwoBranch     Draw(
-        PID_P_3=2,
-        PID_I_3=3,
-        PID_D_3=0.1,
-        PID_P_2=2,
-        PID_I_2=3,
-        PID_D_2=0.1,
-        redeclare package Medium = Water,
-        T_start=T_start_dis)
-        annotation (Placement(transformation(extent={{80,-12},{100,8}})));
-
-      NonCondensingTankless.NonCondensingTanklessHeaterMediumModel
-        nonCondensingTanklessHeaterMediumModel(redeclare package Medium = Water)
-        annotation (Placement(transformation(extent={{-70,-14},{-50,10}})));
-      Buildings.Fluid.Sources.Boundary_pT Mains(
-        nPorts=2,
-        redeclare package Medium = Water,
-        p=150000,
-        T=288.15)
-        annotation (Placement(transformation(extent={{-110,26},{-90,46}})));
-
-      Modelica.Blocks.Sources.Constant TAmb(k=273.15 + 20)
-        annotation (Placement(transformation(extent={{-146,-6},{-126,14}})));
-      HWDis.Components.PipeLumpedCap
-                             Hot(
-        m_flow_nominal=0.06,
-        dp_nominal=1,
-        MixCoef=0.6,
-        nSeg=20,
-        diameter_i=0.019939,
-        length=10,
-        c_p_pip=390,
-        rho_pip=8960,
-        diameter_o=0.022225,
-        til=0,
-        ePipe=0.95,
-        redeclare package Medium = Water,
-        thicknessIns=0.0127,
-        lambdaIns=0.04,
-        T_start=T_start_dis)
-        annotation (Placement(transformation(extent={{18,-36},{38,-16}})));
-
-      HWDis.Components.PipeLumpedCap
-                             Cold(
-        m_flow_nominal=0.06,
-        dp_nominal=1,
-        length=10,
-        MixCoef=0.6,
-        nSeg=20,
-        diameter_i=0.019939,
-        c_p_pip=390,
-        rho_pip=8960,
-        diameter_o=0.022225,
-        til=0,
-        ePipe=0.95,
-        redeclare package Medium = Water,
-        thicknessIns=0.0127,
-        lambdaIns=0.04,
-        T_start=T_start_dis)
-        annotation (Placement(transformation(extent={{18,28},{38,48}})));
-
-      Modelica.Blocks.Sources.Constant pwrSig(k=1)
-        annotation (Placement(transformation(extent={{-146,-60},{-126,-40}})));
-      Modelica.Blocks.Sources.Ramp ramp(
-        duration=600,
-        offset=273.15 + 20,
-        height=40)
-        annotation (Placement(transformation(extent={{28,-64},{48,-44}})));
-      HWDis.Components.FlowReduction floRed
-        annotation (Placement(transformation(extent={{-8,-94},{12,-74}})));
-      Buildings.Utilities.Math.Min min(nin=2)
-        annotation (Placement(transformation(extent={{-38,-86},{-18,-66}})));
-      Modelica.Blocks.Sources.Ramp ramp1(
-        height=0.378,
-        duration=600,
-        offset=0.063,
-        startTime=660)
-        annotation (Placement(transformation(extent={{-146,-94},{-126,-74}})));
-      Modelica.Blocks.Sources.RealExpression realExpression(y=floRed.draFlo[1])
-        annotation (Placement(transformation(extent={{48,12},{60,26}})));
-      Modelica.Blocks.Sources.Constant TRadMea(k=273.15 + 20)
-        annotation (Placement(transformation(extent={{-128,74},{-108,94}})));
-    equation
-      connect(Mains.ports[1], Cold.port_a) annotation (Line(
-          points={{-90,38},{18,38}},
-          color={0,127,255},
-          smooth=Smooth.None));
-      connect(Cold.port_b, Draw.colIn) annotation (Line(
-          points={{38,38},{44,38},{44,1.6},{80,1.6}},
-          color={0,127,255},
-          smooth=Smooth.None));
-      connect(pwrSig.y, nonCondensingTanklessHeaterMediumModel.pwrSig)
-        annotation (Line(
-          points={{-125,-50},{-76,-50},{-76,-13.04},{-72,-13.04}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(Mains.ports[2], nonCondensingTanklessHeaterMediumModel.colWatIn)
-        annotation (Line(
-          points={{-90,34},{-84,34},{-84,-22},{-67.2,-22},{-67.2,-14.192}},
-          color={0,127,255},
-          smooth=Smooth.None));
-      connect(ramp.y, Draw.TOutDes) annotation (Line(
-          points={{49,-54},{62,-54},{62,-7},{78,-7}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(nonCondensingTanklessHeaterMediumModel.hotWatOut, Hot.port_a)
-        annotation (Line(
-          points={{-53.2,-14.192},{-53.2,-26},{18,-26}},
-          color={0,127,255},
-          smooth=Smooth.None));
-      connect(TAmb.y, nonCondensingTanklessHeaterMediumModel.AmbientTemperature)
-        annotation (Line(
-          points={{-125,4},{-92.5,4},{-92.5,4.816},{-72,4.816}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(Hot.port_b, Draw.hotIn) annotation (Line(
-          points={{38,-26},{44,-26},{44,-2},{80,-2}},
-          color={0,127,255},
-          smooth=Smooth.None));
-      connect(ramp1.y, min.u[1]) annotation (Line(
-          points={{-125,-84},{-82,-84},{-82,-77},{-40,-77}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(min.y, floRed.conFlo) annotation (Line(
-          points={{-17,-76},{-10,-76}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(ramp1.y, floRed.desFlo[1]) annotation (Line(
-          points={{-125,-84},{-82,-84},{-82,-91.4},{-10,-91.4}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(nonCondensingTanklessHeaterMediumModel.maxMasFlo, min.u[2])
-        annotation (Line(
-          points={{-49,-5.36},{-46,-5.36},{-46,-75},{-40,-75}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(realExpression.y, Draw.WatFlowDes) annotation (Line(
-          points={{60.6,19},{66,19},{66,6},{78,6}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(TAmb.y, Cold.TAmb) annotation (Line(
-          points={{-125,4},{-116,4},{-116,60},{22,60},{22,45}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(TAmb.y, Hot.TAmb) annotation (Line(
-          points={{-125,4},{-116,4},{-116,60},{-16,60},{-16,-14},{22,-14},{22,-19}},
-          color={0,0,127},
-          smooth=Smooth.None));
-
-      connect(TRadMea.y, Cold.TRadMea) annotation (Line(
-          points={{-107,84},{34,84},{34,45}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      connect(TRadMea.y, Hot.TRadMea) annotation (Line(
-          points={{-107,84},{-4,84},{-4,-2},{34,-2},{34,-19}},
-          color={0,0,127},
-          smooth=Smooth.None));
-      annotation (Diagram(coordinateSystem(preserveAspectRatio=false, extent={{-150,
-                -100},{150,100}}),      graphics),
-              Documentation(info="<html>
-          <p>
-          This example shows how the components can be combined to create a hot water distribution system where a tankless water heater serves a house. The distribution system
-          is simplified to only be single branches, rather than a full trunk and branch system. In this example pipes for both hot and cold water are included.
-          </p>
-          <p>
-          The end use model is an instance of WaterHeatingLibrary.HWDis.Components.EndUseLPSTwoBranchPID. It is a model intended to allow a user to specify a draw flow rate and 
-          temperature. The model then uses a two-way valve to set the total system flow rate and a three-way valve to control the outlet temperature. The three-way valve 
-          controls the outlet temperature by varying the amount of water which comes from the hot and cold water branched of the distribution system.
-          </p>
-          <p>
-          The cold water branch of the distribution system is connected to the same boundary condition describing the mains water system as the water heater.<br>
-          </p>
-          </html>",
-              revisions="<html>
-          <ul>
-          <li>
-          Mar 28, 2013 by Peter Grant:<br>
-          First implementation
-          </li>
-          </ul>
-          </html>"));
-    end HotAndColdDisWithTanklessPID;
 
     annotation (Documentation(info="<html>
   <p>
@@ -6165,15 +5721,15 @@ First implementation.
           m_flow_nominal=0.063,
           tau=0.00001)
           annotation (Placement(transformation(extent={{20,-10},{40,10}})));
-        Modelica.Blocks.Interfaces.RealOutput TOut( unit = "K")
-          "Temperature of fluid exiting the fixture"
+        Modelica.Blocks.Interfaces.RealOutput T_Out( unit = "K",
+          displayUnit="degC") "Temperature of fluid exiting the fixture"
           annotation (Placement(transformation(extent={{100,16},{120,36}})));
       equation
         connect(watFlo, valPosId.u)  annotation (Line(
             points={{-120,-50},{-90,-50}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(senTem.T, TOut) annotation (Line(
+        connect(senTem.T, T_Out) annotation (Line(
             points={{30,11},{30,26},{110,26}},
             color={0,0,127},
             smooth=Smooth.None));
@@ -6284,17 +5840,19 @@ First implementation.
           riseTime=0.00001,
           fraK=1)
            annotation (Placement(transformation(extent={{-38,10},{-18,-10}})));
-         Modelica.Blocks.Interfaces.RealInput TOutDes
-          "Desired outlet water temperature"
+         Modelica.Blocks.Interfaces.RealInput TOutDes(
+           unit = "K",
+           displayUnit="degC") "Desired outlet water temperature"
            annotation (Placement(transformation(extent={{-140,-70},{-100,-30}})));
+
         Buildings.Fluid.Sensors.TemperatureTwoPort
                                             senTem(redeclare package Medium = Medium,
           m_flow_nominal=0.063,
           tau=0.000001,
           T_start=T_start)
           annotation (Placement(transformation(extent={{0,10},{20,-10}})));
-        Modelica.Blocks.Interfaces.RealOutput TOut( unit = "K")
-          "Temperature of fluid exiting the fixture"
+        Modelica.Blocks.Interfaces.RealOutput TOut( unit = "K",
+        displayUnit = "degC") "Temperature of fluid exiting the fixture"
           annotation (Placement(transformation(extent={{100,-44},{120,-24}})));
         Modelica.Fluid.Interfaces.FluidPort_a colIn(redeclare package Medium = Medium)
           "Inlet connected to the cold water branch"
@@ -19089,7 +18647,8 @@ function can be used as part of another scan operation.
         "Deadband on the minimum flow rate check";
       parameter Modelica.SIunits.Time StopDelay
         "Delay before the burner stops firing after flow stops";
-      Modelica.Blocks.Interfaces.RealOutput T_Out(unit = "K")
+      Modelica.Blocks.Interfaces.RealOutput T_Out(unit = "K",
+        displayUnit = "degC")
         annotation (Placement(transformation(extent={{100,-8},{120,12}})));
       Modelica.Fluid.Interfaces.FluidPort_a colWatIn(redeclare package Medium
           = Medium)
