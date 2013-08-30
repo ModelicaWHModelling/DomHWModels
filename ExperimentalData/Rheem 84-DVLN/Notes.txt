@@ -1,0 +1,49 @@
+Has safety setting - cannot turn heater power on when water is flowing
+
+RheemControlFlowCheck
+	Tests performed to compare flow rate at the start of a draw with heater on vs with heater off
+	If heater does not control flow at start of draw the profiles should be similar
+	Increase in water flow at start of draw should be dramatically slower with heater on if heater controls flow
+	Visual observations of rotameter imply no flow rate control
+	
+	Data from this test should also be useful for identifying heat exchanger capacitance
+		Includes draws at various flow rates with the heat exchanger heated and the heater turned off
+
+RheemControlFlowCheckLowFlow
+	Same as RheemControlFlowCheck, only at lower flow rates and using higher resolution flow meter
+
+Measurements
+	Tried to get T_Out_Final and T_Out_HX, but can't get T_Out_HX without damaging unit
+		T_Out_Final = Leaving the metal case of the heater
+		T_OU_HX = Leaving the heat exchanger
+		Difference = There is a ~1.5 ft pipe running from HX to outlet
+
+OutletTempMeasurements
+	Comparing temperature recorded by surface mount thermocouple on pipe leaving heater to immersed TC in water just outside heater
+	Initial observations: Does not work well. Surface mount seems to constantly stay 1.5 C below immersion TC
+
+MinimumFlowRateTest
+	Slowly increasing/decreasing mimum flow rate to identify when the heater turns on/orff
+
+Characterization
+	9:01 AM: purge (Had a short period of heater firing due to accidentally beginning purge with heater on)
+	2:46 PM: Heater shut off to see if it has any effect on controls. Plan to turn back on, begin draw at 4 minutes
+	2:50 Draw started. Observed bootup time on heater before firing. Appears to have run on 7s delay (measured delay longer due to bootup time, before fan reacted)
+
+	General setup of test 
+		1. Draws at several different flow rates and temperatures
+			Use to identify steady state efficiency as a function of flow rate/set temp/control signal, capacitance, PID constants
+		2. Draws with long delays in between. Slow draw forcing remaining energy out of HX between delay and following draw
+			Use to identify UA value based on loss of energy between draws
+		3. Draws with varying delays between (short delays)
+			5, 10, 40, 80, 160, 320s
+			Use to identify characteristics of fan operation. Time delay, switch of time delay. Base on dt between water flow starting and gas flow starting.
+		4. Draws messing with turning heater off/on between draws. Use to see impact of turning the heater off on control logic.
+			
+
+CapacitanceTests
+	Tests performed the same way as at NREL, just in case the method used in Characterization doesn't work
+	Steady state burn at varying flow rates, heater turned off (flow continued)
+		Use to identify capacitance
+	Why: Method in Characterization test thought to give better signal (longer time period), did not require turning off heater (may change operation of controller) but may actually result in worse signal (low flow rate means UA has more impact)
+		Perform capcitance tests both ways (Characterization way and NREL way) just in case the data collected in Characterization has too much impact from UA losses

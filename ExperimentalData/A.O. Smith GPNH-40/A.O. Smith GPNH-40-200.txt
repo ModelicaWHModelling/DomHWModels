@@ -1,0 +1,5 @@
+40 gal
+Non-Condensing
+Power Vent (What exactly does this mean?)
+	Fan powered to help get air out of the flue. Provides capability to have longer flue
+Has flue damper (Appears to not be part of Power Vent name, but is true of these models
