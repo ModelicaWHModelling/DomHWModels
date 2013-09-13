@@ -1,0 +1,80 @@
+//Reads inputs in from file the CalibrationInput.csv and assigns the values to the matrix CalibrationParameters. This file will be used to store/transfer parameters between simulations
+CalibrationParameters = DataFiles.readCSVmatrix("CalibrationInput.csv");
+
+//Repeats the entire calibration loop ten times. Ten not specified for any specific reason
+for i in 1:10 loop
+
+
+//Repeats the PID loop ten times. Ten not specified for any specific reason
+	for i in 1:1 loop
+
+	//This line calls the simulation. It runs the Calibrate command from the Design menu, states to use the model TanklessWaterHeater.NonCondensingTanklessHeaterValidation, states that the tuner 		parameter will be "PID_P_input" in the controller, sets the start value to be read from the data matrix, assigns calibration data, sets start/stop time, states the names of case variables, states 		the value of case variables (some from data, some from CalibrationInputs.csv, and states which simulation variable output and data input should be compared
+
+		Design.Calibration.calibrate(Design.Internal.Records.ModelCalibrationSetup(Model="WaterHeatingLibrary.NonCondensingTankless.Examples.CharacterizationModel", tunerParameters={Design.Internal.Records.TunerParameter(name="nonCon.PID_P", Value=CalibrationParameters[1,4])}, calibrationData=Design.Calibration.Internal.Dynamic_common(Design.Internal.Records.DynamicCommonCalibrationCases(experimentNames={"/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/DataFilesForValidation/Rheem84DVLNRepeatedDrawsCharacterization.csv"}, task={1}, startTime={0}, stopTime={8100}, parameterNames={"nonCon.Capacitance", "nonCon.SteadyStateEff", "nonCon.UA", "nonCon.PID_I", "nonCon.PID_D"}, parameterValues=[CalibrationParameters[1,1],CalibrationParameters[1,2],CalibrationParameters[1,3],CalibrationParameters[1,5],CalibrationParameters[1,6]]), resultCouplings={Design.Internal.Records.DynamicCalibrationResultCoupling(variable="nonCon.Q_flow_in", data="GasIn")})));
+	
+		simulateModel("",resultFile="test");
+		fileName = "test.mat";
+		CSVfile = "CalibrationInput.csv";
+		n = 1;
+		names={"nonCon.Capacitance", "nonCon.SteadyStateEff", "nonCon.UA", "nonCon.PID_P", "nonCon.PID_I", "nonCon.PID_D"};
+		traj=readTrajectory(fileName,names,n);
+		traj_transposed = transpose(traj);
+		DataFiles.writeCSVmatrix(CSVfile, names, traj_transposed);
+		CalibrationParameters = DataFiles.readCSVmatrix("CalibrationInput.csv");
+
+		//This section performs the same process for PID_I_input
+		Design.Calibration.calibrate(Design.Internal.Records.ModelCalibrationSetup(Model="WaterHeatingLibrary.NonCondensingTankless.Examples.CharacterizationModel", tunerParameters={Design.Internal.Records.TunerParameter(name="nonCon.PID_I", Value=CalibrationParameters[1,5])}, calibrationData=Design.Calibration.Internal.Dynamic_common(Design.Internal.Records.DynamicCommonCalibrationCases(experimentNames={"/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/DataFilesForValidation/Rheem84DVLNRepeatedDrawsCharacterization.csv"}, task={1}, startTime={0}, stopTime={8100}, parameterNames={"nonCon.Capacitance", "nonCon.SteadyStateEff", "nonCon.UA", "nonCon.PID_P", "nonCon.PID_D"}, parameterValues=[CalibrationParameters[1,1],CalibrationParameters[1,2],CalibrationParameters[1,3],CalibrationParameters[1,4],CalibrationParameters[1,6]]), resultCouplings={Design.Internal.Records.DynamicCalibrationResultCoupling(variable="nonCon.Q_flow_in", data="GasIn")})));
+	
+		simulateModel("",resultFile="test");
+		fileName = "test.mat";
+		CSVfile = "CalibrationInput.csv";
+		n = 1;
+		names={"nonCon.Capacitance", "nonCon.SteadyStateEff", "nonCon.UA", "nonCon.PID_P", "nonCon.PID_I", "nonCon.PID_D"};
+		traj=readTrajectory(fileName,names,n);
+		traj_transposed = transpose(traj);
+		DataFiles.writeCSVmatrix(CSVfile, names, traj_transposed);
+		CalibrationParameters = DataFiles.readCSVmatrix("CalibrationInput.csv");
+
+		//This section performs the same process for PID_D_input
+		Design.Calibration.calibrate(Design.Internal.Records.ModelCalibrationSetup(Model="WaterHeatingLibrary.NonCondensingTankless.Examples.CharacterizationModel", tunerParameters={Design.Internal.Records.TunerParameter(name="nonCon.PID_D", Value=CalibrationParameters[1,6])}, calibrationData=Design.Calibration.Internal.Dynamic_common(Design.Internal.Records.DynamicCommonCalibrationCases(experimentNames={"/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/DataFilesForValidation/Rheem84DVLNRepeatedDrawsCharacterization.csv"}, task={1}, startTime={0}, stopTime={8100}, parameterNames={"nonCon.Capacitance", "nonCon.SteadyStateEff", "nonCon.UA", "nonCon.PID_I", "nonCon.PID_P"}, parameterValues=[CalibrationParameters[1,1],CalibrationParameters[1,2],CalibrationParameters[1,3],CalibrationParameters[1,5],CalibrationParameters[1,4]]), resultCouplings={Design.Internal.Records.DynamicCalibrationResultCoupling(variable="nonCon.Q_flow_in", data="GasIn")})));
+	
+		simulateModel("",resultFile="test");
+		fileName = "test.mat";
+		CSVfile = "CalibrationInput.csv";
+		n = 1;
+		names={"nonCon.Capacitance", "nonCon.SteadyStateEff", "nonCon.UA", "nonCon.PID_P", "nonCon.PID_I", "nonCon.PID_D"};
+		traj=readTrajectory(fileName,names,n);
+		traj_transposed = transpose(traj);
+		DataFiles.writeCSVmatrix(CSVfile, names, traj_transposed);
+		CalibrationParameters = DataFiles.readCSVmatrix("CalibrationInput.csv");
+
+	end for;
+		//This section performs the same process for Capacitance_input
+//		Design.Calibration.calibrate(Design.Internal.Records.ModelCalibrationSetup(Model="WaterHeatingLibrary.NonCondensingTankless.Examples.CharacterizationModel", tunerParameters={Design.Internal.Records.TunerParameter(name="nonCon.Capacitance", Value=CalibrationParameters[1,1])}, calibrationData=Design.Calibration.Internal.Dynamic_common(Design.Internal.Records.DynamicCommonCalibrationCases(experimentNames={"/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/DataFilesForValidation/Rheem84DVLNRepeatedDrawsCharacterization.csv"}, task={1}, startTime={0}, stopTime={5000}, parameterNames={"nonCon.SteadyStateEff", "nonCon.UA","nonCon.PID_P","nonCon.PID_I", "nonCon.PID_D"}, parameterValues=[CalibrationParameters[1,2],CalibrationParameters[1,3],CalibrationParameters[1,4],CalibrationParameters[1,5],CalibrationParameters[1,6]]), resultCouplings={Design.Internal.Records.DynamicCalibrationResultCoupling(variable="nonCon.HX.vol[10].T", data="Tout")})));
+	
+//		simulateModel("",resultFile="test");
+//		fileName = "test.mat";
+//		CSVfile = "CalibrationInput.csv";
+//		n = 1;
+//		names={"nonCon.Capacitance", "nonCon.SteadyStateEff", "nonCon.UA", "nonCon.PID_P", "nonCon.PID_I", "nonCon.PID_D"};
+//		traj=readTrajectory(fileName,names,n);
+//		traj_transposed = transpose(traj);
+//		DataFiles.writeCSVmatrix(CSVfile, names, traj_transposed);
+//		CalibrationParameters = DataFiles.readCSVmatrix("CalibrationInput.csv");
+
+		//This section performs the same process for SteadyStateEff_input
+//		Design.Calibration.calibrate(Design.Internal.Records.ModelCalibrationSetup(Model="WaterHeatingLibrary.NonCondensingTankless.Examples.CharacterizationModel", tunerParameters={Design.Internal.Records.TunerParameter(name="nonCon.SteadyStateEff_input", Value=CalibrationParameters[1,2])}, calibrationData=Design.Calibration.Internal.Dynamic_common(Design.Internal.Records.DynamicCommonCalibrationCases(experimentNames={"/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/DataFilesForValidation/Rheem84DVLNRepeatedDrawsCharacterization.csv"}, task={1}, startTime={0}, stopTime={8100}, parameterNames={"nonCon.Capacitance_input", "nonCon.UA_input","nonCon.PID_P_input","nonCon.PID_I_input", "nonCon.PID_D_input"}, parameterValues=[CalibrationParameters[1,1],CalibrationParameters[1,3],CalibrationParameters[1,4],CalibrationParameters[1,5],CalibrationParameters[1,6]]), resultCouplings={Design.Internal.Records.DynamicCalibrationResultCoupling(variable="nonCon.Q_dot_in", data="GasIn")})));
+	
+//		simulateModel("",resultFile="test");
+//		fileName = "test.mat";
+//		CSVfile = "CalibrationInput.csv";
+//		n = 1;
+//		names={"nonCon.Capacitance_input", "nonCon.SteadyStateEff_input", "nonCon.UA_input", "nonCon.PID_P_input", "nonCon.PID_I_input", "nonCon.PID_D_input"};
+//		traj=readTrajectory(fileName,names,n);
+//		traj_transposed = transpose(traj);
+//		DataFiles.writeCSVmatrix(CSVfile, names, traj_transposed);
+//		CalibrationParameters = DataFiles.readCSVmatrix("CalibrationInput.csv");
+end for;
+
+
+
