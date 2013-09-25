@@ -1511,9 +1511,6 @@ package WaterHeatingLibrary "Library of water heating models and packages"
           </html>"));
     end TankWithTrunkAndBranch;
 
-
-
-
     annotation (Documentation(info="<html>
   <p>
   This package contains examples demonstrating the combination of multuple WaterHeatingLibrary models.
@@ -14814,160 +14811,6 @@ First implementation.
                 extent={{-150,-150},{150,150}})));
       end StorageTankWithFan;
 
-      model SimplifiedStorageTankExampleValidation
-        "A model used to validate SimplifiedStorageTank"
-        extends Modelica.Icons.Example;
-        package Water = Modelica.Media.Water.WaterIF97_ph "Medium model";
-        parameter Integer nSeg = 5;
-        SimplifiedStorageTank tan(
-          RecircInSeg=1,
-          redeclare package Medium = Water,
-          perQFlu=1/3,
-          perQBas=2/3,
-          VTan=0.1438,
-          Deadband=12,
-          QDotPilot=158,
-          TSet=273.105 + 46,
-          UA=5.5,
-          nSeg=nSeg,
-          perInA={0,0,0,0,0},
-          perInB={0,0,0,0,0},
-          perInC={0,0,0,0,1},
-          timDelA={0,0,0,0,0},
-          timDelB={0,0,0,0,0},
-          timDelC={0,0,0,0,0},
-          T_Initial={318.15,318.15,318.15,318.15,318.15},
-          TStatHeight=4,
-          RecircOutSeg=4)
-                 annotation (Placement(transformation(extent={{24,-64},{130,18}})));
-
-        Modelica.Blocks.Math.Product product annotation (Placement(transformation(
-              extent={{-10,-10},{10,10}},
-              rotation=180,
-              origin={70,-108})));
-        Modelica.Blocks.Math.Add add annotation (Placement(transformation(
-              extent={{-10,-10},{10,10}},
-              rotation=180,
-              origin={32,-102})));
-        Modelica.Blocks.Math.IntegerToReal integerToReal annotation (Placement(
-              transformation(
-              extent={{-10,-10},{10,10}},
-              rotation=180,
-              origin={120,-102})));
-        Modelica.Blocks.Sources.Constant QDotBurner(k=12000) annotation (Placement(
-              transformation(
-              extent={{-10,-10},{10,10}},
-              rotation=180,
-              origin={120,-132})));
-        Modelica.Blocks.Sources.Constant QDotPilot(k=158) annotation (Placement(
-              transformation(
-              extent={{-10,-10},{10,10}},
-              rotation=180,
-              origin={80,-82})));
-        Modelica.Blocks.Sources.Constant mFloRecirc(k=0)
-          annotation (Placement(transformation(extent={{-18,-48},{2,-28}})));
-        Modelica.Blocks.Sources.Constant TInRecirc(k=273.105 + 20)
-          annotation (Placement(transformation(extent={{-18,-78},{2,-58}})));
-        Modelica.Blocks.Tables.CombiTable1Ds DrawFlow[nSeg](
-          tableOnFile=true,
-          tableName="Inputs",
-          fileName="/home/peter/WaterHeaterModeling/modeling/branches/pgrant/PlainStorageWaterHeater/27 - Simplified Model/WaterFromTest16.txt")
-          annotation (Placement(transformation(extent={{2,22},{22,42}})));
-        Modelica.Blocks.Sources.RealExpression realExpression[nSeg](y=time)
-          annotation (Placement(transformation(extent={{-28,22},{-8,42}})));
-        inner Modelica.Fluid.System system
-          annotation (Placement(transformation(extent={{-14,-142},{6,-122}})));
-        Modelica.Blocks.Sources.RealExpression realExpression1(y=time)
-          annotation (Placement(transformation(extent={{-130,94},{-110,114}})));
-        Modelica.Blocks.Tables.CombiTable1Ds TIn(
-          tableOnFile=true,
-          tableName="Inputs",
-          fileName="/home/peter/WaterHeaterModeling/modeling/branches/pgrant/PlainStorageWaterHeater/27 - Simplified Model/InletFromTest16.txt")
-          annotation (Placement(transformation(extent={{-76,122},{-56,142}})));
-        Modelica.Blocks.Tables.CombiTable1Ds TAmb(
-          tableOnFile=true,
-          tableName="Inputs",
-          fileName="/home/peter/WaterHeaterModeling/modeling/branches/pgrant/PlainStorageWaterHeater/27 - Simplified Model/AmbientFromTest16.txt")
-          annotation (Placement(transformation(extent={{-76,94},{-56,114}})));
-        Modelica.Blocks.Tables.CombiTable1Ds ValidationData(
-          tableOnFile=true,
-          tableName="Data",
-          columns=2:12,
-          fileName="/home/peter/WaterHeaterModeling/modeling/branches/pgrant/PlainStorageWaterHeater/27 - Simplified Model/ValidationDataFromTest16.txt")
-          annotation (Placement(transformation(extent={{-76,68},{-56,88}})));
-        Modelica.Blocks.Sources.Constant EffTan(k=0.75)
-          annotation (Placement(transformation(extent={{-62,-30},{-42,-10}})));
-      equation
-        connect(product.y, add.u1) annotation (Line(
-            points={{59,-108},{44,-108}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(integerToReal.y, product.u2) annotation (Line(
-            points={{109,-102},{82,-102}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(integerToReal.u, tan.TStatSig) annotation (Line(
-            points={{132,-102},{144,-102},{144,-48.4},{132.6,-48.4}},
-            color={255,127,0},
-            smooth=Smooth.None));
-        connect(QDotBurner.y, product.u1) annotation (Line(
-            points={{109,-132},{96,-132},{96,-114},{82,-114}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(QDotPilot.y, add.u2) annotation (Line(
-            points={{69,-82},{54,-82},{54,-96},{44,-96}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(add.y, tan.QDotIn) annotation (Line(
-            points={{21,-102},{-24,-102},{-24,8},{20.2,8}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(mFloRecirc.y, tan.mFloRec) annotation (Line(
-            points={{3,-38},{8,-38},{8,-35.5},{20.3,-35.5}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(TInRecirc.y, tan.TInRec) annotation (Line(
-            points={{3,-68},{10,-68},{10,-48.3},{20.5,-48.3}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(tan.m_flow_in, DrawFlow.y[1]) annotation (Line(
-            points={{51.8,18.4},{36,18.4},{36,32},{23,32}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(realExpression.y, DrawFlow.u) annotation (Line(
-            points={{-7,32},{0,32}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(realExpression1.y, TAmb.u) annotation (Line(
-            points={{-109,104},{-78,104}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(realExpression1.y, TIn.u) annotation (Line(
-            points={{-109,104},{-92,104},{-92,132},{-78,132}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(realExpression1.y, ValidationData.u) annotation (Line(
-            points={{-109,104},{-92,104},{-92,78},{-78,78}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(TIn.y[1], tan.TIn) annotation (Line(
-            points={{-55,132},{86,132},{86,18.2}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(TAmb.y[1], tan.TAmb) annotation (Line(
-            points={{-55,104},{-40,104},{-40,-5.7},{20.3,-5.7}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(EffTan.y, tan.EffTan) annotation (Line(
-            points={{-41,-20},{-10,-20},{-10,-21.7},{20.3,-21.7}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        annotation (Diagram(coordinateSystem(preserveAspectRatio=false,extent={{-150,
-                  -150},{150,150}}),
-                            graphics), Icon(coordinateSystem(preserveAspectRatio=true,
-                extent={{-150,-150},{150,150}})));
-      end SimplifiedStorageTankExampleValidation;
-
       model SimplifiedStorageWithFan
         extends Modelica.Icons.Example;
 
@@ -21977,8 +21820,7 @@ First implementation
           tableOnFile=true,
           tableName="Data",
           columns=2:7,
-          fileName=
-              "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForValidation/Rheem84DVLNValidation.txt")
+          fileName="InputFilesForValidation/Rheem84DVLNValidation.txt")
           annotation (Placement(transformation(extent={{-66,24},{-46,44}})));
 
         Buildings.Fluid.Sources.MassFlowSource_T boundary(
@@ -22088,81 +21930,6 @@ First implementation
                   -100},{100,100}}), graphics));
       end CharacterizationModel;
 
-      model NonCondensingTanklessExample "Test model for NonCondensingTankless"
-        import TanklessWaterHeater = WaterHeatingLibrary.NonCondensingTankless;
-        extends Modelica.Icons.Example;
-
-        TanklessWaterHeater.NonCondensingTanklessHeater
-          nonCondensingTanklessHeater(t_short=15, t_long=30)
-          annotation (Placement(transformation(extent={{10,-22},{56,36}})));
-        Modelica.Blocks.Sources.RealExpression Time(y=time)
-          annotation (Placement(transformation(extent={{-100,-4},{-80,16}})));
-        Modelica.Blocks.Tables.CombiTable1Ds TAmb(
-          tableOnFile=true,
-          tableName="Ambient",
-          columns={2},
-          fileName=
-              "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/TanklessWaterHeater/TanklessExampleAmbientTemperature.txt")
-          annotation (Placement(transformation(extent={{-60,36},{-40,56}})));
-        Modelica.Blocks.Tables.CombiTable1Ds TIn(
-          tableOnFile=true,
-          columns={2},
-          tableName="Inlet",
-          fileName=
-              "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/TanklessWaterHeater/TanklessExampleInletTemperature.txt")
-          annotation (Placement(transformation(extent={{-60,10},{-40,30}})));
-        Modelica.Blocks.Tables.CombiTable1Ds drawPat(
-          tableOnFile=true,
-          columns={2},
-          tableName="Flow",
-          fileName=
-              "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/TanklessWaterHeater/TanklessExampleDemandFlowPattern.txt")
-          annotation (Placement(transformation(extent={{-60,-16},{-40,4}})));
-        Modelica.Blocks.Tables.CombiTable1Ds pwrSig(
-          tableOnFile=true,
-          tableName="Power",
-          columns={2},
-          fileName=
-              "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/TanklessWaterHeater/TanklessExamplePowerSignal.txt")
-          annotation (Placement(transformation(extent={{-60,-42},{-40,-22}})));
-      equation
-        connect(Time.y, TIn.u) annotation (Line(
-            points={{-79,6},{-70,6},{-70,20},{-62,20}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(Time.y, TAmb.u) annotation (Line(
-            points={{-79,6},{-70,6},{-70,46},{-62,46}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(Time.y, drawPat.u) annotation (Line(
-            points={{-79,6},{-70,6},{-70,-6},{-62,-6}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(TAmb.y[1], nonCondensingTanklessHeater.AmbientTemperature)
-          annotation (Line(
-            points={{-39,46},{-18,46},{-18,31.36},{5.4,31.36}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(TIn.y[1], nonCondensingTanklessHeater.InletTemperature)
-          annotation (Line(
-            points={{-39,20},{-16.8,20},{-16.8,14.656},{5.4,14.656}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(drawPat.y[1], nonCondensingTanklessHeater.DemandFlowRate)
-          annotation (Line(
-            points={{-39,-6},{-16,-6},{-16,-1.12},{5.4,-1.12}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(pwrSig.y[1], nonCondensingTanklessHeater.pwrSig) annotation (Line(
-            points={{-39,-32},{-18,-32},{-18,-19.68},{5.4,-19.68}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        connect(Time.y, pwrSig.u) annotation (Line(
-            points={{-79,6},{-70,6},{-70,-32},{-62,-32}},
-            color={0,0,127},
-            smooth=Smooth.None));
-        annotation (Diagram(graphics));
-      end NonCondensingTanklessExample;
 
       model NonCondensingMediumModel "Test model for NoncondensingMediumModel"
         extends Modelica.Icons.Example;
@@ -22181,15 +21948,13 @@ First implementation
         Modelica.Blocks.Sources.CombiTimeTable TIn(
           tableOnFile=true,
           tableName="Temp",
-          fileName=
-              "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchTIn.txt")
+          fileName="InputFilesForExamples/TanklessWithTrunkAndBranchTIn.txt")
           "Inlet temperature (unit = K)"
           annotation (Placement(transformation(extent={{-96,20},{-76,40}})));
         Modelica.Blocks.Sources.CombiTimeTable pwrSig(
           tableOnFile=true,
           tableName="pwr",
-          fileName=
-              "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchpwr.txt")
+          fileName="InputFilesForExamples/TanklessWithTrunkAndBranchpwr.txt")
           "Power signal (1 = on, 0 = off)"
           annotation (Placement(transformation(extent={{-96,-44},{-76,-24}})));
         Buildings.Fluid.Sources.Boundary_pT boundary(
@@ -22218,18 +21983,6 @@ First implementation
           annotation (Placement(transformation(extent={{46,-20},{66,0}})));
         Modelica.Blocks.Sources.Ramp ramp(duration=600, height=0.125)
           annotation (Placement(transformation(extent={{26,2},{46,22}})));
-        HWDis.Components.PipeLumpedCap
-                               pip(
-          redeclare package Medium =
-              Buildings.Media.ConstantPropertyLiquidWater,
-          m_flow_nominal=0.06,
-          dp_nominal=1,
-          thicknessIns=0.1,
-          lambdaIns=0.12,
-          diameter=0.2,
-          length=10,
-          MixCoef=0.6)
-          annotation (Placement(transformation(extent={{10,-20},{30,0}})));
       equation
         connect(pwrSig.y[1], nonCondensingTanklessHeaterMediumModel.pwrSig)
           annotation (Line(
@@ -22254,18 +22007,14 @@ First implementation
             points={{47,12},{56,12},{56,2}},
             color={0,0,127},
             smooth=Smooth.None));
-        connect(pip.port_b, val.port_a) annotation (Line(
-            points={{30,-10},{46,-10}},
-            color={0,127,255},
-            smooth=Smooth.None));
         connect(boundary1.ports[1], nonCondensingTanklessHeaterMediumModel.colWatIn)
           annotation (Line(
             points={{-46,26},{-34,26},{-34,-50},{-23.2,-50},{-23.2,-34.192}},
             color={0,127,255},
             smooth=Smooth.None));
-        connect(pip.port_a, nonCondensingTanklessHeaterMediumModel.hotWatOut)
+        connect(nonCondensingTanklessHeaterMediumModel.hotWatOut, val.port_a)
           annotation (Line(
-            points={{10,-10},{2,-10},{2,-44},{-9.2,-44},{-9.2,-34.192}},
+            points={{-9.2,-34.192},{-9.2,-50},{8,-50},{8,-10},{46,-10}},
             color={0,127,255},
             smooth=Smooth.None));
           annotation (Line(
@@ -22288,22 +22037,20 @@ First implementation
           annotation (Placement(transformation(extent={{-26,-34},{-6,-10}})));
         Modelica.Blocks.Sources.CombiTimeTable TAmb(
           tableOnFile=true,
-          fileName=
-              "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchTAmb.txt",
-          tableName="TAmb") "Temperature surrounding the system(unit = K)"
+          tableName="TAmb",
+          fileName="InputFilesForExamples/TanklessWithTrunkAndBranchTAmb.txt")
+          "Temperature surrounding the system(unit = K)"
           annotation (Placement(transformation(extent={{-96,-8},{-76,12}})));
         Modelica.Blocks.Sources.CombiTimeTable TIn(
           tableOnFile=true,
           tableName="Temp",
-          fileName=
-              "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchTIn.txt")
+          fileName="InputFilesForExamples/TanklessWithTrunkAndBranchTIn.txt")
           "Inlet temperature (unit = K)"
           annotation (Placement(transformation(extent={{-96,20},{-76,40}})));
         Modelica.Blocks.Sources.CombiTimeTable pwrSig(
           tableOnFile=true,
           tableName="pwr",
-          fileName=
-              "/home/peter/WaterHeaterModeling/modeling/branches/pgrant/CombinedWaterHeatingLibrary/InputFilesForExamples/TanklessWithTrunkAndBranchpwr.txt")
+          fileName="InputFilesForExamples/TanklessWithTrunkAndBranchpwr.txt")
           "Power signal (1 = on, 0 = off)"
           annotation (Placement(transformation(extent={{-96,-76},{-76,-56}})));
         Buildings.Fluid.Sources.Boundary_pT boundary(
